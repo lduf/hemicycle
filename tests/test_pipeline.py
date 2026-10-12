@@ -30,6 +30,11 @@ class Direction(unittest.TestCase):
         self.assertEqual(D.button_labels("l'interdiction des PFAS", "remove")[0], "Pour la suppression de l'interdiction des PFAS")
         self.assertEqual(D.button_labels("le gel des retraites", "remove")[0], "Pour la suppression du gel des retraites")
 
+    def test_llm_check_prompt_uses_real_button_label(self):
+        seen = []
+        D.llm_check(lambda p: seen.append(p) or "OK", "t", "la taxe X", "remove")
+        self.assertIn("Pour la suppression de la taxe X", seen[0])
+
     def test_llm_check_fails_closed(self):
         self.assertFalse(D.llm_check(lambda p: "DOUTE", "t", "x", "adopt")[0])
         self.assertFalse(D.llm_check(lambda p: None, "t", "x", "adopt")[0])
@@ -96,7 +101,7 @@ class Neutrality(unittest.TestCase):
         self.assertTrue(any("résumé" in i for i in N.deterministic(dict(GOOD, sum="Une seule phrase."), actors={})))
 
     def test_fail_closed_without_judge(self):
-        os.environ.pop("HEMI_ALLOW_NO_JUDGE", None); os.environ.pop("ANTHROPIC_API_KEY", None)
+        os.environ.pop("HEMI_ALLOW_NO_JUDGE", None); os.environ["HEMI_LLM"] = "none"
         ev = N.evaluate(GOOD, actors={})
         self.assertFalse(ev["ok"])
 
@@ -199,7 +204,7 @@ class Promises(unittest.TestCase):
 
 class Fiche(WithTmp):
     def test_blocked_when_no_llm(self):
-        os.environ.pop("ANTHROPIC_API_KEY", None)
+        os.environ["HEMI_LLM"] = "none"
         s = dict(n=9, date="2026-01-01", titre="l'ensemble du projet de loi X", sort="adopté")
         q = fiche.draft(s, [], texts=[("https://www.senat.fr/x", "texte")])
         self.assertEqual(q["status"], "blocked")

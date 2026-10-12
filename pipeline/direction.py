@@ -82,9 +82,9 @@ def _de_article(s):
 def llm_check(client_call, titre, subject, polarity):
     """Vérification par un modèle. client_call(prompt)->str. Renvoie (ok:bool, raison:str).
     Échec fermé : toute réponse autre que 'OK' bloque la publication."""
-    pr = (f"Titre officiel du scrutin : « {titre} »\nIntitulé du bouton : « Pour {subject} » "
-          f"(polarité déclarée : {'voter pour = adopter' if polarity == 'adopt' else 'voter pour = SUPPRIMER/REJETER'}).\n"
-          "Voter « pour » au scrutin correspond-il bien exactement à ce que dit le bouton ? "
+    pour, _ = button_labels(subject, polarity)
+    pr = (f"Titre officiel du scrutin : « {titre} »\nIntitulé du bouton : « {pour} ».\n"
+          "Voter « pour » au scrutin correspond-il bien exactement à ce que dit ce bouton ? "
           "Attention aux amendements de suppression, de rejet, de rétablissement. "
           "Réponds par un seul mot : OK, INVERSE ou DOUTE.")
     ans = (client_call(pr) or "").strip().upper()

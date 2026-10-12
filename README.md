@@ -37,7 +37,7 @@ python -m unittest discover -s tests
 ### Cycle d'une fiche
 1. `select_votes` classe les candidats (divergence entre groupes, participation, mesure isolée, pas de procédure) → `data/candidates.json`.
 2. Un humain choisit un candidat et ajoute ses **sources officielles** dans `content/inbox.json` : `{"8427": ["https://www.assemblee-nationale.fr/…"]}`.
-3. `nightly` rédige la fiche (`ANTHROPIC_API_KEY` requise ; modèles réglables : `HEMI_MODEL_WRITER`, `HEMI_MODEL_JUDGE`), vérifie le sens et la neutralité → `pending_review` ou `blocked` (raison dans `content/questions/N.json`).
+3. `nightly` rédige la fiche (via `claude -p`, donc ton abonnement Claude ; `HEMI_LLM=api` + `ANTHROPIC_API_KEY` pour l'API ; `HEMI_LLM=none` pour désactiver ; modèles : `HEMI_MODEL_WRITER`, `HEMI_MODEL_JUDGE`), vérifie le sens et la neutralité → `pending_review` ou `blocked` (raison dans `content/questions/N.json`).
 4. Deux relecteurs de bords opposés : `python -m pipeline.review sign 8427 --by Nom --side gauche --verdict approve` puis `--side droite`. → `published`.
 5. Le build n'inclut que `published`, `pending_review` et `legacy` (ces deux derniers étiquetés « non relue »). Options : `build_site.build(include_pending=False)`.
 

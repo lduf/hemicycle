@@ -29,7 +29,7 @@ CATS = ["Éducation", "Sport", "Écologie & énergie", "Économie & fiscalité",
         "Justice & sécurité", "Immigration", "Numérique", "Défense", "Agriculture", "Droits & société",
         "Institutions", "Logement", "Transports", "Culture & médias"]
 
-# Modèles (API Anthropic). Sans ANTHROPIC_API_KEY, les étapes « modèle » sont ignorées et la fiche reste bloquée.
+# Modèles, appelés via `claude -p` (abonnement) ou l'API : voir llm.py. Sans modèle disponible, la fiche reste bloquée.
 MODEL_WRITER = os.environ.get("HEMI_MODEL_WRITER", "claude-sonnet-5-5")
 MODEL_JUDGE = os.environ.get("HEMI_MODEL_JUDGE", "claude-opus-5-5")  # second modèle, distinct de l'auteur
 
