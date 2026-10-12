@@ -1,0 +1,28 @@
+{
+ "cat": "Famille & social",
+ "checks": {},
+ "con": "Le manque de marges budgétaires. Selon certains, la mesure n'aurait pas d'effet redistributif pour les familles modestes, car le RSA et la prime d'activité baisseraient mécaniquement.",
+ "date": "2025-06-05",
+ "hook": "Si tu deviens parent d’un enfant unique : tu toucherais ou non des allocations.",
+ "kind": "texte",
+ "label": "les allocations dès le 1er enfant",
+ "legacy": true,
+ "n": 2272,
+ "notes": "Rédigé par IA dans le MVP, non relu. À revérifier à la source.",
+ "polarity": "adopt",
+ "polarity_verified": true,
+ "pro": "Un peu plus d'un tiers des familles n'ont qu'un enfant, donc le seuil actuel ne correspond plus à leur réalité. Défense de l'universalité de la prestation.",
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/2272"
+  }
+ ],
+ "status": "legacy",
+ "subkind": "ensemble",
+ "sum": "Proposition de loi. Les allocations familiales sont aujourd'hui versées à partir du deuxième enfant, sauf en outre-mer où elles le sont dès le premier. Le texte étend le versement dès le premier enfant à tout le territoire. Coût estimé entre 3 et 4 milliards d'euros par an.",
+ "surp": "Les désaccords portent sur le coût et sur l’effet réel pour les familles modestes, pas seulement sur l’idée d’aider les familles.",
+ "title": "Allocations familiales dès le premier enfant",
+ "updated": "2026-10-12"
+}

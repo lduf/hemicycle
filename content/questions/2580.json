@@ -1,0 +1,28 @@
+{
+ "cat": "Écologie & énergie",
+ "checks": {},
+ "con": "Les opposants jugent la mesure dévastatrice pour les industriels du secteur, estiment qu'elle détruirait des dizaines de milliers d'emplois (80 000 selon une organisation professionnelle) et y voient une menace pour le climat.",
+ "date": "2025-06-19",
+ "hook": "Les éoliennes et les panneaux solaires près de chez toi, et les emplois du secteur.",
+ "kind": "mesure",
+ "label": "le moratoire éolien et solaire",
+ "legacy": true,
+ "n": 2580,
+ "notes": "Rédigé par IA dans le MVP, non relu. À revérifier à la source.",
+ "polarity": "adopt",
+ "polarity_verified": true,
+ "pro": "Les partisans jugent l'éolien et le solaire coûteux et intermittents.",
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/2580"
+  }
+ ],
+ "status": "legacy",
+ "subkind": "amendement",
+ "sum": "Amendement ajouté à un texte sur la programmation de l'énergie. Il suspend le développement de toute nouvelle installation éolienne et photovoltaïque, dès la promulgation de la loi. La durée et les exceptions ne sont pas précisées dans les sources consultées. Il a été adopté de justesse (65 voix contre 62), dans un hémicycle très peu rempli.",
+ "surp": "L’amendement a été adopté de justesse (65 contre 62) dans un hémicycle peu rempli. Un vote aussi serré peut dépendre de qui est présent ce jour-là plus que d’une majorité stable.",
+ "title": "Suspendre tout nouveau projet éolien et photovoltaïque (moratoire)",
+ "updated": "2026-10-12"
+}

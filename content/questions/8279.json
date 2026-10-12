@@ -1,0 +1,28 @@
+{
+ "cat": "Justice & sécurité",
+ "checks": {},
+ "con": "Les opposants critiquent certaines mesures : fouilles sans autorisation du procureur, évacuation des squats, surveillance par algorithme.",
+ "date": "2026-07-15",
+ "hook": "Free parties, protoxyde d’azote, squats, caméras intelligentes : ce qui change dans l’espace public.",
+ "kind": "texte",
+ "label": "la loi de sécurité « Ripost »",
+ "legacy": true,
+ "n": 8279,
+ "notes": "Rédigé par IA dans le MVP, non relu. À revérifier à la source.",
+ "polarity": "adopt",
+ "polarity_verified": true,
+ "pro": "Les partisans veulent donner des réponses rapides à des phénomènes qui troublent la tranquillité et la sécurité.",
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/8279"
+  }
+ ],
+ "status": "legacy",
+ "subkind": "ensemble",
+ "sum": "Projet de loi qui regroupe de nombreuses mesures. Dans sa version finale : délit d'inhalation de protoxyde d'azote, sanctions contre l'organisation de free parties et de rodéos motorisés, évacuation des squats étendue, vidéosurveillance algorithmique prolongée jusqu'à fin 2030, et fouille des véhicules près des frontières sans réquisition du procureur.",
+ "surp": "Texte regroupant de nombreuses mesures : on peut soutenir l’une (par exemple contre les rodéos) et contester une autre (vidéosurveillance algorithmique). Un vote global cache ces nuances.",
+ "title": "Loi « Ripost » : nouvelles sanctions contre les troubles à l'ordre public",
+ "updated": "2026-10-12"
+}

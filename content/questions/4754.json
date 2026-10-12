@@ -1,0 +1,28 @@
+{
+ "cat": "Immigration",
+ "checks": {},
+ "con": "Certains jugent le texte juridiquement fragile et inefficace. D'autres y voient un renversement de la charge de la preuve et une réduction du pouvoir d'appréciation de l'administration.",
+ "date": "2025-12-11",
+ "hook": "Pour une personne étrangère installée depuis longtemps : renouveler ses papiers sans refaire toute la procédure.",
+ "kind": "texte",
+ "label": "les titres de séjour renouvelés d’office",
+ "legacy": true,
+ "n": 4754,
+ "notes": "Rédigé par IA dans le MVP, non relu. À revérifier à la source.",
+ "polarity": "adopt",
+ "polarity_verified": true,
+ "pro": "Les délais de renouvellement plongent dans la précarité des personnes installées depuis longtemps en France. Selon une élue, 99,5 % des titres sont renouvelés.",
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/4754"
+  }
+ ],
+ "status": "legacy",
+ "subkind": "ensemble",
+ "sum": "Proposition de loi. L'administration renouvellerait automatiquement les titres de séjour de longue durée, sauf si elle a des motifs juridiques de s'y opposer, qu'elle devrait alors démontrer.",
+ "surp": "Les objections ne sont pas toutes de même nature : certains jugent le texte juridiquement fragile, d’autres contestent le principe d’un renouvellement par défaut.",
+ "title": "Renouvellement automatique des titres de séjour de longue durée",
+ "updated": "2026-10-12"
+}

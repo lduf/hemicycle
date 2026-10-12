@@ -1,0 +1,28 @@
+{
+ "cat": "Immigration",
+ "checks": {},
+ "con": "Les opposants craignent des tensions diplomatiques et soulignent que la résolution est symbolique.",
+ "date": "2025-10-30",
+ "hook": "Les règles d’entrée et de séjour des Algériens en France, un sujet sensible entre les deux pays.",
+ "kind": "resolution",
+ "label": "la fin des accords avec l’Algérie",
+ "legacy": true,
+ "n": 3260,
+ "notes": "Rédigé par IA dans le MVP, non relu. À revérifier à la source.",
+ "polarity": "adopt",
+ "polarity_verified": true,
+ "pro": "Les partisans jugent ce régime particulier dépassé et veulent revenir aux règles communes.",
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/3260"
+  }
+ ],
+ "status": "legacy",
+ "subkind": "ensemble",
+ "sum": "Résolution, c'est-à-dire une prise de position sans valeur de loi. Elle invite le gouvernement à mettre fin aux accords de 1968 qui donnent aux ressortissants algériens un régime particulier pour entrer, séjourner et travailler en France. Elle a été adoptée à une seule voix d'écart (185 contre 184).",
+ "surp": "Adopté à une seule voix d’écart (185 contre 184), avec peu de présents. C’est une résolution : elle exprime une position sans changer la loi.",
+ "title": "Mettre fin aux accords de 1968 avec l'Algérie",
+ "updated": "2026-10-12"
+}

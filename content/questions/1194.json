@@ -1,0 +1,28 @@
+{
+ "cat": "Justice & sécurité",
+ "checks": {},
+ "con": "Les opposants craignent des atteintes aux droits de la défense et critiquent certaines procédures, préférant davantage de moyens pour la prévention et les enquêtes.",
+ "date": "2025-04-01",
+ "hook": "Trafic de drogue : comment l’État s’organise contre le crime organisé.",
+ "kind": "texte",
+ "label": "la loi anti-narcotrafic",
+ "legacy": true,
+ "n": 1194,
+ "notes": "Rédigé par IA dans le MVP, non relu. À revérifier à la source. Résumé en partie issu de connaissances générales.",
+ "polarity": "adopt",
+ "polarity_verified": true,
+ "pro": "Les partisans veulent adapter les moyens de l'État à l'ampleur du trafic de drogue.",
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/1194"
+  }
+ ],
+ "status": "legacy",
+ "subkind": "ensemble",
+ "sum": "Proposition de loi, adoptée en première lecture. Elle crée un parquet national dédié à la criminalité organisée, un statut pour les « repentis » qui collaborent avec la justice et une procédure séparée pour protéger certaines enquêtes. Elle contient aussi des mesures contre le blanchiment et la corruption.",
+ "surp": "Texte large (parquet national, repentis, blanchiment) : un vote global mélange des mesures consensuelles et d’autres contestées, notamment sur les droits de la défense.",
+ "title": "Loi contre le narcotrafic",
+ "updated": "2026-10-12"
+}

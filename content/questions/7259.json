@@ -1,0 +1,28 @@
+{
+ "cat": "Agriculture",
+ "checks": {},
+ "con": "Les opposants dénoncent des atteintes à la démocratie locale de l'eau, une disposition favorable à l'élevage intensif et la suppression d'un article sur les « tunnels de prix » (une expérimentation sur les prix agricoles).",
+ "date": "2026-06-02",
+ "hook": "Ce que tu manges : prix payés aux agriculteurs, produits importés, élevage, eau.",
+ "kind": "texte",
+ "label": "la loi d’urgence agricole",
+ "legacy": true,
+ "n": 7259,
+ "notes": "Rédigé par IA dans le MVP, non relu. À revérifier à la source. Résumé en partie issu de connaissances générales.",
+ "polarity": "adopt",
+ "polarity_verified": true,
+ "pro": "Les partisans parlent de mesures pragmatiques : faciliter le stockage d'eau et l'élevage, lutter contre la concurrence déloyale, protéger les biens agricoles.",
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/7259"
+  }
+ ],
+ "status": "legacy",
+ "subkind": "ensemble",
+ "sum": "Projet de loi en plusieurs volets : facilitation des ouvrages de stockage d'eau, procédure allégée pour les bâtiments d'élevage, tirs de défense facilités contre le loup, peines aggravées pour les vols et dégradations sur les exploitations, et mesures sur les prix et les importations de produits traités avec des pesticides interdits dans l'UE.",
+ "surp": "Texte à plusieurs volets (eau, élevage, loup, prix, importations). On peut approuver un volet et en rejeter un autre : les raisons d’un « contre » ne sont pas toutes les mêmes.",
+ "title": "Loi d'urgence pour la protection et la souveraineté agricoles",
+ "updated": "2026-10-12"
+}

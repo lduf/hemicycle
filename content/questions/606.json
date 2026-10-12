@@ -1,0 +1,28 @@
+{
+ "cat": "Éducation",
+ "checks": {},
+ "con": "Les opposants jugent la mesure coûteuse et préféreraient la cibler sur les étudiants qui en ont le plus besoin.",
+ "date": "2025-01-23",
+ "hook": "Si tu es étudiant : un repas à 1 € au resto U pour tous, pas seulement pour les boursiers.",
+ "kind": "texte",
+ "label": "le repas à 1 € pour tous",
+ "legacy": true,
+ "n": 606,
+ "notes": "Rédigé par IA dans le MVP, non relu. À revérifier à la source. Résumé en partie issu de connaissances générales.",
+ "polarity": "adopt",
+ "polarity_verified": true,
+ "pro": "Les partisans mettent en avant la précarité étudiante et l'accès à un repas équilibré.",
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/606"
+  }
+ ],
+ "status": "legacy",
+ "subkind": "ensemble",
+ "sum": "Proposition de loi. Elle étend à tous les étudiants le repas à 1 euro au restaurant universitaire, aujourd'hui réservé aux étudiants boursiers ou en situation de précarité. Elle a été adoptée en première lecture avec une très large majorité, plusieurs groupes s'abstenant.",
+ "surp": "Presque personne n’a voté contre, mais 19 députés se sont abstenus. L’abstention peut refléter un désaccord sur le coût ou le ciblage plutôt qu’un rejet.",
+ "title": "Repas à 1 euro pour tous les étudiants",
+ "updated": "2026-10-12"
+}

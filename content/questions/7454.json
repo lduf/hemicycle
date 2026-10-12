@@ -1,0 +1,28 @@
+{
+ "cat": "Institutions",
+ "checks": {},
+ "con": "Les opposants jugent le texte inadapté aux difficultés de l'île, ou craignent une rupture d'égalité entre territoires.",
+ "date": "2026-06-23",
+ "hook": "Une région pourrait adapter certaines lois nationales : cela change qui décide de quoi.",
+ "kind": "texte",
+ "label": "l’autonomie de la Corse",
+ "legacy": true,
+ "n": 7454,
+ "notes": "Rédigé par IA dans le MVP, non relu. À revérifier à la source.",
+ "polarity": "adopt",
+ "polarity_verified": true,
+ "pro": "Les partisans y voient une étape importante pour l'île et une réponse à des spécificités reconnues.",
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/7454"
+  }
+ ],
+ "status": "legacy",
+ "subkind": "ensemble",
+ "sum": "Projet de loi constitutionnelle. Il donnerait à la collectivité de Corse un statut d'autonomie : elle pourrait créer certaines normes et adapter des lois nationales. Le texte mentionne une « communauté insulaire, historique, linguistique, culturelle », sans parler de « peuple corse ». Ce n'est qu'une première étape : le Sénat doit l'examiner, puis les trois cinquièmes du Parlement réuni en Congrès.",
+ "surp": "Ce n’est que la première étape : le Sénat, puis les trois cinquièmes du Parlement réuni en Congrès, doivent encore se prononcer. Le vote n’est pas définitif.",
+ "title": "Inscrire un statut d'autonomie pour la Corse dans la Constitution",
+ "updated": "2026-10-12"
+}

@@ -1,0 +1,28 @@
+{
+ "cat": "Économie & fiscalité",
+ "checks": {},
+ "con": "Les opposants estiment que la nationalisation ne répond pas à la nature du problème, la protection de l'acier se jouant à Bruxelles. Ils craignent de donner de faux espoirs aux salariés.",
+ "date": "2025-11-27",
+ "hook": "L’État deviendrait propriétaire d’un grand producteur d’acier, pour 3 à 4 milliards d’euros selon ceux qui l’ont chiffré.",
+ "kind": "texte",
+ "label": "la nationalisation d’ArcelorMittal",
+ "legacy": true,
+ "n": 4438,
+ "notes": "Rédigé par IA dans le MVP, non relu. À revérifier à la source.",
+ "polarity": "adopt",
+ "polarity_verified": true,
+ "pro": "Faire de la France un leader de l'acier décarboné plutôt que de laisser décliner son industrie.",
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/4438"
+  }
+ ],
+ "status": "legacy",
+ "subkind": "ensemble",
+ "sum": "Proposition de loi. Elle transfère à l'État la totalité du capital d'ArcelorMittal France. Le coût est estimé entre 3 et 4 milliards d'euros selon les députés qui l'ont chiffré.",
+ "surp": "Un « contre » peut venir de gens qui veulent eux aussi défendre l’acier, mais jugent que l’outil n’est pas le bon (la protection se jouerait au niveau européen). Un « pour » peut venir du même objectif avec un autre choix d’outil.",
+ "title": "Nationalisation d'ArcelorMittal France",
+ "updated": "2026-10-12"
+}

@@ -1,0 +1,28 @@
+{
+ "cat": "Agriculture",
+ "checks": {},
+ "con": "Les opposants dénoncent le risque pour la santé et la biodiversité, notamment pour les abeilles, et un recul sur les protections existantes.",
+ "date": "2025-07-08",
+ "hook": "L’avenir de l’agriculture : moins de normes, mais aussi la question des pesticides et des abeilles.",
+ "kind": "texte",
+ "label": "cette loi agricole (dont l’acétamipride)",
+ "legacy": true,
+ "n": 2957,
+ "notes": "Rédigé par IA dans le MVP, non relu. À revérifier à la source. Résumé en partie issu de connaissances générales.",
+ "polarity": "adopt",
+ "polarity_verified": true,
+ "pro": "Les partisans veulent alléger des normes jugées trop lourdes et éviter des impasses sans solution pour certaines cultures.",
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/2957"
+  }
+ ],
+ "status": "legacy",
+ "subkind": "ensemble",
+ "sum": "Proposition de loi (version finale négociée avec le Sénat). Elle facilite certaines installations d'élevage et de stockage d'eau et réautorise sous conditions un insecticide de la famille des néonicotinoïdes (l'acétamipride) en l'absence d'alternative. Plus tard, le Conseil constitutionnel a censuré cette réautorisation.",
+ "surp": "La mesure la plus débattue (l’acétamipride) a ensuite été censurée par le Conseil constitutionnel. Le vote portait sur l’ensemble du texte, pas seulement sur ce point.",
+ "title": "Lever des contraintes sur le métier d'agriculteur",
+ "updated": "2026-10-12"
+}

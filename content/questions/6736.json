@@ -1,0 +1,28 @@
+{
+ "cat": "Défense",
+ "checks": {},
+ "con": "Certains dénoncent une logique d'escalade et un alignement sur les États-Unis. D'autres jugent que les dépenses nouvelles ne sont qu'un simple rattrapage de la loi de 2023.",
+ "date": "2026-05-19",
+ "hook": "Combien la France met dans son armée, avec un service national volontaire pour les 18-25 ans.",
+ "kind": "texte",
+ "label": "la hausse du budget militaire",
+ "legacy": true,
+ "n": 6736,
+ "notes": "Rédigé par IA dans le MVP, non relu. À revérifier à la source.",
+ "polarity": "adopt",
+ "polarity_verified": true,
+ "pro": "Permettre à la France de faire face à toute situation dans un contexte de menace russe, et accélérer le réarmement.",
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/6736"
+  }
+ ],
+ "status": "legacy",
+ "subkind": "ensemble",
+ "sum": "Projet de loi qui ajoute 36 milliards d'euros sur 2026-2030 à la programmation militaire 2024-2030, pour porter l'effort de défense à plus de 2,5 % du PIB dès 2030 selon ses auteurs. Priorités : munitions, lutte anti-drones, dissuasion nucléaire. Il crée un service national volontaire pour les 18-25 ans et un « état d'alerte de sécurité nationale » qui permet des dérogations temporaires à certaines normes.",
+ "surp": "Le texte combine budget, service national volontaire et dérogations de sécurité. On peut approuver une partie et rejeter une autre, alors que le vote est global.",
+ "title": "Actualisation de la loi de programmation militaire",
+ "updated": "2026-10-12"
+}

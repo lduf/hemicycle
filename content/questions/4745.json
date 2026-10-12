@@ -1,0 +1,28 @@
+{
+ "cat": "Logement",
+ "checks": {},
+ "con": "Les opposants craignent que l'encadrement décourage la mise en location et réduise l'offre de logements.",
+ "date": "2025-12-11",
+ "hook": "Si tu loues : le prix que ton propriétaire peut demander, et ton droit de le contester.",
+ "kind": "texte",
+ "label": "l’encadrement des loyers",
+ "legacy": true,
+ "n": 4745,
+ "notes": "Rédigé par IA dans le MVP, non relu. À revérifier à la source.",
+ "polarity": "adopt",
+ "polarity_verified": true,
+ "pro": "Les partisans veulent limiter la hausse des loyers et protéger les locataires qui font valoir leurs droits.",
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/4745"
+  }
+ ],
+ "status": "legacy",
+ "subkind": "ensemble",
+ "sum": "Proposition de loi sur les rapports locatifs. Elle pérennise l'encadrement des loyers, aujourd'hui expérimental, et l'étend aux communes où le logement est le plus tendu. Elle plafonne le complément de loyer à 20 % du loyer de référence majoré et oblige à l'indiquer dans l'annonce. Elle interdit au propriétaire de donner congé à un locataire qui a contesté son loyer dans l'année précédente.",
+ "surp": "Les deux camps affichent le même objectif, un logement accessible, mais divergent sur l’effet : faire baisser les loyers ou réduire l’offre.",
+ "title": "Pérenniser l'encadrement des loyers et protéger les locataires",
+ "updated": "2026-10-12"
+}

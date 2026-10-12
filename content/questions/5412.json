@@ -1,0 +1,28 @@
+{
+ "cat": "Droits & société",
+ "checks": {},
+ "con": "Les opposants craignent une atteinte à la liberté d'entreprendre et un pouvoir trop large donné au régulateur.",
+ "date": "2026-02-12",
+ "hook": "Qui possède les médias que tu consultes, et qui surveille cela.",
+ "kind": "mesure",
+ "label": "le contrôle de la concentration des médias",
+ "legacy": true,
+ "n": 5412,
+ "notes": "Rédigé par IA dans le MVP, non relu. À revérifier à la source.",
+ "polarity": "adopt",
+ "polarity_verified": true,
+ "pro": "Les partisans veulent protéger le pluralisme de l'information face à la concentration de la propriété des médias.",
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/5412"
+  }
+ ],
+ "status": "legacy",
+ "subkind": "article",
+ "sum": "Article premier d'une proposition de loi. Il donne au régulateur de l'audiovisuel un contrôle du pluralisme quand une même personne détient plusieurs médias d'information : audience cumulée, présence sur plusieurs supports, risques pour l'indépendance éditoriale. Toute concentration devrait être notifiée à l'autorité de la concurrence, avec un avis public du régulateur. Le seuil exact serait fixé par décret.",
+ "surp": "C’est l’article premier d’un texte : le seuil exact serait fixé plus tard par décret. On vote donc sur un cadre dont des détails restent inconnus.",
+ "title": "Contrôler la concentration des médias d'information",
+ "updated": "2026-10-12"
+}

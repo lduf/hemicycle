@@ -1,0 +1,28 @@
+{
+ "cat": "Éducation",
+ "checks": {},
+ "con": "Le coût pour les finances publiques. Certains préfèrent une réforme d'ensemble, qui inclurait aussi une partie des classes moyennes aujourd'hui exclues.",
+ "date": "2026-06-11",
+ "hook": "Si tu es étudiant ou le deviens : le montant de ta bourse et le nombre de mois où tu la touches.",
+ "kind": "texte",
+ "label": "la hausse des bourses étudiantes",
+ "legacy": true,
+ "n": 7397,
+ "notes": "Rédigé par IA dans le MVP, non relu. À revérifier à la source.",
+ "polarity": "adopt",
+ "polarity_verified": true,
+ "pro": "Le système actuel ne remplit plus son rôle de démocratisation de l'enseignement supérieur, et les mesures sont simples à appliquer.",
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/7397"
+  }
+ ],
+ "status": "legacy",
+ "subkind": "ensemble",
+ "sum": "Proposition de loi sur les bourses sur critères sociaux. Elle indexe chaque année les montants et les barèmes au moins sur l'inflation, et verse la bourse sur douze mois au lieu de dix. Coût estimé à un peu plus de 540 millions d'euros par an ; un chiffre proche de 400 millions a aussi été avancé.",
+ "surp": "Presque personne n’a voté contre, mais plusieurs groupes se sont abstenus. Une abstention peut venir d’un désaccord sur le coût ou la méthode, pas sur l’idée d’aider les étudiants.",
+ "title": "Bourses étudiantes : indexation et versement sur 12 mois",
+ "updated": "2026-10-12"
+}

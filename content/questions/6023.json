@@ -1,0 +1,28 @@
+{
+ "cat": "Économie & fiscalité",
+ "checks": {},
+ "con": "Les opposants jugent le texte dur et trop centré sur les prestations, au détriment de la fraude fiscale et de l'évasion.",
+ "date": "2026-04-07",
+ "hook": "Allocations, chômage, compte formation : des contrôles plus poussés et des données partagées entre administrations.",
+ "kind": "texte",
+ "label": "la loi anti-fraude",
+ "legacy": true,
+ "n": 6023,
+ "notes": "Rédigé par IA dans le MVP, non relu. À revérifier à la source.",
+ "polarity": "adopt",
+ "polarity_verified": true,
+ "pro": "Les partisans disent viser les « professionnels de l'arnaque » ; plus de la moitié de la fraude sociale viendrait d'entreprises qui dissimulent du travail.",
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/6023"
+  }
+ ],
+ "status": "legacy",
+ "subkind": "ensemble",
+ "sum": "Projet de loi qui renforce la détection des fraudes et le partage de données entre administrations. Il permet de suspendre à titre conservatoire, jusqu'à trois mois, des allocations chômage en cas d'indices sérieux de fraude. Il encadre davantage l'usage du compte personnel de formation et permet la saisie des actifs d'entreprises soupçonnées de travail dissimulé. Le gain espéré est de 1,5 à 2 milliards d'euros.",
+ "surp": "Le texte couvre fraude sociale et fiscale. Certains reprochent un déséquilibre entre les deux, d’autres soutiennent la fermeté : ce n’est pas toujours un vote pour ou contre la lutte contre la fraude.",
+ "title": "Renforcer la lutte contre les fraudes sociales et fiscales",
+ "updated": "2026-10-12"
+}
