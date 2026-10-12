@@ -35,7 +35,8 @@ def _ask_cli(model, prompt, system, timeout):
     with tempfile.TemporaryDirectory() as cwd:   # hors dépôt : aucun CLAUDE.md ni réglage projet
         r = subprocess.run(cmd, input=prompt, capture_output=True, text=True, timeout=timeout, cwd=cwd, env=env)
     if r.returncode:
-        raise RuntimeError(f"claude -p a échoué ({r.returncode}) : {r.stderr.strip()[:300]}")
+        # `claude -p` écrit souvent ses erreurs (jeton invalide, quota…) sur stdout : on garde les deux
+        raise RuntimeError(f"claude -p a échoué ({r.returncode}) : {(r.stderr.strip() + ' | ' + r.stdout.strip())[:400]}")
     return r.stdout
 
 

@@ -132,6 +132,10 @@ def ev_procon(engine, tm, fs):
 
 
 def run(engines, gen=False, n_dir=150):
+    if "jev" in engines and not jev.available():
+        raise SystemExit("OPENROUTER_API_KEY absente : ajouter le secret GitHub (Settings > Secrets and variables > Actions)")
+    if ("claude" in engines or gen or not os.path.exists(CACHE)) and not llm.available():
+        raise SystemExit("claude -p indisponible : installer le CLI et définir CLAUDE_CODE_OAUTH_TOKEN")
     fs = fiches({"pending_review", "published"})
     variants = gen_variants(fs) if gen or not os.path.exists(CACHE) else C.jload(CACHE, {})
     items = ds_direction(n_dir)

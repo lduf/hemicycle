@@ -29,6 +29,16 @@ jobs:
           key: an-${{ github.run_id }}
           restore-keys: an-
       - run: python -m pipeline.ingest
+      - name: Diagnostic des moteurs
+        continue-on-error: true
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+        run: |
+          claude --version
+          echo "OPENROUTER_API_KEY définie : $([ -n "$OPENROUTER_API_KEY" ] && echo oui || echo NON)"
+          echo "CLAUDE_CODE_OAUTH_TOKEN défini : $([ -n "$CLAUDE_CODE_OAUTH_TOKEN" ] && echo oui || echo NON)"
+          echo "Réponds uniquement OK" | claude -p --model claude-haiku-5-5 --tools "" --no-session-persistence 2>&1 | head -c 600; echo "exit=${PIPESTATUS[1]}"
       - name: Banc d'essai
         env:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
