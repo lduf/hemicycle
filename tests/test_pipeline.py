@@ -35,6 +35,12 @@ class Direction(unittest.TestCase):
         D.llm_check(lambda p: seen.append(p) or "OK", "t", "la taxe X", "remove")
         self.assertIn("Pour la suppression de la taxe X", seen[0])
 
+    def test_llm_check_tolerates_markdown(self):
+        self.assertTrue(D.llm_check(lambda p: "**OK**", "t", "x", "adopt")[0])
+        self.assertTrue(D.llm_check(lambda p: "OK.\nParce que…", "t", "x", "adopt")[0])
+        self.assertFalse(D.llm_check(lambda p: "**INVERSE**", "t", "x", "adopt")[0])
+        self.assertFalse(D.llm_check(lambda p: "OKAY SAUF SI", "t", "x", "adopt")[0])
+
     def test_llm_check_fails_closed(self):
         self.assertFalse(D.llm_check(lambda p: "DOUTE", "t", "x", "adopt")[0])
         self.assertFalse(D.llm_check(lambda p: None, "t", "x", "adopt")[0])
