@@ -1,0 +1,16 @@
+{
+ "blocked_reason": "sources insuffisantes pour décrire la mesure et ses critiques",
+ "date": "2024-11-12",
+ "n": 438,
+ "polarity": "adopt",
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/438"
+  }
+ ],
+ "status": "blocked",
+ "title": "la première partie du projet de loi de finances pour 2025 (première lecture).",
+ "updated": "2026-10-12"
+}

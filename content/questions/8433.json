@@ -1,0 +1,16 @@
+{
+ "blocked_reason": "sources insuffisantes pour décrire la mesure et ses critiques",
+ "date": "2026-07-21",
+ "n": 8433,
+ "polarity": "adopt",
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/8433"
+  }
+ ],
+ "status": "blocked",
+ "title": "l'ensemble du projet de loi visant à offrir des réponses immédiates aux phénomènes troublant l'ordre public, la sécurité et la tranquilité de nos concitoyens (texte de la commission mixte paritaire).",
+ "updated": "2026-10-12"
+}

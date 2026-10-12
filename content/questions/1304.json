@@ -1,0 +1,65 @@
+{
+ "blocked_reason": "sens du vote : VOTE ON THE WHOLE BILL; \"POUR\" = FOR HARMONISATION. OK.\n\nOK; résumé de 6 phrases (attendu 3-5)",
+ "cat": "Institutions",
+ "checks": {
+  "date": "2026-10-12",
+  "direction": {
+   "answer": "VOTE ON THE WHOLE BILL; \"POUR\" = FOR HARMONISATION. OK.\n\nOK",
+   "ok": false
+  },
+  "neutrality": {
+   "issues": [
+    "résumé de 6 phrases (attendu 3-5)"
+   ],
+   "judge": {
+    "bias": "autre",
+    "model": "claude-opus-5-5",
+    "reasons": [
+     "Le titre, le bouton et le résumé sont descriptifs. 'Harmonisation' reprend le vocabulaire du texte. Le résumé décrit les deux régimes sans jugement.",
+     "Les arguments sont attribués à chaque camp ('Les partisans y voient', 'Ils estiment') et ne sont pas présentés comme des faits.",
+     "Léger déséquilibre de poids : les partisans s'appuient sur des chiffres précis (37,6 % contre 48,5 %), alors que les opposants n'avancent aucune donnée chiffrée, par exemple sur la difficulté à recruter des candidats ou le nombre de communes concernées.",
+     "Omission notable côté opposants : la perte pour l'électeur de la liberté de choisir des personnes (panachage) n'apparaît pas. Les partisans critiquent le panachage ('personnalise l'élection'), mais aucun argument ne le défend.",
+     "La phrase 'd'où les listes incomplètes' glisse dans l'argument des opposants une réponse déjà apportée par le texte, ce qui affaiblit l'objection.",
+     "L'accroche met en avant la parité ('autant de femmes que d'hommes'), un effet perçu positivement, sans évoquer de contrepartie comme la fin du vote nominatif.",
+     "Le biais léger va dans le sens de la réforme plutôt que d'un camp gauche/droite : la réforme a reçu des soutiens transpartisans, d'où la catégorie 'autre'."
+    ],
+    "score": 1.0
+   },
+   "ok": false
+  }
+ },
+ "con": "Dans les petites communes, le nombre de personnes prêtes à s'engager est plus réduit, et trouver assez de candidates et de candidats pour composer une liste peut être difficile. Les règles à appliquer seraient aussi plus complexes pour les maires. Le scrutin de liste pourrait en outre porter atteinte au pluralisme, d'où les listes incomplètes. Enfin, il resterait environ onze mois pour informer les habitants et constituer les listes, alors qu'une règle prévoit de ne pas changer le régime électoral dans l'année précédant un scrutin.",
+ "date": "2025-04-07",
+ "generator": {
+  "date": "2026-10-12",
+  "model": "claude-sonnet-5-5"
+ },
+ "hook": "Si tu habites une commune de moins de 1 000 habitants, tu voteras pour une liste et non plus pour des noms séparés, et les listes comprendront autant de femmes que d'hommes.",
+ "kind": "texte",
+ "label": "l'harmonisation du mode de scrutin aux élections municipales",
+ "n": 1304,
+ "polarity": "adopt",
+ "pro": "En 2020, les femmes représentaient 37,6 % des conseillers dans les communes de moins de 1 000 habitants, contre 48,5 % dans les autres. Les partisans y voient l'effet du mode de scrutin. Ils estiment aussi que le panachage personnalise l'élection et fragilise les projets collectifs, et qu'un mode unique serait plus lisible et éviterait les changements liés au franchissement du seuil de 1 000 habitants.",
+ "reviewed_hash": null,
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/1304"
+  },
+  {
+   "label": "Source 2",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/PIONANR5L17B1106.html"
+  },
+  {
+   "label": "Source 3",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/RAPPANR5L17B1246.html"
+  }
+ ],
+ "status": "blocked",
+ "subkind": "ensemble",
+ "sum": "Aujourd'hui, les communes de 1 000 habitants et plus élisent leur conseil municipal avec des listes où hommes et femmes alternent. Les communes de moins de 1 000 habitants votent au scrutin majoritaire à deux tours, où l'on peut rayer des noms sur le bulletin (le « panachage »). Ce texte organique adapte plusieurs articles du code électoral pour qu'ils ne visent plus seulement les communes de 1 000 habitants et plus, afin d'appliquer le même mode de scrutin partout. Le texte lié, qui étend la liste paritaire aux petites communes, autorise des listes avec deux candidats de moins ou de plus que le nombre de sièges. Les élections partielles sont maintenues quand un conseil n'est plus au complet. La mesure s'appliquerait dès le prochain renouvellement général des conseils municipaux après sa promulgation.",
+ "surp": "Le texte lié contient la mesure principale, l'extension de la liste paritaire. Le texte voté ici en est surtout la traduction dans le code électoral. Selon le rapport, il ne résout pas à lui seul la crise de l'engagement local, et d'autres mesures sur le statut de l'élu sont évoquées.",
+ "title": "Même mode de scrutin pour toutes les communes",
+ "updated": "2026-10-12"
+}

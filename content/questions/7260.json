@@ -1,0 +1,16 @@
+{
+ "blocked_reason": "sources insuffisantes pour décrire la mesure et ses critiques",
+ "date": "2026-06-02",
+ "n": 7260,
+ "polarity": "adopt",
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/7260"
+  }
+ ],
+ "status": "blocked",
+ "title": "l'ensemble du projet de loi portant transposition de l'avenant n° 3 du 25 février 2026 au protocole d'accord du 10 novembre 2023 relatif à l'assurance chômage (deuxième lecture).",
+ "updated": "2026-10-12"
+}

@@ -1,0 +1,16 @@
+{
+ "blocked_reason": "sources insuffisantes pour décrire la mesure et ses critiques",
+ "date": "2026-04-08",
+ "n": 6045,
+ "polarity": "adopt",
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/6045"
+  }
+ ],
+ "status": "blocked",
+ "title": "l'ensemble de la proposition de loi visant à simplifier le millefeuille territorial par la collectivité unique (première lecture).",
+ "updated": "2026-10-12"
+}

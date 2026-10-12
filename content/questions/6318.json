@@ -1,0 +1,66 @@
+{
+ "blocked_reason": "terme orienté : « dangereu »",
+ "cat": "Justice & sécurité",
+ "checks": {
+  "date": "2026-10-12",
+  "direction": {
+   "answer": "OK",
+   "ok": true
+  },
+  "neutrality": {
+   "issues": [
+    "terme orienté : « dangereu »"
+   ],
+   "judge": {
+    "bias": "droite",
+    "model": "claude-opus-5-5",
+    "reasons": [
+     "Le bouton « Pour ce renforcement de la sécurité » reprend la thèse des partisans : il présente comme acquis que le texte renforce la sécurité, alors que c'est justement ce qui est débattu. Une formulation descriptive serait plus neutre, par exemple « Pour ce texte sur la rétention et le suivi des personnes radicalisées ».",
+     "Le titre retient la finalité affichée (« prévention des attentats ») plutôt que l'objet juridique, comme les soins sans consentement, la rétention de sûreté ou la rétention des étrangers. Ce choix oriente vers le cadrage gouvernemental.",
+     "L'argument des partisans contient une affirmation factuelle présentée sans source ni nuance (« un vide qui a déjà entraîné des remises en liberté »), ce qui lui donne un poids concret.",
+     "L'argument des opposants est surtout procédural (garanties, risque de censure constitutionnelle). Il omet des critiques de fond courantes : efficacité contestée, usage de la psychiatrie à des fins sécuritaires, stigmatisation des personnes atteintes de troubles mentaux, mesures fondées sur une dangerosité supposée plutôt que sur des actes.",
+     "Le résumé mentionne l'extension de la rétention de 210 jours à d'autres condamnés pour atteintes graves, mais l'accroche et les arguments ne la mettent pas en avant. Or c'est l'élargissement le plus contestable au-delà du terrorisme.",
+     "L'accroche évoque l'encadrement des changements de nom, absent du résumé. Cette incohérence prive le lecteur d'une information pour juger.",
+     "Coquille dans l'argument des opposants (« n'ayant encore troublé » au lieu de « n'ayant pas encore troublé ») : le sens reste compréhensible, mais la formulation est affaiblie.",
+     "Points positifs : le résumé reste globalement factuel, les deux camps sont introduits par « selon eux » ou « estiment », et l'avertissement sur le vote d'ensemble est équilibré."
+    ],
+    "score": 2.0
+   },
+   "ok": false
+  }
+ },
+ "con": "Les opposants relèvent que ces mesures touchent la liberté de consentir aux soins, la liberté d'aller et venir et le respect de la vie privée, y compris pour des personnes n'ayant encore troublé l'ordre public. Selon eux, la rétention de sûreté et la rétention allongée jusqu'à 210 jours exigent des garanties strictes, faute de quoi le texte s'expose à une censure constitutionnelle.",
+ "date": "2026-05-05",
+ "generator": {
+  "date": "2026-10-12",
+  "model": "claude-sonnet-5-5"
+ },
+ "hook": "Le texte change surtout les règles applicables aux personnes jugées menaçantes et aux étrangers placés en rétention, et il encadre aussi les demandes de changement de nom.",
+ "kind": "texte",
+ "label": "ce renforcement de la sécurité et de la rétention administrative",
+ "n": 6318,
+ "polarity": "adopt",
+ "pro": "Les partisans estiment que le droit actuel laisse des angles morts face aux personnes à la fois radicalisées et atteintes de troubles psychiatriques. Selon eux, ces outils permettent d'agir avant un passage à l'acte, et la base légale rétablie comble un vide qui a déjà entraîné des remises en liberté.",
+ "reviewed_hash": null,
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/6318"
+  },
+  {
+   "label": "Source 2",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/PIONANR5L17B2180.html"
+  },
+  {
+   "label": "Source 3",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/RAPPANR5L17B2468.html"
+  }
+ ],
+ "status": "blocked",
+ "subkind": "ensemble",
+ "sum": "Ce texte permet au préfet d'imposer un examen psychiatrique à une personne radicalisée qui présente des troubles mentaux. Si elle refuse, le juge judiciaire peut autoriser son admission en soins sans consentement. Il crée une rétention de sûreté pour des personnes condamnées à au moins quinze ans pour terrorisme et encore très dangereuses à la fin de leur peine. Il étend aussi le suivi après la peine aux personnes radicalisées en détention. Il rétablit une base légale pour retenir jusqu'à 210 jours certains étrangers condamnés pour terrorisme, et étend cette durée à d'autres condamnés pour des atteintes graves aux personnes.",
+ "surp": "Le vote porte sur l'ensemble du texte : on ne peut pas approuver ou refuser un dispositif sans les autres. Les extraits ne permettent pas de savoir quels effets concrets ces mesures auront une fois appliquées.",
+ "title": "Sécurité, rétention administrative et prévention des attentats",
+ "updated": "2026-10-12"
+}

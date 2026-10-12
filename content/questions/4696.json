@@ -1,0 +1,16 @@
+{
+ "blocked_reason": "sources insuffisantes pour décrire la mesure et ses critiques",
+ "date": "2025-12-09",
+ "n": 4696,
+ "polarity": "adopt",
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/4696"
+  }
+ ],
+ "status": "blocked",
+ "title": "l'ensemble du projet de loi de financement de la sécurité sociale pour 2026 (nouvelle lecture).",
+ "updated": "2026-10-12"
+}
