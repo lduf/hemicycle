@@ -88,4 +88,5 @@ def llm_check(client_call, titre, subject, polarity):
           "Attention aux amendements de suppression, de rejet, de rétablissement. "
           "Réponds par un seul mot : OK, INVERSE ou DOUTE.")
     ans = (client_call(pr) or "").strip().upper()
-    return ans.startswith("OK"), ans[:80]
+    toks = re.findall(r"\b(OK|INVERSE|DOUTE)\b", ans)   # tolère « **OK** », « OK. » et un peu de bavardage
+    return bool(toks) and toks[0] == "OK" and set(toks) == {"OK"}, ans[:80]

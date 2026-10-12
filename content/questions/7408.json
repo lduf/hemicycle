@@ -1,0 +1,62 @@
+{
+ "cat": "Logement",
+ "checks": {
+  "date": "2026-10-12",
+  "direction": {
+   "answer": "OK",
+   "ok": true
+  },
+  "neutrality": {
+   "issues": [],
+   "judge": {
+    "bias": "autre",
+    "model": "claude-opus-5-5",
+    "reasons": [
+     "Le biais va dans le sens du texte (pro-texte) plutôt que vers la gauche ou la droite : le cadrage général présente la loi comme un avantage pour le lecteur.",
+     "Le résumé reprend la justification des promoteurs sans l'attribuer (« veut faciliter l'accès », « qui n'ont pas d'équivalent à l'aide au logement des salariés du privé »). Ce motif devrait relever de l'argument des partisans ou être sourcé.",
+     "L'accroche ne parle qu'aux bénéficiaires (« tu pourrais avoir plus de chances ») et cite des métiers à forte sympathie (hôpital, école). Elle ne dit rien des demandeurs de logement social non agents publics, qui pourraient y perdre.",
+     "« Pourquoi ça peut surprendre » commence par une phrase qui répond directement à l'objection principale des opposants (« les 50 % sont un plafond et non une obligation »). Cela affaiblit cet argument sans laisser de réplique symétrique.",
+     "Il manque une donnée de contexte qui équilibrerait le cadrage : la tension sur les listes d'attente du logement social et le nombre de demandeurs concernés par l'éviction possible. L'impact du bail lié à l'emploi est seulement décrit techniquement, et le résumé ne dit pas ce qui arrive concrètement au locataire.",
+     "Points neutres : titre et bouton descriptifs, arguments partisans et opposants de longueur et de précision comparables, formulation « loin d'être neutre » correctement attribuée aux opposants, mesures chiffrées (10 % → 50 %, préavis de six mois) présentées factuellement.",
+     "Suggestions : attribuer le motif « pas d'équivalent au privé » aux partisans, ajouter à l'accroche ou à la section surprise un élément du point de vue des autres demandeurs, et équilibrer la section surprise avec un fait qui va dans le sens des opposants."
+    ],
+    "score": 2.0
+   },
+   "ok": true
+  }
+ },
+ "con": "Les opposants jugent qu'un taux de réservation multiplié par cinq, de 10 % à 50 %, est loin d'être neutre et peut réduire la place des autres bénéficiaires de logements sociaux. Ils craignent aussi que la dérogation aux règles d'urbanisme soit détournée de son but, et que la clause liée à l'emploi fragilise le droit de rester dans le logement.",
+ "date": "2026-06-17",
+ "generator": {
+  "date": "2026-10-12",
+  "model": "claude-sonnet-5-5"
+ },
+ "hook": "Si tu travailles à l'hôpital, à l'école, dans les transports ou dans une administration, tu pourrais avoir plus de chances d'obtenir un logement social près de ton lieu de travail.",
+ "kind": "texte",
+ "label": "la loi sur le logement des travailleurs des services publics",
+ "n": 7408,
+ "polarity": "adopt",
+ "pro": "Les partisans estiment que ces mesures donnent aux employeurs publics de nouveaux outils pour loger leur personnel près du travail et pour recruter et garder des agents. Ils ajoutent que le taux plus élevé de réservation incite à céder des terrains pour construire des logements sociaux, sans réduire la part des communes (20 %) ni celle du préfet (30 %).",
+ "reviewed_hash": null,
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/7408"
+  },
+  {
+   "label": "Source 2",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/PIONANR5L17B1332.html"
+  },
+  {
+   "label": "Source 3",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/RAPPANR5L17B2700.html"
+  }
+ ],
+ "status": "pending_review",
+ "subkind": "ensemble",
+ "sum": "Ce texte veut faciliter l'accès au logement des agents publics, qui n'ont pas d'équivalent à l'aide au logement des salariés du privé. Il permet qu'un logement social attribué à un agent soit lié à son emploi : le bail peut alors être arrêté après la fin de cet emploi, avec un préavis d'au moins six mois, et un décret fixe les cas où le locataire peut rester. Lorsqu'une administration cède un terrain avec une décote pour construire des logements sociaux, la part de logements qu'elle peut réserver passe d'au plus 10 % à au plus 50 %. Le texte prévoit aussi des exceptions de réservation pour certains métiers, comme les douanes, la surveillance pénitentiaire et les transports publics, et permet de déroger aux règles d'urbanisme pour construire des logements sur des sites réservés à des équipements publics.",
+ "surp": "Les 50 % sont un plafond et non une obligation, et le texte ne concerne que les agents publics et certains salariés du secteur des transports. Un article demandant un rapport sur une structure dédiée au logement des agents publics a été retiré du texte final.",
+ "title": "Logement des travailleurs des services publics",
+ "updated": "2026-10-12"
+}

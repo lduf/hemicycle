@@ -1,0 +1,62 @@
+{
+ "cat": "Institutions",
+ "checks": {
+  "date": "2026-10-12",
+  "direction": {
+   "answer": "OK",
+   "ok": true
+  },
+  "neutrality": {
+   "issues": [],
+   "judge": {
+    "bias": "aucun",
+    "model": "claude-opus-5-5",
+    "reasons": [
+     "Le titre, le bouton et l'accroche sont factuels et sans adjectif orienté : ils décrivent l'objet du texte (report, dates) sans le qualifier.",
+     "Les deux camps ont un poids comparable (deux arguments chacun, longueur similaire) et sont formulés au conditionnel ou au discours rapporté (« estiment », « jugent », « selon eux »).",
+     "Le rappel que les élections « avaient déjà été repoussées deux fois depuis 2024 » est un fait exact et utile. Placé en fin de résumé, il peut toutefois renforcer légèrement la lecture critique des opposants.",
+     "Léger déséquilibre de précision : les partisans avancent des éléments concrets (campagne de 40 jours, risques de recours), alors que l'absence de consensus invoquée par les opposants n'est pas étayée. Le texte omet notamment que le FLNKS a rejeté l'accord de Bougival, ce qui donnerait à cet argument sa base factuelle.",
+     "Omission de contexte : les violences de mai 2024 liées au dégel du corps électoral ne sont pas mentionnées. Elles expliquent pourtant la sensibilité du sujet et une partie de l'argument « bonnes conditions ».",
+     "La rubrique « Pourquoi ça peut surprendre » est utile et neutre : elle distingue le report de l'adoption de l'accord lui-même.",
+     "Suggestion : préciser, sans les étiqueter politiquement, quels acteurs locaux soutiennent ou contestent l'accord, afin que le lecteur comprenne d'où vient le désaccord."
+    ],
+    "score": 1.0
+   },
+   "ok": true
+  }
+ },
+ "con": "Les opposants jugent qu'il n'existe plus de consensus sur l'accord qui justifie ce report, et que prolonger ainsi les mandats ne règle pas ce désaccord. Ils rappellent aussi que le corps électoral actuel, dit « gelé », a été validé récemment par le Conseil constitutionnel, ce qui permettrait selon eux de voter sans attendre.",
+ "date": "2025-10-28",
+ "generator": {
+  "date": "2026-10-12",
+  "model": "claude-sonnet-5-5"
+ },
+ "hook": "Les élections locales de Nouvelle-Calédonie sont repoussées de plusieurs mois : elles auront lieu au plus tard le 28 juin 2026 au lieu du 30 novembre 2025.",
+ "kind": "texte",
+ "label": "le report des élections en Nouvelle-Calédonie",
+ "n": 3182,
+ "polarity": "adopt",
+ "pro": "Les partisans estiment que des élections avant le 30 novembre 2025 ne pourraient pas se tenir dans de bonnes conditions : campagne de 40 jours, difficultés juridiques et matérielles, risques de recours. Pour eux, ce délai permet aussi de poursuivre le dialogue et de rédiger les textes nécessaires avant de voter.",
+ "reviewed_hash": null,
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/3182"
+  },
+  {
+   "label": "Source 2",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/PIONANR5L17B1969.html"
+  },
+  {
+   "label": "Source 3",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/RAPPANR5L17B1980.html"
+  }
+ ],
+ "status": "pending_review",
+ "subkind": "ensemble",
+ "sum": "Ce texte repousse au plus tard au 28 juin 2026 les élections du congrès et des assemblées de province de Nouvelle-Calédonie, prévues jusque-là au plus tard le 30 novembre 2025. Les élus en place et les organes du congrès restent en fonction jusqu'à la première réunion des assemblées nouvellement élues. Le texte entre en vigueur dès le lendemain de sa publication au Journal officiel. Ce report fait suite à un accord signé le 12 juillet 2025 sur l'avenir institutionnel du territoire, qui prévoit notamment de nouvelles règles pour le corps électoral. Ces élections avaient déjà été repoussées deux fois depuis 2024.",
+ "surp": "Le vote ne porte pas sur le contenu de l'accord de 2025 lui-même, dont plusieurs étapes juridiques restent à adopter. Il fixe seulement une date limite : le scrutin peut avoir lieu avant le 28 juin 2026.",
+ "title": "Report des élections provinciales en Nouvelle-Calédonie",
+ "updated": "2026-10-12"
+}

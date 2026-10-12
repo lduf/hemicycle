@@ -1,0 +1,62 @@
+{
+ "cat": "Économie & fiscalité",
+ "checks": {
+  "date": "2026-10-12",
+  "direction": {
+   "answer": "OK",
+   "ok": true
+  },
+  "neutrality": {
+   "issues": [],
+   "judge": {
+    "bias": "autre",
+    "model": "claude-opus-5-5",
+    "reasons": [
+     "Le titre, le bouton et le résumé sont descriptifs et factuels. Le terme « ajustement » reprend toutefois le cadrage technique du gouvernement, plus neutre en apparence que « collectif budgétaire » ou « loi de finances de fin de gestion ».",
+     "L'accroche penche légèrement vers le vote « pour ». Elle ne cite que des crédits sociaux positifs (bourses, hébergement d'urgence) et ajoute « sans créer ni modifier d'impôt », qui rassure. Elle ne mentionne ni les annulations ni le dérapage du déficit.",
+     "Le résumé omet le déficit de 6,1 % du PIB et l'écart de recettes d'environ 42 milliards. Ces éléments centraux n'apparaissent que dans l'argument des opposants, ce qui les présente comme une opinion partisane plutôt que comme un fait de contexte.",
+     "Les arguments sont globalement équilibrés en longueur et en précision chiffrée. Celui des opposants contient une formule évaluative (« ce qui interroge sur la fiabilité des évaluations ») et celui des partisans une formule valorisante (« dépenses sous-évaluées au départ »). Ces deux formules se compensent à peu près.",
+     "Les arguments des opposants mêlent des critiques venues de bords différents : rigueur budgétaire (déficit, reports de crédits) et défense de dépenses écologiques, sociales et de solidarité (fonds vert, MaPrimeRénov', chèque énergie, aide publique au développement). On n'observe donc pas de biais gauche/droite net.",
+     "« Événements en Nouvelle-Calédonie » est un euphémisme pour les violences de 2024. Le terme reste neutre, mais il est peu informatif.",
+     "La section « Pourquoi ça peut surprendre » est symétrique et honnête sur les limites de ce que signifie un vote."
+    ],
+    "score": 1.0
+   },
+   "ok": true
+  }
+ },
+ "con": "Le texte confirme un déficit public de 6,1 points de PIB, soit près de 50 milliards d'euros de plus que prévu, avec des recettes inférieures de près de 42 milliards aux prévisions, ce qui interroge sur la fiabilité des évaluations. Il annule aussi des crédits sur le fonds vert, MaPrimeRénov', le chèque énergie et l'aide publique au développement, et laisse environ 13 milliards d'euros de crédits reportés sur 2025, bien au-dessus des niveaux d'avant la crise sanitaire.",
+ "date": "2024-12-04",
+ "generator": {
+  "date": "2026-10-12",
+  "model": "claude-sonnet-5-5"
+ },
+ "hook": "Ce texte ajuste les crédits de 2024, dont ceux des bourses sur critères sociaux et de l'hébergement d'urgence, sans créer ni modifier d'impôt.",
+ "kind": "texte",
+ "label": "l'ajustement des crédits du budget de l'État pour 2024",
+ "n": 518,
+ "polarity": "adopt",
+ "pro": "Le texte adapte les crédits aux besoins constatés : il finance des dépenses exceptionnelles (Jeux olympiques, Nouvelle-Calédonie, élections) et des dépenses sous-évaluées au départ (hébergement d'urgence, aides aux employeurs d'apprentis, allocation aux adultes handicapés, bourses). Hors remboursements et dégrèvements, il annule plus de crédits qu'il n'en ouvre, ce qui place les dépenses de l'État 5,6 milliards d'euros sous les prévisions initiales.",
+ "reviewed_hash": null,
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/518"
+  },
+  {
+   "label": "Source 2",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/PRJLANR5L17B0538.html"
+  },
+  {
+   "label": "Source 3",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/RAPPANR5L17B0553.html"
+  }
+ ],
+ "status": "pending_review",
+ "subkind": "ensemble",
+ "sum": "Ce texte corrige en fin d'année le budget de l'État pour 2024, au vu des besoins constatés et des recettes réellement perçues. Il ouvre 11,5 milliards d'euros de crédits de paiement et en annule 6,5 milliards. Les ouvertures financent notamment la sécurisation des Jeux olympiques et paralympiques (1,6 milliard), les événements en Nouvelle-Calédonie (1,1 milliard) et les élections législatives (200 millions). Des annulations touchent la plupart des missions, par exemple l'investissement pour 2030 (1,2 milliard), la défense (800 millions) et l'écologie (338 millions). Le texte ne contient aucune disposition fiscale.",
+ "surp": "Un vote pour ou contre ne dit rien des causes de l'écart de recettes, que le rapport prévoit d'examiner dans des travaux ultérieurs. Il ne dit pas non plus quelles dépenses ont réellement été réalisées sur les crédits annulés, ni ce que prévoit le budget de l'année suivante.",
+ "title": "Ajustement du budget de l'État pour 2024",
+ "updated": "2026-10-12"
+}

@@ -1,0 +1,61 @@
+{
+ "cat": "Écologie & énergie",
+ "checks": {
+  "date": "2026-10-12",
+  "direction": {
+   "answer": "OK",
+   "ok": true
+  },
+  "neutrality": {
+   "issues": [],
+   "judge": {
+    "bias": "autre",
+    "model": "claude-opus-5-5",
+    "reasons": [
+     "Le vocabulaire est globalement factuel et sans adjectifs orientés. Le titre ('Réforme du régime...') et l'accroche restent descriptifs.",
+     "Les arguments sont déséquilibrés. Les partisans avancent des bénéfices larges et affirmatifs : fin du contentieux européen, déblocage des investissements, ouvrages publics, emplois et territoires préservés. Les opposants n'exposent que des réserves techniques (chiffrage des redevances, double indemnisation, prix des enchères), qui ressemblent à des demandes d'amendement plutôt qu'à une opposition de fond.",
+     "L'omission principale concerne les critiques de fond portées notamment à gauche et par une partie du RN : privatisation de fait ou perte de maîtrise publique d'un actif stratégique, durée de 70 ans jugée quasi perpétuelle, mise en concurrence et affaiblissement d'EDF via la cession de 40 % de capacités virtuelles, enjeux de souveraineté énergétique et de gestion de l'eau.",
+     "Le résumé reprend un élément de langage des partisans ('Les ouvrages restent la propriété de l'État'). Il ne mentionne pas l'objection selon laquelle le droit réel de 70 ans vide cette propriété d'une partie de sa portée.",
+     "La rubrique 'Pourquoi ça peut surprendre' est équilibrée : elle signale des incertitudes valables pour les deux camps.",
+     "Le biais penche en faveur de la position du gouvernement et des soutiens de la réforme. Il ne correspond pas proprement à un axe gauche/droite, puisque l'opposition vient à la fois de la gauche et d'une partie de la droite nationaliste."
+    ],
+    "score": 2.0
+   },
+   "ok": true
+  }
+ },
+ "con": "Les opposants relèvent que l'effet de la réforme des redevances et de la fiscalité sur les finances des communes et des départements n'a pas été chiffré, ce qui laisse son impact local incertain. Ils demandent aussi une vérification stricte des dépenses prises en compte dans les indemnités, pour éviter une double indemnisation, et que le prix des enchères tienne compte des coûts de production.",
+ "date": "2026-06-17",
+ "generator": {
+  "date": "2026-10-12",
+  "model": "claude-sonnet-5-5"
+ },
+ "hook": "Cette loi change les règles d'exploitation des barrages qui produisent près de 13 % de l'électricité consommée en France, avec des effets sur les investissements et les recettes des collectivités locales.",
+ "kind": "texte",
+ "label": "la réforme du régime des barrages hydroélectriques",
+ "n": 7409,
+ "polarity": "adopt",
+ "pro": "Les partisans soulignent que la réforme met fin à plus de dix ans de différend avec la Commission européenne, qui bloquait des investissements dans la modernisation et l'extension des barrages. Ils relèvent aussi que les ouvrages restent publics, que les équipes d'exploitation sont maintenues et que les territoires restent associés à la gestion et aux recettes.",
+ "reviewed_hash": null,
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/7409"
+  },
+  {
+   "label": "Source 2",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/PIONANR5L17B2334.html"
+  },
+  {
+   "label": "Source 3",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/RAPPANR5L17B2856.html"
+  }
+ ],
+ "status": "pending_review",
+ "subkind": "ensemble",
+ "sum": "Cette loi remplace le régime des concessions des barrages hydroélectriques par un régime d'autorisation. Les exploitants actuels des installations de plus de 4,5 mégawatts peuvent continuer à les exploiter pendant soixante-dix ans, grâce à un droit réel et à un droit d'occupation du domaine public. Les ouvrages restent la propriété de l'État, et la fin des concessions donne droit à une indemnité. EDF doit aussi mettre des capacités hydroélectriques virtuelles à la disposition d'autres entreprises, par des enchères contrôlées par la Commission de régulation de l'énergie, pour qu'elles représentent au moins 40 % de la capacité hydroélectrique française. Le texte réforme enfin la fiscalité et les redevances reçues par les collectivités locales.",
+ "surp": "Un vote pour ou contre ne dit pas si la Commission européenne clôturera effectivement les procédures en cours, ni quel sera l'effet chiffré sur les finances des collectivités. Il ne précise pas non plus à quel rythme les investissements annoncés seront réalisés.",
+ "title": "Réforme du régime des barrages hydroélectriques",
+ "updated": "2026-10-12"
+}

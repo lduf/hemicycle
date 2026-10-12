@@ -1,0 +1,63 @@
+{
+ "cat": "Institutions",
+ "checks": {
+  "date": "2026-10-12",
+  "direction": {
+   "answer": "OK",
+   "ok": true
+  },
+  "neutrality": {
+   "issues": [],
+   "judge": {
+    "bias": "autre",
+    "model": "claude-opus-5-5",
+    "reasons": [
+     "Le titre « Une loi adaptée aux territoires de montagne » reprend le cadrage des partisans. « Adaptée » est un mot valorisant, et le titre ne mentionne pas les assouplissements d'urbanisme ni la levée possible de la loi Littoral, qui sont les points controversés.",
+     "Le bouton reprend l'intitulé officiel (« montagne vivante et souveraine »). Il est mélioratif, mais c'est le nom du texte, donc la faute est faible. On pourrait préciser qu'il s'agit du titre officiel.",
+     "La section « Pourquoi ça peut surprendre » met en avant des garanties (avis d'une commission, interdiction de changer l'usage des chalets). Elle répond aux craintes des opposants, mais aucune réserve symétrique ne vient nuancer l'argument des partisans. Le poids final penche donc en faveur du texte.",
+     "L'accroche ne présente que des bénéfices pour le lecteur (« adaptées à ton territoire »). Elle ne dit rien des effets possibles sur l'école publique, la ressource en eau ou l'environnement.",
+     "L'argument des partisans a un effet concret et positif (« activité et emploi »). L'argument des opposants est formulé de façon plus prudente (« peut fragiliser », « fait craindre »).",
+     "Les critiques environnementales sont omises : artificialisation, protection des rives des grands lacs avec la levée de la loi Littoral, priorisation de l'eau potable face à la neige de culture. Le sens de l'expression « offre scolaire globale » (prise en compte de l'enseignement privé) n'est pas non plus explicité.",
+     "Le résumé reste globalement descriptif et factuel, avec des verbes neutres (« prévoit », « élargit », « assouplit »). Cela limite le biais à un niveau modéré.",
+     "Le biais porte en faveur du texte plutôt que sur l'axe gauche-droite. Si le texte est porté par la droite ou l'extrême droite, ce cadrage favorable se traduirait par une inclinaison à droite."
+    ],
+    "score": 2.0
+   },
+   "ok": true
+  }
+ },
+ "con": "Prendre en compte l'offre scolaire globale peut fragiliser les écoles publiques des communes rurales de montagne. La rédaction sur l'eau ne hiérarchise pas les usages, et l'assouplissement de règles d'urbanisme fait craindre des détournements d'usage.",
+ "date": "2026-07-20",
+ "generator": {
+  "date": "2026-10-12",
+  "model": "claude-sonnet-5-5"
+ },
+ "hook": "Si tu vis ou étudies en montagne, les règles pour ton école, tes soins, tes déplacements en voiture électrique et les constructions près de chez toi peuvent être adaptées à ton territoire.",
+ "kind": "texte",
+ "label": "la loi pour une montagne vivante et souveraine",
+ "n": 8421,
+ "polarity": "adopt",
+ "pro": "Les territoires de montagne ont des contraintes propres, comme des trajets scolaires plus longs et plus risqués en hiver. Le texte adapte l'école, les soins, l'eau et l'urbanisme à ces réalités, et peut débloquer localement des projets qui créent de l'activité et de l'emploi.",
+ "reviewed_hash": null,
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/8421"
+  },
+  {
+   "label": "Source 2",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/PIONANR5L17B2595.html"
+  },
+  {
+   "label": "Source 3",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/RAPPANR5L17B3068.html"
+  }
+ ],
+ "status": "pending_review",
+ "subkind": "ensemble",
+ "sum": "Ce texte adapte plusieurs politiques publiques aux contraintes des territoires de montagne : relief, neige, verglas, routes sinueuses et temps de trajet plus longs. Pour l'école, il prévoit une concertation avec les élus locaux sur la carte scolaire, des seuils d'ouverture et de fermeture de classes adaptés à l'isolement et aux temps de transport, et une prise en compte de « l'offre scolaire globale ». Il élargit les services inclus dans l'accès aux soins, privilégie les bornes de recharge rapide pour véhicules électriques et prévoit un usage partagé et un stockage de l'eau. Il assouplit certaines règles d'urbanisme : urbanisation en continuité de petits groupes de constructions, reconstruction de chalets d'alpage en ruine en bâtiments pastoraux ou en refuges, et possibilité de lever la loi Littoral autour des grands plans d'eau intérieurs. Enfin, il permet d'intégrer à un système d'endiguement des ouvrages qui protègent des inondations sans être reconnus comme tels.",
+ "surp": "Le vote porte sur un texte qui regroupe des mesures très différentes : un seul vote ne dit pas laquelle on approuve ou on refuse. Plusieurs assouplissements sont accompagnés de garanties, comme l'avis préalable d'une commission ou l'interdiction de changer l'usage des chalets reconstruits.",
+ "title": "Une loi adaptée aux territoires de montagne",
+ "updated": "2026-10-12"
+}

@@ -1,0 +1,62 @@
+{
+ "cat": "Justice & sécurité",
+ "checks": {
+  "date": "2026-10-12",
+  "direction": {
+   "answer": "OK",
+   "ok": true
+  },
+  "neutrality": {
+   "issues": [],
+   "judge": {
+    "bias": "droite",
+    "model": "claude-opus-5-5",
+    "reasons": [
+     "Le bouton reprend le vocabulaire des promoteurs du texte (« renforcement de la responsabilité », « responsabiliser »). Ce cadrage valorisant n'a pas d'équivalent neutre pour l'option contre. Une formulation descriptive serait préférable, par exemple « Pour le texte sur la justice des mineurs et la responsabilité parentale ».",
+     "Le bouton évoque la « responsabilité des mineurs délinquants », alors que le résumé ne décrit que des mesures visant les parents. Le titre et le résumé ne sont donc pas cohérents avec le bouton.",
+     "Le résumé reste euphémique : « adapter la réponse de la justice aux actes commis par des mineurs » ne précise pas les mesures pénales concernant les mineurs eux-mêmes. Si le texte est bien la proposition de loi Attal, il s'agit notamment de l'assouplissement de l'excuse de minorité et des procédures accélérées, qui en étaient les points les plus contestés. Cette omission atténue la portée du texte.",
+     "L'argument des opposants mentionne « l'atténuation de la responsabilité des mineurs » sans que le résumé n'explique que le texte y touche. Le lecteur ne peut donc pas comprendre l'objet de cette critique.",
+     "Un léger contrepoids existe en sens inverse. Les opposants « rappellent » et évoquent un « lien établi », deux formulations qui présentent leur position comme un fait acquis. Les partisans, eux, « estiment » et « jugent ». La section « Pourquoi ça peut surprendre » reprend aussi une préoccupation des opposants (l'aide aux familles).",
+     "Les arguments sont globalement de longueur et de ton comparables. L'accroche est factuelle. Le biais vient surtout du cadrage (bouton, résumé, omissions) plutôt que des arguments eux-mêmes.",
+     "Le résumé ne mentionne pas l'éventuelle censure partielle du Conseil constitutionnel. C'est une information utile pour un public qui découvre le texte adopté."
+    ],
+    "score": 2.0
+   },
+   "ok": true
+  }
+ },
+ "con": "Les opposants rappellent que de nombreux parents sont dépassés et qu'ils ont d'abord besoin d'être soutenus et accompagnés. Ils soulignent aussi le lien établi entre enfance en danger et délinquance, ainsi que la nécessité de préserver la primauté de l'éducatif et l'atténuation de la responsabilité des mineurs.",
+ "date": "2025-05-13",
+ "generator": {
+  "date": "2026-10-12",
+  "model": "claude-sonnet-5-5"
+ },
+ "hook": "Les parents d'un mineur qui commet une infraction risquent davantage de sanctions et doivent plus souvent réparer les dégâts causés.",
+ "kind": "texte",
+ "label": "le renforcement de la responsabilité des mineurs délinquants et de leurs parents",
+ "n": 1624,
+ "polarity": "adopt",
+ "pro": "Les partisans estiment que le cadre familial joue un rôle déterminant et que certains parents laissent la situation s'aggraver sans agir. Ils jugent que ces mesures donnent aux juges des moyens d'inciter les parents à s'investir et permettent aux victimes d'obtenir réparation en agissant contre l'un ou l'autre des parents.",
+ "reviewed_hash": null,
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/1624"
+  },
+  {
+   "label": "Source 2",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/PIONANR5L17B0448.html"
+  },
+  {
+   "label": "Source 3",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/RAPPANR5L17B0628.html"
+  }
+ ],
+ "status": "pending_review",
+ "subkind": "ensemble",
+ "sum": "Ce texte vise à adapter la réponse de la justice aux actes commis par des mineurs et à responsabiliser leurs parents. Il redéfinit le délit commis par un parent qui se soustrait à ses obligations légales envers son enfant, avec une circonstance aggravante quand cela conduit le mineur à commettre une infraction. Il permet aussi au juge des enfants de prononcer une amende civile contre les parents qui ne se présentent pas aux convocations en assistance éducative. Enfin, il étend la responsabilité solidaire des deux parents pour les dommages causés par leur enfant, y compris s'ils sont séparés. Le vote porte sur le texte issu de la commission mixte paritaire, qui a été adopté.",
+ "surp": "Un vote pour ou contre ne dit pas comment les juges utiliseront concrètement ces nouvelles sanctions, ni quels effets elles auront sur le comportement des mineurs. Il ne précise pas non plus si les familles en difficulté recevront davantage d'aide.",
+ "title": "Responsabilité des parents de mineurs délinquants",
+ "updated": "2026-10-12"
+}

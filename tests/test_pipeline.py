@@ -35,6 +35,14 @@ class Direction(unittest.TestCase):
         D.llm_check(lambda p: seen.append(p) or "OK", "t", "la taxe X", "remove")
         self.assertIn("Pour la suppression de la taxe X", seen[0])
 
+    def test_llm_check_tolerates_markdown(self):
+        self.assertTrue(D.llm_check(lambda p: "**OK**", "t", "x", "adopt")[0])
+        self.assertTrue(D.llm_check(lambda p: "OK.\nParce que…", "t", "x", "adopt")[0])
+        self.assertFalse(D.llm_check(lambda p: "**INVERSE**", "t", "x", "adopt")[0])
+        self.assertFalse(D.llm_check(lambda p: "OKAY SAUF SI", "t", "x", "adopt")[0])
+        self.assertFalse(D.llm_check(lambda p: "OK mais DOUTE sur la polarité", "t", "x", "adopt")[0])
+        self.assertTrue(D.llm_check(lambda p: 'VOTE ON THE WHOLE BILL; "POUR" = FOR. OK.', "t", "x", "adopt")[0])
+
     def test_llm_check_fails_closed(self):
         self.assertFalse(D.llm_check(lambda p: "DOUTE", "t", "x", "adopt")[0])
         self.assertFalse(D.llm_check(lambda p: None, "t", "x", "adopt")[0])
@@ -100,6 +108,11 @@ class Neutrality(unittest.TestCase):
         self.assertTrue(any("asymétrie" in i for i in N.deterministic(dict(GOOD, pro="Oui."), actors={})))
         self.assertTrue(any("résumé" in i for i in N.deterministic(dict(GOOD, sum="Une seule phrase."), actors={})))
 
+    def test_meta_sentences_stripped_and_flagged(self):
+        s = "Le vote porte sur un texte unique. Les extraits fournis ne détaillent pas tous les articles."
+        self.assertEqual(N.strip_meta(s), "Le vote porte sur un texte unique.")
+        self.assertTrue(any("processus" in i for i in N.deterministic(dict(GOOD, surp=s), actors={})))
+
     def test_fail_closed_without_judge(self):
         os.environ.pop("HEMI_ALLOW_NO_JUDGE", None); os.environ["HEMI_LLM"] = "none"
         ev = N.evaluate(GOOD, actors={})
@@ -121,6 +134,19 @@ class WithTmp(unittest.TestCase):
     def tearDown(self):
         C.CONTENT, C.DATA, store.QDIR = self._old
         self.tmp.cleanup()
+
+
+class Cats(WithTmp):
+    def test_every_stored_category_is_known(self):
+        old = store.QDIR; store.QDIR = os.path.join(C.ROOT, "content", "questions")
+        try:
+            self.assertEqual({q["cat"] for q in store.all_questions() if q.get("cat")} - set(C.CATS), set())
+        finally:
+            store.QDIR = old
+
+    def test_invalid_category_blocked(self):
+        q = fiche.check(dict(GOOD, cat="Inconnue"))
+        self.assertEqual(q["status"], "blocked")
 
 
 class Review(WithTmp):

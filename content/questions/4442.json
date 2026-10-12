@@ -1,0 +1,62 @@
+{
+ "cat": "Économie & fiscalité",
+ "checks": {
+  "date": "2026-10-12",
+  "direction": {
+   "answer": "OK",
+   "ok": true
+  },
+  "neutrality": {
+   "issues": [],
+   "judge": {
+    "bias": "autre",
+    "model": "claude-opus-5-5",
+    "reasons": [
+     "Le titre, le bouton et le résumé sont factuels et chiffrés, sans adjectif orienté.",
+     "L'accroche ne cite que les ouvertures de crédits (énergie, prime d'activité, hébergement d'urgence). Elle omet les 10,4 milliards d'euros d'annulations, qui sont pourtant le cœur du texte (7,4 milliards d'annulations nettes). Ce cadrage valorise le texte.",
+     "Les dépenses sociales sont mises en avant dans le résumé comme dans l'accroche, alors qu'elles ne représentent que 575 millions sur 3 milliards d'ouvertures. Leur poids est donc surreprésenté.",
+     "L'argument des partisans contient une formule rassurante non contrebalancée (« hors du financement des services publics »). Rien n'indique quels crédits annulés touchent des politiques publiques, par exemple l'écologie, l'aide au développement ou la recherche.",
+     "L'argument des opposants ne reprend que la critique budgétaire libérale (hausse des prélèvements, absence d'effort sur la dépense). La critique venue de la gauche (annulations assimilées à de l'austérité, coupes dans certaines missions) est totalement omise. Le spectre des oppositions est donc asymétrique.",
+     "L'argument des opposants emploie un terme fort (« inexistant »), mais il est attribué aux opposants et reste acceptable dans ce cadre.",
+     "Le déficit à 5,4 points de PIB apparaît dans les deux arguments, présenté comme une amélioration d'un côté et comme insuffisant de l'autre. Ce traitement est équilibré."
+    ],
+    "score": 2.0
+   },
+   "ok": true
+  }
+ },
+ "con": "L'effort de redressement provient en totalité de la hausse des prélèvements obligatoires, en progression de près de 50 milliards d'euros, alors que l'effort sur la dépense est inexistant, avec des dépenses publiques en hausse de 1,7 % en volume. Les recettes de TVA sont inférieures de 5 milliards d'euros aux prévisions et les dépenses de sécurité sociale dépassent nettement la cible, alors que le déficit reste à 5,4 points de PIB.",
+ "date": "2025-12-02",
+ "generator": {
+  "date": "2026-10-12",
+  "model": "claude-sonnet-5-5"
+ },
+ "hook": "Il ajuste les comptes de l'État pour 2025, notamment des crédits pour l'énergie, la prime d'activité et l'hébergement d'urgence.",
+ "kind": "texte",
+ "label": "le projet de loi de finances de fin de gestion pour 2025",
+ "n": 4442,
+ "polarity": "adopt",
+ "pro": "Le texte confirme l'objectif de déficit public de 5,4 points de PIB, en amélioration de 0,4 point par rapport à 2024, avec un déficit de l'État inférieur de 8 milliards d'euros à la prévision initiale. Il finance des besoins apparus en cours d'année, et l'essentiel des annulations porte sur la charge de la dette et des remboursements d'impôts, hors du financement des services publics.",
+ "reviewed_hash": null,
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/4442"
+  },
+  {
+   "label": "Source 2",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/PRJLANR5L17B2068.html"
+  },
+  {
+   "label": "Source 3",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/RAPPANR5L17B2078.html"
+  }
+ ],
+ "status": "pending_review",
+ "subkind": "ensemble",
+ "sum": "Ce texte ajuste en fin d'année le budget de l'État pour 2025 : il annule certains crédits et en ouvre d'autres. Il prévoit d'annuler 10,4 milliards d'euros de crédits et d'en ouvrir 3 milliards, soit 7,4 milliards d'euros d'annulations nettes. Les ouvertures financent notamment le service public de l'énergie (1,1 milliard d'euros), des dépenses sociales comme la prime d'activité, l'allocation aux adultes handicapés et l'hébergement d'urgence (575 millions), ainsi que des difficultés rencontrées en Nouvelle-Calédonie, à La Réunion et à Mayotte (234 millions). Le texte ne comporte pas de mesure fiscale, et le déficit public est prévu à 5,4 points de PIB.",
+ "surp": "Ce texte ajuste l'année 2025 en cours et ne comporte pas de dispositions fiscales. Voter pour ou contre ne dit rien du budget des années suivantes.",
+ "title": "Ajustement du budget de l'État pour 2025",
+ "updated": "2026-10-12"
+}

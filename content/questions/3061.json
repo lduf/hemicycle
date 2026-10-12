@@ -1,0 +1,66 @@
+{
+ "cat": "Justice & sécurité",
+ "checks": {
+  "date": "2026-10-12",
+  "direction": {
+   "answer": "OK",
+   "ok": true
+  },
+  "neutrality": {
+   "issues": [],
+   "judge": {
+    "bias": "autre",
+    "model": "claude-opus-5-5",
+    "reasons": [
+     "L'orientation n'est ni gauche ni droite au sens strict : le texte penche légèrement en faveur de la réforme, qui a été soutenue et contestée de façon transpartisane.",
+     "La rubrique « Pourquoi ça peut surprendre » écarte plusieurs critiques courantes des opposants (présomption de culpabilité, obligation de s'assurer du consentement) en s'appuyant sur le rapport. Aucune objection n'est faite de la même manière aux arguments des partisans.",
+     "L'argument des partisans est concret et emploie un vocabulaire chargé (« retourné contre les victimes », « emprise », « coercition »). L'argument des opposants est plus technique et abstrait (« indétermination », mot « notamment »), donc moins percutant.",
+     "Le second argument des opposants (« changer la loi ne suffit pas ») ne s'oppose pas vraiment au texte : il le juge insuffisant. Cela affaiblit la position contre.",
+     "Une objection majeure est omise : le risque que l'enquête se recentre sur le comportement de la victime, avancé notamment par une partie des juristes et des associations féministes. Or l'argument des partisans affirme précisément l'inverse, sans contrepoint.",
+     "L'accroche (« écrirait noir sur blanc ») présente la réforme comme une clarification évidente.",
+     "Points positifs : le titre et le bouton sont neutres, le résumé est factuel et précise que les quatre critères actuels sont conservés, et une réserve honnête est faite sur la rédaction finale adoptée."
+    ],
+    "score": 2.0
+   },
+   "ok": true
+  }
+ },
+ "con": "Une rédaction trop ouverte, avec par exemple le mot « notamment », laisserait une indétermination sur les comportements punis, alors que la loi pénale doit rester précise. Le rapport reconnaît aussi que changer la loi ne suffit pas à régler des difficultés qui tiennent également à la formation des professionnels et aux moyens des institutions.",
+ "date": "2025-10-23",
+ "generator": {
+  "date": "2026-10-12",
+  "model": "claude-sonnet-5-5"
+ },
+ "hook": "La loi écrirait noir sur blanc qu'un acte sexuel sans consentement peut être un viol ou une agression sexuelle.",
+ "kind": "texte",
+ "label": "la nouvelle définition pénale du viol et des agressions sexuelles",
+ "n": 3061,
+ "polarity": "adopt",
+ "pro": "La loi actuelle ne couvre pas toujours des situations comme la sidération, l'emprise ou la coercition, et son silence sur le consentement peut être retourné contre les victimes. Inscrire le consentement donnerait aux juges un critère de plus et recentrerait l'enquête sur les agissements de la personne mise en cause.",
+ "reviewed_hash": null,
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/3061"
+  },
+  {
+   "label": "Source 2",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/PIONANR5L17B0842.html"
+  },
+  {
+   "label": "Source 3",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/RAPPANR5L17B1181.html"
+  },
+  {
+   "label": "Source 4",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/dossiers/definition_penale_viol_agressions_sexuelles_17e"
+  }
+ ],
+ "status": "pending_review",
+ "subkind": "ensemble",
+ "sum": "Aujourd'hui, le viol et les agressions sexuelles sont définis par des actes commis avec violence, contrainte, menace ou surprise, sans que le mot « consentement » apparaisse. Ce texte y inscrit l'absence de consentement de la victime et conserve les quatre critères actuels. Il précise aussi des cas où le consentement ne peut pas être déduit, par exemple la sidération, et prévoit qu'il s'apprécie au regard des circonstances. Voter pour, c'est adopter ces changements.",
+ "surp": "Selon le rapport, le texte ne définit pas le consentement, ne crée pas d'obligation de s'en assurer et ne crée pas de présomption de culpabilité.",
+ "title": "Définition pénale du viol et des agressions sexuelles",
+ "updated": "2026-10-12"
+}

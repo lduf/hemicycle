@@ -1,0 +1,61 @@
+{
+ "cat": "Institutions",
+ "checks": {
+  "date": "2026-10-12",
+  "direction": {
+   "answer": "OK",
+   "ok": true
+  },
+  "neutrality": {
+   "issues": [],
+   "judge": {
+    "bias": "autre",
+    "model": "claude-opus-5-5",
+    "reasons": [
+     "Le titre, le bouton et le résumé sont descriptifs et factuels. Le résumé rappelle aussi la garantie d'inaliénabilité du domaine public, ce qui désamorce une critique sans l'énoncer.",
+     "L'argument des opposants n'est pas une opposition. Sa première phrase énonce une condition de réussite de la réforme, ce qui revient à un conseil de mise en œuvre et suppose qu'on adhère au projet. Sa seconde phrase est une réserve prudente (« invite à la prudence ») et non une objection de principe. On a donc un déséquilibre : des arguments affirmatifs pour, de simples doutes pour l'autre camp.",
+     "Plusieurs objections de fond sont omises : le risque de cessions du patrimoine public (le domaine privé reste cessible, et le déclassement permet de faire passer des biens du domaine public au domaine privé), la perte de contrôle parlementaire puisque la liste et la date des transferts relèvent d'un décret, le poids des loyers pour les collectivités et les services, et la crainte d'une logique de rentabilité ou d'une privatisation rampante de la gestion du patrimoine.",
+     "L'accroche présente la réforme sous un jour favorable (« organisme dédié », bâtiments « entretenus et rénovés ») sans évoquer les contreparties : loyers, cessions possibles.",
+     "La rubrique « Pourquoi ça peut surprendre » rééquilibre en partie, en signalant le flou du décret et le caractère estimatif des économies attendues.",
+     "Le biais penche vers la réforme et la logique de gestion qu'elle porte plutôt que vers un camp gauche/droite explicite. Corrections suggérées : donner aux opposants un argument de principe, par exemple « Confier le patrimoine à un établissement chargé de le valoriser et de le céder fait craindre une vente progressive de biens publics et réduit le contrôle du Parlement, la liste des biens étant fixée par décret. » Mentionner aussi les loyers dans l'accroche."
+    ],
+    "score": 2.0
+   },
+   "ok": true
+  }
+ },
+ "con": "Le succès de la réforme dépend d'un transfert de biens assez large et assez rapide pour que la foncière atteigne une taille permettant de mutualiser les espaces et d'investir. Un système antérieur de loyers entre services de l'État s'est réduit à un jeu d'écriture budgétaire sans enjeu réel, ce qui invite à la prudence sur l'effet des loyers.",
+ "date": "2026-07-21",
+ "generator": {
+  "date": "2026-10-12",
+  "model": "claude-sonnet-5-5"
+ },
+ "hook": "Les bâtiments publics que tu fréquentes (administrations, bureaux, services) seraient gérés, entretenus et rénovés par un organisme dédié, et non plus par chaque ministère.",
+ "kind": "texte",
+ "label": "la création d'une foncière de l'État pour gérer son patrimoine immobilier",
+ "n": 8434,
+ "polarity": "adopt",
+ "pro": "Séparer le propriétaire de l'occupant doit responsabiliser les ministères : le loyer rend visible le coût des locaux et incite à réduire les surfaces inutilisées. Les loyers et le produit des cessions doivent donner à l'établissement les moyens de financer sur la durée la rénovation et la mise aux normes des bâtiments.",
+ "reviewed_hash": null,
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/8434"
+  },
+  {
+   "label": "Source 2",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/PIONANR5L17B1796.html"
+  },
+  {
+   "label": "Source 3",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/RAPPANR5L17B2345.html"
+  }
+ ],
+ "status": "pending_review",
+ "subkind": "ensemble",
+ "sum": "Le texte transforme la société anonyme Agence de gestion de l'immobilier de l'État en établissement public national à caractère industriel et commercial, appelé foncière de l'État. Cet établissement devient propriétaire de biens de l'État transférés gratuitement, dont la liste et la date sont fixées par décret. Il gère, entretient, rénove et valorise ces biens, et les met à disposition des services de l'État et des collectivités contre un loyer. Il peut céder les biens du domaine privé qui ne sont plus utiles à l'État, mais les principes d'inaliénabilité et d'imprescriptibilité du domaine public restent inchangés.",
+ "surp": "Le texte ne dit pas quels biens seront transférés, ni quand : la liste et la date relèvent d'un décret pris après le vote. Les économies attendues citées dans les sources sont des estimations et non des résultats garantis.",
+ "title": "Gestion du patrimoine immobilier de l'État",
+ "updated": "2026-10-12"
+}

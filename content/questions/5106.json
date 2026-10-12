@@ -1,0 +1,63 @@
+{
+ "cat": "Justice & sécurité",
+ "checks": {
+  "date": "2026-10-12",
+  "direction": {
+   "answer": "OK",
+   "ok": true
+  },
+  "neutrality": {
+   "issues": [],
+   "judge": {
+    "bias": "gauche",
+    "model": "claude-opus-5-5",
+    "reasons": [
+     "Le titre et le libellé du bouton sont neutres et descriptifs : ils reprennent l'objet du texte sans qualificatif.",
+     "Le résumé reste factuel. La mention des chiffres du rapport (200 lieux de culte, 280 associations) donne du poids au constat qui fonde la demande, ce qui favorise légèrement les partisans.",
+     "L'adjectif « discrètes » (« associations discrètes ») appartient au vocabulaire des partisans, mais il est clairement attribué (« selon eux »). Il ne pose donc qu'un problème mineur.",
+     "Les arguments des opposants sont plus nombreux (trois ou quatre points contre deux ou trois), plus précis (« aucun exemple précis ») et placés en dernier, ce qui leur donne un léger avantage rhétorique.",
+     "La section « Pourquoi ça peut surprendre » reprend presque mot pour mot un argument des opposants (liens informels, qualification juridique difficile). Une section présentée comme éditoriale amplifie ainsi le point de vue d'un camp.",
+     "L'accroche (« ne change aucune règle à lui seul ») est exacte, mais elle relativise la portée du vote. Ce cadrage s'accorde un peu mieux avec la position sceptique.",
+     "Omissions : le texte ne précise ni le résultat chiffré du vote ni les groupes politiques de chaque camp. Il ne donne pas non plus de contre-argument des partisans à la critique sur l'absence de preuves, ni d'exemple de pays ayant déjà classé la mouvance comme terroriste.",
+     "Dans l'ensemble, la fiche est équilibrée et soignée. Le déséquilibre reste faible et tient surtout à la redondance de l'argument des opposants dans les sections éditoriales."
+    ],
+    "score": 1.0
+   },
+   "ok": true
+  }
+ },
+ "con": "Les opposants relèvent que le rapport ne documente aucun exemple précis de personne passée par ces associations puis vers le terrorisme. Ils soulignent aussi que la mouvance a parfois renoncé publiquement à la violence en Occident, que son lien avec le terrorisme est décrit comme indirect, et que ses liens informels rendent difficile une qualification juridique.",
+ "date": "2026-01-22",
+ "generator": {
+  "date": "2026-10-12",
+  "model": "claude-sonnet-5-5"
+ },
+ "hook": "Ce texte ne change aucune règle à lui seul : il demande à l'Europe d'ouvrir la voie à des sanctions financières et à plus de coopération policière et judiciaire.",
+ "kind": "texte",
+ "label": "la demande d'inscription des Frères musulmans sur la liste européenne des organisations terroristes",
+ "n": 5106,
+ "polarity": "adopt",
+ "pro": "Les partisans estiment que la mouvance est un mouvement politique structuré, dont la doctrine est incompatible avec la démocratie libérale. Selon eux, son réseau d'associations discrètes échappe aux outils actuels, et l'inscription donnerait à l'Union et à ses États membres des moyens de sanction et de coopération.",
+ "reviewed_hash": null,
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/5106"
+  },
+  {
+   "label": "Source 3",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/RAPPANR5L17B2318.html"
+  },
+  {
+   "label": "Source 4",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/dossiers/inscrire_mouvance_freres_musulmans_listes_terroristes"
+  }
+ ],
+ "status": "pending_review",
+ "subkind": "ensemble",
+ "sum": "Cette résolution européenne demande que la mouvance des Frères musulmans soit inscrite sur la liste européenne des organisations terroristes. Cette liste existe depuis 2001. Elle déclenche des sanctions financières et permet une coopération policière et judiciaire renforcée contre les entités qui y figurent. Le texte s'appuie sur un rapport présenté en Conseil de défense en mai 2025, qui recense plus de 200 lieux de culte et 280 associations rattachés à la mouvance ou proches d'elle. Le texte a été adopté.",
+ "surp": "Un vote pour ou contre ne dit pas comment une mouvance sans structure juridique unique, aux liens informels, serait définie concrètement sur la liste. Il ne précise pas non plus quelles associations ou quelles personnes seraient visées par d'éventuelles sanctions.",
+ "title": "Les Frères musulmans et la liste européenne des organisations terroristes",
+ "updated": "2026-10-12"
+}

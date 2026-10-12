@@ -1,0 +1,61 @@
+{
+ "cat": "Écologie & énergie",
+ "checks": {
+  "date": "2026-10-12",
+  "direction": {
+   "answer": "OK",
+   "ok": true
+  },
+  "neutrality": {
+   "issues": [],
+   "judge": {
+    "bias": "aucun",
+    "model": "claude-opus-5-5",
+    "reasons": [
+     "Titre et bouton descriptifs et factuels, sans adjectif orienté ; le résumé reste neutre et précise le cadre juridique (accord préalable entre États, accords existants avec la Norvège et le Danemark).",
+     "Léger déséquilibre de volume : les opposants avancent trois éléments (acidification, émissions du transport, coût de 100 à 200 €/t), les partisans un seul argument, appuyé toutefois sur un chiffre (4 à 8 Mt en 2030).",
+     "Le coût, donnée factuelle tirée du rapport, est placé dans l'argument des opposants, ce qui le présente comme une objection. La section 'Pourquoi ça peut surprendre' reprend ce doute sur la compétitivité, sans élément symétrique côté partisans.",
+     "Côté partisans, la formule 'dont les émissions ne peuvent pas être réduites autrement' est attribuée ('estiment'), mais elle présente comme acquise une affirmation discutée (émissions résiduelles du ciment et de l'acier).",
+     "Omissions des deux côtés : l'argument de fond des critiques (le CSC retarderait la baisse des émissions à la source, ou reviendrait à exporter ses déchets) n'apparaît pas, et le rôle du CSC dans les scénarios climatiques de référence (GIEC) n'est pas mentionné côté partisans.",
+     "L'accroche 'sans effet direct sur ton quotidien' minimise l'enjeu. C'est un choix éditorial plutôt qu'une orientation partisane."
+    ],
+    "score": 1.0
+   },
+   "ok": true
+  }
+ },
+ "con": "Les opposants soulignent qu'une fuite en mer peut acidifier l'eau et affecter coraux, mollusques et planctons, et que le transport émet lui-même du CO2. Selon le rapport, le captage et le stockage coûtent entre 100 et 200 euros la tonne.",
+ "date": "2025-06-17",
+ "generator": {
+  "date": "2026-10-12",
+  "model": "claude-sonnet-5-5"
+ },
+ "hook": "Ce vote concerne la possibilité d'envoyer à l'étranger du CO2 capté dans l'industrie, pour le stocker sous le fond de la mer, sans effet direct sur ton quotidien.",
+ "kind": "texte",
+ "label": "la ratification de l'amendement au Protocole de Londres sur le transfert de CO2",
+ "n": 2460,
+ "polarity": "adopt",
+ "pro": "Les partisans estiment que stocker du CO2 à l'étranger aide des industries comme le ciment et l'acier, dont les émissions ne peuvent pas être réduites autrement, à atteindre les objectifs de captage fixés : 4 à 8 millions de tonnes en 2030.",
+ "reviewed_hash": null,
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/2460"
+  },
+  {
+   "label": "Source 2",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/PRJLANR5L17B0942.html"
+  },
+  {
+   "label": "Source 3",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/RAPPANR5L17B1186.html"
+  }
+ ],
+ "status": "pending_review",
+ "subkind": "ensemble",
+ "sum": "Ce texte autorise la France à ratifier une résolution adoptée en 2009, qui modifie l'article 6 du Protocole de Londres de 1996. Cet article interdisait d'exporter des déchets vers d'autres pays pour les immerger. La résolution permet d'exporter ou d'importer du dioxyde de carbone (CO2) pour le stocker dans le sous-sol marin. Chaque transfert reste soumis à un accord préalable entre le pays exportateur et le pays importateur. La France a déjà conclu de tels accords avec la Norvège et le Danemark en 2024.",
+ "surp": "Le vote ne désigne aucun projet précis : chaque transfert de CO2 exige un accord entre États. Il ne dit pas non plus si le captage et le stockage se feront à un coût compétitif.",
+ "title": "Stockage de CO2 sous la mer et transfert entre pays",
+ "updated": "2026-10-12"
+}

@@ -38,6 +38,14 @@ def _has(low, term):
     return re.search(r"(?<![a-z0-9])" + re.escape(term) + r"(?![a-z0-9]" + ("" if not term.endswith("-") else "|$") + ")", low) is not None
 
 
+META = re.compile(r"(?i)\b(?:extraits?|sources?|documents?)\s+(?:fournis?e?s?|disponibles?|consultés?)|décrits? ici|dans les extraits")
+
+
+def strip_meta(text):
+    """Retire les phrases qui parlent du processus de rédaction (« les extraits fournis ne détaillent pas… »)."""
+    return " ".join(s for s in sentences(text or "") if not META.search(s)).strip()
+
+
 def sentences(t):
     return [s for s in re.split(r"(?<=[.!?…])\s+", (t or "").strip()) if len(s.strip()) > 2]
 
@@ -69,6 +77,8 @@ def deterministic(q, actors=None):
     for w in LOADED:
         if re.search(r"(?<![a-z0-9])" + re.escape(_norm(w)), low):
             issues.append(f"terme orienté : « {w.strip()} »")
+    if META.search(text_all):
+        issues.append("mention du processus de rédaction (extraits/sources fournis)")
     n = len(sentences(q.get("sum")))
     if not C.SUM_MIN_LINES <= n <= C.SUM_MAX_LINES:
         issues.append(f"résumé de {n} phrases (attendu {C.SUM_MIN_LINES}-{C.SUM_MAX_LINES})")

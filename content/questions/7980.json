@@ -1,0 +1,63 @@
+{
+ "cat": "Justice & sécurité",
+ "checks": {
+  "date": "2026-10-12",
+  "direction": {
+   "answer": "OK",
+   "ok": true
+  },
+  "neutrality": {
+   "issues": [],
+   "judge": {
+    "bias": "autre",
+    "model": "claude-opus-5-5",
+    "reasons": [
+     "Biais favorable au texte (cadrage gouvernemental) plutôt qu'à un camp gauche/droite clairement identifié.",
+     "Le titre reprend le cadrage valorisant du projet (« droits des victimes ») et omet la dimension « droits de la défense », pourtant au cœur du débat.",
+     "L'argument des partisans est chiffré et concret (6 000 dossiers contre 2 200, six ans pour un viol). Celui des opposants est vague, sans chiffre ni acteur identifié, à la voix passive (« a suscité des critiques »), formulé comme une réserve conditionnelle plutôt qu'une objection.",
+     "L'argument des opposants reste prudent : il évoque une compatibilité à préserver plutôt qu'un risque affirmé (pression à reconnaître les faits, recul du jury, atteinte à la présomption d'innocence).",
+     "L'accroche ne présente que des bénéfices (juger plus vite, avocat dès la plainte) sans contrepartie.",
+     "Omissions : les critiques sur la généalogie génétique (vie privée, données) et sur le raccourcissement des délais de nullité (affaiblissement des droits de la défense) ne sont pas mentionnées. Les opposants (avocats, magistrats, partis) ne sont pas nommés.",
+     "La rubrique « Pourquoi ça peut surprendre » cite des exclusions (mineurs, certains crimes sexuels) qui tendent à rassurer sur le dispositif plutôt qu'à exposer une controverse.",
+     "Points positifs : le résumé est factuel, reste globalement descriptif et sans adjectif fortement orienté, et le caractère composite du vote est signalé."
+    ],
+    "score": 2.0
+   },
+   "ok": true
+  }
+ },
+ "con": "La procédure de jugement des crimes reconnus a suscité des critiques, car elle fait proposer une peine avant le procès. Raccourcir certains délais et alléger certaines règles doit rester compatible avec les droits de la défense et le droit à un procès équitable.",
+ "date": "2026-07-07",
+ "generator": {
+  "date": "2026-10-12",
+  "model": "claude-sonnet-5-5"
+ },
+ "hook": "Les procès pour crime pourraient être jugés plus vite, et les victimes de violences sexuelles ou intrafamiliales pourraient avoir un avocat dès leur dépôt de plainte.",
+ "kind": "texte",
+ "label": "le projet de loi sur la justice criminelle et le respect des victimes",
+ "n": 7980,
+ "polarity": "adopt",
+ "pro": "Les délais de jugement s'allongent : près de 6 000 dossiers criminels attendent en 2025, contre 2 200 en 2019, et il faut en moyenne six ans pour juger un viol. Ces mesures visent à juger plus vite, y compris pour les victimes, tout en gardant les droits des parties.",
+ "reviewed_hash": null,
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/7980"
+  },
+  {
+   "label": "Source 2",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/PRJLANR5L17B2681.html"
+  },
+  {
+   "label": "Source 3",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/RAPPANR5L17B2904.html"
+  }
+ ],
+ "status": "pending_review",
+ "subkind": "ensemble",
+ "sum": "Ce projet de loi crée une procédure de jugement des crimes reconnus. Lorsque l'accusé reconnaît les faits, le procureur peut lui proposer une peine, qu'une cour d'assises doit homologuer, sauf opposition de la victime constituée partie civile. Le texte réforme aussi les cours criminelles départementales, légalise la généalogie génétique dans certaines enquêtes et raccourcit les délais pour demander l'annulation d'actes de procédure. Il ouvre enfin l'aide juridictionnelle dès le dépôt de plainte aux victimes de violences sexuelles ou intrafamiliales. Voter pour, c'est adopter l'ensemble de ces mesures en première lecture.",
+ "surp": "Un vote pour ou contre porte sur l'ensemble du texte, qui regroupe des mesures très différentes. La procédure de jugement des crimes reconnus exclut notamment les mineurs et certains crimes sexuels.",
+ "title": "Justice criminelle et droits des victimes",
+ "updated": "2026-10-12"
+}

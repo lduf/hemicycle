@@ -1,0 +1,62 @@
+{
+ "cat": "Justice & sécurité",
+ "checks": {
+  "date": "2026-10-12",
+  "direction": {
+   "answer": "OK",
+   "ok": true
+  },
+  "neutrality": {
+   "issues": [],
+   "judge": {
+    "bias": "autre",
+    "model": "claude-opus-5-5",
+    "reasons": [
+     "Le bouton « Pour le renforcement de la lutte contre les violences sexuelles et sexistes » reprend l'objectif affiché du texte et rend la position contraire difficile à assumer. Un libellé descriptif serait plus neutre, par exemple « Pour l'extension de la prescription glissante aux victimes majeures ».",
+     "Le titre reprend aussi l'intitulé militant (« Lutte contre… ») au lieu de décrire la mesure effectivement votée.",
+     "Asymétrie des arguments : les partisans défendent le fond (égalité des victimes, temps pour parler), tandis que les « opposants » ne contestent que la forme ou l'absence de consensus. Certains voulaient même aller plus loin, ce qui en fait des critiques internes plutôt qu'une opposition.",
+     "Omission des objections de fond classiques à l'allongement de la prescription : sécurité juridique, dépérissement des preuves, droits de la défense, risque d'acquittements faute de preuves, réserves des magistrats ou avocats. Le lecteur ne voit donc aucune raison substantielle de voter contre.",
+     "Décalage entre arguments et contenu voté : les partisans invoquent le contrôle coercitif et l'absence de délai civil, alors que ces articles ont été rejetés en commission. Cela gonfle artificiellement le poids du « pour ».",
+     "L'accroche ne présente que l'effet favorable aux victimes, sans contrepartie (difficulté probatoire pour des faits anciens).",
+     "Points positifs : le résumé est factuel, la prescription glissante est bien expliquée, et la section « Pourquoi ça peut surprendre » signale honnêtement l'évolution du texte. Le biais tient au cadrage, pas à un vocabulaire ouvertement partisan, et il favorise le texte plutôt qu'un camp gauche/droite identifiable."
+    ],
+    "score": 2.0
+   },
+   "ok": true
+  }
+ },
+ "con": "Les opposants relèvent qu'il n'y avait pas de consensus sur l'absence de délai en matière civile : certains voulaient aller plus loin en matière pénale, d'autres éviter cette notion. Ils jugent aussi la rédaction sur le contrôle coercitif insuffisante : peu claire, limitée aux violences psychologiques alors que la notion est plus large, et sans employer le terme lui-même.",
+ "date": "2025-01-28",
+ "generator": {
+  "date": "2026-10-12",
+  "model": "claude-sonnet-5-5"
+ },
+ "hook": "Si une personne majeure subit un viol commis par un auteur qui a aussi agi contre d'autres victimes, les faits pourraient être jugés ensemble, même si l'un d'eux est ancien.",
+ "kind": "texte",
+ "label": "le renforcement de la lutte contre les violences sexuelles et sexistes",
+ "n": 657,
+ "polarity": "adopt",
+ "pro": "Les partisans estiment qu'étendre la prescription glissante permet de juger ensemble tous les faits d'un même auteur et place les victimes sur un pied d'égalité. Ils jugent aussi nécessaire de laisser du temps aux victimes pour parler, et de nommer le contrôle coercitif pour mieux reconnaître ces situations.",
+ "reviewed_hash": null,
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/657"
+  },
+  {
+   "label": "Source 2",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/PIONANR5L17B0669.html"
+  },
+  {
+   "label": "Source 3",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/RAPPANR5L17B0845.html"
+  }
+ ],
+ "status": "pending_review",
+ "subkind": "ensemble",
+ "sum": "Cette proposition de loi vise à renforcer la lutte contre les violences sexuelles et sexistes. Le texte initial comptait trois articles : l'absence de délai pour demander réparation en justice civile après des violences sexuelles sur mineur, l'extension de la « prescription glissante » aux victimes majeures de viol, et l'entrée du « contrôle coercitif » dans le code pénal. La prescription glissante prolonge le délai de poursuite d'un ancien viol jusqu'à celui d'une nouvelle infraction du même auteur. Elle ne s'applique aujourd'hui qu'aux victimes mineures. En commission, le premier et le troisième article ont été rejetés, l'extension aux victimes majeures a été conservée, et un rapport du Gouvernement sur la formation au traitement de ces violences a été ajouté.",
+ "surp": "Le vote porte sur l'ensemble du texte, dont le contenu a évolué : les articles sur l'absence de délai civil et sur le contrôle coercitif ont été rejetés en commission, avec l'espoir d'une réécriture en séance. Un vote pour ou contre ne dit donc pas laquelle de ces mesures figure dans la version finale.",
+ "title": "Lutte contre les violences sexuelles et sexistes",
+ "updated": "2026-10-12"
+}

@@ -27,7 +27,7 @@ GROUP_NAMES = {
 }
 CATS = ["Éducation", "Sport", "Écologie & énergie", "Économie & fiscalité", "Famille & social", "Santé & fin de vie",
         "Justice & sécurité", "Immigration", "Numérique", "Défense", "Agriculture", "Droits & société",
-        "Institutions", "Logement", "Transports", "Culture & médias"]
+        "Travail & retraites", "Institutions", "Logement", "Transports", "Culture & médias"]
 
 # Modèles, appelés via `claude -p` (abonnement) ou l'API : voir llm.py. Sans modèle disponible, la fiche reste bloquée.
 MODEL_WRITER = os.environ.get("HEMI_MODEL_WRITER", "claude-sonnet-5-5")
