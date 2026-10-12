@@ -35,6 +35,7 @@ jobs:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
         run: |
+          export CLAUDE_CODE_OAUTH_TOKEN="$(printf %s "$CLAUDE_CODE_OAUTH_TOKEN" | tr -d '[:space:]')"
           claude --version
           echo "OPENROUTER_API_KEY définie : $([ -n "$OPENROUTER_API_KEY" ] && echo oui || echo NON)"
           echo "CLAUDE_CODE_OAUTH_TOKEN défini : $([ -n "$CLAUDE_CODE_OAUTH_TOKEN" ] && echo oui || echo NON)"

@@ -262,3 +262,22 @@ class Fiche(WithTmp):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class Token(unittest.TestCase):
+    def test_oauth_token_whitespace_removed_before_calling_cli(self):
+        from unittest import mock
+        from pipeline import llm
+        seen = {}
+        def fake_run(cmd, **kw):
+            seen["env"] = kw["env"]
+            class R: returncode = 0; stdout = "OK"; stderr = ""
+            return R()
+        old = dict(os.environ); os.environ["CLAUDE_CODE_OAUTH_TOKEN"] = "sk-ant-oat01-AAAA\nBBBB \n"; os.environ["ANTHROPIC_API_KEY"] = "x"
+        try:
+            with mock.patch("subprocess.run", fake_run):
+                self.assertEqual(llm._ask_cli("m", "p", "", 5), "OK")
+        finally:
+            os.environ.clear(); os.environ.update(old)
+        self.assertEqual(seen["env"]["CLAUDE_CODE_OAUTH_TOKEN"], "sk-ant-oat01-AAAABBBB")
+        self.assertNotIn("ANTHROPIC_API_KEY", seen["env"])

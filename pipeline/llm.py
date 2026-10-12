@@ -28,6 +28,8 @@ def available():
 
 def _ask_cli(model, prompt, system, timeout):
     env = {k: v for k, v in os.environ.items() if k != "ANTHROPIC_API_KEY"}
+    if env.get("CLAUDE_CODE_OAUTH_TOKEN"):      # un jeton collé sur 2 lignes dans un secret est rejeté (« line break ») : on retire les blancs
+        env["CLAUDE_CODE_OAUTH_TOKEN"] = "".join(env["CLAUDE_CODE_OAUTH_TOKEN"].split())
     cmd = ["claude", "-p", "--model", model, "--tools", "", "--no-session-persistence", "--disable-slash-commands",
            "--output-format", "text"]
     if system:
