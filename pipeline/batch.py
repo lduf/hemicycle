@@ -5,7 +5,7 @@ Ne publie rien : chaque fiche finit `pending_review` (affichée « non relue »)
 Seuls les votes sur l'ensemble d'un texte sont retenus (le sens est sûr et le texte officiel décrit la mesure).
 """
 import argparse, collections, os, sys, concurrent.futures as cf
-from . import config as C, select_votes as SV, sources as S, fiche, store
+from . import config as C, classify, direction as D, select_votes as SV, sources as S, fiche, store
 
 
 def pick(n, min_date=None):
@@ -34,6 +34,14 @@ def one(c, sc, inbox):
             texts.append((u, S.fetch_text(u, limit=6000, after="EXPOSÉ DES MOTIFS")))
         else:                            # page du dossier : chronologie
             texts.append((u, S.fetch_text(u, limit=2500)))
+    if classify.backend() == "jev":                      # pré-contrôle ~gratuit : évite un appel de rédaction inutile
+        try:
+            pre = classify.sources_sufficient(sc[n]["titre"], [x for _, x in texts])
+        except Exception:
+            pre = None
+        if pre is not None and not pre[0]:
+            q = fiche._blocked(sc[n], D.classify(sc[n]["titre"]), f"sources insuffisantes (pré-contrôle Jev : {pre[1]})")
+            return c["n"], "blocked", q
     q = fiche.draft(sc[n], urls, texts=texts)
     return c["n"], q["status"], q
 

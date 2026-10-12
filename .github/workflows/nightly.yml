@@ -36,6 +36,7 @@ jobs:
           restore-keys: an-
       - name: Pipeline (ingestion, sélection, rédaction, stats, build, carte)
         env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}   # Jev : classification et notation
           CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}   # `claude setup-token` (abonnement)
         run: python -m pipeline.nightly
       - uses: actions/upload-pages-artifact@v3

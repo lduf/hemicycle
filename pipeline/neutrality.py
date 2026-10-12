@@ -9,7 +9,7 @@
    Sans clé API la note est absente : la fiche ne peut pas passer en relecture (échec fermé), sauf HEMI_ALLOW_NO_JUDGE=1 (dev).
 """
 import os, re, unicodedata
-from . import config as C, llm
+from . import config as C, llm, classify
 
 PARTY_TERMS = [
     "rassemblement national", "front national", "la france insoumise", "france insoumise", "insoumis", "lfi", "nupes",
@@ -97,6 +97,14 @@ def deterministic(q, actors=None):
 
 def judge(q, call=None):
     """Note d'orientation 0-5 par un second modèle. -> dict(score, reasons) ou None si indisponible."""
+    if call is None and classify.backend() == "jev":       # Jev note ; les LLM rédigent
+        try:
+            r = classify.orientation(q)
+        except Exception:
+            r = None                                         # panne Jev -> échec fermé (jamais de note inventée)
+        if r is None:
+            return None
+        return dict(score=r["score"], bias=r["bias"], reasons=[f"charge={r['loaded']:.2f}"], model=r.get("model"), engine="jev")
     prompt = (
         "Tu es un relecteur de neutralité politique. Voici une fiche destinée à un quiz grand public sur un vote "
         "de l'Assemblée nationale. Note l'ORIENTATION du texte de 0 (strictement neutre, arguments symétriques, "

@@ -5,7 +5,7 @@ Chaque fiche créée est enregistrée dans content/questions/<n>.json avec statu
   direction.llm_check  ->  neutrality.evaluate  ->  status=pending_review (relecture humaine) ou blocked.
 """
 import json, os, datetime as dt
-from . import config as C, direction as D, llm, neutrality as N, sources as S, store
+from . import config as C, classify, direction as D, llm, neutrality as N, sources as S, store
 
 SYSTEM = (
     "Tu rédiges des fiches de vote pour un quiz civique destiné aux jeunes, en français simple. Règles absolues : "
@@ -59,6 +59,14 @@ def draft(scr, urls, call=None, texts=None):
                     "\n\nElle présente ces défauts : " + " ; ".join(issues) + ". Renvoie le JSON complet corrigé (mêmes clés).")
         if isinstance(fixed, dict) and not fixed.get("insuffisant"):
             r = fixed
+    cat_check = None
+    try:
+        ci = classify.category(r)
+    except Exception:
+        ci = None
+    if ci and (ci["confidence"] is None or ci["confidence"] >= classify.THRESHOLDS["cat_min"]) and ci["cat"] in C.CATS:
+        cat_check = dict(writer=r.get("cat"), classifier=ci["cat"], confidence=ci["confidence"], engine=ci["engine"])
+        r["cat"] = ci["cat"]
     srcs = [dict(label=f"Source {i + 1}", url=texts[i - 1][0]) for i in r.get("source_ids", []) if 1 <= i <= len(texts)]
     srcs.insert(0, dict(label="Scrutin officiel (Assemblée nationale)", url=S.scrutin_url(scr["n"])))
     q = dict(n=scr["n"], date=scr["date"], kind="texte" if cl["kind"] == "ensemble" else "mesure", subkind=cl["kind"],
@@ -66,6 +74,7 @@ def draft(scr, urls, call=None, texts=None):
              title=r.get("title"), label=r.get("label"), hook=r.get("hook"), sum=r.get("sum"), pro=r.get("pro"),
              con=r.get("con"), surp=r.get("surp"), sources=srcs,
              generator=dict(model=C.MODEL_WRITER, date=dt.date.today().isoformat()), status="draft", reviews=[], checks={})
+    q["cat_check"] = cat_check
     return check(q, call_judge=None)
 
 
@@ -82,18 +91,36 @@ def check(q, call_judge=None, call_dir=None):
         q["status"] = "blocked"; q["blocked_reason"] = "champs manquants"; return q
     scr_title = (C.jload(os.path.join(C.DATA, "scrutins.json"), {}).get(str(q["n"])) or {}).get("titre", q.get("title"))
     ok, ans = (True, "non vérifié (hors ligne)")
-    fn = call_dir or ((lambda p: llm.ask(C.MODEL_JUDGE, p, max_tokens=10, temperature=0)) if llm.available() else None)
-    if fn:
-        ok, ans = D.llm_check(fn, scr_title, q["label"], q["polarity"])
-    elif os.environ.get("HEMI_ALLOW_NO_JUDGE") != "1":
-        ok, ans = False, "vérification du sens par modèle indisponible (échec fermé)"
+    if call_dir:
+        ok, ans = D.llm_check(call_dir, scr_title, q["label"], q["polarity"])
+    else:
+        try:
+            r = classify.direction(scr_title, q["label"], q["polarity"])
+        except Exception as e:                       # panne du classifieur : échec fermé
+            r = None; ans = f"classifieur en panne : {str(e)[:80]}"
+        if r is not None:
+            ok, det = r; ans = json.dumps(det, ensure_ascii=False)
+        elif os.environ.get("HEMI_ALLOW_NO_JUDGE") != "1":
+            ok = False
+            if ans.startswith("non vérifié"):
+                ans = "vérification du sens indisponible (échec fermé)"
+    pc = None
+    if not call_dir and not call_judge:
+        try:
+            pc = classify.pro_con(q)
+        except Exception:
+            pc = None
     ev = N.evaluate(q, call_judge)
-    q["checks"] = dict(direction=dict(ok=ok, answer=ans), neutrality=ev, date=dt.date.today().isoformat())
-    if ok and ev["ok"]:
+    pc_ok = True if pc is None else pc["ok"]
+    if pc is None and not call_dir and not call_judge and os.environ.get("HEMI_ALLOW_NO_JUDGE") != "1":
+        pc_ok = False                                  # pertinence pour/contre non vérifiable : échec fermé
+    q["checks"] = dict(direction=dict(ok=ok, answer=ans), neutrality=ev, pro_con=pc, date=dt.date.today().isoformat())
+    if ok and ev["ok"] and pc_ok:
         q["status"] = "pending_review"; q.pop("blocked_reason", None)
     else:
         q["status"] = "blocked"
-        q["blocked_reason"] = "; ".join(([] if ok else [f"sens du vote : {ans}"]) + ev["issues"])
+        q["blocked_reason"] = "; ".join(([] if ok else [f"sens du vote : {ans}"]) + ev["issues"]
+                                        + ([] if pc_ok else ["arguments pour/contre non pertinents ou déséquilibrés"]))
     q["reviewed_hash"] = None
     return q
 

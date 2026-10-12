@@ -47,6 +47,22 @@ python -m unittest discover -s tests
 Déposer les programmes dans `content/programmes/` (voir son README), puis `python -m pipeline.promises propose` et
 `confirm`. Rien n'est affiché sans confirmation humaine. `promises coverage` liste les groupes sans promesse (DR, UDR, LIOT aujourd'hui).
 
+## Qui fait quoi : LLM pour rédiger, Jev pour classer
+
+| Tâche | Moteur | Où |
+|---|---|---|
+| Rédaction des fiches | Claude (`claude -p`, abonnement) | `fiche.py`, `llm.py` |
+| Catégorie du scrutin | Jev (`choice`) | `classify.category` |
+| Note de neutralité 0-5 + bord favorisé | Jev (`score`, `choice`) | `classify.orientation` → `neutrality.judge` |
+| Pertinence pour/contre (défend bien / s'oppose bien / fond / équilibre) | Jev (`noul`, `score`) | `classify.pro_con` |
+| Sens du vote vs libellé du bouton | règles puis Jev | `direction.py`, `classify.direction` |
+| Sources suffisantes (pré-contrôle avant rédaction) | Jev (`noul`) | `classify.sources_sufficient` |
+
+Jev (`typesafe/jev-1.13` sur OpenRouter, ~0,042 $/M tokens d'entrée, sortie gratuite) renvoie des probabilités typées, pas du texte.
+`OPENROUTER_API_KEY` active Jev ; sans clé, le même contrat est assuré par Claude (`HEMI_CLASSIFIER=auto|jev|claude|none`) ;
+sans aucun moteur, tout échoue fermé. Les seuils (`classify.THRESHOLDS`) sont des valeurs de départ : lancer le workflow
+**bench-jev** (Actions → Run workflow) ou `python -m pipeline.bench_jev --engines jev,claude` pour les recalibrer ; le résumé est dans `BENCH_JEV.md`.
+
 ## Organisation
 
 ```
