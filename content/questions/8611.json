@@ -1,0 +1,28 @@
+{
+ "cat": "Immigration",
+ "checks": {},
+ "con": "Les critiques redoutent un retour des vérifications aux frontières intérieures, qui pèserait sur la circulation des personnes et des marchandises, et préfèrent une réponse coordonnée au niveau européen.",
+ "date": "2026-10-08",
+ "hook": "Les contrôles aux frontières en Europe quand tu voyages ou quand tu importes.",
+ "kind": "resolution",
+ "label": "la « double frontière » Schengen",
+ "legacy": true,
+ "n": 8611,
+ "notes": "Rédigé par IA dans le MVP, non relu. À revérifier à la source.",
+ "polarity": "adopt",
+ "polarity_verified": true,
+ "pro": "Les auteurs estiment que les contrôles aux frontières extérieures sont insuffisants et que des décisions nationales, comme une régularisation massive dans un pays, ont des effets sur tout l'espace.",
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/8611"
+  }
+ ],
+ "status": "legacy",
+ "subkind": "ensemble",
+ "sum": "Résolution, sans valeur de loi. Elle demande au gouvernement de soutenir une révision des règles de l'espace Schengen : une frontière extérieure européenne renforcée, et une frontière nationale avec des vérifications pour les ressortissants de pays tiers qui franchissent les frontières intérieures. La libre circulation des citoyens de l'Union ne serait pas remise en cause, et la France ne quitterait pas Schengen.",
+ "surp": "Résolution sans valeur de loi. Un « contre » peut signifier qu’on préfère une réponse coordonnée au niveau européen ; un « pour », qu’on demande plus de contrôle sans quitter Schengen.",
+ "title": "Refonder Schengen avec une « double frontière »",
+ "updated": "2026-10-12"
+}

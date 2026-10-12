@@ -1,0 +1,28 @@
+{
+ "cat": "Immigration",
+ "checks": {},
+ "con": "Les opposants craignent un « appel d'air », un afflux de recours et la saturation de l'hébergement d'urgence. Ils préfèrent plus de juges pour enfants.",
+ "date": "2025-12-11",
+ "hook": "Un jeune seul arrivé en France : est-il mis à l’abri pendant que la justice tranche ?",
+ "kind": "texte",
+ "label": "la présomption de minorité",
+ "legacy": true,
+ "n": 4723,
+ "notes": "Rédigé par IA dans le MVP, non relu. À revérifier à la source.",
+ "polarity": "adopt",
+ "polarity_verified": true,
+ "pro": "Les partisans estiment qu'une part des jeunes refusés est reconnue mineure par la justice, que les tests osseux sont peu fiables et que des enfants ne doivent pas dormir dehors pendant la procédure.",
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/4723"
+  }
+ ],
+ "status": "legacy",
+ "subkind": "ensemble",
+ "sum": "Proposition de loi. Un jeune isolé dont la prise en charge a été refusée parce qu'il a été jugé majeur resterait mis à l'abri jusqu'à une décision de justice définitive. Le texte prévoit aussi la scolarisation dès l'arrivée et interdit les tests osseux pour déterminer l'âge. Il a été rejeté en commission puis adopté en séance (144 voix contre 100).",
+ "surp": "Ce texte a été rejeté en commission puis adopté en séance (144 contre 100). Le résultat dépend aussi de qui est présent le jour du vote.",
+ "title": "Présomption de minorité pour les jeunes isolés refusés par l'aide sociale",
+ "updated": "2026-10-12"
+}

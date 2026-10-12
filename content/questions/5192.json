@@ -1,0 +1,28 @@
+{
+ "cat": "Numérique",
+ "checks": {},
+ "con": "Il n'existe pas d'outil fiable de vérification de l'âge, et il est difficile de contraindre les plateformes à le mettre en œuvre.",
+ "date": "2026-01-26",
+ "hook": "Ton compte Insta ou TikTok avant 15 ans, ou celui de ton petit frère.",
+ "kind": "texte",
+ "label": "les réseaux sociaux interdits avant 15 ans",
+ "legacy": true,
+ "n": 5192,
+ "notes": "Rédigé par IA dans le MVP, non relu. À revérifier à la source.",
+ "polarity": "adopt",
+ "polarity_verified": true,
+ "pro": "Protéger la santé mentale des adolescents face aux algorithmes, et agir au niveau national en attendant une action européenne.",
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/5192"
+  }
+ ],
+ "status": "legacy",
+ "subkind": "ensemble",
+ "sum": "Proposition de loi. L'accès aux réseaux sociaux serait interdit aux moins de 15 ans et les comptes existants seraient suspendus. Les messageries privées sont exclues. L'usage du téléphone portable serait aussi interdit dans les lycées. Pour l'âge, le texte s'appuie sur la possibilité, ouverte par le droit européen, de fixer une limite nationale.",
+ "surp": "Le débat porte beaucoup sur la faisabilité : il n’existe pas d’outil fiable de vérification de l’âge, et la question d’un cadre national ou européen se pose.",
+ "title": "Interdiction des réseaux sociaux avant 15 ans",
+ "updated": "2026-10-12"
+}

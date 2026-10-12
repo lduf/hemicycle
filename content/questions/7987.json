@@ -1,0 +1,28 @@
+{
+ "cat": "Justice & sécurité",
+ "checks": {},
+ "con": "Des opposants parlent d'un « permis de tuer » et citent la hausse des tirs mortels liés aux refus d'obtempérer. Une pétition de près de 85 000 signatures s'oppose au texte.",
+ "date": "2026-07-07",
+ "hook": "Dans la rue : ce qu’un policier ou un gendarme a le droit de faire avec son arme.",
+ "kind": "texte",
+ "label": "la présomption de légitime défense",
+ "legacy": true,
+ "n": 7987,
+ "notes": "Rédigé par IA dans le MVP, non relu. À revérifier à la source.",
+ "polarity": "adopt",
+ "polarity_verified": true,
+ "pro": "Répondre à une évolution inquiétante des violences contre les policiers et les gendarmes.",
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/7987"
+  }
+ ],
+ "status": "legacy",
+ "subkind": "ensemble",
+ "sum": "Proposition de loi. Elle instaure une présomption de légitime défense pour les policiers et gendarmes face à une menace réelle, immédiate et grave. En commission, cette formule a été remplacée par une « présomption d'usage légitime de l'arme ».",
+ "surp": "Le texte a été modifié en commission (« légitime défense » remplacée par « usage légitime de l’arme »). Le vote porte sur la version finale, pas sur l’idée de départ.",
+ "title": "Présomption d'usage légitime de l'arme pour policiers et gendarmes",
+ "updated": "2026-10-12"
+}

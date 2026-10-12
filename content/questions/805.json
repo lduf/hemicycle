@@ -1,0 +1,28 @@
+{
+ "cat": "Justice & sécurité",
+ "checks": {},
+ "con": "Les opposants rappellent que les juges pour enfants peuvent déjà écarter l'excuse de minorité, et jugent ces mesures trop répressives.",
+ "date": "2025-02-13",
+ "hook": "À partir de 16 ans, comment la justice traite les mineurs, et leurs parents.",
+ "kind": "texte",
+ "label": "une justice des mineurs plus sévère",
+ "legacy": true,
+ "n": 805,
+ "notes": "Rédigé par IA dans le MVP, non relu. À revérifier à la source.",
+ "polarity": "adopt",
+ "polarity_verified": true,
+ "pro": "Les partisans estiment que les mineurs sont davantage impliqués dans certaines infractions, comme les violences et les trafics, et que des réseaux les recrutent parce que la justice les traite plus légèrement.",
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/805"
+  }
+ ],
+ "status": "legacy",
+ "subkind": "ensemble",
+ "sum": "Proposition de loi. Elle atténue l'excuse de minorité pour les mineurs de plus de 16 ans en récidive pour des faits graves. Elle crée une comparution immédiate pour les mineurs. Elle rend les parents civilement responsables, solidairement et de plein droit, des dommages causés par leur enfant.",
+ "surp": "Les arguments portent à la fois sur l’efficacité (réponse rapide) et sur la protection des mineurs. Des mesures peuvent séduire sur le papier et être contestées sur leur application.",
+ "title": "Justice des mineurs : excuse de minorité et comparution immédiate",
+ "updated": "2026-10-12"
+}

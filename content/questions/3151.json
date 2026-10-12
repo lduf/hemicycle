@@ -1,0 +1,28 @@
+{
+ "cat": "Économie & fiscalité",
+ "checks": {},
+ "con": "Les opposants craignent un effet sur la compétitivité et l'attractivité des entreprises installées en France.",
+ "date": "2025-10-27",
+ "hook": "Le budget de l’État : qui complète les caisses publiques cette année.",
+ "kind": "mesure",
+ "label": "la surtaxe sur les grandes entreprises",
+ "legacy": true,
+ "n": 3151,
+ "notes": "Rédigé par IA dans le MVP, non relu. À revérifier à la source.",
+ "polarity": "adopt",
+ "polarity_verified": true,
+ "pro": "Les partisans veulent concentrer l'effort sur les plus grandes entreprises et répondre à la situation budgétaire.",
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/3151"
+  }
+ ],
+ "status": "legacy",
+ "subkind": "article",
+ "sum": "Article du budget de l'État pour 2026. Il reconduit pour un an la contribution exceptionnelle sur les bénéfices, créée l'année précédente, qui vise environ 400 des plus grandes entreprises (celles de plus d'un milliard d'euros de chiffre d'affaires). Le rendement attendu est de plusieurs milliards d'euros, selon la version retenue : entre 4 et 6 milliards.",
+ "surp": "Dans un budget, un vote porte sur un article précis parmi des centaines. On peut approuver l’objectif et contester le montant ou la durée.",
+ "title": "Reconduire une surtaxe sur les bénéfices des très grandes entreprises",
+ "updated": "2026-10-12"
+}

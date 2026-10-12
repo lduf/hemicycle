@@ -1,0 +1,28 @@
+{
+ "cat": "Travail & retraites",
+ "checks": {},
+ "con": "Certains jugent la mesure coûteuse pour des comptes publics déjà tendus. D'autres la trouvent trop limitée et voudraient revenir sur la réforme elle-même.",
+ "date": "2025-11-12",
+ "hook": "L’âge où tu pourras partir à la retraite : le relèvement à 64 ans serait mis en pause jusqu’en 2028.",
+ "kind": "mesure",
+ "label": "le gel de la réforme des retraites",
+ "legacy": true,
+ "n": 3684,
+ "notes": "Rédigé par IA dans le MVP, non relu. À revérifier à la source.",
+ "polarity": "adopt",
+ "polarity_verified": true,
+ "pro": "Les partisans y voient une pause qui apaise le débat sur l'âge de départ, en attendant une discussion plus large.",
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/3684"
+  }
+ ],
+ "status": "legacy",
+ "subkind": "article",
+ "sum": "Article du budget de la Sécurité sociale pour 2026. Il suspend jusqu'au 1er janvier 2028 la réforme des retraites de 2023, qui relève progressivement l'âge légal de départ à 64 ans. Pendant la suspension, le relèvement de l'âge et de la durée de cotisation s'arrête à son niveau actuel. Le coût est évalué à près de 2 milliards d'euros, selon les chiffrages relayés dans la presse.",
+ "surp": "Il y a eu beaucoup d’abstentions et d’absents. Certains jugent la pause trop limitée, d’autres trop coûteuse : des raisons opposées peuvent mener au même vote.",
+ "title": "Suspendre la réforme des retraites jusqu'au 1er janvier 2028",
+ "updated": "2026-10-12"
+}

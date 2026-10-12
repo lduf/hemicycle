@@ -1,0 +1,28 @@
+{
+ "cat": "Éducation",
+ "checks": {},
+ "con": "Les opposants jugent que ce dispositif rompt l'égalité devant le concours et qu'il vaut mieux agir plus tôt dans la scolarité.",
+ "date": "2025-02-18",
+ "hook": "Si tu viens d’un milieu modeste : une voie d’accès en plus vers les écoles du service public.",
+ "kind": "texte",
+ "label": "la voie d’accès « égalité des chances »",
+ "legacy": true,
+ "n": 840,
+ "notes": "Rédigé par IA dans le MVP, non relu. À revérifier à la source.",
+ "polarity": "adopt",
+ "polarity_verified": true,
+ "pro": "Les partisans veulent diversifier l'origine sociale des futurs cadres du service public.",
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/840"
+  }
+ ],
+ "status": "legacy",
+ "subkind": "ensemble",
+ "sum": "Proposition de loi. Elle prolonge l'expérimentation d'une voie d'accès spécifique, réservée à des candidats de milieux modestes, à certaines écoles formant les hauts fonctionnaires, en parallèle des concours habituels.",
+ "surp": "C’est un dispositif expérimental que l’on prolonge. On vote pour continuer l’expérimentation, pas pour créer une règle définitive.",
+ "title": "Prolonger la voie d'égalité des chances pour les écoles de service public",
+ "updated": "2026-10-12"
+}

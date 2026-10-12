@@ -1,0 +1,28 @@
+{
+ "cat": "Immigration",
+ "checks": {},
+ "con": "Les opposants jugent le texte contraire à l'égalité entre territoires et à la tradition du droit du sol.",
+ "date": "2025-04-08",
+ "hook": "Qui devient français quand il naît à Mayotte.",
+ "kind": "texte",
+ "label": "le droit du sol durci à Mayotte",
+ "legacy": true,
+ "n": 1308,
+ "notes": "Rédigé par IA dans le MVP, non relu. À revérifier à la source. Résumé en partie issu de connaissances générales.",
+ "polarity": "adopt",
+ "polarity_verified": true,
+ "pro": "Les partisans veulent limiter les arrivées liées à la naissance sur l'île, où la population étrangère est importante.",
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/1308"
+  }
+ ],
+ "status": "legacy",
+ "subkind": "ensemble",
+ "sum": "Proposition de loi (version finale). Elle renforce les conditions pour qu'un enfant né à Mayotte devienne français : les parents devraient résider régulièrement sur l'île depuis au moins un an à la naissance, au lieu de conditions plus légères aujourd'hui.",
+ "surp": "Texte pour un territoire précis. D’un côté l’argument de la situation locale, de l’autre celui de l’égalité entre territoires.",
+ "title": "Durcir l'accès à la nationalité par la naissance à Mayotte",
+ "updated": "2026-10-12"
+}

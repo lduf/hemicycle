@@ -1,0 +1,8 @@
+an_data/
+an_orgs/
+data/
+docs/
+__pycache__/
+*.pyc
+*.tmp
+*.part

@@ -1,0 +1,28 @@
+{
+ "cat": "Sport",
+ "checks": {},
+ "con": "Les critiques, dont des associations, dénoncent des dérogations aux règles environnementales et d'urbanisme, ainsi que la surveillance par algorithme.",
+ "date": "2026-01-13",
+ "hook": "Si tu vis ou skies dans les Alpes : les JO d’hiver 2030 et leurs règles spéciales.",
+ "kind": "texte",
+ "label": "la loi sur les JO 2030",
+ "legacy": true,
+ "n": 4963,
+ "notes": "Rédigé par IA dans le MVP, non relu. À revérifier à la source.",
+ "polarity": "adopt",
+ "polarity_verified": true,
+ "pro": "Les partisans veulent un cadre juridique pour tenir les délais, avec des garanties environnementales.",
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/4963"
+  }
+ ],
+ "status": "legacy",
+ "subkind": "ensemble",
+ "sum": "Projet de loi sur l'organisation des Jeux d'hiver 2030 dans les Alpes. Il prolonge la vidéosurveillance algorithmique, permet des interdictions de paraître sur les sites et ouvre des dérogations (urbanisme, ouverture des commerces le dimanche avec volontariat). Il fixe aussi des objectifs « zéro déchet » et limite le plastique à usage unique. Budget d'organisation d'environ 2,1 milliards d'euros, dont 562 millions de fonds publics.",
+ "surp": "C’est une loi d’exception pour un événement. On peut soutenir les Jeux et contester certaines dérogations (surveillance, environnement), ou l’inverse.",
+ "title": "Cadre légal spécial pour les Jeux olympiques d'hiver de 2030",
+ "updated": "2026-10-12"
+}

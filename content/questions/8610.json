@@ -1,0 +1,28 @@
+{
+ "cat": "Économie & fiscalité",
+ "checks": {},
+ "con": "Les opposants rappellent que le droit européen encadre strictement les préférences nationales dans les marchés publics, et craignent des achats plus chers.",
+ "date": "2026-10-08",
+ "hook": "Où va l’argent public : l’État achète pour environ 400 milliards d’euros par an.",
+ "kind": "resolution",
+ "label": "la priorité nationale aux achats publics",
+ "legacy": true,
+ "n": 8610,
+ "notes": "Rédigé par IA dans le MVP, non relu. À revérifier à la source.",
+ "polarity": "adopt",
+ "polarity_verified": true,
+ "pro": "Les partisans y voient un levier pour l'emploi, la production locale et la réduction de l'empreinte carbone des importations.",
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/8610"
+  }
+ ],
+ "status": "legacy",
+ "subkind": "ensemble",
+ "sum": "Résolution, sans valeur de loi. Les achats publics représentent environ 400 milliards d'euros par an. Le texte demande un critère facultatif de « priorité nationale » dans les marchés publics, fondé sur la localisation en France de l'emploi, de la production et de l'innovation. Il ne rendrait aucun achat français obligatoire.",
+ "surp": "Le critère serait facultatif et n’imposerait aucun achat. Le droit européen limite ce qui est possible : certains votent sur l’efficacité juridique, d’autres sur le principe.",
+ "title": "Favoriser les entreprises implantées en France dans les marchés publics",
+ "updated": "2026-10-12"
+}

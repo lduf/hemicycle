@@ -1,0 +1,28 @@
+{
+ "cat": "Écologie & énergie",
+ "checks": {},
+ "con": "Les opposants dénoncent un manque de transparence sur les données et les coûts, et un engagement sur des durées très longues. D'autres défendent une place plus mesurée du nucléaire dans le mix électrique.",
+ "date": "2025-06-18",
+ "hook": "Ta facture d’électricité et le climat de demain passent par le choix des centrales.",
+ "kind": "mesure",
+ "label": "la relance du nucléaire",
+ "legacy": true,
+ "n": 2521,
+ "notes": "Rédigé par IA dans le MVP, non relu. À revérifier à la source.",
+ "polarity": "adopt",
+ "polarity_verified": true,
+ "pro": "Les partisans jugent cette relance nécessaire et contestent les craintes sur la sûreté et la durabilité des installations.",
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/2521"
+  }
+ ],
+ "status": "legacy",
+ "subkind": "amendement",
+ "sum": "Article d'un texte sur la programmation de l'énergie. Il vise environ 27 GW de nouvelles capacités nucléaires d'ici 2050, avec au moins 10 GW de constructions lancées dès 2026, et le maintien du parc existant à au moins 63 GW. Six réacteurs EPR2 sont déjà engagés, et la décision d'en construire huit de plus doit être prise d'ici fin 2026. Un coût de 67 milliards d'euros est évoqué pour le nouveau nucléaire.",
+ "surp": "C’est un article d’un texte plus large sur l’énergie. Un « contre » peut viser le principe du nucléaire, mais aussi son coût (67 milliards évoqués), sa durée ou le manque de transparence. Un « pour » peut exprimer un soutien au nucléaire ou le choix de garder un cap énergétique.",
+ "title": "Relancer la construction de réacteurs nucléaires",
+ "updated": "2026-10-12"
+}

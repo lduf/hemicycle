@@ -1,0 +1,28 @@
+{
+ "cat": "Sport",
+ "checks": {},
+ "con": "Certains jugent que le texte vise surtout le football et peut affecter le rugby et d'autres sports. Le niveau du plafond des salaires et la multipropriété des clubs font débat.",
+ "date": "2026-06-29",
+ "hook": "Si tu suis le foot : qui contrôle les clubs, les agents et les salaires des dirigeants.",
+ "kind": "texte",
+ "label": "la réforme du sport professionnel",
+ "legacy": true,
+ "n": 7893,
+ "notes": "Rédigé par IA dans le MVP, non relu. À revérifier à la source.",
+ "polarity": "adopt",
+ "polarity_verified": true,
+ "pro": "Un encadrement plus strict des clubs, des agents et des rémunérations, avec un contrôle financier renforcé.",
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/7893"
+  }
+ ],
+ "status": "legacy",
+ "subkind": "ensemble",
+ "sum": "Proposition de loi déposée après une mission d'information sur le financement du football. Selon la version négociée avec le Sénat, elle renforce le rôle des fédérations, plafonne certaines rémunérations de dirigeants, encadre les agents sportifs (formation, déclaration des sommes perçues), crée des comités de dialogue avec les supporters et donne un pouvoir de contrôle à la DNCG sur les ventes de clubs. Elle contient aussi des mesures contre le piratage et sur les paris sportifs.",
+ "surp": "Peu d’opposition franche. Les désaccords portent sur des détails (plafond des rémunérations, multipropriété des clubs) qu’un simple pour ou contre ne montre pas.",
+ "title": "Organisation et financement du sport professionnel",
+ "updated": "2026-10-12"
+}

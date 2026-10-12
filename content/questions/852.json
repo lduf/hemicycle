@@ -1,0 +1,28 @@
+{
+ "cat": "Écologie & énergie",
+ "checks": {},
+ "con": "Les opposants craignent des coûts pour l'industrie et des produits importés non soumis aux mêmes règles.",
+ "date": "2025-02-20",
+ "hook": "Ta crème, ton fart de ski, tes vêtements : certains produits contenant des PFAS seraient interdits à partir de 2026.",
+ "kind": "texte",
+ "label": "l’interdiction des PFAS",
+ "legacy": true,
+ "n": 852,
+ "notes": "Rédigé par IA dans le MVP, non relu. À revérifier à la source. Résumé en partie issu de connaissances générales.",
+ "polarity": "adopt",
+ "polarity_verified": true,
+ "pro": "Les partisans mettent en avant les risques sanitaires et la persistance de ces substances dans l'environnement.",
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/852"
+  }
+ ],
+ "status": "legacy",
+ "subkind": "ensemble",
+ "sum": "Proposition de loi, deuxième lecture. Elle interdit à partir de 2026 la fabrication et la vente de certains produits contenant des PFAS, comme les cosmétiques, le fart de ski et une partie des vêtements. Elle prévoit aussi une redevance pour les industriels qui rejettent ces substances. Les poêles et casseroles ne sont pas visés.",
+ "surp": "Le texte ne vise pas les poêles et casseroles. Les désaccords portent sur le coût pour l’industrie et sur les produits importés non soumis aux mêmes règles.",
+ "title": "Limiter les « polluants éternels » (PFAS)",
+ "updated": "2026-10-12"
+}

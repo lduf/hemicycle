@@ -1,0 +1,28 @@
+{
+ "cat": "Droits & société",
+ "checks": {},
+ "con": "La crainte que le juge examine davantage le comportement de la victime que celui de l'auteur, et d'une inversion de la charge de la preuve.",
+ "date": "2025-04-01",
+ "hook": "La définition légale du viol : le consentement serait écrit noir sur blanc dans la loi.",
+ "kind": "texte",
+ "label": "le consentement dans la loi sur le viol",
+ "legacy": true,
+ "n": 1202,
+ "notes": "Rédigé par IA dans le MVP, non relu. À revérifier à la source.",
+ "polarity": "adopt",
+ "polarity_verified": true,
+ "pro": "Dire plus clairement qu'un rapport non consenti est illégal, et sanctionner des situations de sidération ou d'emprise.",
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/1202"
+  }
+ ],
+ "status": "legacy",
+ "subkind": "ensemble",
+ "sum": "Proposition de loi transpartisane. Elle inscrit le non-consentement dans la définition pénale du viol et des agressions sexuelles, en plus des critères actuels (violence, contrainte, menace, surprise). Le consentement doit être libre, éclairé, spécifique, préalable et révocable.",
+ "surp": "Texte porté par des élus de bords différents. Même chez ceux qui partagent l’objectif, des craintes juridiques subsistent : l’examen du comportement de la victime, la charge de la preuve.",
+ "title": "Consentement dans la définition pénale du viol",
+ "updated": "2026-10-12"
+}

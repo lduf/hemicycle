@@ -1,0 +1,818 @@
+<title>Dans l'hémicycle</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=DM+Sans:wght@400;500;700&display=swap">
+<style>
+/* Concept : un jeu de cartes à swiper sur de vrais votes, puis un hémicycle qui se colore selon tes réponses. Fond nuit, dégradé violet-bleu pour l'énergie, trois couleurs réservées aux votes (pour, contre, abstention). Aucune couleur de parti. */
+:root {
+  --bg: #F6F5FB; --surface: #FFFFFF; --surface2: #ECE9F8; --ink: #14122B; --muted: #5B5873; --line: #DDD9EE;
+  --accent: #5B3DF5; --accent2: #2E7BFF; --accent-ink: #FFFFFF; --accent-soft: #ECE8FF;
+  --pour: #0E9F5B; --contre: #E03A2F; --abst: #E0A100; --absent: #B9B5D0;
+  --display: 'Bricolage Grotesque', system-ui, sans-serif;
+  --body: 'DM Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --shadow: 0 10px 30px rgba(40, 20, 120, .12);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0C0A1D; --surface: #16133A; --surface2: #221E52; --ink: #F1EFFF; --muted: #A9A5C9; --line: #2D2960;
+    --accent: #8C75FF; --accent2: #5C9BFF; --accent-ink: #0C0A1D; --accent-soft: #231E5C;
+    --pour: #34D58A; --contre: #FF6B5F; --abst: #FFC83D; --absent: #4A4580;
+    --shadow: 0 10px 30px rgba(0, 0, 0, .45); color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0C0A1D; --surface: #16133A; --surface2: #221E52; --ink: #F1EFFF; --muted: #A9A5C9; --line: #2D2960;
+  --accent: #8C75FF; --accent2: #5C9BFF; --accent-ink: #0C0A1D; --accent-soft: #231E5C;
+  --pour: #34D58A; --contre: #FF6B5F; --abst: #FFC83D; --absent: #4A4580;
+  --shadow: 0 10px 30px rgba(0, 0, 0, .45); color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.5; padding: 16px 16px 56px; overflow-x: hidden; }
+.wrap { max-width: 720px; margin-inline: auto; display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+h1, h2, h3 { font-family: var(--display); font-weight: 800; line-height: 1.08; margin: 0; text-wrap: balance; letter-spacing: -.01em; }
+h1 { font-size: clamp(2.2rem, 8.5vw, 3.3rem); }
+h2 { font-size: 1.6rem; } h3 { font-size: 1.15rem; font-weight: 600; }
+p { margin: 0; }
+button { font: inherit; color: inherit; cursor: pointer; }
+a { color: var(--accent); }
+:focus-visible { outline: 3px solid var(--accent2); outline-offset: 2px; border-radius: 8px; }
+.muted { color: var(--muted); } .small { font-size: .86rem; }
+.top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.brand { display: flex; align-items: center; gap: 8px; font-family: var(--display); font-weight: 800; font-size: 1.1rem; }
+.link { background: none; border: none; color: var(--muted); font-size: .85rem; padding: 8px 4px; text-decoration: underline; text-underline-offset: 3px; }
+.progress { display: flex; gap: 3px; }
+.progress i { flex: 1; height: 6px; border-radius: 3px; background: var(--line); position: relative; overflow: hidden; }
+.progress i::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, var(--accent), var(--accent2)); transform: scaleX(0); transform-origin: left; transition: transform .5s cubic-bezier(.2, .8, .2, 1); }
+.progress i.done::after { transform: scaleX(1); } .progress i.cur::after { transform: scaleX(.35); opacity: .6; }
+.count { font-size: .8rem; color: var(--muted); display: flex; justify-content: space-between; }
+
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 24px; padding: 20px; display: flex; flex-direction: column; gap: 14px; min-width: 0; box-shadow: var(--shadow); }
+.hero { position: relative; background: linear-gradient(150deg, #4a2ee0 0%, #2E7BFF 100%); color: #fff; border: none; overflow: hidden; isolation: isolate; }
+.hero::before, .hero::after { content: ''; position: absolute; z-index: -1; width: 70%; aspect-ratio: 1; border-radius: 50%; filter: blur(40px); opacity: .55; animation: drift 14s ease-in-out infinite alternate; }
+.hero::before { background: radial-gradient(circle, #ff7ad9, transparent 65%); top: -25%; right: -20%; }
+.hero::after { background: radial-gradient(circle, #5cf0d0, transparent 65%); bottom: -30%; left: -25%; animation-duration: 18s; animation-direction: alternate-reverse; }
+@keyframes drift { from { transform: translate(0, 0) scale(1); } to { transform: translate(-12%, 14%) scale(1.25); } }
+.hero .muted { color: rgba(255, 255, 255, .85); }
+.hero .hemi { margin: 4px -6px 0; }
+.hero h1 .hl { background: linear-gradient(90deg, #fff, #c9f5ff, #ffd6f5); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.stats { display: flex; gap: 8px; flex-wrap: wrap; }
+.stat { background: rgba(255, 255, 255, .16); backdrop-filter: blur(6px); border-radius: 14px; padding: 8px 12px; font-size: .85rem; }
+.stat b { display: block; font-family: var(--display); font-size: 1.35rem; }
+
+.btn { border: 2px solid var(--line); background: var(--surface); border-radius: 16px; padding: 14px 18px; font-weight: 700; min-height: 54px; transition: transform .12s, background .2s, box-shadow .2s; }
+.btn:hover { background: var(--accent-soft); } .btn:active { transform: scale(.96); }
+.btn.primary { background: linear-gradient(100deg, var(--accent), var(--accent2)); border-color: transparent; color: #fff; font-size: 1.05rem; box-shadow: 0 8px 22px color-mix(in srgb, var(--accent) 40%, transparent); }
+.btn.primary:hover { filter: brightness(1.08); }
+.btn.white { background: #fff; color: #2b1fa8; border-color: #fff; font-size: 1.05rem; animation: pulse 2.4s ease-in-out infinite; }
+@keyframes pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, .55); } 50% { box-shadow: 0 0 0 12px rgba(255, 255, 255, 0); } }
+.btn.pour { border-color: var(--pour); color: var(--pour); } .btn.pour:hover { background: var(--pour); color: var(--bg); }
+.btn.contre { border-color: var(--contre); color: var(--contre); } .btn.contre:hover { background: var(--contre); color: var(--bg); }
+.btn.ghost { border-color: transparent; background: none; color: var(--muted); font-weight: 500; min-height: 44px; }
+.row { display: flex; gap: 12px; } .row > * { flex: 1; }
+.row.ans .btn { font-size: .9rem; line-height: 1.25; display: flex; align-items: center; justify-content: center; gap: 8px; text-align: center; min-height: 64px; }
+.row.ans .arr { font-size: 1.2rem; }
+
+.chips { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+.chip { display: flex; align-items: center; gap: 10px; text-align: left; border: 2px solid var(--line); background: var(--surface); border-radius: 16px; padding: 12px; font-weight: 500; transition: all .18s; animation: rise .5s both; animation-delay: calc(var(--d) * 35ms); }
+.chip:hover { transform: translateY(-2px); }
+.chip .em { font-size: 1.5rem; }
+.chip[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); box-shadow: 0 0 0 3px var(--accent-soft); font-weight: 700; transform: scale(1.02); }
+
+.stage { position: relative; }
+.swipe { touch-action: pan-y; user-select: none; position: relative; cursor: grab; transition: transform .28s ease; animation: cardin .5s cubic-bezier(.2, .9, .3, 1.15) both; }
+.swipe:active { cursor: grabbing; }
+@keyframes cardin { from { opacity: 0; transform: translateX(40px) rotate(3deg) scale(.96); } to { opacity: 1; transform: none; } }
+.swipe::after { content: ''; position: absolute; inset: 0; border-radius: 24px; pointer-events: none; opacity: 0; transition: opacity .1s; }
+.swipe[data-dir="pour"]::after { opacity: .16; background: var(--pour); }
+.swipe[data-dir="contre"]::after { opacity: .16; background: var(--contre); }
+.stamp { position: absolute; top: 18px; font-family: var(--display); font-weight: 800; font-size: 1.5rem; padding: 4px 12px; border: 4px solid; border-radius: 12px; pointer-events: none; transition: opacity .05s; }
+.stamp.pour { right: 16px; color: var(--pour); transform: rotate(10deg); opacity: var(--sp, 0); }
+.stamp.contre { left: 16px; color: var(--contre); transform: rotate(-10deg); opacity: var(--sc, 0); }
+.tag { align-self: flex-start; font-size: .82rem; font-weight: 700; padding: 5px 11px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); }
+.kind { font-size: .8rem; color: var(--muted); display: flex; gap: 8px; flex-wrap: wrap; } .kind b { color: var(--ink); }
+.qtitle { font-size: 1.45rem; }
+.note { font-size: .86rem; background: var(--surface2); border-radius: 12px; padding: 10px 12px; }
+details > summary { cursor: pointer; font-weight: 700; font-size: .92rem; padding: 6px 0; list-style: none; }
+details > summary::before { content: '＋ '; color: var(--accent); } details[open] > summary::before { content: '－ '; }
+details .body { display: flex; flex-direction: column; gap: 8px; font-size: .92rem; padding: 4px 0 6px; animation: rise .3s both; }
+dl { margin: 0; } dt { font-weight: 700; } dd { margin: 0 0 6px; color: var(--muted); font-size: .9rem; }
+.hint { text-align: center; font-size: .8rem; color: var(--muted); }
+@keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+.reveal { animation: rise .45s both; }
+
+.hemi svg { width: 100%; height: auto; display: block; overflow: visible; }
+.seat { transform-box: fill-box; transform-origin: center; animation: pop .5s cubic-bezier(.2, 1.6, .4, 1) both; animation-delay: calc(var(--i) * 1.6ms); }
+@keyframes pop { from { opacity: 0; transform: scale(0); } to { opacity: 1; transform: scale(1); } }
+.seat.s-p { fill: var(--pour); } .seat.s-c { fill: var(--contre); } .seat.s-a { fill: var(--abst); }
+.seat.s-x { fill: none; stroke: var(--absent); stroke-width: .006; }
+.hero .seat.s-x { stroke: rgba(255, 255, 255, .45); }
+.sc { fill: var(--surface2); } .sc.on { fill: var(--to); transition: fill .9s ease; transition-delay: calc(var(--i) * 1.1ms); }
+.still .seat { animation: none; } .still .sc.on { transition: none; }
+.seat.dim { opacity: .15; } .seat[data-g] { cursor: pointer; }
+.glabel { font-family: var(--body); font-weight: 700; font-size: 6px; fill: var(--muted); text-anchor: middle; dominant-baseline: middle; }
+.side { font-family: var(--display); font-weight: 800; font-size: 7.5px; fill: var(--ink); text-anchor: middle; dominant-baseline: middle; letter-spacing: .08em; }
+.cenv { font-family: var(--display); font-weight: 800; fill: var(--ink); text-anchor: middle; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 12px; font-size: .82rem; align-items: center; }
+.lg { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; background: var(--surface2); font-weight: 700; }
+.lg::before { content: ''; width: 11px; height: 11px; border-radius: 50%; background: var(--c); border: 2px solid var(--c); }
+.lg.x::before { background: none; border-color: var(--absent); }
+.scale { height: 10px; border-radius: 6px; background: linear-gradient(90deg, var(--surface2), var(--accent)); flex: 1; min-width: 80px; }
+.big { font-family: var(--display); font-weight: 800; font-size: 2.4rem; line-height: 1; }
+.verdict { font-weight: 700; padding: 12px 14px; border-radius: 14px; background: var(--surface2); }
+.verdict.same { background: color-mix(in srgb, var(--pour) 18%, transparent); }
+.verdict.diff { background: color-mix(in srgb, var(--abst) 22%, transparent); }
+
+.bar { display: flex; height: 10px; border-radius: 5px; overflow: hidden; background: var(--line); min-width: 60px; }
+.bar i { display: block; height: 100%; } .bar .p { background: var(--pour); } .bar .c { background: var(--contre); } .bar .a { background: var(--abst); }
+.rank { display: flex; flex-direction: column; gap: 8px; }
+.rk { display: grid; grid-template-columns: 1.7rem 1fr auto; gap: 4px 10px; align-items: center; text-align: left; width: 100%; border: 2px solid transparent; background: var(--surface2); border-radius: 16px; padding: 10px 12px; animation: rise .5s both; animation-delay: calc(var(--d) * 60ms); transition: transform .15s; }
+.rk:hover { transform: translateX(3px); }
+.rk[aria-pressed="true"] { border-color: var(--accent); }
+.rk .n { font-family: var(--display); font-weight: 800; color: var(--muted); }
+.rk .pct { font-family: var(--display); font-weight: 800; font-size: 1.25rem; }
+.rk .meter { grid-column: 2 / 4; height: 7px; border-radius: 4px; background: var(--line); overflow: hidden; }
+.rk .meter i { display: block; height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 4px; width: 0; animation: grow 1s cubic-bezier(.2, .8, .2, 1) both; animation-delay: calc(var(--d) * 60ms + .2s); }
+@keyframes grow { from { width: 0; } to { width: var(--w); } }
+.badge { font-size: .72rem; font-weight: 700; padding: 2px 8px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); margin-left: 6px; vertical-align: 2px; }
+.badge.far { background: var(--surface); border: 1px solid var(--line); color: var(--muted); }
+.kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.kpi { background: var(--surface2); border-radius: 16px; padding: 12px; display: flex; flex-direction: column; gap: 2px; }
+.kpi b { font-family: var(--display); font-size: 1.7rem; line-height: 1.05; } .kpi span { font-size: .78rem; color: var(--muted); }
+.tabs { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 2px; scrollbar-width: none; }
+.tabs button { flex: none; border: 2px solid var(--line); background: var(--surface); border-radius: 999px; padding: 8px 14px; font-weight: 700; font-size: .9rem; transition: all .15s; }
+.tabs button[aria-selected="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.pc { display: flex; flex-direction: column; gap: 10px; }
+.pr { border-left: 4px solid var(--accent); padding: 4px 0 4px 12px; display: flex; flex-direction: column; gap: 6px; }
+.pill { display: inline-block; font-size: .78rem; font-weight: 700; padding: 3px 9px; border-radius: 999px; background: var(--surface2); margin: 0 6px 4px 0; }
+.pill.ok { background: color-mix(in srgb, var(--pour) 20%, transparent); }
+.pill.ko { background: color-mix(in srgb, var(--contre) 20%, transparent); }
+.pill.mid { background: color-mix(in srgb, var(--abst) 25%, transparent); }
+.gv { display: grid; grid-template-columns: 5.2rem 1fr 3.4rem; gap: 8px; align-items: center; font-size: .85rem; }
+.qrow { width: 100%; text-align: left; background: var(--surface2); border: none; border-radius: 16px; padding: 12px; display: flex; justify-content: space-between; gap: 10px; align-items: center; }
+.div { font-size: .85rem; background: var(--surface2); border-radius: 12px; padding: 8px 10px; }
+.hb { display: flex; flex-direction: column; gap: 6px; }
+.hbr { display: grid; grid-template-columns: 2.8rem 1fr 4.6rem; gap: 8px; align-items: center; font-size: .85rem; }
+.hbt { height: 12px; border-radius: 0 6px 6px 0; background: var(--surface2); overflow: hidden; }
+.hbt i { display: block; height: 100%; border-radius: 0 6px 6px 0; background: linear-gradient(90deg, var(--accent), var(--accent2)); width: 0; animation: grow .9s cubic-bezier(.2, .8, .2, 1) both; animation-delay: calc(var(--d) * 50ms); }
+.hbv { text-align: right; font-variant-numeric: tabular-nums; font-weight: 700; }
+.db { position: relative; height: 18px; }
+.db .ln { position: absolute; top: 8px; height: 2px; background: var(--line); }
+.db .ln.thin { background: var(--muted); opacity: .5; }
+.db .box { position: absolute; top: 4px; height: 10px; border-radius: 3px; background: color-mix(in srgb, var(--accent) 30%, transparent); }
+.db .dot { position: absolute; top: 3px; width: 12px; height: 12px; margin-left: -6px; border-radius: 50%; border: 2px solid var(--surface); }
+.db .dot.a { background: var(--muted); } .db .dot.b { background: var(--accent); }
+.ag { display: grid; gap: 2px; font-size: .62rem; }
+.agh { text-align: center; color: var(--muted); font-weight: 700; overflow: hidden; } .agh.l { text-align: left; align-self: center; }
+.agc { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; border-radius: 4px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.ag.wk .agc { aspect-ratio: auto; height: 26px; }
+.sps { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
+.sp { background: var(--surface2); border-radius: 12px; padding: 8px 10px; font-size: .8rem; } .sp svg { width: 100%; height: 38px; display: block; }
+ul.m { margin: 0; padding-left: 1.1rem; display: flex; flex-direction: column; gap: 8px; }
+.hook { font-size: .93rem; background: var(--accent-soft); border-left: 4px solid var(--accent); padding: 8px 12px; border-radius: 0 12px 12px 0; }
+.hook b { color: var(--accent); }
+.opts { display: flex; flex-direction: column; gap: 10px; }
+.btn.opt { text-align: left; display: flex; flex-direction: column; gap: 2px; align-items: flex-start; }
+.surp { background: var(--surface2); border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 8px; }
+.surp h4 { font-family: var(--display); font-size: 1.05rem; margin: 0; }
+.vchip { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; padding: 8px 12px; border-radius: 12px; background: var(--surface2); margin: 0; }
+.vchip.ok { background: color-mix(in srgb, var(--pour) 18%, transparent); }
+.vchip.ko { background: color-mix(in srgb, var(--contre) 18%, transparent); }
+.vchip.mid { background: color-mix(in srgb, var(--abst) 24%, transparent); }
+.vb { display: flex; flex-direction: column; gap: 4px; }
+.facts { display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 2px 2px 8px; scrollbar-width: none; }
+.fact { flex: 0 0 76%; scroll-snap-align: start; background: var(--surface2); border-radius: 18px; padding: 14px; display: flex; flex-direction: column; gap: 6px; font-size: .92rem; }
+.fact .n { font-family: var(--display); font-weight: 800; font-size: 2rem; line-height: 1.05; background: linear-gradient(90deg, var(--accent), var(--accent2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.seg { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.segb { border: 2px solid var(--line); background: var(--surface); border-radius: 14px; padding: 10px 4px; display: flex; flex-direction: column; align-items: center; gap: 2px; text-align: center; }
+.segb[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
+.tag.warn { background: color-mix(in srgb, var(--abst) 28%, transparent); color: var(--ink); }
+.story { position: fixed; inset: 0; z-index: 50; background: linear-gradient(160deg, #2a1a8f 0%, #1d4fd8 62%, #0d7a8a 100%); color: #fff; display: flex; flex-direction: column; gap: 10px; padding: 16px 16px 18px; overflow: hidden; }
+.story .bars { display: flex; gap: 4px; } .story .bars i { flex: 1; height: 4px; border-radius: 2px; background: rgba(255, 255, 255, .3); } .story .bars i.on { background: #fff; }
+.story .strow { display: flex; justify-content: space-between; align-items: center; }
+.story .link { color: #fff; }
+.story .slide { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 14px; width: 100%; max-width: 560px; margin: 0 auto; overflow-y: auto; animation: rise .45s both; min-height: 0; }
+.story .stnav { display: flex; gap: 10px; max-width: 560px; width: 100%; margin: 0 auto; } .story .stnav .btn { flex: 1; }
+.story .btn:not(.white) { background: rgba(255, 255, 255, .15); border-color: rgba(255, 255, 255, .3); color: #fff; }
+.story .btn:disabled { opacity: .35; }
+.story .eyebrow { text-transform: uppercase; letter-spacing: .12em; font-size: .78rem; font-weight: 700; opacity: .8; }
+.story .bignum { font-family: var(--display); font-weight: 800; font-size: clamp(3.4rem, 18vw, 5.4rem); line-height: 1; }
+.story .bigname { font-family: var(--display); font-weight: 800; font-size: clamp(1.6rem, 7vw, 2.4rem); line-height: 1.1; }
+.story .sc { fill: rgba(255, 255, 255, .15); } .story .sc.on { fill: var(--to); }
+.story .glabel, .story .side { fill: #fff; }
+.story .bar { background: rgba(255, 255, 255, .25); }
+.story .card-img { width: 100%; border-radius: 16px; box-shadow: 0 10px 30px rgba(0, 0, 0, .35); background: rgba(255, 255, 255, .1); aspect-ratio: 4 / 5; object-fit: contain; }
+.story .big-quote { font-family: var(--display); font-weight: 800; font-size: 1.5rem; line-height: 1.15; }
+@media (prefers-reduced-motion: reduce) { .seat, .reveal, .chip, .rk, .swipe, .hero::before, .hero::after, .btn.white, .rk .meter i, details .body { animation: none !important; } .rk .meter i { width: var(--w); } .sc.on { transition: none; } }
+</style>
+<div class="wrap" id="app"></div>
+<script>
+const D = __DATA__;
+const EMO = {'Éducation':'🎓','Sport':'⚽','Écologie & énergie':'🌱','Économie & fiscalité':'💶','Famille & social':'👪','Santé & fin de vie':'🩺','Justice & sécurité':'⚖️','Immigration':'🌍','Numérique':'📱','Défense':'🛡️','Agriculture':'🌾','Droits & société':'✊','Travail & retraites':'💼','Logement':'🏠','Institutions':'🏛️'};
+const SIGS = Object.keys(D.groups);
+const ORDER = ['GDR','LFI-NFP','ECOS','SOC','LIOT','DEM','EPR','HOR','DR','UDR','RN','NI']; // disposition indicative, de gauche à droite
+const NQ = 15;
+const byN = {}; D.q.forEach(q => byN[q.n] = q);
+const GLOSS = {
+ 7397: [['Bourse sur critères sociaux','Aide versée à un étudiant selon les revenus de sa famille.'],['Indexation','Ajuster un montant chaque année selon l’inflation (la hausse des prix).']],
+ 7893: [['Fédération sportive','Association qui organise un sport et délivre les licences.'],['Agent sportif','Intermédiaire qui négocie les contrats des sportifs.']],
+ 2521: [['GW (gigawatt)','Unité de puissance. Un réacteur de nouvelle génération en représente environ 1,6.'],['EPR2','Nouvelle génération de réacteurs nucléaires français.'],['Mix énergétique','La répartition des sources d’électricité : nucléaire, éolien, solaire, etc.']],
+ 2580: [['Amendement','Modification proposée à un article d’un texte, votée séparément.'],['Moratoire','Suspension, ici de tout nouveau projet.'],['Photovoltaïque','Panneaux solaires qui produisent de l’électricité.']],
+ 881: [['Patrimoine','Tout ce qu’on possède : immobilier, actions, parts d’entreprise…'],['Holding patrimoniale','Société qui détient des biens ou des parts d’entreprise pour le compte de son propriétaire.']],
+ 4438: [['Nationalisation','L’État devient propriétaire d’une entreprise.'],['Proposition de loi','Texte déposé par des parlementaires (à la différence d’un projet de loi, déposé par le gouvernement).']],
+ 2272: [['Allocations familiales','Aide mensuelle versée aux familles ayant des enfants.'],['Proposition de loi','Texte déposé par des parlementaires.']],
+ 5729: [['Deuxième lecture','Le texte repasse devant l’Assemblée après être passé au Sénat.'],['Substance létale','Produit qui provoque la mort.']],
+ 805: [['Excuse de minorité','Principe selon lequel un mineur encourt une peine réduite par rapport à un adulte.'],['Comparution immédiate','Jugement rapide, juste après la garde à vue.'],['Civilement responsable','Tenu de payer les dommages causés.']],
+ 7987: [['Légitime défense','Se défendre face à une attaque, si la riposte est nécessaire et proportionnée.'],['Présomption','Règle qui suppose un fait vrai tant que le contraire n’est pas prouvé.']],
+ 4754: [['Titre de séjour','Autorisation de résider en France pour une personne étrangère.'],['Renouvellement automatique','Pas de démarche à refaire : l’administration le fait d’office.']],
+ 5192: [['Réseau social','Plateforme où l’on publie et échange (vidéos, photos, messages publics).'],['Messagerie privée','Échanges en petit groupe, exclus de l’interdiction.']],
+ 6736: [['Loi de programmation militaire','Fixe pour plusieurs années le budget et les priorités des armées.'],['Dissuasion nucléaire','Décourager une attaque par la menace d’une riposte nucléaire.'],['Projet de loi','Texte proposé par le gouvernement.']],
+ 7259: [['Ouvrages de stockage d’eau','Réserves d’eau pour l’irrigation.'],['Tir de défense','Tir autorisé pour protéger un troupeau.']],
+ 1202: [['Non-consentement','L’absence d’accord de la personne.'],['Transpartisane','Portée par des élus de plusieurs groupes politiques.']],
+ 3684: [['Âge légal','Âge minimum pour partir à la retraite, sauf cas particuliers.'],['Loi de financement de la Sécurité sociale','Budget annuel de la Sécurité sociale : retraites, santé, famille.'],['Suspension','Mise en pause temporaire d’une règle.']],
+ 3151: [['Impôt sur les sociétés','Impôt payé par les entreprises sur leurs bénéfices.'],['Contribution exceptionnelle','Surtaxe temporaire qui s’ajoute à l’impôt normal.']],
+ 4745: [['Encadrement des loyers','Plafond fixé pour le loyer au m² dans certaines zones.'],['Complément de loyer','Supplément autorisé si le logement a des atouts exceptionnels.'],['Loyer de référence majoré','Plafond de loyer fixé localement par le préfet.']],
+ 4723: [['Mineur non accompagné','Jeune de moins de 18 ans arrivé sans ses parents.'],['Aide sociale à l’enfance','Service du département qui protège les mineurs en danger.'],['Tests osseux','Examens radiologiques pour estimer l’âge, réputés peu précis.']],
+ 8279: [['Protoxyde d’azote','Gaz utilisé pour la cuisine, détourné pour ses effets euphorisants.'],['Free party','Fête musicale non déclarée, souvent en plein air.'],['Vidéosurveillance algorithmique','Logiciel qui analyse les images de caméras pour repérer des situations.']],
+ 6023: [['Travail dissimulé','Emploi non déclaré aux organismes sociaux.'],['Mesure conservatoire','Mesure temporaire prise avant la décision finale.'],['CPF','Compte personnel de formation : droits à des formations financées.']],
+ 3260: [['Résolution','Prise de position de l’Assemblée, sans force de loi.'],['Accords de 1968','Traité qui fixe des règles propres pour la circulation, le séjour et l’emploi des Algériens en France.']],
+ 8611: [['Espace Schengen','Zone d’une trentaine de pays où l’on circule sans contrôle aux frontières internes.'],['Pays tiers','Pays hors de l’Union européenne.'],['Résolution','Prise de position sans force de loi.']],
+ 8610: [['Commande publique','Les achats de l’État, des collectivités et des hôpitaux.'],['Résolution','Prise de position sans force de loi.']],
+ 5412: [['Pluralisme','Diversité des médias et des opinions exprimées.'],['Régulateur de l’audiovisuel','Autorité qui surveille l’audiovisuel et le pluralisme.'],['Concentration','Rachat ou regroupement d’entreprises sous un même contrôle.']],
+ 7454: [['Révision constitutionnelle','Modification de la Constitution : elle exige l’accord des deux chambres, puis 3/5 du Parlement réuni en Congrès.'],['Autonomie','Pouvoir de décider localement de certaines règles.']],
+ 4963: [['Vidéosurveillance algorithmique','Logiciel qui analyse les images pour repérer des situations.'],['Artificialisation des sols','Transformation d’espaces naturels ou agricoles en zones bâties.']],
+ 2957: [['Néonicotinoïde','Famille d’insecticides accusés de nuire aux abeilles.'],['Commission mixte paritaire','Réunion de députés et de sénateurs pour trouver un texte commun.'],['Conseil constitutionnel','Juge si une loi respecte la Constitution.']],
+ 852: [['PFAS','Substances chimiques très persistantes, dites « polluants éternels ».'],['Redevance','Somme que doivent payer ceux qui polluent.']],
+ 606: [['Crous','Organisme qui gère aides, logements et restaurants des étudiants.'],['Boursier','Étudiant qui reçoit une aide selon ses ressources.']],
+ 1194: [['Narcotrafic','Trafic de stupéfiants organisé.'],['Repenti','Criminel qui collabore avec la justice en échange d’avantages.'],['Parquet','Magistrats chargés de poursuivre les infractions.']],
+ 988: [['Résolution européenne','Texte adressé au gouvernement et aux institutions européennes, sans force de loi.'],['Abstention','Ne voter ni pour ni contre.']],
+ 1308: [['Droit du sol','Principe qui donne la nationalité selon le lieu de naissance.'],['Mayotte','Département d’outre-mer de l’océan Indien.']],
+ 840: [['Concours externe','Voie d’accès classique aux écoles de la fonction publique.'],['Égalité des chances','Mesures pour réduire l’effet de l’origine sociale sur les parcours.']]
+};
+const X = {
+ 7397:'la hausse des bourses étudiantes', 7893:'la réforme du sport professionnel', 2521:'la relance du nucléaire', 2580:'le moratoire éolien et solaire',
+ 881:'l’impôt plancher sur les ultra-riches', 4438:'la nationalisation d’ArcelorMittal', 2272:'les allocations dès le 1er enfant', 5729:'l’aide à mourir',
+ 805:'une justice des mineurs plus sévère', 7987:'la présomption de légitime défense', 4754:'les titres de séjour renouvelés d’office', 5192:'les réseaux sociaux interdits avant 15 ans',
+ 6736:'la hausse du budget militaire', 7259:'la loi d’urgence agricole', 1202:'le consentement dans la loi sur le viol', 3684:'le gel de la réforme des retraites',
+ 3151:'la surtaxe sur les grandes entreprises', 4745:'l’encadrement des loyers', 4723:'la présomption de minorité', 8279:'la loi de sécurité « Ripost »',
+ 6023:'la loi anti-fraude', 3260:'la fin des accords avec l’Algérie', 8611:'la « double frontière » Schengen', 8610:'la priorité nationale aux achats publics',
+ 5412:'le contrôle de la concentration des médias', 7454:'l’autonomie de la Corse', 4963:'la loi sur les JO 2030', 2957:'cette loi agricole (dont l’acétamipride)',
+ 852:'l’interdiction des PFAS', 606:'le repas à 1 € pour tous', 1194:'la loi anti-narcotrafic', 988:'plus de soutien à l’Ukraine',
+ 1308:'le droit du sol durci à Mayotte', 840:'la voie d’accès « égalité des chances »'
+};
+const low = t => t[0].toLowerCase() + t.slice(1);
+const say = (qn, v) => (v === 'pour' ? 'Pour ' : 'Contre ') + X[qn];
+const SRC = {
+ lcp: ['LCP — programme du RN, juin 2024','https://lcp.fr/actualites/legislatives-2024-pouvoir-d-achat-immigration-ecole-jordan-bardella-devoile-le-programme'],
+ imm: ['LCP — immigration, tour d’horizon, juin 2024','https://lcp.fr/actualites/legislatives-2024-quelles-propositions-en-matiere-d-immigration-tour-d-horizon-des'],
+ ps: ['Public Sénat — 100 premiers jours du NFP','https://www.publicsenat.fr/actualites/politique/le-programme-des-100-premiers-jours-du-nouveau-front-populaire'],
+ cmp: ['Comparatif des programmes 2024 (document tiers, attributions parfois incertaines)','https://www.lacaisse.com/sites/default/files/medias/pdf/fr/reponse_17janvier2024_comparateur_programmes_bona_fide_juin2024.pdf']
+};
+const NFP = ['LFI-NFP','SOC','ECOS','GDR'], ENS = ['EPR','DEM','HOR'];
+const B = (bloc, groups, exp, text, src, flag) => ({bloc, groups, exp, text, src, flag});
+const PROM = {
+ 2521: [B('RN',['RN'],'pour','Faire du nucléaire un pilier du mix énergétique.',['lcp']),
+        B('Ensemble',ENS,'pour','Ouvrir 8 nouveaux réacteurs.',['cmp'],'attribution à vérifier'),
+        B('Nouveau Front populaire',NFP,null,'Pas de ligne commune : le programme renvoie à une loi sur l’énergie, avec des désaccords internes sur le nucléaire.',['ps'])],
+ 2580: [B('RN',['RN'],'pour','Moratoire sur les nouveaux chantiers éoliens.',['lcp'],'partiel : le vote vise aussi le solaire'),
+        B('Ensemble',ENS,'contre','Renforcer les filières d’énergies renouvelables.',['cmp'],'attribution incertaine')],
+ 881:  [B('Nouveau Front populaire',NFP,'pour','Rétablir un impôt sur la fortune et l’exit tax, supprimer la flat tax.',['ps','cmp'],'même logique, pas la même mesure'),
+        B('RN',['RN'],null,'Aucune mesure sur l’ISF dans le programme 2024.',['lcp'])],
+ 805:  [B('RN',['RN'],'pour','Peines planchers et suspension des allocations familiales des parents de mineurs récidivistes.',['lcp'],'même esprit, pas la même mesure')],
+ 7987: [B('RN',['RN'],'pour','Présomption de légitime défense pour les forces de l’ordre (programme 2022 selon le comparatif).',['cmp'],'absent de l’article de 2024')],
+ 4754: [B('Nouveau Front populaire',NFP,'pour','Carte de séjour « référence » de dix ans, régularisations facilitées.',['imm'],'même esprit, pas la même mesure'),
+        B('RN',['RN'],'contre','Durcir les règles : fin du droit du sol, régularisations suspendues, regroupement familial restreint.',['imm'],'même esprit, pas la même mesure'),
+        B('Ensemble',ENS,null,'Cartes de séjour de longue durée conditionnées à la maîtrise du français et aux valeurs de la République.',['imm'])],
+ 5192: [B('Ensemble',ENS,'pour','Réseaux sociaux interdits avant 15 ans.',['cmp'],'attribution à vérifier'),
+        B('RN',['RN'],'pour','Interdire les téléphones portables dans les établissements, lycées compris.',['lcp'],'partiel : ne porte que sur le portable')],
+ 6736: [B('Ensemble',ENS,'pour','Doubler le budget militaire d’ici 2030.',['cmp'],'attribution à vérifier')],
+ 5729: [B('Tous les grands blocs',[],null,'Aucun des quatre grands programmes ne traite la fin de vie, d’après le comparatif.',['cmp'])],
+ 3684: [B('Nouveau Front populaire',NFP,'pour','Abroger la réforme de 2023 et revenir à 60 ans.',['ps'],'même direction, pas la même mesure : ici, simple suspension'),
+        B('RN',['RN'],'pour','Départ à 60 ans pour qui a commencé avant 20 ans (40 annuités), 62 ans pour les autres ; revenir sur la réforme de 2023.',['lcp'],'même direction, pas la même mesure')],
+ 3151: [B('Nouveau Front populaire',NFP,'pour','Taxer les superprofits.',['ps'],'même esprit, pas la même mesure')],
+ 8611: [B('RN',['RN'],'pour','Réserver la libre circulation de Schengen aux seuls ressortissants de l’UE.',['imm'],'même esprit, pas la même mesure')],
+ 1308: [B('RN',['RN'],'pour','Supprimer le droit du sol.',['lcp','imm'],'même esprit, pas la même mesure'),
+        B('Nouveau Front populaire',NFP,'contre','Droit du sol intégral pour les enfants nés en France.',['imm'],'même esprit, pas la même mesure')],
+ 2957: [B('Nouveau Front populaire',NFP,'contre','Interdire le glyphosate et les néonicotinoïdes.',['cmp'],'même esprit : le texte contient d’autres mesures'),
+        B('RN',['RN'],null,'Mesures agricoles sur les importations non conformes et les cantines, sans équivalent direct.',['lcp'])],
+ 988:  [B('Nouveau Front populaire',NFP,'pour','Livrer des armes à l’Ukraine et annuler sa dette extérieure.',['ps'],'même esprit, pas la même mesure'),
+        B('RN',['RN'],null,'Opposition à l’envoi de troupes en Ukraine, vigilance face aux ingérences russes.',['lcp'])]
+};
+
+const state = { screen:'intro', prio:[], answers:{}, order:[], idx:0, reveal:null, tab:'prox', hl:null, openQ:null, still:false, preds:{}, predict:null, slide:0, nq:15, pron:false, more:false, cardUrl:null, factIdx:Math.floor(Math.random()*100) };
+const $app = document.getElementById('app');
+const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+const rnd = () => Math.random() * 1e9 | 0;
+
+/* ---------- hémicycle ---------- */
+const lay = {};
+function layout(N) {
+  if (lay[N]) return lay[N];
+  const R = 11, r0 = 0.36, dr = (1 - r0) / (R - 1);
+  const radii = [...Array(R)].map((_, i) => r0 + i * dr), sum = radii.reduce((a, b) => a + b, 0);
+  const cnt = radii.map(r => Math.round(N * r / sum));
+  let diff = N - cnt.reduce((a, b) => a + b, 0), k = R - 1;
+  while (diff !== 0) { cnt[k] += diff > 0 ? 1 : -1; diff += diff > 0 ? -1 : 1; k = (k + R - 1) % R; }
+  const seats = [];
+  radii.forEach((r, i) => { for (let j = 0; j < cnt[i]; j++) { const th = Math.PI * (1 - j / (cnt[i] - 1)); seats.push({ x: r * Math.cos(th), y: -r * Math.sin(th), th, r }); } });
+  seats.sort((a, b) => (b.th - a.th) || (a.r - b.r));
+  const rad = 0.4 * Math.min(dr, Math.PI / (cnt[R - 1] - 1));
+  return lay[N] = { seats, rad };
+}
+function rng(seed) { let a = seed >>> 0; return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+function shuffle(arr, seed) { const r = rng(seed); for (let i = arr.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [arr[i], arr[j]] = [arr[j], arr[i]]; } return arr; }
+function svg(seats, rad, fn, label, opt) {
+  opt = opt || {};
+  const c = seats.map((s, i) => { const o = fn(i); return `<circle class="seat ${o.cls}" style="--i:${i}${o.to ? ';--to:' + o.to : ''}" cx="${s.x.toFixed(3)}" cy="${s.y.toFixed(3)}" r="${rad.toFixed(4)}"${o.g ? ` data-g="${o.g}"` : ''}></circle>`; }).join('');
+  const vb = opt.named ? '-1.24 -1.22 2.48 1.4' : '-1.04 -1.04 2.08 1.2';
+  return `<svg viewBox="${vb}" role="img" aria-label="${label}">${c}${opt.labels || ''}${opt.center || ''}</svg>`;
+}
+// sièges : un député par point, à sa vraie place (numéro de siège officiel), de la gauche vers la droite
+function seatArr(q) { const s = q.seats, a = []; for (let i = 0; i < s.length; i += 2) a.push({ g: ORDER[s.charCodeAt(i) - 65], st: s[i + 1] }); return a; }
+const SIDES = `<text class="side" transform="translate(-.68 .1) scale(.0105)">◀ GAUCHE</text><text class="side" transform="translate(.68 .1) scale(.0105)">DROITE ▶</text>`;
+function groupLabels(L, gs) {
+  const idx = {}; gs.forEach((g, i) => { if (g && g !== 'NI') (idx[g] = idx[g] || []).push(i); });
+  return Object.keys(idx).map(g => ({ g, m: idx[g][Math.floor(idx[g].length / 2)] })).sort((a, b) => a.m - b.m).map((o, k) => { const s = L.seats[o.m], r = 1.1 + (k % 2) * 0.1; return `<text class="glabel" transform="translate(${(r * Math.cos(s.th)).toFixed(3)} ${(-r * Math.sin(s.th)).toFixed(3)}) scale(.0105)">${o.g === 'LFI-NFP' ? 'LFI' : o.g}</text>`; }).join('');
+}
+function hemiVote(q, named, centre) {
+  const a = seatArr(q), L = layout(a.length), t = totals(q);
+  const ctr = centre ? `<text class="cenv" transform="translate(0 -.13) scale(.01)" font-size="14">${t.p} – ${t.c}</text><text class="cenv" transform="translate(0 -.03) scale(.01)" font-size="7" style="fill:var(--muted);font-family:var(--body);font-weight:700">${q.sort === 'adopté' ? 'ADOPTÉ' : 'REJETÉ'}</text>` : '';
+  return svg(L.seats, L.rad, i => ({ cls: 's-' + a[i].st, g: named ? a[i].g : null }), 'Hémicycle : chaque point est un député à sa place, coloré selon son vote', { named, labels: SIDES + (named ? groupLabels(L, a.map(x => x.g)) : ''), center: ctr });
+}
+function totals(q) { let p = 0, c = 0, ab = 0; const a = seatArr(q); a.forEach(x => { if (x.st === 'p') p++; else if (x.st === 'c') c++; else if (x.st === 'a') ab++; }); return { p, c, a: ab, n: a.length, x: a.length - p - c - ab }; }
+const LEG = q => { const t = q ? totals(q) : null; return `<div class="legend"><span class="lg" style="--c:var(--pour)">Pour${t ? ' · ' + t.p : ''}</span><span class="lg" style="--c:var(--contre)">Contre${t ? ' · ' + t.c : ''}</span><span class="lg" style="--c:var(--abst)">Abstention${t ? ' · ' + t.a : ''}</span><span class="lg x">Absent ou non-votant${t ? ' · ' + t.x : ''}</span></div>`; };
+
+/* ---------- logique ---------- */
+function stance(c) { const t = c[0] + c[1] + c[2]; return t === 0 ? null : (c[0] - c[1]) / t; }
+const answered = () => state.order.filter(qn => state.answers[qn] === 'pour' || state.answers[qn] === 'contre');
+function scoreGroup(sig) {
+  let s = 0, w = 0, n = 0;
+  answered().forEach(qn => { const a = state.answers[qn], q = byN[qn], m = stance(q.g[sig] || [0, 0, 0]); if (m === null) return; const wt = state.prio.includes(q.cat) ? 2 : 1; s += (1 - Math.abs((a === 'pour' ? 1 : -1) - m) / 2) * wt; w += wt; n++; });
+  return { score: w ? s / w : null, n };
+}
+function scoreByCat(sig) { const o = {}; answered().forEach(qn => { const q = byN[qn], a = state.answers[qn], m = stance(q.g[sig] || [0, 0, 0]); if (m === null) return; const v = 1 - Math.abs((a === 'pour' ? 1 : -1) - m) / 2; (o[q.cat] = o[q.cat] || { s: 0, n: 0 }); o[q.cat].s += v; o[q.cat].n++; }); Object.keys(o).forEach(c => o[c].s /= o[c].n); return o; }
+function buildOrder() {
+  const all = D.q.slice(), pr = shuffle(all.filter(q => state.prio.includes(q.cat)), rnd()).slice(0, Math.round(state.nq * .6));
+  const rest = shuffle(all.filter(q => !pr.includes(q)), rnd());
+  state.order = shuffle(pr.concat(rest).slice(0, state.nq).map(q => q.n), rnd());
+}
+function bar(c) { const t = c[0] + c[1] + c[2] || 1; return `<div class="bar" title="${c[0]} pour, ${c[1]} contre, ${c[2]} abst."><i class="p" style="width:${c[0] / t * 100}%"></i><i class="c" style="width:${c[1] / t * 100}%"></i><i class="a" style="width:${c[2] / t * 100}%"></i></div>`; }
+const stLabel = m => m === null ? 'n.d.' : m >= .5 ? 'pour' : m <= -.5 ? 'contre' : 'partagé';
+const fmtD = d => new Date(d).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+const KIND = { mesure: 'Vote sur une mesure précise', texte: 'Vote sur l’ensemble d’un texte', resolution: 'Vote sur une résolution (sans valeur de loi)' };
+const topbar = () => `<div class="top"><div class="brand"><svg width="26" height="26" viewBox="-1.1 -1.1 2.2 1.2" aria-hidden="true"><path d="M-1 0A1 1 0 0 1 1 0M-.62 0A.62 .62 0 0 1 .62 0" fill="none" stroke="url(#g)" stroke-width=".26"/><defs><linearGradient id="g"><stop stop-color="#5B3DF5"/><stop offset="1" stop-color="#2E7BFF"/></linearGradient></defs></svg>Dans l’hémicycle</div>${state.screen !== 'intro' ? '<button class="link" data-act="restart">Recommencer</button>' : ''}</div>`;
+
+/* ---------- vues ---------- */
+function viewIntro() {
+  const demo = byN[2521];
+  return `<div class="card hero reveal"><h1>Oublie les promesses.<br><span class="hl">Regarde les votes.</span></h1>
+  <p class="lead">Tu réponds <b>pour</b> ou <b>contre</b> à de vrais votes de l’Assemblée nationale, sans savoir qui a voté quoi. À la fin, on te montre quels groupes ont voté comme toi, et ce qu’ils avaient promis.</p>
+  <div class="hemi">${hemiVote(demo)}</div>
+  <div class="stats"><div class="stat"><b>577</b>députés</div><div class="stat"><b>${D.q.length}</b>votes réels, tirés au hasard</div><div class="stat"><b>0</b>nom de parti avant le résultat</div></div>
+  <button class="btn white" data-act="start">C’est parti</button><button class="link" style="color:#fff" data-act="stats">📊 Ou découvre d’abord qui vote vraiment à l’Assemblée</button><button class="link" style="color:#fff" data-act="how">🔍 Comment c’est fait, et ce qu’il faut savoir</button><p class="small muted">De 2 à 7 minutes selon la durée choisie (un peu plus avec le mode pronostic). Rien n’est enregistré. Prototype : textes écrits par une IA, pas encore relus. Données officielles de la 17e législature.</p></div>
+  <div class="card reveal"><h3>Le saviez-vous ?</h3>${factCards(factsAgg())}<p class="small muted">Participation des députés aux scrutins publics. Glisse pour voir la suite.</p></div>`;
+}
+function viewPrio() {
+  return `<div class="card reveal"><h2>Qu’est-ce qui compte pour toi ?</h2><p class="muted">Choisis jusqu’à 3 thèmes. Ils sont tirés en priorité et pèsent double dans le résultat.</p>
+  <div class="chips">${D.cats.map((c, i) => `<button class="chip" style="--d:${i}" aria-pressed="${state.prio.includes(c)}" data-act="prio" data-v="${esc(c)}"><span class="em">${EMO[c] || '•'}</span>${esc(c)}</button>`).join('')}</div>
+  <h3>Combien de temps ?</h3><div class="seg">${[[8, 'Express', '≈ 2 min'], [15, 'Standard', '≈ 4 min'], [25, 'Complet', '≈ 7 min']].map(a => `<button class="segb" aria-pressed="${state.nq === a[0]}" data-act="len" data-v="${a[0]}"><b>${a[1]}</b><span class="small muted">${a[0]} votes · ${a[2]}</span></button>`).join('')}</div>
+  <button class="segb" style="flex-direction:row;justify-content:flex-start;gap:10px;padding:12px;text-align:left" aria-pressed="${state.pron}" data-act="pron"><span style="font-size:1.4rem">🎯</span><span><b>Mode pronostic</b> <span class="small muted">(optionnel, plus long)<br>Avant chaque résultat, tu devines ce qu’ont fait les députés. Score de flair à la fin.</span></span></button>
+  <button class="btn primary" data-act="go">${state.prio.length ? 'Commencer le quiz' : 'Passer, tout compte pareil'}</button></div>`;
+}
+function progress() { return `<div class="progress" aria-label="Question ${state.idx + 1} sur ${state.order.length}">${state.order.map((_, i) => `<i class="${i < state.idx ? 'done' : i === state.idx ? 'cur' : ''}"></i>`).join('')}</div><div class="count"><span>Vote ${state.idx + 1} sur ${state.order.length}</span><span>${Math.round(state.idx / state.order.length * 100)} %</span></div>`; }
+function viewQuiz() {
+  const q = byN[state.order[state.idx]];
+  if (state.predict === q.n) return viewPredict(q);
+  if (state.reveal === q.n) return viewReveal(q);
+  const gl = GLOSS[q.n] || [];
+  return `${progress()}<div class="stage"><article class="card swipe" id="swipe" data-dir="">
+  <div class="stamp pour">POUR</div><div class="stamp contre">CONTRE</div>
+  <span class="tag">${EMO[q.cat] || ''} ${esc(q.cat)}${state.prio.includes(q.cat) ? ' · prioritaire' : ''}</span>
+  <p class="kind"><b>${KIND[q.kind]}</b><span>${fmtD(q.date)}</span></p>
+  <h2 class="qtitle">${esc(q.title)}</h2>${HOOK[q.n] ? `<p class="hook"><b>Ça change quoi ?</b> ${esc(HOOK[q.n])}</p>` : ''}<p>${esc(q.sum)}</p>
+  ${q.kind === 'texte' ? '<p class="note">Un vote sur l’ensemble d’un texte regroupe souvent plusieurs mesures. On vote pour ou contre le tout.</p>' : ''}
+  ${q.kind === 'resolution' ? '<p class="note">Une résolution exprime une position de l’Assemblée. Elle ne change pas la loi.</p>' : ''}
+  <details><summary>Comprendre les mots</summary><div class="body"><dl>${gl.map(t => `<dt>${esc(t[0])}</dt><dd>${esc(t[1])}</dd>`).join('')}</dl></div></details>
+  <details><summary>Les arguments en débat</summary><div class="body"><p><b>En faveur.</b> ${esc(q.pro)}</p><p><b>En défaveur.</b> ${esc(q.con)}</p></div></details>
+  </article></div>
+  <div class="row ans"><button class="btn contre" data-act="ans" data-v="contre"><span class="arr">←</span>${esc(say(q.n, 'contre'))}</button><button class="btn pour" data-act="ans" data-v="pour">${esc(say(q.n, 'pour'))}<span class="arr">→</span></button></div>
+  <div class="hint">Glisse la carte à droite (pour) ou à gauche (contre), ou utilise les flèches du clavier.</div>
+  <div class="row">${state.idx > 0 ? '<button class="btn ghost" data-act="prev">Précédent</button>' : ''}<button class="btn ghost" data-act="skip">Je ne sais pas, passer</button></div>`;
+}
+function viewReveal(q) {
+  const t = totals(q), a = state.answers[q.n], maj = t.p > t.c ? 'pour' : 'contre', same = a === maj, last = state.idx === state.order.length - 1;
+  return `${progress()}<div class="card reveal"><span class="tag">${EMO[q.cat] || ''} ${esc(q.cat)}</span><h3>${esc(q.title)}</h3>
+  <div class="hemi">${hemiVote(q, false, true)}</div>${LEG(q)}
+  <p class="small muted">Chaque point est un député, à sa vraie place dans l’hémicycle : les partis sont assis par blocs, de la gauche à la droite. Point vide : absent. Les noms des groupes apparaissent au résultat.</p>
+  ${predFb(q)}<p class="verdict ${same ? 'same' : 'diff'}">Toi : ${esc(low(say(q.n, a)))}.<br>${same ? 'Comme la majorité des députés présents.' : 'La majorité des députés présents a voté l’inverse.'}</p>
+  <p class="small muted">Seuls ${t.p + t.c + t.a} députés sur ${t.n} ont voté ce jour-là. Le ${fmtD(q.date)}, le texte a été <b>${q.sort === 'adopté' ? 'adopté' : 'rejeté'}</b>. <a href="https://www.assemblee-nationale.fr/dyn/17/scrutins/${q.n}" target="_blank" rel="noopener">Voir le scrutin officiel</a></p>
+  ${surpBlock(q)}
+  <button class="btn primary" data-act="next">${last ? 'Voir mon récap' : 'Question suivante'}</button></div>`;
+}
+function ranking() { return SIGS.map(s => ({ s, ...scoreGroup(s) })).filter(x => x.score !== null).sort((a, b) => b.score - a.score); }
+function colorFor(r, s) { const sc = r.map(x => x.score), mn = Math.min(...sc), mx = Math.max(...sc), x = r.find(y => y.s === s); if (!x) return 'var(--surface2)'; const p = mx === mn ? 50 : (x.score - mn) / (mx - mn) * 100; return `color-mix(in srgb, var(--accent) ${Math.round(8 + p * .92)}%, var(--surface2))`; }
+function hemiResult(r, story) {
+  const a = seatArr(byN[8611]), L = layout(a.length);
+  return svg(L.seats, L.rad, i => { const g = a[i].g; return { cls: 'sc', g, to: story ? storyColor(r, g) : (g === 'NI' ? 'var(--line)' : colorFor(r, g)) }; }, 'Hémicycle coloré selon la proximité avec tes réponses', { named: true, labels: SIDES + groupLabels(L, a.map(x => x.g)) });
+}
+function viewResult() {
+  const r = ranking(), ans = answered();
+  if (!ans.length) return `${topbar()}<div class="card"><h2>Pas encore de réponse</h2><p class="muted">Tu as tout passé, on ne peut donc rien comparer.</p><button class="btn primary" data-act="restart">Recommencer</button></div>`;
+  const withMaj = ans.filter(qn => { const t = totals(byN[qn]); return (state.answers[qn] === 'pour') === (t.p > t.c); }).length;
+  const tabs = [['prox', 'Proximité'], ['prom', 'Promesses vs votes'], ['votes', 'Vote par vote'], ['meth', 'Méthode']];
+  return `${topbar()}<div class="card reveal"><h2>Voilà ton hémicycle</h2><p class="muted">Plus un groupe est foncé, plus ses votes ressemblent aux tiens. Touche un groupe pour le repérer.</p>
+  <div class="hemi" id="hemires">${hemiResult(r)}</div>
+  <div class="legend"><span class="lg x">plus loin</span><div class="scale"></div><span class="lg" style="--c:var(--accent)">plus proche</span></div>
+  <p class="small muted">Chaque député à sa place réelle dans l’hémicycle. Ici, la couleur montre la proximité de son groupe avec toi, pas un vote. Les couleurs comparent les groupes entre eux.</p>
+  <div class="kpis"><div class="kpi"><b data-count="${ans.length}">${ans.length}</b><span>réponses</span></div><div class="kpi"><b data-count="${Math.round(withMaj / ans.length * 100)}" data-suf=" %">${Math.round(withMaj / ans.length * 100)} %</b><span>de tes réponses avec la majorité des députés présents</span></div><div class="kpi"><b>${esc(r[0].s)}</b><span>le plus proche, ${Math.round(r[0].score * 100)} %</span></div></div></div>
+  <div class="tabs" role="tablist">${tabs.map(t => `<button role="tab" aria-selected="${state.tab === t[0]}" data-act="tab" data-v="${t[0]}">${t[1]}</button>`).join('')}</div>
+  ${state.tab === 'prox' ? tabProx(r) : state.tab === 'prom' ? tabProm() : state.tab === 'votes' ? tabVotes() : tabMeth()}
+  <div class="card"><h3>Des chiffres qui surprennent</h3>${factCards(factsNamed())}<p class="small muted">Participation aux scrutins publics seulement : ce n’est pas une mesure du travail total d’un groupe.</p></div>
+  <div class="card"><h3>Envie d’aller plus loin ?</h3><button class="btn primary" data-act="story">▶ Revoir mon récap et partager ma carte</button><button class="btn" data-act="how">🔍 Comment c’est fait</button><button class="btn" data-act="stats">📊 Qui vote vraiment ? Présence et discipline des groupes</button><div class="row"><button class="btn primary" data-act="more">+ 5 votes pour affiner</button><button class="btn" data-act="again">15 autres votes</button></div></div>`;
+}
+function divergences(sig) {
+  return answered().map(qn => { const q = byN[qn], m = stance(q.g[sig] || [0, 0, 0]); if (m === null) return null; const u = state.answers[qn] === 'pour' ? 1 : -1; return { q, u, m, d: Math.abs(u - m) }; }).filter(Boolean).sort((a, b) => b.d - a.d);
+}
+function tabProx(r) {
+  const cats = {}; answered().forEach(qn => cats[byN[qn].cat] = 1);
+  const best = Object.keys(cats).map(c => { let b = null; r.forEach(x => { const v = scoreByCat(x.s)[c]; if (v && (!b || v.s > b.s)) b = { g: x.s, s: v.s, n: v.n }; }); return b ? { c, ...b } : null; }).filter(Boolean);
+  return `<div class="card reveal"><h3>Classement</h3><div class="rank">${r.map((x, i) => { const pct = Math.round(x.score * 100), open = state.hl === x.s, dv = open ? divergences(x.s) : [], cc = open ? scoreByCat(x.s) : {};
+    return `<button class="rk" style="--d:${i}" aria-pressed="${open}" data-act="hl" data-v="${x.s}"><span class="n">${i + 1}</span><span><b>${esc(D.groups[x.s])}</b> <span class="muted small">${x.s}</span>${i < 2 ? '<span class="badge">le plus proche</span>' : i >= r.length - 2 ? '<span class="badge far">le plus loin</span>' : ''}</span><span class="pct">${pct}%</span><span class="meter"><i style="--w:${pct}%"></i></span></button>
+    ${open ? `<div class="reveal" style="display:flex;flex-direction:column;gap:6px;padding:0 4px 8px"><p class="small muted">${Object.keys(cc).map(c => `${EMO[c] || ''} ${esc(c)} : <b>${Math.round(cc[c].s * 100)}%</b>`).join(' · ')}</p>
+      ${dv.slice(0, 3).filter(d => d.d >= 1).map(d => `<p class="div"><b>Désaccord :</b> ${esc(d.q.title)}<br>Toi : ${d.u > 0 ? 'pour' : 'contre'} · ${x.s} : ${stLabel(d.m)}</p>`).join('')}
+      ${dv.slice(-3).reverse().filter(d => d.d <= .5).map(d => `<p class="div"><b>Accord :</b> ${esc(d.q.title)}<br>Toi : ${d.u > 0 ? 'pour' : 'contre'} · ${x.s} : ${stLabel(d.m)}</p>`).join('')}</div>` : ''}`; }).join('')}</div></div>
+  <div class="card reveal"><h3>Par thème, le groupe le plus proche</h3><ul class="m small">${best.map(b => `<li>${EMO[b.c] || ''} <b>${esc(b.c)}</b> : ${esc(b.g)} (${Math.round(b.s * 100)} %, ${b.n} vote${b.n > 1 ? 's' : ''})</li>`).join('')}</ul><p class="small muted">Avec si peu de votes par thème, ces résultats restent fragiles.</p></div>`;
+}
+function status(g, q, exp) { const m = stance(q.g[g] || [0, 0, 0]), l = stLabel(m); if (!exp) return { g, l, k: 'na' }; if (l === 'partagé' || l === 'n.d.') return { g, l, k: 'mid' }; return { g, l, k: l === exp ? 'ok' : 'ko' }; }
+function tabProm() {
+  const tally = {}, qs = state.order.filter(qn => PROM[qn]), none = state.order.filter(qn => !PROM[qn]);
+  const cards = qs.map(qn => {
+    const q = byN[qn];
+    const prs = PROM[qn].map(p => {
+      const gs = p.groups.length ? p.groups : SIGS.filter(g => q.g[g]), st = gs.map(g => status(g, q, p.exp)); let k = 'na';
+      if (p.exp) { const ks = st.map(x => x.k); k = ks.every(x => x === 'ok') ? 'ok' : ks.every(x => x === 'ko') ? 'ko' : 'mid'; (tally[p.bloc] = tally[p.bloc] || { ok: 0, ko: 0, mid: 0 })[k]++; }
+      const VCH = { ok: ['✅', 'Cohérent', 'le vote va dans le sens de la promesse'], mid: ['◐', 'Partiel ou partagé', 'les votes ne vont pas tous dans le même sens'], ko: ['❌', 'Contradictoire', 'le vote va à l’opposé de la promesse'] };
+      return `<div class="pr"><div><b>${esc(p.bloc)}</b> · <span class="muted">${p.exp ? 'promesse plutôt ' + esc(low(say(qn, p.exp))) : 'aucune promesse comparable'}</span></div><p class="small">${esc(p.text)}${p.flag ? ` <i class="muted">(${esc(p.flag)})</i>` : ''}</p>
+      <div>${st.map(x => `<span class="pill ${x.k === 'na' ? '' : x.k}">${x.g} : ${x.l}</span>`).join('')}</div>
+      ${p.exp ? `<p class="vchip ${k}"><span>${VCH[k][0]}</span><b>${VCH[k][1]}</b><span class="small">${VCH[k][2]}</span></p>` : ''}
+      <p class="small muted">Source${p.src.length > 1 ? 's' : ''} : ${p.src.map(s => `<a href="${SRC[s][1]}" target="_blank" rel="noopener">${esc(SRC[s][0])}</a>`).join(' ; ')}</p></div>`; }).join('');
+    return `<div class="card reveal"><span class="tag">${EMO[q.cat] || ''} ${esc(q.cat)}</span><h3>${esc(q.title)}</h3><div class="pc">${prs}</div>
+    <details><summary>Voir le vote de chaque groupe</summary><div class="body">${gvRows(q)}</div></details></div>`; }).join('');
+  const sm = Object.keys(tally).map(b => `<div class="vb"><b>${esc(b)}</b>${vbar(tally[b])}<span class="small muted">${vtxt(tally[b])}</span></div>`).join('');
+  return `<div class="card reveal"><h3>Ce qu’ils promettaient, ce qu’ils ont voté</h3><p class="small">Promesses : programmes des législatives de juin 2024. Votes : textes précis de 2025-2026. Un vote contre peut avoir d’autres raisons que la promesse (texte différent, amendement ajouté, tactique). Chaque ligne indique si la promesse est « même esprit, pas la même mesure ».</p>
+  ${sm ? `<div class="pc">${sm}</div>` : ''}<p class="small muted">Échantillon minuscule (quelques votes par bloc) : ce n’est pas un score de fiabilité, juste une façon de regarder. Les programmes de la droite républicaine, de l’UDR et de LIOT n’ont pas été traités dans ce prototype.</p>
+  ${none.length ? `<p class="small muted">Sans promesse retrouvée dans nos sources, parmi tes votes : ${none.map(n => esc(byN[n].title)).join(' ; ')}.</p>` : ''}</div>${cards}`;
+}
+function gvRows(q) { return `<div class="gv small muted"><span>Groupe</span><span>Vote des présents</span><span>Présents</span></div>` + ORDER.filter(g => g !== 'NI' && q.g[g]).map(g => { const v = q.g[g]; return `<div class="gv"><b>${g}</b><span>${bar(v)}<span class="small muted">${stLabel(stance(v))}</span></span><span>${v[0] + v[1] + v[2]}/${v[3]}</span></div>`; }).join(''); }
+function tabVotes() {
+  return `<div class="card reveal"><h3>Tous tes votes</h3><div class="rank">${state.order.map(qn => { const q = byN[qn], a = state.answers[qn], open = state.openQ === qn;
+    return `<button class="qrow" data-act="oq" data-v="${qn}" aria-expanded="${open}"><span><b>${esc(q.title)}</b><br><span class="small muted">${a ? 'Toi : ' + esc(low(say(qn, a))) : 'Passé'} · ${q.sort === 'adopté' ? 'adopté' : 'rejeté'} · ${fmtD(q.date)}</span></span><span>${open ? '－' : '＋'}</span></button>
+    ${open ? `<div class="reveal" style="display:flex;flex-direction:column;gap:10px"><div class="hemi">${hemiVote(q, true)}</div>${LEG(q)}<p class="small muted">Chaque député à sa place réelle. La couleur indique son vote, un point vide une absence.</p>${gvRows(q)}<p class="small muted"><a href="https://www.assemblee-nationale.fr/dyn/17/scrutins/${q.n}" target="_blank" rel="noopener">Scrutin officiel n° ${q.n}</a></p></div>` : ''}`; }).join('')}</div></div>`;
+}
+function tabMeth() {
+  return `<div class="card reveal"><h3>Comment lire ce résultat</h3><ul class="m small">
+  <li>Chaque réponse est comparée à la position majoritaire de chaque groupe : 100 % si le groupe vote comme toi, 0 % s’il vote l’inverse, l’abstention compte pour moitié. Les thèmes prioritaires pèsent double.</li>
+  <li>Les ${state.order.length} votes sont tirés au hasard parmi ${D.q.length}. Un autre tirage peut donner un autre classement : c’est un signal, pas un verdict.</li>
+  <li>Répondre « pour » à tout rapproche mécaniquement de la plupart des groupes, car beaucoup de textes sont adoptés. C’est un biais connu du format.</li>
+  <li>Un vote sur un texte entier mélange souvent plusieurs mesures : un groupe peut voter contre pour une seule disposition.</li>
+  <li>Peu de députés votent à chaque scrutin (parfois moins de 100 sur 577). Une position de groupe peut reposer sur très peu de voix.</li>
+  <li>Les deux composantes du groupe UDR (avant et après septembre 2025) sont fusionnées. Les non-inscrits ne sont pas scorés.</li>
+  <li>Chaque point est placé selon le numéro de siège officiel du député (données de vote de l’Assemblée), projeté sur un hémicycle schématique : l’ordre gauche-droite est réel, la géométrie exacte des rangées est simplifiée.</li>
+  <li>Les résumés et les mots expliqués sont rédigés par une IA à partir de sources publiques et n’ont pas encore été relus par des personnes de sensibilités opposées.</li>
+  <li>Promesses : tirées de trois articles de presse et d’un comparatif tiers, avec paraphrase. Les attributions incertaines sont signalées.</li></ul>
+  <p class="small muted">Données : Assemblée nationale, open data, 17e législature.</p><button class="btn" data-act="how">🔍 Page complète : comment c’est fait</button></div>`;
+}
+
+/* ---------- stats de présence ---------- */
+const STATS = {"n_scrutins": 8649, "unknown_auth": 800, "groups": {"GDR": {"members_avg": 17.0, "part": 0.1296, "part_ensemble": 0.3461, "part_amend": 0.1218, "part_article": 0.1078, "part_sps": 0.808, "part_am_own": 0.163, "part_am_oth": 0.1206, "part_dem_own": 0.2947, "part_dem_oth": 0.1222, "abst": 0.0642, "deleg": 0.0913, "rice": 0.9799, "win": 0.5772, "am_tot": 235, "am_ok": 59, "dem_n": 101, "indiv": {"n": 18, "median": 0.1458, "q1": 0.0828, "q3": 0.1729, "mn": 0.0334, "mx": 0.2518, "lt10": 6, "gt50": 0}, "weekday": {"0": 0.0972, "1": 0.1603, "2": 0.117, "3": 0.155, "4": 0.1036, "5": 0.1623, "6": 0.1937}, "monthly": {"2024-10": 0.2952, "2024-11": 0.2132, "2024-12": 0.1838, "2025-01": 0.108, "2025-02": 0.1383, "2025-03": 0.1103, "2025-04": 0.124, "2025-05": 0.1111, "2025-06": 0.0799, "2025-07": 0.0808, "2025-10": 0.2575, "2025-11": 0.2025, "2025-12": 0.1256, "2026-01": 0.102, "2026-02": 0.0916, "2026-03": 0.0383, "2026-04": 0.0882, "2026-05": 0.0642, "2026-06": 0.1413, "2026-07": 0.1121, "2026-10": 0.1572}, "am_rate": 0.2511}, "LFI-NFP": {"members_avg": 71.0, "part": 0.3095, "part_ensemble": 0.4662, "part_amend": 0.3075, "part_article": 0.2505, "part_sps": 0.9124, "part_am_own": 0.3062, "part_am_oth": 0.3084, "part_dem_own": 0.3196, "part_dem_oth": 0.2987, "abst": 0.0506, "deleg": 0.1488, "rice": 0.9913, "win": 0.5382, "am_tot": 1427, "am_ok": 194, "dem_n": 1951, "indiv": {"n": 72, "median": 0.2943, "q1": 0.2197, "q3": 0.4037, "mn": 0.097, "mx": 0.5692, "lt10": 2, "gt50": 4}, "weekday": {"0": 0.2793, "1": 0.384, "2": 0.3054, "3": 0.3354, "4": 0.2487, "5": 0.3354, "6": 0.423}, "monthly": {"2024-10": 0.5243, "2024-11": 0.4373, "2024-12": 0.3339, "2025-01": 0.2757, "2025-02": 0.329, "2025-03": 0.2006, "2025-04": 0.2902, "2025-05": 0.3218, "2025-06": 0.2262, "2025-07": 0.2802, "2025-10": 0.567, "2025-11": 0.4714, "2025-12": 0.3135, "2026-01": 0.2815, "2026-02": 0.2493, "2026-03": 0.2091, "2026-04": 0.2726, "2026-05": 0.1798, "2026-06": 0.2648, "2026-07": 0.312, "2026-10": 0.2153}, "am_rate": 0.1359}, "ECOS": {"members_avg": 38.0, "part": 0.275, "part_ensemble": 0.4408, "part_amend": 0.2734, "part_article": 0.2205, "part_sps": 0.8812, "part_am_own": 0.2958, "part_am_oth": 0.2697, "part_dem_own": 0.3245, "part_dem_oth": 0.2644, "abst": 0.0523, "deleg": 0.1706, "rice": 0.9771, "win": 0.567, "am_tot": 753, "am_ok": 154, "dem_n": 609, "indiv": {"n": 38, "median": 0.2659, "q1": 0.2075, "q3": 0.3259, "mn": 0.065, "mx": 0.5278, "lt10": 1, "gt50": 1}, "weekday": {"0": 0.2384, "1": 0.3428, "2": 0.3129, "3": 0.2831, "4": 0.2159, "5": 0.2641, "6": 0.3698}, "monthly": {"2024-10": 0.4211, "2024-11": 0.3638, "2024-12": 0.3925, "2025-01": 0.2344, "2025-02": 0.3797, "2025-03": 0.2467, "2025-04": 0.2915, "2025-05": 0.2557, "2025-06": 0.2259, "2025-07": 0.2071, "2025-10": 0.593, "2025-11": 0.3669, "2025-12": 0.2907, "2026-01": 0.249, "2026-02": 0.2778, "2026-03": 0.1336, "2026-04": 0.2565, "2026-05": 0.1907, "2026-06": 0.2027, "2026-07": 0.2067, "2026-10": 0.2312}, "am_rate": 0.2045}, "SOC": {"members_avg": 67.7, "part": 0.2696, "part_ensemble": 0.4321, "part_amend": 0.2662, "part_article": 0.2346, "part_sps": 0.8619, "part_am_own": 0.3124, "part_am_oth": 0.2614, "part_dem_own": 0.336, "part_dem_oth": 0.2574, "abst": 0.066, "deleg": 0.1639, "rice": 0.9503, "win": 0.656, "am_tot": 689, "am_ok": 222, "dem_n": 732, "indiv": {"n": 70, "median": 0.2678, "q1": 0.193, "q3": 0.3432, "mn": 0.0473, "mx": 0.6404, "lt10": 5, "gt50": 1}, "weekday": {"0": 0.2121, "1": 0.3783, "2": 0.2991, "3": 0.2424, "4": 0.2374, "5": 0.3484, "6": 0.432}, "monthly": {"2024-10": 0.3834, "2024-11": 0.3031, "2024-12": 0.4356, "2025-01": 0.2459, "2025-02": 0.3217, "2025-03": 0.2373, "2025-04": 0.2229, "2025-05": 0.2565, "2025-06": 0.1556, "2025-07": 0.2228, "2025-10": 0.6013, "2025-11": 0.4077, "2025-12": 0.4295, "2026-01": 0.1919, "2026-02": 0.2543, "2026-03": 0.1189, "2026-04": 0.2101, "2026-05": 0.1433, "2026-06": 0.2658, "2026-07": 0.1392, "2026-10": 0.2994}, "am_rate": 0.3222}, "LIOT": {"members_avg": 22.6, "part": 0.1192, "part_ensemble": 0.3456, "part_amend": 0.1097, "part_article": 0.1139, "part_sps": 0.8849, "part_am_own": 0.1504, "part_am_oth": 0.1078, "part_dem_own": 0.2461, "part_dem_oth": 0.1098, "abst": 0.0689, "deleg": 0.0826, "rice": 0.8816, "win": 0.8486, "am_tot": 196, "am_ok": 93, "dem_n": 166, "indiv": {"n": 25, "median": 0.0954, "q1": 0.0647, "q3": 0.1601, "mn": 0.02, "mx": 0.3862, "lt10": 13, "gt50": 0}, "weekday": {"0": 0.1097, "1": 0.2065, "2": 0.1348, "3": 0.0933, "4": 0.0958, "5": 0.1179, "6": 0.1748}, "monthly": {"2024-10": 0.1535, "2024-11": 0.1463, "2024-12": 0.288, "2025-01": 0.1333, "2025-02": 0.0816, "2025-03": 0.1207, "2025-04": 0.1515, "2025-05": 0.1278, "2025-06": 0.0649, "2025-07": 0.1372, "2025-10": 0.2489, "2025-11": 0.1612, "2025-12": 0.1862, "2026-01": 0.0839, "2026-02": 0.0841, "2026-03": 0.037, "2026-04": 0.0725, "2026-05": 0.1007, "2026-06": 0.0951, "2026-07": 0.0845, "2026-10": 0.1039}, "am_rate": 0.4745}, "DEM": {"members_avg": 36.3, "part": 0.2196, "part_ensemble": 0.4224, "part_amend": 0.2117, "part_article": 0.2004, "part_sps": 0.8982, "part_am_own": 0.265, "part_am_oth": 0.2093, "part_dem_own": 0.4141, "part_dem_oth": 0.2097, "abst": 0.0353, "deleg": 0.1414, "rice": 0.9172, "win": 0.8564, "am_tot": 172, "am_ok": 69, "dem_n": 128, "indiv": {"n": 41, "median": 0.2115, "q1": 0.1716, "q3": 0.2544, "mn": 0.0358, "mx": 0.4703, "lt10": 6, "gt50": 0}, "weekday": {"0": 0.2113, "1": 0.3049, "2": 0.2312, "3": 0.1986, "4": 0.1909, "5": 0.226, "6": 0.3209}, "monthly": {"2024-10": 0.2263, "2024-11": 0.2342, "2024-12": 0.3241, "2025-01": 0.1519, "2025-02": 0.2138, "2025-03": 0.2624, "2025-04": 0.2481, "2025-05": 0.2185, "2025-06": 0.1579, "2025-07": 0.2548, "2025-10": 0.4007, "2025-11": 0.2899, "2025-12": 0.3387, "2026-01": 0.182, "2026-02": 0.1554, "2026-03": 0.1801, "2026-04": 0.1411, "2026-05": 0.157, "2026-06": 0.1882, "2026-07": 0.2383, "2026-10": 0.1349}, "am_rate": 0.4012}, "EPR": {"members_avg": 92.1, "part": 0.228, "part_ensemble": 0.3991, "part_amend": 0.2211, "part_article": 0.2101, "part_sps": 0.8901, "part_am_own": 0.2375, "part_am_oth": 0.2187, "part_dem_own": 0.2541, "part_dem_oth": 0.2181, "abst": 0.0155, "deleg": 0.1836, "rice": 0.9188, "win": 0.8592, "am_tot": 482, "am_ok": 248, "dem_n": 1265, "indiv": {"n": 114, "median": 0.2122, "q1": 0.1238, "q3": 0.2776, "mn": 0.0052, "mx": 0.6432, "lt10": 18, "gt50": 2}, "weekday": {"0": 0.2568, "1": 0.3168, "2": 0.2462, "3": 0.1905, "4": 0.184, "5": 0.2627, "6": 0.2839}, "monthly": {"2024-10": 0.2348, "2024-11": 0.2109, "2024-12": 0.3557, "2025-01": 0.2023, "2025-02": 0.2158, "2025-03": 0.2074, "2025-04": 0.1848, "2025-05": 0.2058, "2025-06": 0.1417, "2025-07": 0.1878, "2025-10": 0.4146, "2025-11": 0.3116, "2025-12": 0.3217, "2026-01": 0.2313, "2026-02": 0.1943, "2026-03": 0.1763, "2026-04": 0.1888, "2026-05": 0.2029, "2026-06": 0.2103, "2026-07": 0.2248, "2026-10": 0.1972}, "am_rate": 0.5145}, "HOR": {"members_avg": 34.0, "part": 0.2256, "part_ensemble": 0.4404, "part_amend": 0.2178, "part_article": 0.2046, "part_sps": 0.9439, "part_am_own": 0.2676, "part_am_oth": 0.2163, "part_dem_own": 0.293, "part_dem_oth": 0.2173, "abst": 0.0593, "deleg": 0.1152, "rice": 0.9179, "win": 0.8459, "am_tot": 169, "am_ok": 71, "dem_n": 323, "indiv": {"n": 43, "median": 0.2042, "q1": 0.1166, "q3": 0.2887, "mn": 0.0373, "mx": 0.5419, "lt10": 6, "gt50": 1}, "weekday": {"0": 0.2088, "1": 0.3387, "2": 0.2557, "3": 0.2263, "4": 0.1567, "5": 0.1665, "6": 0.247}, "monthly": {"2024-10": 0.1655, "2024-11": 0.24, "2024-12": 0.5453, "2025-01": 0.1278, "2025-02": 0.2475, "2025-03": 0.2467, "2025-04": 0.3402, "2025-05": 0.2334, "2025-06": 0.142, "2025-07": 0.2724, "2025-10": 0.375, "2025-11": 0.2968, "2025-12": 0.2714, "2026-01": 0.1864, "2026-02": 0.1848, "2026-03": 0.1181, "2026-04": 0.2907, "2026-05": 0.1937, "2026-06": 0.1458, "2026-07": 0.2287, "2026-10": 0.1415}, "am_rate": 0.4201}, "DR": {"members_avg": 48.3, "part": 0.1748, "part_ensemble": 0.3483, "part_amend": 0.1679, "part_article": 0.1524, "part_sps": 0.9127, "part_am_own": 0.1952, "part_am_oth": 0.1645, "part_dem_own": 0.2206, "part_dem_oth": 0.1645, "abst": 0.0589, "deleg": 0.1813, "rice": 0.9295, "win": 0.7221, "am_tot": 820, "am_ok": 179, "dem_n": 729, "indiv": {"n": 63, "median": 0.1504, "q1": 0.1055, "q3": 0.229, "mn": 0.0432, "mx": 0.4893, "lt10": 15, "gt50": 0}, "weekday": {"0": 0.1754, "1": 0.2961, "2": 0.1906, "3": 0.143, "4": 0.1354, "5": 0.1813, "6": 0.1108}, "monthly": {"2024-10": 0.17, "2024-11": 0.1398, "2024-12": 0.3466, "2025-01": 0.0957, "2025-02": 0.2494, "2025-03": 0.1341, "2025-04": 0.1628, "2025-05": 0.1486, "2025-06": 0.0766, "2025-07": 0.132, "2025-10": 0.4007, "2025-11": 0.2238, "2025-12": 0.2242, "2026-01": 0.246, "2026-02": 0.1914, "2026-03": 0.1001, "2026-04": 0.1218, "2026-05": 0.1567, "2026-06": 0.1713, "2026-07": 0.1614, "2026-10": 0.1269}, "am_rate": 0.2183}, "UDR": {"members_avg": 16.4, "part": 0.2325, "part_ensemble": 0.3798, "part_amend": 0.2308, "part_article": 0.1832, "part_sps": 0.9079, "part_am_own": 0.3239, "part_am_oth": 0.2275, "part_dem_own": 0.3513, "part_dem_oth": 0.2266, "abst": 0.0889, "deleg": 0.1399, "rice": 0.9817, "win": 0.6166, "am_tot": 234, "am_ok": 16, "dem_n": 109, "indiv": {"n": 18, "median": 0.2066, "q1": 0.1191, "q3": 0.3037, "mn": 0.0456, "mx": 0.5553, "lt10": 1, "gt50": 1}, "weekday": {"0": 0.2404, "1": 0.3753, "2": 0.2878, "3": 0.2086, "4": 0.1323, "5": 0.1934, "6": 0.3825}, "monthly": {"2024-10": 0.2752, "2024-11": 0.1796, "2024-12": 0.4479, "2025-01": 0.1826, "2025-02": 0.2828, "2025-03": 0.2376, "2025-04": 0.2882, "2025-05": 0.2798, "2025-06": 0.2057, "2025-07": 0.1603, "2025-10": 0.3321, "2025-11": 0.3954, "2025-12": 0.2459, "2026-01": 0.2472, "2026-02": 0.1868, "2026-03": 0.1742, "2026-04": 0.1668, "2026-05": 0.1769, "2026-06": 0.1744, "2026-07": 0.1132, "2026-10": 0.1448}, "am_rate": 0.0684}, "RN": {"members_avg": 122.6, "part": 0.3367, "part_ensemble": 0.4357, "part_amend": 0.3369, "part_article": 0.2892, "part_sps": 0.9132, "part_am_own": 0.3393, "part_am_oth": 0.3359, "part_dem_own": 0.352, "part_dem_oth": 0.3199, "abst": 0.0805, "deleg": 0.1504, "rice": 0.983, "win": 0.6369, "am_tot": 1388, "am_ok": 168, "dem_n": 2611, "indiv": {"n": 129, "median": 0.3193, "q1": 0.2459, "q3": 0.4152, "mn": 0.0694, "mx": 0.8806, "lt10": 5, "gt50": 13}, "weekday": {"0": 0.3093, "1": 0.4578, "2": 0.3757, "3": 0.307, "4": 0.2844, "5": 0.3548, "6": 0.4722}, "monthly": {"2024-10": 0.4945, "2024-11": 0.4928, "2024-12": 0.494, "2025-01": 0.3417, "2025-02": 0.4195, "2025-03": 0.341, "2025-04": 0.3049, "2025-05": 0.3416, "2025-06": 0.3118, "2025-07": 0.2684, "2025-10": 0.6103, "2025-11": 0.517, "2025-12": 0.3229, "2026-01": 0.3257, "2026-02": 0.2459, "2026-03": 0.2083, "2026-04": 0.2391, "2026-05": 0.2635, "2026-06": 0.2209, "2026-07": 0.208, "2026-10": 0.272}, "am_rate": 0.121}}, "agree": {"RN|SOC": 0.2628, "EPR|RN": 0.5461, "EPR|LFI-NFP": 0.4441, "EPR|SOC": 0.5849, "EPR|HOR": 0.9494, "EPR|LIOT": 0.8666, "EPR|GDR": 0.4826, "LFI-NFP|RN": 0.201, "LFI-NFP|SOC": 0.8647, "LFI-NFP|LIOT": 0.5129, "ECOS|RN": 0.2077, "ECOS|EPR": 0.4878, "ECOS|LFI-NFP": 0.9533, "ECOS|SOC": 0.9144, "ECOS|HOR": 0.4447, "ECOS|LIOT": 0.564, "ECOS|GDR": 0.9553, "DEM|RN": 0.5456, "DEM|EPR": 0.9623, "DEM|LFI-NFP": 0.4572, "DEM|SOC": 0.6059, "DEM|ECOS": 0.5035, "DEM|HOR": 0.946, "DEM|LIOT": 0.8802, "DEM|GDR": 0.508, "HOR|RN": 0.5985, "HOR|LFI-NFP": 0.3952, "HOR|SOC": 0.5447, "HOR|LIOT": 0.8711, "LIOT|RN": 0.5557, "LIOT|SOC": 0.6774, "GDR|RN": 0.2381, "GDR|LFI-NFP": 0.9391, "GDR|SOC": 0.9042, "GDR|HOR": 0.4524, "GDR|LIOT": 0.5686, "RN|UDR": 0.9822, "EPR|UDR": 0.5543, "LFI-NFP|UDR": 0.1749, "SOC|UDR": 0.2332, "DR|RN": 0.7757, "DR|EPR": 0.7769, "DR|LFI-NFP": 0.2446, "DR|SOC": 0.3813, "DR|ECOS": 0.2831, "DR|HOR": 0.837, "DR|LIOT": 0.7268, "DR|GDR": 0.2988, "DR|UDR": 0.7996, "ECOS|UDR": 0.175, "DEM|DR": 0.7823, "DEM|UDR": 0.5521, "HOR|UDR": 0.6139, "LIOT|UDR": 0.5609, "GDR|UDR": 0.2066}};
+const SG = STATS.groups, GS = Object.keys(SG);
+const pc = v => v == null ? 'n.d.' : Math.round(v * 100) + ' %';
+const short = g => g === 'LFI-NFP' ? 'LFI' : g;
+function hbars(key, opt) {
+  opt = opt || {};
+  const rows = GS.map(g => ({ g, v: SG[g][key] })).filter(r => r.v != null).sort((a, b) => b.v - a.v), mx = opt.max || Math.max(...rows.map(r => r.v));
+  return `<div class="hb">${rows.map((r, i) => `<div class="hbr" title="${esc(D.groups[r.g])} : ${pc(r.v)}"><b>${short(r.g)}</b><span class="hbt"><i style="--w:${r.v / mx * 100}%;--d:${i}"></i></span><span class="hbv">${opt.fmt ? opt.fmt(r) : pc(r.v)}</span></div>`).join('')}</div>`;
+}
+function dumbbell(ka, kb, la, lb) {
+  const rows = GS.map(g => ({ g, a: SG[g][ka], b: SG[g][kb] })).filter(r => r.a != null && r.b != null).sort((x, y) => (y.b / y.a) - (x.b / x.a));
+  const mx = Math.max(...rows.map(r => Math.max(r.a, r.b))) * 1.05;
+  return `<div class="legend" style="margin-bottom:6px"><span class="lg" style="--c:var(--muted)">${la}</span><span class="lg" style="--c:var(--accent)">${lb}</span></div><div class="hb">${rows.map(r => { const d = Math.round((r.b / r.a - 1) * 100), lo = Math.min(r.a, r.b), hi = Math.max(r.a, r.b);
+    return `<div class="hbr" title="${esc(D.groups[r.g])} : ${la} ${pc(r.a)}, ${lb} ${pc(r.b)}"><b>${short(r.g)}</b><span class="db"><i class="ln" style="left:${lo / mx * 100}%;width:${(hi - lo) / mx * 100}%"></i><i class="dot a" style="left:${r.a / mx * 100}%"></i><i class="dot b" style="left:${r.b / mx * 100}%"></i></span><span class="hbv">${d > 0 ? '+' : ''}${d} %</span></div>`; }).join('')}</div>`;
+}
+function agreeGrid() {
+  const ord = ['GDR','LFI-NFP','ECOS','SOC','LIOT','DEM','EPR','HOR','DR','UDR','RN'];
+  const val = (a, b) => a === b ? 1 : (STATS.agree[a + '|' + b] ?? STATS.agree[b + '|' + a]);
+  return `<div class="ag" style="grid-template-columns:2.6rem repeat(${ord.length},1fr)"><span></span>${ord.map(g => `<span class="agh">${short(g)}</span>`).join('')}${ord.map(a => `<span class="agh l">${short(a)}</span>${ord.map(b => { const v = val(a, b); return `<span class="agc" title="${short(a)} et ${short(b)} : même position ${pc(v)} du temps" style="background:color-mix(in srgb, var(--accent) ${Math.round(v * 100)}%, var(--surface2));color:${v > .55 ? '#fff' : 'var(--ink)'}">${a === b ? '' : Math.round(v * 100)}</span>`; }).join('')}`).join('')}</div>`;
+}
+function weekGrid() {
+  const days = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven'];
+  return `<div class="ag wk" style="grid-template-columns:2.6rem repeat(5,1fr)"><span></span>${days.map(d => `<span class="agh">${d}</span>`).join('')}${GS.map(g => `<span class="agh l">${short(g)}</span>${days.map((d, i) => { const v = SG[g].weekday[i]; return `<span class="agc" title="${short(g)}, ${d} : ${pc(v)}" style="background:color-mix(in srgb, var(--accent) ${Math.round(v / .5 * 100)}%, var(--surface2));color:${v > .27 ? '#fff' : 'var(--ink)'}">${Math.round(v * 100)}</span>`; }).join('')}`).join('')}</div>`;
+}
+function spark(g) {
+  const m = SG[g].monthly, ks = Object.keys(m), W = 120, H = 34, mx = .6;
+  const pts = ks.map((k, i) => `${(i / (ks.length - 1) * W).toFixed(1)},${(H - m[k] / mx * H).toFixed(1)}`).join(' ');
+  return `<div class="sp" title="${esc(D.groups[g])} : participation mensuelle, de ${ks[0]} à ${ks[ks.length - 1]}"><b>${short(g)}</b><svg viewBox="0 -2 ${W} ${H + 4}" preserveAspectRatio="none"><polyline points="${pts}" fill="none" stroke="var(--accent)" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round"/></svg></div>`;
+}
+function indivRows() {
+  const rows = GS.map(g => ({ g, ...SG[g].indiv })).sort((a, b) => b.median - a.median), mx = .9;
+  return `<div class="hb">${rows.map(r => `<div class="hbr" title="${esc(D.groups[r.g])} : médiane ${pc(r.median)}, la moitié des députés entre ${pc(r.q1)} et ${pc(r.q3)}, extrêmes ${pc(r.mn)} à ${pc(r.mx)}"><b>${short(r.g)}</b><span class="db"><i class="ln thin" style="left:${r.mn / mx * 100}%;width:${(r.mx - r.mn) / mx * 100}%"></i><i class="box" style="left:${r.q1 / mx * 100}%;width:${(r.q3 - r.q1) / mx * 100}%"></i><i class="dot b" style="left:${r.median / mx * 100}%"></i></span><span class="hbv">${r.lt10}/${r.n}</span></div>`).join('')}</div>`;
+}
+function viewStats() {
+  const all = GS.reduce((s, g) => s + SG[g].members_avg * SG[g].part, 0) / GS.reduce((s, g) => s + SG[g].members_avg, 0);
+  const sps = GS.reduce((s, g) => s + SG[g].members_avg * SG[g].part_sps, 0) / GS.reduce((s, g) => s + SG[g].members_avg, 0);
+  const sec = (t, sub, body, note) => `<div class="card reveal"><h3>${t}</h3>${sub ? `<p class="small muted">${sub}</p>` : ''}${body}${note ? `<p class="small muted">${note}</p>` : ''}</div>`;
+  return `${topbar()}<button class="link" data-act="back" style="align-self:flex-start">← Retour</button>
+  <div class="card hero reveal"><h1 style="font-size:clamp(1.9rem,7vw,2.6rem)">Qui vote <span class="hl">vraiment ?</span></h1>
+  <p>Toutes les présences aux scrutins publics de la législature, groupe par groupe.</p>
+  <div class="stats"><div class="stat"><b data-count="${STATS.n_scrutins}">${STATS.n_scrutins}</b>scrutins publics, oct. 2024 → oct. 2026</div><div class="stat"><b>${pc(all)}</b>des députés votent, en moyenne, à un scrutin</div><div class="stat"><b>${pc(sps)}</b>lors des grands votes solennels</div></div></div>
+  <div class="card reveal"><p class="small"><b>À lire avant :</b> on mesure la <b>participation aux scrutins publics</b>, la seule présence que l’Assemblée publie. Un député absent du vote peut être en commission, en circonscription ou en mission. Beaucoup de votes ont lieu à main levée et ne sont pas comptés ici. Les taux sont calculés par député, pour comparer des groupes de tailles différentes.</p></div>
+  ${sec('Qui vote le plus ?', 'Part des députés du groupe qui votent, en moyenne, à chaque scrutin public.', hbars('part'), 'Les petits groupes ont moins de monde pour couvrir tous les débats, ce qui pèse sur leur taux.')}
+  ${sec('Les grands votes', 'Votes solennels (les textes importants, avec un vote programmé à l’avance).', hbars('part_sps', { max: 1 }), 'Ici, presque tout le monde est là : l’écart entre groupes se joue surtout sur les votes du quotidien.')}
+  ${sec('Plus présents quand c’est leur amendement ?', 'Participation quand l’amendement vient d’un député du groupe, comparée aux amendements des autres groupes.', dumbbell('part_am_oth', 'part_am_own', 'amendements des autres', 'leurs amendements'), 'Le pourcentage indique combien le groupe se mobilise en plus pour ses propres amendements.')}
+  ${sec('Plus présents quand ils ont demandé le vote ?', 'Un groupe peut exiger qu’un vote soit public et nominatif. Participation quand le groupe l’a demandé, comparée aux autres.', dumbbell('part_dem_oth', 'part_dem_own', 'votes demandés par d’autres', 'votes qu’ils ont demandés'))}
+  ${sec('Les députés à l’intérieur de chaque groupe', 'Participation de chaque député. Point : médiane du groupe. Rectangle : la moitié des députés. Trait : du moins assidu au plus assidu. À droite : nombre de députés sous 10 %.', indivRows(), 'Seuls les députés présents sur au moins 300 scrutins sont comptés.')}
+  ${sec('Discipline de groupe', 'Quand le groupe vote, à quel point vote-t-il d’une seule voix ? 100 % = tous dans le même sens.', hbars('rice', { max: 1 }), 'Une forte discipline peut traduire une ligne claire ou une consigne stricte.')}
+  ${sec('Du côté des gagnants', 'Part des votes où la position du groupe l’a emporté.', hbars('win', { max: 1 }), 'Les groupes proches du gouvernement gagnent mécaniquement plus souvent : cet indicateur mesure le poids politique, pas le mérite.')}
+  ${sec('Amendements adoptés', 'Part des amendements du groupe mis au vote public qui ont été adoptés.', hbars('am_rate', { max: 1, fmt: r => `${pc(r.v)} <span class="muted">(${SG[r.g].am_ok}/${SG[r.g].am_tot})</span>` }), 'Seuls les amendements soumis à un vote public nominatif sont comptés, soit une petite partie de tous les amendements déposés.')}
+  ${sec('Votes par délégation', 'Part des votes émis par un collègue au nom d’un député absent, comme le permet le règlement.', hbars('deleg'))}
+  ${sec('Qui vote avec qui ?', 'Part des votes où deux groupes ont pris la même position (pour ou contre).', agreeGrid())}
+  ${sec('Le jour de la semaine', 'Participation selon le jour du vote. Le mardi est le jour le plus suivi ; le lundi et le vendredi, les rangs sont plus clairsemés.', weekGrid())}
+  ${sec('Mois par mois', 'Participation mensuelle de chaque groupe (même échelle pour tous, de 0 à 60 %).', `<div class="sps">${GS.map(spark).join('')}</div>`, 'Les groupes de gauche, le RN, l’UDR et LIOT votaient beaucoup plus à l’automne 2024 qu’à l’été 2026 (le RN passe d’environ 49 % à 21 %). Le bloc central et la droite républicaine restent à peu près stables. Mois sans session et septembre 2025 (un seul scrutin) omis.')}
+  <div class="card reveal"><h3>Comment c’est calculé</h3><ul class="m small">
+  <li>Source : les ${STATS.n_scrutins} scrutins publics de la 17e législature publiés en open data par l’Assemblée nationale (motions de censure exclues, car seuls les « pour » y votent).</li>
+  <li>Participation = députés ayant voté pour, contre ou s’étant abstenus, divisé par le nombre de membres du groupe ce jour-là.</li>
+  <li>Auteur d’un amendement : retrouvé à partir du nom cité dans l’intitulé du vote (environ ${Math.round(STATS.unknown_auth / 100) * 100} amendements non attribués). Les deux composantes du groupe UDR sont fusionnées. Les non-inscrits sont exclus.</li>
+  <li>Un groupe peut répartir le travail : quelques spécialistes suivent un texte, les autres travaillent ailleurs. Une faible participation n’est donc pas forcément de la paresse, mais elle reste visible pour les électeurs.</li></ul></div>
+  <button class="btn primary" data-act="back">← Retour</button>`;
+}
+
+/* ---------- contenus par question ---------- */
+const HOOK = {
+ 7397: "Si tu es étudiant ou le deviens : le montant de ta bourse et le nombre de mois où tu la touches.",
+ 7893: "Si tu suis le foot : qui contrôle les clubs, les agents et les salaires des dirigeants.",
+ 2521: "Ta facture d’électricité et le climat de demain passent par le choix des centrales.",
+ 2580: "Les éoliennes et les panneaux solaires près de chez toi, et les emplois du secteur.",
+ 881: "Un impôt qui ne concernerait qu’environ 1 800 personnes, mais qui pose la question de qui contribue à quoi.",
+ 4438: "L’État deviendrait propriétaire d’un grand producteur d’acier, pour 3 à 4 milliards d’euros selon ceux qui l’ont chiffré.",
+ 2272: "Si tu deviens parent d’un enfant unique : tu toucherais ou non des allocations.",
+ 5729: "Une question qui peut toucher n’importe quelle famille : qui décide de la fin de sa vie, et comment.",
+ 805: "À partir de 16 ans, comment la justice traite les mineurs, et leurs parents.",
+ 7987: "Dans la rue : ce qu’un policier ou un gendarme a le droit de faire avec son arme.",
+ 4754: "Pour une personne étrangère installée depuis longtemps : renouveler ses papiers sans refaire toute la procédure.",
+ 5192: "Ton compte Insta ou TikTok avant 15 ans, ou celui de ton petit frère.",
+ 6736: "Combien la France met dans son armée, avec un service national volontaire pour les 18-25 ans.",
+ 7259: "Ce que tu manges : prix payés aux agriculteurs, produits importés, élevage, eau.",
+ 1202: "La définition légale du viol : le consentement serait écrit noir sur blanc dans la loi.",
+ 3684: "L’âge où tu pourras partir à la retraite : le relèvement à 64 ans serait mis en pause jusqu’en 2028.",
+ 3151: "Le budget de l’État : qui complète les caisses publiques cette année.",
+ 4745: "Si tu loues : le prix que ton propriétaire peut demander, et ton droit de le contester.",
+ 4723: "Un jeune seul arrivé en France : est-il mis à l’abri pendant que la justice tranche ?",
+ 8279: "Free parties, protoxyde d’azote, squats, caméras intelligentes : ce qui change dans l’espace public.",
+ 6023: "Allocations, chômage, compte formation : des contrôles plus poussés et des données partagées entre administrations.",
+ 3260: "Les règles d’entrée et de séjour des Algériens en France, un sujet sensible entre les deux pays.",
+ 8611: "Les contrôles aux frontières en Europe quand tu voyages ou quand tu importes.",
+ 8610: "Où va l’argent public : l’État achète pour environ 400 milliards d’euros par an.",
+ 5412: "Qui possède les médias que tu consultes, et qui surveille cela.",
+ 7454: "Une région pourrait adapter certaines lois nationales : cela change qui décide de quoi.",
+ 4963: "Si tu vis ou skies dans les Alpes : les JO d’hiver 2030 et leurs règles spéciales.",
+ 2957: "L’avenir de l’agriculture : moins de normes, mais aussi la question des pesticides et des abeilles.",
+ 852: "Ta crème, ton fart de ski, tes vêtements : certains produits contenant des PFAS seraient interdits à partir de 2026.",
+ 606: "Si tu es étudiant : un repas à 1 € au resto U pour tous, pas seulement pour les boursiers.",
+ 1194: "Trafic de drogue : comment l’État s’organise contre le crime organisé.",
+ 988: "La guerre à l’est de l’Europe : jusqu’où la France et l’Europe s’engagent.",
+ 1308: "Qui devient français quand il naît à Mayotte.",
+ 840: "Si tu viens d’un milieu modeste : une voie d’accès en plus vers les écoles du service public."
+};
+const SURP = {
+ 7397: "Presque personne n’a voté contre, mais plusieurs groupes se sont abstenus. Une abstention peut venir d’un désaccord sur le coût ou la méthode, pas sur l’idée d’aider les étudiants.",
+ 7893: "Peu d’opposition franche. Les désaccords portent sur des détails (plafond des rémunérations, multipropriété des clubs) qu’un simple pour ou contre ne montre pas.",
+ 2521: "C’est un article d’un texte plus large sur l’énergie. Un « contre » peut viser le principe du nucléaire, mais aussi son coût (67 milliards évoqués), sa durée ou le manque de transparence. Un « pour » peut exprimer un soutien au nucléaire ou le choix de garder un cap énergétique.",
+ 2580: "L’amendement a été adopté de justesse (65 contre 62) dans un hémicycle peu rempli. Un vote aussi serré peut dépendre de qui est présent ce jour-là plus que d’une majorité stable.",
+ 881: "Les désaccords sont de deux ordres : un débat de principe sur la justice fiscale, et un débat juridique sur la conformité à la Constitution d’un tel taux.",
+ 4438: "Un « contre » peut venir de gens qui veulent eux aussi défendre l’acier, mais jugent que l’outil n’est pas le bon (la protection se jouerait au niveau européen). Un « pour » peut venir du même objectif avec un autre choix d’outil.",
+ 2272: "Les désaccords portent sur le coût et sur l’effet réel pour les familles modestes, pas seulement sur l’idée d’aider les familles.",
+ 5729: "Vote de conscience : à l’intérieur d’un même groupe, les avis divergent, donc le résultat ne reflète pas une consigne. Un « contre » peut viser le principe même de l’aide à mourir, ou cette version précise du texte.",
+ 805: "Les arguments portent à la fois sur l’efficacité (réponse rapide) et sur la protection des mineurs. Des mesures peuvent séduire sur le papier et être contestées sur leur application.",
+ 7987: "Le texte a été modifié en commission (« légitime défense » remplacée par « usage légitime de l’arme »). Le vote porte sur la version finale, pas sur l’idée de départ.",
+ 4754: "Les objections ne sont pas toutes de même nature : certains jugent le texte juridiquement fragile, d’autres contestent le principe d’un renouvellement par défaut.",
+ 5192: "Le débat porte beaucoup sur la faisabilité : il n’existe pas d’outil fiable de vérification de l’âge, et la question d’un cadre national ou européen se pose.",
+ 6736: "Le texte combine budget, service national volontaire et dérogations de sécurité. On peut approuver une partie et rejeter une autre, alors que le vote est global.",
+ 7259: "Texte à plusieurs volets (eau, élevage, loup, prix, importations). On peut approuver un volet et en rejeter un autre : les raisons d’un « contre » ne sont pas toutes les mêmes.",
+ 1202: "Texte porté par des élus de bords différents. Même chez ceux qui partagent l’objectif, des craintes juridiques subsistent : l’examen du comportement de la victime, la charge de la preuve.",
+ 3684: "Il y a eu beaucoup d’abstentions et d’absents. Certains jugent la pause trop limitée, d’autres trop coûteuse : des raisons opposées peuvent mener au même vote.",
+ 3151: "Dans un budget, un vote porte sur un article précis parmi des centaines. On peut approuver l’objectif et contester le montant ou la durée.",
+ 4745: "Les deux camps affichent le même objectif, un logement accessible, mais divergent sur l’effet : faire baisser les loyers ou réduire l’offre.",
+ 4723: "Ce texte a été rejeté en commission puis adopté en séance (144 contre 100). Le résultat dépend aussi de qui est présent le jour du vote.",
+ 8279: "Texte regroupant de nombreuses mesures : on peut soutenir l’une (par exemple contre les rodéos) et contester une autre (vidéosurveillance algorithmique). Un vote global cache ces nuances.",
+ 6023: "Le texte couvre fraude sociale et fiscale. Certains reprochent un déséquilibre entre les deux, d’autres soutiennent la fermeté : ce n’est pas toujours un vote pour ou contre la lutte contre la fraude.",
+ 3260: "Adopté à une seule voix d’écart (185 contre 184), avec peu de présents. C’est une résolution : elle exprime une position sans changer la loi.",
+ 8611: "Résolution sans valeur de loi. Un « contre » peut signifier qu’on préfère une réponse coordonnée au niveau européen ; un « pour », qu’on demande plus de contrôle sans quitter Schengen.",
+ 8610: "Le critère serait facultatif et n’imposerait aucun achat. Le droit européen limite ce qui est possible : certains votent sur l’efficacité juridique, d’autres sur le principe.",
+ 5412: "C’est l’article premier d’un texte : le seuil exact serait fixé plus tard par décret. On vote donc sur un cadre dont des détails restent inconnus.",
+ 7454: "Ce n’est que la première étape : le Sénat, puis les trois cinquièmes du Parlement réuni en Congrès, doivent encore se prononcer. Le vote n’est pas définitif.",
+ 4963: "C’est une loi d’exception pour un événement. On peut soutenir les Jeux et contester certaines dérogations (surveillance, environnement), ou l’inverse.",
+ 2957: "La mesure la plus débattue (l’acétamipride) a ensuite été censurée par le Conseil constitutionnel. Le vote portait sur l’ensemble du texte, pas seulement sur ce point.",
+ 852: "Le texte ne vise pas les poêles et casseroles. Les désaccords portent sur le coût pour l’industrie et sur les produits importés non soumis aux mêmes règles.",
+ 606: "Presque personne n’a voté contre, mais 19 députés se sont abstenus. L’abstention peut refléter un désaccord sur le coût ou le ciblage plutôt qu’un rejet.",
+ 1194: "Texte large (parquet national, repentis, blanchiment) : un vote global mélange des mesures consensuelles et d’autres contestées, notamment sur les droits de la défense.",
+ 988: "Il y a eu 132 abstentions, plus que de votes contre. Une abstention n’a pas le même sens pour tous : prudence, désaccord sur le texte, préférence pour la voie diplomatique.",
+ 1308: "Texte pour un territoire précis. D’un côté l’argument de la situation locale, de l’autre celui de l’égalité entre territoires.",
+ 840: "C’est un dispositif expérimental que l’on prolonge. On vote pour continuer l’expérimentation, pas pour créer une règle définitive."
+};
+
+/* ---------- pronostic et surprise ---------- */
+const PCLS = { large: 'Large majorité pour', serre: 'Majorité pour, sans plus', contre: 'Majorité contre' };
+const PSUB = { large: '70 % ou plus des votes exprimés', serre: 'entre 50 et 70 % des votes exprimés', contre: 'moins de 50 % de pour' };
+function predClass(q) { const t = totals(q), s = t.p / (t.p + t.c); return s >= .7 ? 'large' : s >= .5 ? 'serre' : 'contre'; }
+function predScore() { const ks = Object.keys(state.preds).filter(n => state.preds[n] !== 'none' && state.answers[n]); return { ok: ks.filter(n => state.preds[n] === predClass(byN[n])).length, n: ks.length }; }
+function viewPredict(q) {
+  return `${progress()}<div class="card reveal"><span class="tag">🎯 Ton pronostic</span>
+  <p class="verdict">Ton vote : <b>${esc(low(say(q.n, state.answers[q.n])))}</b>.</p>
+  <h3>Et les députés présents, qu’ont-ils fait ?</h3>
+  <p class="small muted">« Pour » veut dire ici : ${esc(low(say(q.n, 'pour')))}. On compte seulement les pour et les contre.</p>
+  <div class="opts">${Object.keys(PCLS).map(k => `<button class="btn opt" data-act="pred" data-v="${k}"><b>${PCLS[k]}</b><span class="small muted">${PSUB[k]}</span></button>`).join('')}</div>
+  <button class="btn ghost" data-act="pred" data-v="none">Je préfère ne pas parier</button></div>`;
+}
+function predFb(q) {
+  const pr = state.preds[q.n]; if (!pr || pr === 'none') return '';
+  const real = predClass(q), t = totals(q), sh = Math.round(t.p / (t.p + t.c) * 100);
+  return `<p class="verdict ${pr === real ? 'same' : 'diff'}">${pr === real ? '🎯 Bien vu' : '😮 Surprise'} : tu pensais « ${esc(low(PCLS[pr]))} », le résultat est « ${esc(low(PCLS[real]))} » (${sh} % de pour).</p>`;
+}
+const agreeVal = (a, b) => STATS.agree[a + '|' + b] ?? STATS.agree[b + '|' + a];
+function surprise(q) {
+  const lab = {}; SIGS.filter(g => g !== 'NI' && q.g[g]).forEach(g => { const l = stLabel(stance(q.g[g])); if (l === 'pour' || l === 'contre') lab[g] = l; });
+  const gs = Object.keys(lab); let same = 0, split = 0;
+  for (let i = 0; i < gs.length; i++) for (let j = i + 1; j < gs.length; j++) { const v = agreeVal(gs[i], gs[j]); if (v == null) continue; if (lab[gs[i]] === lab[gs[j]]) { if (v < .4) same++; } else if (v > .85) split++; }
+  const out = [];
+  if (same) out.push(`${same} paire${same > 1 ? 's' : ''} de groupes qui votent d’habitude très différemment (moins de 4 votes sur 10 en commun) ont pris ici la même position.`);
+  if (split) out.push(`${split} paire${split > 1 ? 's' : ''} de groupes qui votent presque toujours pareil (plus de 85 % du temps) se sont séparées.`);
+  if (!out.length) out.push('Rien d’inhabituel dans les alliances sur ce vote : les groupes se sont placés comme d’habitude.');
+  return out;
+}
+function surpBlock(q) {
+  return `<div class="surp"><h4>🤔 Pourquoi ce vote peut surprendre</h4>${SURP[q.n] ? `<p class="small">${esc(SURP[q.n])}</p>` : ''}${surprise(q).map(s => `<p class="small">• ${esc(s)}</p>`).join('')}
+  <details><summary>Un « contre » veut-il dire « opposé à l’idée » ?</summary><div class="body"><p class="small">Pas forcément, et un « pour » peut aussi cacher des réserves. Quelques raisons fréquentes :</p><ul class="m small"><li>Le texte est jugé insuffisant, ou trop large : on partage l’objectif, pas la méthode.</li><li>Une seule mesure d’un texte long déplaît, alors que le reste convient.</li><li>Le moment, le financement ou la procédure ne conviennent pas.</li><li>Une consigne de groupe ou une tactique parlementaire.</li></ul></div></details></div>`;
+}
+
+/* ---------- chiffres qui surprennent ---------- */
+const DAYS = ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi'];
+const wsum = () => GS.reduce((s, g) => s + SG[g].members_avg, 0);
+const wavg = k => GS.reduce((s, g) => s + SG[g].members_avg * SG[g][k], 0) / wsum();
+function factsAgg() {
+  const all = wavg('part'), sps = wavg('part_sps'), wk = [0, 1, 2, 3, 4].map(i => GS.reduce((s, g) => s + SG[g].members_avg * SG[g].weekday[i], 0) / wsum());
+  const hi = wk.indexOf(Math.max(...wk)), lo = wk.indexOf(Math.min(...wk)), dl = wavg('deleg');
+  const amT = GS.reduce((s, g) => s + SG[g].am_tot, 0), amO = GS.reduce((s, g) => s + SG[g].am_ok, 0);
+  const iN = GS.reduce((s, g) => s + SG[g].indiv.n, 0), i10 = GS.reduce((s, g) => s + SG[g].indiv.lt10, 0), i50 = GS.reduce((s, g) => s + SG[g].indiv.gt50, 0);
+  return [
+    { n: pc(all), t: 'des députés votent en moyenne lors d’un scrutin public. Les autres sont en commission, en circonscription… ou absents.' },
+    { n: pc(sps), t: 'votent lors des grands votes solennels. Les textes importants attirent plus de monde que le quotidien.' },
+    { n: 'Le ' + DAYS[hi], t: `est le jour le plus suivi (${pc(wk[hi])} de participation). Le ${DAYS[lo]}, seulement ${pc(wk[lo])}.` },
+    { n: pc(dl), t: 'des votes sont émis par un collègue au nom d’un député absent. C’est légal et encadré, mais cela ne veut pas dire qu’il était dans la salle.' },
+    { n: `${amO} sur ${amT}`, t: 'amendements mis au vote public ont été adoptés (auteur identifié). Les autres ont été rejetés.' },
+    { n: `${i10} sur ${iN}`, t: `députés suivis ont participé à moins d’un scrutin public sur dix. À l’autre bout, ${i50} ont participé à plus d’un sur deux.` }
+  ];
+}
+function factsNamed() {
+  const by = k => GS.map(g => ({ g, v: SG[g][k] })).sort((a, b) => b.v - a.v), p = by('part'), r = by('rice'), w = by('win'), a = by('am_rate'), L = x => x[x.length - 1];
+  return [
+    { n: short(p[0].g), t: `est le groupe qui vote le plus (${pc(p[0].v)} de participation moyenne). Le moins : ${short(L(p).g)} (${pc(L(p).v)}).` },
+    { n: short(r[0].g), t: `est le plus discipliné : ${pc(r[0].v)} de ses votants votent d’une seule voix. Le moins : ${short(L(r).g)} (${pc(L(r).v)}).` },
+    { n: short(w[0].g), t: `voit sa position l’emporter le plus souvent (${pc(w[0].v)}). Cela mesure le poids politique, pas le mérite.` },
+    { n: short(a[0].g), t: `voit ${pc(a[0].v)} de ses amendements mis au vote public adoptés. Le moins : ${short(L(a).g)} (${pc(L(a).v)}).` }
+  ];
+}
+const factCards = l => `<div class="facts">${l.map(f => `<div class="fact"><span class="n">${esc(f.n)}</span><span>${esc(f.t)}</span></div>`).join('')}</div>`;
+
+/* ---------- promesses : bilan ---------- */
+function promTally() {
+  const t = {};
+  state.order.filter(qn => PROM[qn]).forEach(qn => { const q = byN[qn]; PROM[qn].forEach(p => { if (!p.exp) return; const gs = p.groups.length ? p.groups : SIGS.filter(g => q.g[g]), ks = gs.map(g => status(g, q, p.exp).k), k = ks.every(x => x === 'ok') ? 'ok' : ks.every(x => x === 'ko') ? 'ko' : 'mid'; (t[p.bloc] = t[p.bloc] || { ok: 0, ko: 0, mid: 0 })[k]++; }); });
+  return t;
+}
+function vbar(o) { const n = o.ok + o.mid + o.ko || 1; return `<div class="bar" title="${o.ok} cohérent, ${o.mid} partiel, ${o.ko} contradictoire"><i class="p" style="width:${o.ok / n * 100}%"></i><i class="a" style="width:${o.mid / n * 100}%"></i><i class="c" style="width:${o.ko / n * 100}%"></i></div>`; }
+const vtxt = o => `${o.ok} cohérent${o.ok > 1 ? 's' : ''} · ${o.mid} partiel${o.mid > 1 ? 's' : ''} · ${o.ko} contradictoire${o.ko > 1 ? 's' : ''}`;
+
+/* ---------- récap en story et carte à partager ---------- */
+function storyColor(r, s) { const sc = r.map(x => x.score), mn = Math.min(...sc), mx = Math.max(...sc), x = r.find(y => y.s === s); if (!x) return 'rgba(255,255,255,.12)'; const p = mx === mn ? 50 : (x.score - mn) / (mx - mn) * 100; return `color-mix(in srgb, #ffd45e ${Math.round(p)}%, rgba(255,255,255,.2))`; }
+function storyList() {
+  const r = ranking(), ans = answered(), n = ans.length, ps = predScore(), sl = [];
+  const withMaj = ans.filter(qn => { const t = totals(byN[qn]); return (state.answers[qn] === 'pour') === (t.p > t.c); }).length;
+  sl.push(() => `<p class="eyebrow">Ton récap</p><h2>Voilà ton hémicycle</h2><div class="hemi">${hemiResult(r, true)}</div><p>Chaque point est un député à sa vraie place. Plus il est <b>jaune</b>, plus son groupe a voté comme toi sur ${n} vote${n > 1 ? 's' : ''}.</p><p class="small" style="opacity:.8">Tu as voté comme la majorité des députés présents ${Math.round(withMaj / n * 100)} % du temps.</p>`);
+  sl.push(() => `<p class="eyebrow">Le plus proche de toi</p><div class="bigname">${esc(D.groups[r[0].s])}</div><div class="bignum">${Math.round(r[0].score * 100)} %</div><p>de ressemblance. Ensuite : ${esc(D.groups[r[1].s])} (${Math.round(r[1].score * 100)} %).</p><p class="small" style="opacity:.8">Un signal, pas un verdict : un autre tirage de votes peut donner un autre classement.</p>`);
+  const far = r[r.length - 1];
+  sl.push(() => `<p class="eyebrow">Le plus éloigné de toi</p><div class="bigname">${esc(D.groups[far.s])}</div><div class="bignum">${Math.round(far.score * 100)} %</div><p>de ressemblance sur tes votes. Éloigné ne veut pas dire opposé sur tout : regarde le détail, vote par vote.</p>`);
+  if (ps.n >= 3) sl.push(() => `<p class="eyebrow">Ton flair</p><div class="bignum">${ps.ok} / ${ps.n}</div><p>pronostics justes sur le résultat des votes.</p><p class="big-quote">${ps.ok / ps.n >= .7 ? 'Tu lis l’Assemblée comme un livre ouvert.' : ps.ok / ps.n >= .4 ? 'Mitigé : l’Assemblée t’a surpris plusieurs fois.' : 'L’Assemblée t’a surpris presque à chaque fois, et c’est tout l’intérêt de regarder les vrais votes.'}</p>`);
+  const opp = ans.map(qn => { const q = byN[qn], t = totals(q), maj = t.p > t.c ? 'pour' : 'contre'; return { q, sh: Math.max(t.p, t.c) / (t.p + t.c), opp: state.answers[qn] !== maj }; }).filter(o => o.opp).sort((a, b) => b.sh - a.sh)[0];
+  sl.push(() => opp ? `<p class="eyebrow">Ton vote à contre-courant</p><p class="big-quote">${esc(opp.q.title)}</p><p>Toi : ${esc(low(say(opp.q.n, state.answers[opp.q.n])))}.<br>Parmi les députés qui ont voté, <b>${Math.round(opp.sh * 100)} %</b> ont voté l’inverse.</p>` : `<p class="eyebrow">Ton vote</p><p class="big-quote">Aucun de tes votes n’est allé à contre-courant de la majorité des députés présents.</p>`);
+  const fl = factsAgg(), f = fl[state.factIdx % fl.length];
+  sl.push(() => `<p class="eyebrow">Le chiffre qui surprend</p><div class="bignum" style="font-size:clamp(2.6rem,13vw,4rem)">${esc(f.n)}</div><p>${esc(f.t)}</p><p class="small" style="opacity:.8">Participation aux scrutins publics, 17e législature.</p>`);
+  const tl = promTally(), bl = Object.keys(tl);
+  if (bl.length) sl.push(() => `<p class="eyebrow">Promesses contre votes</p><h2>Ce qu’ils disaient, ce qu’ils ont voté</h2>${bl.map(b => `<div class="vb"><b>${esc(b)}</b>${vbar(tl[b])}<span class="small" style="opacity:.85">${vtxt(tl[b])}</span></div>`).join('')}<p class="small" style="opacity:.8">Petit échantillon : un regard, pas un score de fiabilité.</p>`);
+  sl.push(() => `<p class="eyebrow">Ta carte</p><img id="cardimg" class="card-img" alt="Ma carte : mon hémicycle et le groupe le plus proche" src="${state.cardUrl || ''}"><div class="row"><button class="btn white" data-act="share">Partager</button><button class="btn" data-act="dl">Enregistrer</button></div><p class="small" style="opacity:.8">La carte est créée sur ton appareil, rien n’est envoyé. Si l’enregistrement ne marche pas, appuie longuement sur l’image.</p>`);
+  return sl;
+}
+function viewStory() {
+  const sl = storyList(), i = Math.min(state.slide, sl.length - 1), last = i === sl.length - 1;
+  return `<div class="story" role="dialog" aria-label="Ton récap"><div class="bars">${sl.map((_, k) => `<i class="${k <= i ? 'on' : ''}"></i>`).join('')}</div>
+  <div class="strow"><span class="small">${i + 1} / ${sl.length}</span><button class="link" data-act="storyend">Passer</button></div>
+  <div class="slide" id="slide">${sl[i]()}</div>
+  <div class="stnav"><button class="btn" data-act="sprev" ${i === 0 ? 'disabled' : ''} aria-label="Précédent">←</button>${last ? '<button class="btn white" data-act="storyend">Voir le détail</button>' : '<button class="btn white" data-act="snext">Suivant</button>'}</div></div>`;
+}
+const slideCount = () => storyList().length;
+function slideGo(d) { const n = slideCount(), k = Math.max(0, Math.min(n - 1, state.slide + d)); if (k === state.slide) return; state.slide = k; render(); }
+async function makeCard() {
+  try { await document.fonts.ready; } catch (_) {}
+  const W = 1080, H = 1350, c = document.createElement('canvas'); c.width = W; c.height = H; const x = c.getContext('2d');
+  const g = x.createLinearGradient(0, 0, W, H); g.addColorStop(0, '#3a1fd0'); g.addColorStop(.62, '#1d4fd8'); g.addColorStop(1, '#0d7a8a'); x.fillStyle = g; x.fillRect(0, 0, W, H);
+  const r = ranking(), ans = answered(), a = seatArr(byN[8611]), L = layout(a.length), ps = predScore();
+  const DF = "'Bricolage Grotesque', system-ui, sans-serif", BF = "'DM Sans', system-ui, sans-serif";
+  x.fillStyle = '#fff'; x.textAlign = 'center';
+  x.font = `800 72px ${DF}`; x.fillText('Mon hémicycle', W / 2, 120);
+  x.globalAlpha = .85; x.font = `500 32px ${BF}`; x.fillText(`D’après ${ans.length} vrais votes de l’Assemblée nationale`, W / 2, 172); x.globalAlpha = 1;
+  const sc = r.map(z => z.score), mn = Math.min(...sc), mx = Math.max(...sc), cx = W / 2, cy = 800, R = 470;
+  a.forEach((s, i) => { const p = L.seats[i], z = r.find(y => y.s === s.g); let col = 'rgba(255,255,255,.12)'; if (z && s.g !== 'NI') { const t = mx === mn ? .5 : (z.score - mn) / (mx - mn); col = `rgba(255,${Math.round(255 - 43 * t)},${Math.round(255 - 161 * t)},${(.2 + .8 * t).toFixed(2)})`; } x.beginPath(); x.arc(cx + p.x * R, cy + p.y * R, L.rad * R, 0, 7); x.fillStyle = col; x.fill(); });
+  x.fillStyle = '#fff'; x.globalAlpha = .8; x.font = `700 28px ${BF}`; x.fillText('LE PLUS PROCHE DE MOI', W / 2, 880); x.globalAlpha = 1;
+  let fs = 60; const nm = D.groups[r[0].s]; x.font = `800 ${fs}px ${DF}`; while (x.measureText(nm).width > W - 120 && fs > 28) { fs -= 2; x.font = `800 ${fs}px ${DF}`; }
+  x.fillText(nm, W / 2, 955); x.font = `800 44px ${DF}`; x.fillText(`${Math.round(r[0].score * 100)} % de ressemblance`, W / 2, 1015);
+  r.slice(1, 3).forEach((z, k) => { const y = 1085 + k * 58; x.textAlign = 'left'; x.font = `700 30px ${BF}`; x.fillText(short(z.s), 140, y); x.fillStyle = 'rgba(255,255,255,.25)'; x.fillRect(300, y - 24, 560, 22); x.fillStyle = '#ffd45e'; x.fillRect(300, y - 24, 560 * z.score, 22); x.fillStyle = '#fff'; x.textAlign = 'right'; x.fillText(`${Math.round(z.score * 100)} %`, 940, y); });
+  x.textAlign = 'center'; if (ps.n >= 3) { x.font = `700 32px ${BF}`; x.fillText(`🎯 Flair : ${ps.ok} / ${ps.n} pronostics justes`, W / 2, 1235); }
+  x.globalAlpha = .8; x.font = `500 28px ${BF}`; x.fillText('Dans l’hémicycle · compare les votes, pas les promesses', W / 2, 1300); x.globalAlpha = 1;
+  return c.toDataURL('image/png');
+}
+function ensureCard() { if (state.cardUrl) return; makeCard().then(u => { state.cardUrl = u; const im = document.getElementById('cardimg'); if (im) im.src = u; }).catch(() => {}); }
+function download(url) { if (!url) return; const a = document.createElement('a'); a.href = url; a.download = 'mon-hemicycle.png'; document.body.appendChild(a); a.click(); a.remove(); }
+async function shareCard() {
+  const url = state.cardUrl || await makeCard(); state.cardUrl = url;
+  try { const blob = await (await fetch(url)).blob(), f = new File([blob], 'mon-hemicycle.png', { type: 'image/png' }); if (navigator.canShare && navigator.canShare({ files: [f] })) { await navigator.share({ files: [f], title: 'Mon hémicycle' }); return; } } catch (e) { if (e && e.name === 'AbortError') return; }
+  download(url);
+}
+
+/* ---------- comment c'est fait ---------- */
+function viewHow() {
+  return `${topbar()}<button class="link" data-act="back" style="align-self:flex-start">← Retour</button>
+  <div class="card hero reveal"><h1 style="font-size:clamp(1.9rem,7vw,2.6rem)">Comment c’est <span class="hl">fait</span></h1><p>Ce site compare tes réponses à de vrais votes. Voici d’où viennent les données, comment on choisit, et ce qu’il ne faut pas en conclure.</p></div>
+  <div class="card reveal"><span class="tag warn">⚠️ Statut : prototype, textes non relus</span><p class="small">Les résumés et les explications de mots sont écrits par une IA à partir de sources publiques. Ils n’ont pas encore été relus par deux personnes de sensibilités politiques opposées, étape prévue avant toute publication large. Chaque vote renvoie vers le scrutin officiel pour que tu puisses vérifier.</p></div>
+  <div class="card reveal"><h3>D’où viennent les votes</h3><p class="small">Des données ouvertes de l’Assemblée nationale : les scrutins publics de la 17e législature, avec le vote de chaque député et sa place dans l’hémicycle. Rien n’est inventé ni estimé : les points absents sont des députés qui n’ont pas voté.</p></div>
+  <div class="card reveal"><h3>Comment les questions sont choisies</h3><p class="small">Dans ce prototype, ${D.q.length} votes ont été choisis à la main pour couvrir ${D.cats.length} thèmes, puis tirés au hasard. À terme, la sélection serait automatisée avec des critères publics : désaccord réel entre groupes, participation suffisante, mesure précise plutôt que texte fourre-tout.</p></div>
+  <div class="card reveal"><h3>Règles de neutralité</h3><ul class="m small"><li>Aucun nom de parti ni de personne pendant le quiz : tu juges la mesure, pas l’étiquette.</li><li>Chaque fiche présente des arguments des deux côtés, avec le même poids.</li><li>Les boutons disent précisément pour quoi ou contre quoi tu votes, car un « contre » peut vouloir dire supprimer, rejeter ou refuser une mesure.</li><li>Après chaque vote, une explication montre pourquoi le résultat peut surprendre.</li></ul></div>
+  <div class="card reveal"><h3>Ce que ce site ne dit pas</h3><ul class="m small"><li>Ce n’est pas une consigne de vote : un petit nombre de votes donne un signal fragile.</li><li>Un groupe peut voter contre un texte pour d’autres raisons que son principe.</li><li>Les promesses sont tirées d’articles de presse et d’un comparatif tiers, avec paraphrase. Les programmes de la droite républicaine, de l’UDR et de LIOT ne sont pas encore traités.</li><li>Les chiffres de présence mesurent la participation aux scrutins publics, pas tout le travail d’un député (commissions, circonscription).</li></ul></div>
+  <div class="card reveal"><h3>Sources des promesses</h3><ul class="m small">${Object.keys(SRC).map(k => `<li><a href="${SRC[k][1]}" target="_blank" rel="noopener">${esc(SRC[k][0])}</a></li>`).join('')}</ul></div>
+  <button class="btn primary" data-act="back">← Retour</button>`;
+}
+
+/* ---------- rendu et événements ---------- */
+function countUps() {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  document.querySelectorAll('[data-count]').forEach(el => { const to = +el.dataset.count, suf = el.dataset.suf || '', t0 = performance.now(); const f = t => { const p = Math.min(1, (t - t0) / 900); el.textContent = Math.round(to * (1 - Math.pow(1 - p, 3))) + suf; if (p < 1) requestAnimationFrame(f); }; requestAnimationFrame(f); });
+}
+function render(keep) {
+  $app.classList.toggle('still', !!state.still);
+  $app.innerHTML = state.screen === 'intro' ? topbar() + viewIntro() : state.screen === 'prio' ? topbar() + viewPrio() : state.screen === 'quiz' ? topbar() + viewQuiz() : state.screen === 'stats' ? viewStats() : state.screen === 'how' ? viewHow() : state.screen === 'story' ? viewStory() : viewResult();
+  if (state.screen === 'quiz') bindSwipe();
+  if (state.screen === 'result') { state.still = true; setTimeout(() => document.querySelectorAll('.sc').forEach(s => s.classList.add('on')), state.still && keep ? 0 : 450); }
+  document.body.style.overflow = state.screen === 'story' ? 'hidden' : '';
+  if (state.screen === 'story') { setTimeout(() => document.querySelectorAll('.sc').forEach(s => s.classList.add('on')), 350); if (document.getElementById('cardimg')) ensureCard(); }
+  countUps();
+  if (!keep) window.scrollTo({ top: 0 });
+}
+function answer(v) { const q = byN[state.order[state.idx]]; state.answers[q.n] = v; if (state.pron) { state.predict = q.n; state.reveal = null; } else { state.predict = null; state.reveal = q.n; } render(); }
+function bindSwipe() {
+  const el = document.getElementById('swipe'); if (!el) return; let sx = 0, dx = 0, on = false;
+  el.addEventListener('pointerdown', e => { if (e.target.closest('summary,a,button')) return; on = true; sx = e.clientX; dx = 0; try { el.setPointerCapture(e.pointerId); } catch (_) {} el.style.animation = 'none'; el.style.transition = 'none'; });
+  el.addEventListener('pointermove', e => { if (!on) return; dx = e.clientX - sx; el.style.transform = `translateX(${dx}px) rotate(${dx / 30}deg)`; el.dataset.dir = dx > 40 ? 'pour' : dx < -40 ? 'contre' : ''; el.style.setProperty('--sp', Math.max(0, Math.min(1, dx / 100))); el.style.setProperty('--sc', Math.max(0, Math.min(1, -dx / 100))); });
+  const end = () => { if (!on) return; on = false; el.style.transition = ''; if (Math.abs(dx) > 100) { const v = dx > 0 ? 'pour' : 'contre'; el.style.transform = `translateX(${dx > 0 ? 700 : -700}px) rotate(${dx > 0 ? 20 : -20}deg)`; setTimeout(() => answer(v), 180); } else { el.style.transform = ''; el.dataset.dir = ''; el.style.setProperty('--sp', 0); el.style.setProperty('--sc', 0); } };
+  el.addEventListener('pointerup', end); el.addEventListener('pointercancel', end);
+}
+function applyHl() { document.querySelectorAll('#hemires .seat').forEach(s => s.classList.toggle('dim', !!state.hl && s.dataset.g !== state.hl)); }
+function next() { state.reveal = null; if (state.idx < state.order.length - 1) state.idx++; else { state.screen = state.more ? 'result' : 'story'; state.slide = 0; state.still = false; } state.predict = null; render(); if (state.screen === 'result') applyHl(); }
+$app.addEventListener('click', e => {
+  const seat = e.target.closest('.seat[data-g]'); if (seat && state.screen === 'result') { const g = seat.dataset.g; state.hl = state.hl === g ? null : g; state.tab = 'prox'; render(true); applyHl(); return; }
+  const stg = e.target.closest('.story .slide'); if (stg && !e.target.closest('button,a,summary,img,[data-act]')) { const rc = stg.getBoundingClientRect(); slideGo(e.clientX - rc.left < rc.width * .3 ? -1 : 1); return; }
+  const b = e.target.closest('[data-act]'); if (!b) return; const a = b.dataset.act, v = b.dataset.v;
+  if (a === 'start') { state.screen = 'prio'; render(); }
+  else if (a === 'prio') { const i = state.prio.indexOf(v); if (i >= 0) state.prio.splice(i, 1); else if (state.prio.length < 3) state.prio.push(v); state.still = true; render(true); state.still = false; }
+  else if (a === 'go') { buildOrder(); state.idx = 0; state.reveal = null; state.predict = null; state.preds = {}; state.more = false; state.cardUrl = null; state.screen = 'quiz'; render(); }
+  else if (a === 'ans') answer(v);
+  else if (a === 'pred') { const qn = state.predict; if (qn == null) return; state.preds[qn] = v; state.predict = null; state.reveal = qn; render(); }
+  else if (a === 'len') { state.nq = +v; state.still = true; render(true); state.still = false; }
+  else if (a === 'pron') { state.pron = !state.pron; state.still = true; render(true); state.still = false; }
+  else if (a === 'snext') slideGo(1);
+  else if (a === 'sprev') slideGo(-1);
+  else if (a === 'storyend') { state.screen = 'result'; state.slide = 0; state.still = false; render(); applyHl(); }
+  else if (a === 'story') { state.screen = 'story'; state.slide = 0; render(); }
+  else if (a === 'share') shareCard();
+  else if (a === 'dl') download(state.cardUrl);
+  else if (a === 'how') { state.prev = state.screen; state.screen = 'how'; state.still = false; render(); }
+  else if (a === 'skip' || a === 'next') next();
+  else if (a === 'prev') { if (state.idx > 0) { state.idx--; state.reveal = null; state.predict = null; render(); } }
+  else if (a === 'tab') { state.tab = v; render(true); applyHl(); }
+  else if (a === 'hl') { state.hl = state.hl === v ? null : v; render(true); applyHl(); }
+  else if (a === 'oq') { state.openQ = state.openQ === +v ? null : +v; render(true); applyHl(); }
+  else if (a === 'more') { const left = D.q.filter(q => !state.order.includes(q.n)).map(q => q.n); if (!left.length) return; const add = shuffle(left, rnd()).slice(0, 5); state.idx = state.order.length; state.order = state.order.concat(add); state.reveal = null; state.predict = null; state.more = true; state.screen = 'quiz'; state.still = false; render(); }
+  else if (a === 'again') { state.answers = {}; state.preds = {}; state.predict = null; state.more = false; state.cardUrl = null; state.idx = 0; state.reveal = null; state.hl = null; state.openQ = null; state.tab = 'prox'; state.still = false; buildOrder(); state.screen = 'quiz'; render(); }
+  else if (a === 'stats') { state.prev = state.screen; state.screen = 'stats'; state.still = false; render(); }
+  else if (a === 'back') { state.screen = state.prev || 'intro'; state.still = state.screen === 'result'; render(); if (state.screen === 'result') applyHl(); }
+  else if (a === 'restart') { Object.assign(state, { still: false, screen: 'intro', prio: [], answers: {}, preds: {}, predict: null, more: false, cardUrl: null, slide: 0, order: [], idx: 0, reveal: null, tab: 'prox', hl: null, openQ: null }); render(); }
+});
+document.addEventListener('keydown', e => { if (state.screen === 'story') { if (e.key === 'ArrowRight') slideGo(1); if (e.key === 'ArrowLeft') slideGo(-1); return; } if (state.screen !== 'quiz' || state.reveal || state.predict) return; if (e.key === 'ArrowRight') answer('pour'); if (e.key === 'ArrowLeft') answer('contre'); });
+render();
+</script>

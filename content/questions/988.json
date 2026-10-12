@@ -1,0 +1,28 @@
+{
+ "cat": "Défense",
+ "checks": {},
+ "con": "Les opposants ou abstentionnistes craignent une escalade et les coûts, ou préfèrent une voie diplomatique.",
+ "date": "2025-03-12",
+ "hook": "La guerre à l’est de l’Europe : jusqu’où la France et l’Europe s’engagent.",
+ "kind": "resolution",
+ "label": "plus de soutien à l’Ukraine",
+ "legacy": true,
+ "n": 988,
+ "notes": "Rédigé par IA dans le MVP, non relu. À revérifier à la source. Résumé en partie issu de connaissances générales.",
+ "polarity": "adopt",
+ "polarity_verified": true,
+ "pro": "Les partisans mettent en avant la sécurité de l'Europe et le droit international.",
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/988"
+  }
+ ],
+ "status": "legacy",
+ "subkind": "ensemble",
+ "sum": "Résolution européenne, sans valeur de loi. Elle appelle le gouvernement et l'Union européenne à renforcer le soutien à l'Ukraine face à l'invasion russe, notamment sur les plans militaire et financier. De nombreux élus se sont abstenus ou ont voté contre.",
+ "surp": "Il y a eu 132 abstentions, plus que de votes contre. Une abstention n’a pas le même sens pour tous : prudence, désaccord sur le texte, préférence pour la voie diplomatique.",
+ "title": "Renforcer le soutien à l'Ukraine",
+ "updated": "2026-10-12"
+}

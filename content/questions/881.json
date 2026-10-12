@@ -1,0 +1,28 @@
+{
+ "cat": "Économie & fiscalité",
+ "checks": {},
+ "con": "Les opposants jugent la mesure inefficace, confiscatoire, et contraire à la jurisprudence constitutionnelle pour un taux de 2 %. Ils craignent une fiscalité punitive qui nuirait à l'attractivité du pays.",
+ "date": "2025-02-20",
+ "hook": "Un impôt qui ne concernerait qu’environ 1 800 personnes, mais qui pose la question de qui contribue à quoi.",
+ "kind": "texte",
+ "label": "l’impôt plancher sur les ultra-riches",
+ "legacy": true,
+ "n": 881,
+ "notes": "Rédigé par IA dans le MVP, non relu. À revérifier à la source.",
+ "polarity": "adopt",
+ "polarity_verified": true,
+ "pro": "Corriger une injustice fiscale. Selon les partisans, le texte ne toucherait pas les petits entrepreneurs ou artisans.",
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/881"
+  }
+ ],
+ "status": "legacy",
+ "subkind": "ensemble",
+ "sum": "Proposition de loi. Elle crée un impôt minimum de 2 % par an sur les patrimoines supérieurs à 100 millions d'euros, soit environ 1 800 personnes. Les biens professionnels sont inclus. L'objectif affiché est de limiter les contournements, notamment par les holdings patrimoniales.",
+ "surp": "Les désaccords sont de deux ordres : un débat de principe sur la justice fiscale, et un débat juridique sur la conformité à la Constitution d’un tel taux.",
+ "title": "Impôt plancher de 2 % sur les très gros patrimoines",
+ "updated": "2026-10-12"
+}

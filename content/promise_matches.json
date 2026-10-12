@@ -1,0 +1,397 @@
+{
+ "1308": [
+  {
+   "bloc": "RN",
+   "exp": "pour",
+   "flag": "même esprit, pas la même mesure",
+   "groups": [
+    "RN"
+   ],
+   "src": [
+    "lcp",
+    "imm"
+   ],
+   "status": "legacy",
+   "text": "Supprimer le droit du sol."
+  },
+  {
+   "bloc": "Nouveau Front populaire",
+   "exp": "contre",
+   "flag": "même esprit, pas la même mesure",
+   "groups": [
+    "LFI-NFP",
+    "SOC",
+    "ECOS",
+    "GDR"
+   ],
+   "src": [
+    "imm"
+   ],
+   "status": "legacy",
+   "text": "Droit du sol intégral pour les enfants nés en France."
+  }
+ ],
+ "2521": [
+  {
+   "bloc": "RN",
+   "exp": "pour",
+   "groups": [
+    "RN"
+   ],
+   "src": [
+    "lcp"
+   ],
+   "status": "legacy",
+   "text": "Faire du nucléaire un pilier du mix énergétique."
+  },
+  {
+   "bloc": "Ensemble",
+   "exp": "pour",
+   "flag": "attribution à vérifier",
+   "groups": [
+    "EPR",
+    "DEM",
+    "HOR"
+   ],
+   "src": [
+    "cmp"
+   ],
+   "status": "legacy",
+   "text": "Ouvrir 8 nouveaux réacteurs."
+  },
+  {
+   "bloc": "Nouveau Front populaire",
+   "exp": null,
+   "groups": [
+    "LFI-NFP",
+    "SOC",
+    "ECOS",
+    "GDR"
+   ],
+   "src": [
+    "ps"
+   ],
+   "status": "legacy",
+   "text": "Pas de ligne commune : le programme renvoie à une loi sur l’énergie, avec des désaccords internes sur le nucléaire."
+  }
+ ],
+ "2580": [
+  {
+   "bloc": "RN",
+   "exp": "pour",
+   "flag": "partiel : le vote vise aussi le solaire",
+   "groups": [
+    "RN"
+   ],
+   "src": [
+    "lcp"
+   ],
+   "status": "legacy",
+   "text": "Moratoire sur les nouveaux chantiers éoliens."
+  },
+  {
+   "bloc": "Ensemble",
+   "exp": "contre",
+   "flag": "attribution incertaine",
+   "groups": [
+    "EPR",
+    "DEM",
+    "HOR"
+   ],
+   "src": [
+    "cmp"
+   ],
+   "status": "legacy",
+   "text": "Renforcer les filières d’énergies renouvelables."
+  }
+ ],
+ "2957": [
+  {
+   "bloc": "Nouveau Front populaire",
+   "exp": "contre",
+   "flag": "même esprit : le texte contient d’autres mesures",
+   "groups": [
+    "LFI-NFP",
+    "SOC",
+    "ECOS",
+    "GDR"
+   ],
+   "src": [
+    "cmp"
+   ],
+   "status": "legacy",
+   "text": "Interdire le glyphosate et les néonicotinoïdes."
+  },
+  {
+   "bloc": "RN",
+   "exp": null,
+   "groups": [
+    "RN"
+   ],
+   "src": [
+    "lcp"
+   ],
+   "status": "legacy",
+   "text": "Mesures agricoles sur les importations non conformes et les cantines, sans équivalent direct."
+  }
+ ],
+ "3151": [
+  {
+   "bloc": "Nouveau Front populaire",
+   "exp": "pour",
+   "flag": "même esprit, pas la même mesure",
+   "groups": [
+    "LFI-NFP",
+    "SOC",
+    "ECOS",
+    "GDR"
+   ],
+   "src": [
+    "ps"
+   ],
+   "status": "legacy",
+   "text": "Taxer les superprofits."
+  }
+ ],
+ "3684": [
+  {
+   "bloc": "Nouveau Front populaire",
+   "exp": "pour",
+   "flag": "même direction, pas la même mesure : ici, simple suspension",
+   "groups": [
+    "LFI-NFP",
+    "SOC",
+    "ECOS",
+    "GDR"
+   ],
+   "src": [
+    "ps"
+   ],
+   "status": "legacy",
+   "text": "Abroger la réforme de 2023 et revenir à 60 ans."
+  },
+  {
+   "bloc": "RN",
+   "exp": "pour",
+   "flag": "même direction, pas la même mesure",
+   "groups": [
+    "RN"
+   ],
+   "src": [
+    "lcp"
+   ],
+   "status": "legacy",
+   "text": "Départ à 60 ans pour qui a commencé avant 20 ans (40 annuités), 62 ans pour les autres ; revenir sur la réforme de 2023."
+  }
+ ],
+ "4754": [
+  {
+   "bloc": "Nouveau Front populaire",
+   "exp": "pour",
+   "flag": "même esprit, pas la même mesure",
+   "groups": [
+    "LFI-NFP",
+    "SOC",
+    "ECOS",
+    "GDR"
+   ],
+   "src": [
+    "imm"
+   ],
+   "status": "legacy",
+   "text": "Carte de séjour « référence » de dix ans, régularisations facilitées."
+  },
+  {
+   "bloc": "RN",
+   "exp": "contre",
+   "flag": "même esprit, pas la même mesure",
+   "groups": [
+    "RN"
+   ],
+   "src": [
+    "imm"
+   ],
+   "status": "legacy",
+   "text": "Durcir les règles : fin du droit du sol, régularisations suspendues, regroupement familial restreint."
+  },
+  {
+   "bloc": "Ensemble",
+   "exp": null,
+   "groups": [
+    "EPR",
+    "DEM",
+    "HOR"
+   ],
+   "src": [
+    "imm"
+   ],
+   "status": "legacy",
+   "text": "Cartes de séjour de longue durée conditionnées à la maîtrise du français et aux valeurs de la République."
+  }
+ ],
+ "5192": [
+  {
+   "bloc": "Ensemble",
+   "exp": "pour",
+   "flag": "attribution à vérifier",
+   "groups": [
+    "EPR",
+    "DEM",
+    "HOR"
+   ],
+   "src": [
+    "cmp"
+   ],
+   "status": "legacy",
+   "text": "Réseaux sociaux interdits avant 15 ans."
+  },
+  {
+   "bloc": "RN",
+   "exp": "pour",
+   "flag": "partiel : ne porte que sur le portable",
+   "groups": [
+    "RN"
+   ],
+   "src": [
+    "lcp"
+   ],
+   "status": "legacy",
+   "text": "Interdire les téléphones portables dans les établissements, lycées compris."
+  }
+ ],
+ "5729": [
+  {
+   "bloc": "Tous les grands blocs",
+   "exp": null,
+   "groups": [],
+   "src": [
+    "cmp"
+   ],
+   "status": "legacy",
+   "text": "Aucun des quatre grands programmes ne traite la fin de vie, d’après le comparatif."
+  }
+ ],
+ "6736": [
+  {
+   "bloc": "Ensemble",
+   "exp": "pour",
+   "flag": "attribution à vérifier",
+   "groups": [
+    "EPR",
+    "DEM",
+    "HOR"
+   ],
+   "src": [
+    "cmp"
+   ],
+   "status": "legacy",
+   "text": "Doubler le budget militaire d’ici 2030."
+  }
+ ],
+ "7987": [
+  {
+   "bloc": "RN",
+   "exp": "pour",
+   "flag": "absent de l’article de 2024",
+   "groups": [
+    "RN"
+   ],
+   "src": [
+    "cmp"
+   ],
+   "status": "legacy",
+   "text": "Présomption de légitime défense pour les forces de l’ordre (programme 2022 selon le comparatif)."
+  }
+ ],
+ "805": [
+  {
+   "bloc": "RN",
+   "exp": "pour",
+   "flag": "même esprit, pas la même mesure",
+   "groups": [
+    "RN"
+   ],
+   "src": [
+    "lcp"
+   ],
+   "status": "legacy",
+   "text": "Peines planchers et suspension des allocations familiales des parents de mineurs récidivistes."
+  }
+ ],
+ "8611": [
+  {
+   "bloc": "RN",
+   "exp": "pour",
+   "flag": "même esprit, pas la même mesure",
+   "groups": [
+    "RN"
+   ],
+   "src": [
+    "imm"
+   ],
+   "status": "legacy",
+   "text": "Réserver la libre circulation de Schengen aux seuls ressortissants de l’UE."
+  }
+ ],
+ "881": [
+  {
+   "bloc": "Nouveau Front populaire",
+   "exp": "pour",
+   "flag": "même logique, pas la même mesure",
+   "groups": [
+    "LFI-NFP",
+    "SOC",
+    "ECOS",
+    "GDR"
+   ],
+   "src": [
+    "ps",
+    "cmp"
+   ],
+   "status": "legacy",
+   "text": "Rétablir un impôt sur la fortune et l’exit tax, supprimer la flat tax."
+  },
+  {
+   "bloc": "RN",
+   "exp": null,
+   "groups": [
+    "RN"
+   ],
+   "src": [
+    "lcp"
+   ],
+   "status": "legacy",
+   "text": "Aucune mesure sur l’ISF dans le programme 2024."
+  }
+ ],
+ "988": [
+  {
+   "bloc": "Nouveau Front populaire",
+   "exp": "pour",
+   "flag": "même esprit, pas la même mesure",
+   "groups": [
+    "LFI-NFP",
+    "SOC",
+    "ECOS",
+    "GDR"
+   ],
+   "src": [
+    "ps"
+   ],
+   "status": "legacy",
+   "text": "Livrer des armes à l’Ukraine et annuler sa dette extérieure."
+  },
+  {
+   "bloc": "RN",
+   "exp": null,
+   "groups": [
+    "RN"
+   ],
+   "src": [
+    "lcp"
+   ],
+   "status": "legacy",
+   "text": "Opposition à l’envoi de troupes en Ukraine, vigilance face aux ingérences russes."
+  }
+ ]
+}

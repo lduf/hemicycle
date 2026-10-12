@@ -1,0 +1,28 @@
+{
+ "cat": "Santé & fin de vie",
+ "checks": {},
+ "con": "Une partie des députés s'oppose au principe même d'une aide active à mourir. D'autres critiquent la précision sur la souffrance psychologique, qui crée selon eux une hiérarchie des souffrances.",
+ "date": "2026-02-25",
+ "hook": "Une question qui peut toucher n’importe quelle famille : qui décide de la fin de sa vie, et comment.",
+ "kind": "texte",
+ "label": "l’aide à mourir",
+ "legacy": true,
+ "n": 5729,
+ "notes": "Rédigé par IA dans le MVP, non relu. À revérifier à la source.",
+ "polarity": "adopt",
+ "polarity_verified": true,
+ "pro": "Reconnaître un droit encadré à choisir sa fin de vie. Une partie des élus voulait laisser le choix entre auto-administration et administration par un soignant.",
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/5729"
+  }
+ ],
+ "status": "legacy",
+ "subkind": "ensemble",
+ "sum": "Texte créant un droit à l'aide à mourir pour certaines personnes en fin de vie, sous conditions. Dans la version votée, la personne prend elle-même la substance létale. Un soignant ne peut l'administrer que si la personne est dans l'incapacité physique de le faire. Une souffrance psychologique seule ne donne pas accès à l'aide à mourir. Vote de conscience : les députés d'un même groupe sont souvent partagés.",
+ "surp": "Vote de conscience : à l’intérieur d’un même groupe, les avis divergent, donc le résultat ne reflète pas une consigne. Un « contre » peut viser le principe même de l’aide à mourir, ou cette version précise du texte.",
+ "title": "Aide à mourir (deuxième lecture)",
+ "updated": "2026-10-12"
+}
