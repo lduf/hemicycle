@@ -50,6 +50,12 @@ def draft(scr, urls, call=None, texts=None):
         return _blocked(scr, cl, "génération indisponible (modèle absent ou réponse illisible)")
     if r.get("insuffisant") or "sources fournies" in json.dumps(r, ensure_ascii=False).lower():
         return _blocked(scr, cl, "sources insuffisantes pour décrire la mesure et ses critiques")
+    issues = N.deterministic(dict(r, sources=[dict(url="https://x")]), None)       # une seule passe de réparation, sur les défauts de forme
+    if issues and call is None:
+        fixed = ask(build_prompt(scr, cl, texts) + "\n\nTa réponse précédente :\n" + json.dumps(r, ensure_ascii=False) +
+                    "\n\nElle présente ces défauts : " + " ; ".join(issues) + ". Renvoie le JSON complet corrigé (mêmes clés).")
+        if isinstance(fixed, dict) and not fixed.get("insuffisant"):
+            r = fixed
     srcs = [dict(label=f"Source {i + 1}", url=texts[i - 1][0]) for i in r.get("source_ids", []) if 1 <= i <= len(texts)]
     srcs.insert(0, dict(label="Scrutin officiel (Assemblée nationale)", url=S.scrutin_url(scr["n"])))
     q = dict(n=scr["n"], date=scr["date"], kind="texte" if cl["kind"] == "ensemble" else "mesure", subkind=cl["kind"],

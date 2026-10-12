@@ -1,0 +1,62 @@
+{
+ "cat": "Institutions",
+ "checks": {
+  "date": "2026-10-12",
+  "direction": {
+   "answer": "OK",
+   "ok": true
+  },
+  "neutrality": {
+   "issues": [],
+   "judge": {
+    "bias": "autre",
+    "model": "claude-opus-5-5",
+    "reasons": [
+     "Vocabulaire globalement neutre : verbes d'attribution symétriques ('estiment', 'jugent', 'notent'), pas d'adjectifs évaluatifs, titre et bouton descriptifs.",
+     "Asymétrie de structure : l'argument des opposants contient une réfutation directe de l'exemple de 1983 cité par les partisans, alors que les partisans n'ont pas de droit de réponse. Les opposants ont le dernier mot sur ce point, ce qui avantage légèrement le statu quo.",
+     "Fait à vérifier : l'affirmation selon laquelle un maire minoritaire en voix 'ne s'est jamais produit à Paris' est contestée. En 2001, l'ensemble des listes de droite aurait totalisé plus de voix que la gauche. Si c'est confirmé, la fiche affaiblit l'argument des partisans par une information inexacte.",
+     "La rubrique 'Pourquoi ça peut surprendre' insiste sur les limites du texte ('ne règle pas', 'seulement un rapport'). Ce cadrage est légèrement dépréciatif, sans équivalent sur ses apports.",
+     "Omissions côté opposants : critiques souvent avancées sur le calendrier (changement des règles peu avant le scrutin de 2026), sur la complexité et le coût d'un double scrutin, et sur une prime de 25 % jugée peu propice à des majorités stables, alors que les autres communes ont une prime de 50 %.",
+     "Omission côté partisans : l'argument d'alignement sur le droit commun de l'élection directe dans les autres communes n'est pas mentionné.",
+     "Le contexte politique (texte porté par certains groupes, accusations d'arrière-pensées électorales) est omis de façon symétrique, ce qui est acceptable pour un quiz grand public."
+    ],
+    "score": 1.0
+   },
+   "ok": true
+  }
+ },
+ "con": "Les opposants jugent que le scrutin par arrondissement crée des liens entre élus locaux et électeurs, et que les habitants apprécient cet échelon de proximité. Ils notent que l'élection d'un maire minoritaire en voix ne s'est jamais produite à Paris ni à Lyon, et qu'une telle situation n'a pas eu lieu à Marseille depuis 1983.",
+ "date": "2025-04-09",
+ "generator": {
+  "date": "2026-10-12",
+  "model": "claude-sonnet-5-5"
+ },
+ "hook": "À Paris, Lyon et Marseille, tu voterais directement pour le conseil municipal, en plus du vote pour ton conseil d'arrondissement.",
+ "kind": "texte",
+ "label": "l'élection directe du conseil municipal à Paris, Lyon et Marseille",
+ "n": 1330,
+ "polarity": "adopt",
+ "pro": "Les partisans estiment que chaque électeur aurait une voix de même poids quel que soit son arrondissement, et que le scrutin deviendrait plus lisible. Ils rappellent qu'en 1983, à Marseille, un maire a été élu avec moins de voix que son adversaire.",
+ "reviewed_hash": null,
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/1330"
+  },
+  {
+   "label": "Source 2",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/PIONANR5L17B0451.html"
+  },
+  {
+   "label": "Source 3",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/RAPPANR5L17B1247.html"
+  }
+ ],
+ "status": "pending_review",
+ "subkind": "ensemble",
+ "sum": "Aujourd'hui, à Paris, Lyon et Marseille, les électeurs votent par secteur pour élire leur conseil d'arrondissement. Certains de ces élus siègent ensuite au conseil municipal, qui élit le maire. Ce texte crée deux scrutins distincts et simultanés : un pour le conseil municipal, sur toute la ville, et un pour les conseils d'arrondissement. Il fixe aussi à 25 % des sièges la prime accordée à la liste arrivée en tête pour le conseil municipal, contre 50 % aujourd'hui. Il est prévu pour s'appliquer dès les prochaines élections municipales, en 2026.",
+ "surp": "Le texte conserve l'élection des conseils d'arrondissement et ne règle pas la répartition des compétences entre mairies d'arrondissement et mairie centrale, qui reste à examiner. Il prévoit seulement un rapport sur un possible transfert de compétences vers les arrondissements.",
+ "title": "Élection des conseils municipaux de Paris, Lyon et Marseille",
+ "updated": "2026-10-12"
+}

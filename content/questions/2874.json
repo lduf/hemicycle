@@ -1,0 +1,67 @@
+{
+ "cat": "Institutions",
+ "checks": {
+  "date": "2026-10-12",
+  "direction": {
+   "answer": "OK",
+   "ok": true
+  },
+  "neutrality": {
+   "issues": [],
+   "judge": {
+    "bias": "autre",
+    "model": "claude-opus-5-5",
+    "reasons": [
+     "Le texte est globalement factuel et sans adjectifs orientés. Son biais léger favorise le texte du gouvernement plutôt qu'un camp gauche/droite identifiable.",
+     "Les deux arguments n'ont pas le même poids. Celui des partisans est concret et chiffré (300 M€, aéroport, deuxième hôpital, convergence sociale et salariale). Celui des opposants est vague (« posent question ») et administratif.",
+     "L'argument des opposants cite surtout des mesures déjà retirées en commission. Cela suggère que les critiques ont été satisfaites et affaiblit l'opposition au texte effectivement voté.",
+     "La tournure passive « ont été jugées à retirer » masque qui a porté ces critiques et pourquoi, ce qui dépolitise l'opposition.",
+     "Les principales critiques de fond sont omises. Une partie de la gauche dénonce un régime dérogatoire au droit commun en matière d'immigration et de droits des étrangers. Une partie de la droite et de l'extrême droite juge ces mesures insuffisantes. Des élus et acteurs locaux mettent en doute le caractère réellement contraignant et suffisant des financements.",
+     "Le résumé évoque « l'annonce des moyens financiers » sans montant global ni caractère contraignant, et ne retient que le fonds de 300 M€, présenté positivement.",
+     "La phrase des partisans sur des arrivées « qui pèsent sur le développement » est bien attribuée, mais aucun contre-argument symétrique sur cette affirmation n'est proposé.",
+     "Points positifs : la section « Pourquoi ça peut surprendre » signale honnêtement le vote en bloc et l'incertitude sur la version finale. Le titre et le bouton reprennent l'intitulé officiel."
+    ],
+    "score": 2.0
+   },
+   "ok": true
+  }
+ },
+ "con": "Plusieurs mesures du projet initial ont été jugées à retirer lors de l'examen en commission : le placement des mineurs accompagnant un adulte en vue de leur éloignement, le retrait du titre de séjour d'un parent et les visites à domicile pour chercher des armes. D'autres points posent question : les lieux d'accueil des familles ne seront pas prêts à la date prévue, et le mode de scrutin a dû être modifié pour réduire l'effet de la prime accordée à la liste arrivée en tête.",
+ "date": "2025-07-01",
+ "generator": {
+  "date": "2026-10-12",
+  "model": "claude-sonnet-5-5"
+ },
+ "hook": "Ça change quoi pour moi ? Si tu vis à Mayotte ou si tu y as de la famille, le texte touche aux titres de séjour, aux aides sociales, au salaire minimum et au fonctionnement de la collectivité ; ailleurs, il fixe ce que l'État s'engage à financer pour ce territoire.",
+ "kind": "texte",
+ "label": "la loi de programmation pour la refondation de Mayotte",
+ "n": 2874,
+ "polarity": "adopt",
+ "pro": "Le texte engage des moyens pour reconstruire : un fonds de 300 millions d'euros pour les communes, un nouvel aéroport, un deuxième hôpital, et un rapprochement des prestations sociales et du salaire minimum net avec ceux du reste du pays. Selon ses partisans, mieux encadrer les titres de séjour et les reconnaissances de paternité aide aussi à maîtriser des arrivées qui pèsent sur le développement de l'archipel.",
+ "reviewed_hash": null,
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/2874"
+  },
+  {
+   "label": "Source 2",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/PRJLANR5L17B1470.html"
+  },
+  {
+   "label": "Source 3",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/RAPPANR5L17B1573.html"
+  },
+  {
+   "label": "Source 4",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/dossiers/DLR5L17N51985"
+  }
+ ],
+ "status": "pending_review",
+ "subkind": "ensemble",
+ "sum": "Ce texte fixe les engagements de l'État à Mayotte après le cyclone Chido, dans un territoire où 77 % des habitants vivent sous le seuil de pauvreté. Il repose sur quatre piliers : la lutte contre l'immigration irrégulière, le rapprochement des droits économiques et sociaux avec le reste de la France, une réforme institutionnelle et l'annonce des moyens financiers. Il rend plus strictes certaines conditions d'obtention des titres de séjour, centralise à Mamoudzou les reconnaissances de paternité et de maternité, et porte l'amende pour reconnaissance frauduleuse de 15 000 à 75 000 euros. Il prévoit aussi un recensement complet des communes, un fonds de 300 millions d'euros pour reconstruire les bâtiments détruits et la transformation du département en Département-Région de Mayotte. Voter pour, c'est adopter l'ensemble de ce texte.",
+ "surp": "Le vote porte sur le texte entier : on ne peut pas approuver les mesures de reconstruction sans approuver celles sur l'immigration, ni l'inverse. Les extraits ne précisent pas non plus quelles mesures figurent dans la version finale soumise au vote.",
+ "title": "Loi de programmation pour la refondation de Mayotte",
+ "updated": "2026-10-12"
+}

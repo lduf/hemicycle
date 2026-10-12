@@ -11,6 +11,7 @@ from . import config as C, select_votes as SV, sources as S, fiche, store
 def pick(n, min_date=None):
     sc = C.jload(os.path.join(C.DATA, "scrutins.json"))
     taken = {q["n"] for q in store.all_questions()}
+    taken |= {int(k) for k, v in C.jload(os.path.join(C.CONTENT, "inbox.json"), {}).items() if not v}   # sans dossier : inutile de réessayer
     rej = set(C.jload(os.path.join(C.CONTENT, "rejected.json"), []))
     cands = [c for c in SV.candidates(sc, taken | rej, min_date=min_date) if c["kind"] == "ensemble"]
     return cands[:int(n * 1.6)], sc    # marge : certains n'auront pas de dossier officiel

@@ -1,0 +1,62 @@
+{
+ "cat": "Agriculture",
+ "checks": {
+  "date": "2026-10-12",
+  "direction": {
+   "answer": "OK",
+   "ok": true
+  },
+  "neutrality": {
+   "issues": [],
+   "judge": {
+    "bias": "autre",
+    "model": "claude-opus-5-5",
+    "reasons": [
+     "Texte globalement factuel et sobre. Le léger déséquilibre ne suit pas un axe gauche/droite, car le dispositif EGalim divise transversalement. Il penche plutôt légèrement en faveur du texte.",
+     "Asymétrie de développement : l'argument des partisans est plus concret (il énumère producteurs, transformateurs et distributeurs, et parle d'investissements) et contient une réfutation anticipée (« alors que les lois précédentes n'auraient pas eu d'effet inflationniste »). Les opposants n'ont pas de contre-réfutation équivalente.",
+     "L'argument des opposants reste plus abstrait (« pas d'effet bénéfique démontré », « pourrait faire monter les prix ») et ne nomme ni les consommateurs ni le pouvoir d'achat comme parties concernées. Les partisans, eux, nomment explicitement leurs bénéficiaires.",
+     "Le reproche « l'argument de l'alignement des échéances est léger » est bien attribué aux opposants, mais sa formulation familière peut paraître moins sérieuse que le registre des partisans.",
+     "Omission : le résumé ne mentionne pas l'origine du dispositif (loi EGalim de 2018), son objectif affiché (mieux rémunérer les agriculteurs) ni les débats chiffrés sur son coût pour les consommateurs. Ce contexte permettrait au lecteur de juger les deux camps à armes égales.",
+     "Le titre et le bouton sont neutres et descriptifs, sans adjectif valorisant ni dépréciatif.",
+     "La rubrique « Pourquoi ça peut surprendre » est factuelle. Elle mentionne l'abandon de l'encadrement des marges, ce qui apporte une information utile sans prendre parti."
+    ],
+    "score": 1.0
+   },
+   "ok": true
+  }
+ },
+ "con": "Les opposants jugent que le dispositif n'a pas d'effet bénéfique démontré et qu'il pourrait faire monter les prix. Ils estiment aussi que l'évaluation menée jusqu'ici est insuffisante et que l'argument de l'alignement des échéances est léger.",
+ "date": "2025-04-09",
+ "generator": {
+  "date": "2026-10-12",
+  "model": "claude-sonnet-5-5"
+ },
+ "hook": "Jusqu'en 2028, certains produits alimentaires restent vendus en magasin au minimum à leur prix d'achat majoré de 10 %, et les promotions restent encadrées.",
+ "kind": "texte",
+ "label": "la prolongation du seuil de revente à perte majoré et de l'encadrement des promotions",
+ "n": 1319,
+ "polarity": "adopt",
+ "pro": "Les partisans estiment qu'un cadre stable permet aux producteurs, aux transformateurs et aux distributeurs de planifier leurs investissements. Selon eux, la fin du dispositif relancerait la baisse des prix au détriment des producteurs, alors que les lois précédentes n'auraient pas eu d'effet inflationniste.",
+ "reviewed_hash": null,
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/1319"
+  },
+  {
+   "label": "Source 2",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/PIONANR5L17B0954.html"
+  },
+  {
+   "label": "Source 3",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/RAPPANR5L17B1263.html"
+  }
+ ],
+ "status": "pending_review",
+ "subkind": "ensemble",
+ "sum": "Ce texte concerne le seuil de revente à perte majoré de 10 %, qui oblige les distributeurs à vendre certains produits alimentaires au moins à leur prix d'achat augmenté de 10 %. Sans nouvelle loi, ce dispositif prenait fin le 15 avril 2025. Le texte le prolonge jusqu'au 15 avril 2028. Les rapporteurs proposent aussi une échéance commune en 2028 pour l'encadrement des promotions, y compris sur les produits de droguerie, parfumerie et hygiène. Des sanctions sont prévues pour les distributeurs qui ne transmettent pas les documents permettant d'évaluer ces mesures.",
+ "surp": "Le vote porte sur l'ensemble du texte et ne dit rien du projet de loi annoncé par le gouvernement sur les mêmes sujets. L'encadrement des marges de la chaîne agroalimentaire, introduit à l'Assemblée nationale, n'a pas été repris dans le texte de compromis.",
+ "title": "Prolongation du seuil de revente à perte et de l'encadrement des promotions",
+ "updated": "2026-10-12"
+}

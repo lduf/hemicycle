@@ -1,0 +1,61 @@
+{
+ "cat": "Sport",
+ "checks": {
+  "date": "2026-10-12",
+  "direction": {
+   "answer": "OK",
+   "ok": true
+  },
+  "neutrality": {
+   "issues": [],
+   "judge": {
+    "bias": "autre",
+    "model": "claude-opus-5-5",
+    "reasons": [
+     "Biais léger en faveur de l'adoption du texte plutôt qu'orientation gauche/droite : le cadrage favorise globalement la position gouvernementale.",
+     "Asymétrie de formulation : l'argument des partisans est affirmatif ('donne les moyens', 'renforce la lutte contre le dopage'), tandis que celui des opposants est distancié ('est présenté comme', 'des inquiétudes ont aussi été exprimées'), ce qui l'affaiblit.",
+     "Omissions dans l'argument des opposants : rien sur les critiques liées aux libertés publiques (prolongation de la vidéosurveillance algorithmique, fouille des coffres par des agents privés) ni sur le risque financier porté par les régions. Ces éléments figurent dans le résumé mais pas comme objections.",
+     "Choix lexical : 'vidéoprotection algorithmique' reprend le terme institutionnel, plus valorisant que 'vidéosurveillance algorithmique', employé par les critiques.",
+     "'Une vingtaine d'hectares tout au plus' minimise l'enjeu de l'artificialisation. 'Environ une vingtaine d'hectares' serait plus neutre.",
+     "Points positifs : titre et bouton descriptifs, résumé factuel qui mentionne les dispositions sensibles (garantie du déficit, sécurité privée), et mention du coût final non connu."
+    ],
+    "score": 2.0
+   },
+   "ok": true
+  }
+ },
+ "con": "Le texte est présenté comme un ensemble de dérogations au droit commun, adopté sans mesures suffisantes d'information et de consultation du public. Des inquiétudes ont aussi été exprimées sur le manque de consultation d'organismes comme le Conseil national de la montagne et sur le respect des règles environnementales.",
+ "date": "2026-02-03",
+ "generator": {
+  "date": "2026-10-12",
+  "model": "claude-sonnet-5-5"
+ },
+ "hook": "Autour des sites des Jeux de 2030, des publicités de partenaires pourront être autorisées dans un périmètre de 500 mètres, et des règles d'urbanisme, de sécurité et de santé sont adaptées pour l'événement.",
+ "kind": "texte",
+ "label": "la loi d'organisation des Jeux de 2030",
+ "n": 5296,
+ "polarity": "adopt",
+ "pro": "Les Jeux ont été attribués tardivement aux Alpes, et le texte donne aux organisateurs les moyens de tenir les délais, notamment pour livrer les ouvrages avant la cérémonie d'ouverture. Il reprend pour l'essentiel le cadre utilisé pour les Jeux de Paris de 2024 et renforce la lutte contre le dopage.",
+ "reviewed_hash": null,
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/5296"
+  },
+  {
+   "label": "Source 2",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/PRJLANR5L17B1641.html"
+  },
+  {
+   "label": "Source 3",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/RAPPANR5L17B2395.html"
+  }
+ ],
+ "status": "pending_review",
+ "subkind": "ensemble",
+ "sum": "Ce texte fixe le cadre légal pour organiser les Jeux Olympiques et Paralympiques d'hiver de 2030 dans les Alpes françaises. Il prévoit des dérogations temporaires aux règles de publicité autour des sites et le long du parcours de la flamme, ainsi que des adaptations en matière d'urbanisme, de commande publique, de sécurité et de santé. Les régions Auvergne-Rhône-Alpes et Provence-Alpes-Côte d'Azur pourront être appelées à garantir le solde déficitaire du budget du comité d'organisation. Le texte prolonge aussi l'expérimentation de la vidéoprotection algorithmique, autorise les agents privés de sécurité à inspecter les véhicules et leurs coffres lors de grands événements, et prévoit un rapport de la Cour des comptes en 2031. Voter pour, c'est adopter ce cadre ; voter contre, c'est le rejeter.",
+ "surp": "Une vingtaine d'hectares tout au plus de sols artificialisés par les infrastructures seront décomptés au niveau national plutôt que par les collectivités locales. Un pour ou un contre ne dit rien du coût final des Jeux, que le rapport de 2031 devra examiner.",
+ "title": "Organisation des Jeux Olympiques et Paralympiques de 2030",
+ "updated": "2026-10-12"
+}

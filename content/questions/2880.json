@@ -1,0 +1,62 @@
+{
+ "cat": "Éducation",
+ "checks": {
+  "date": "2026-10-12",
+  "direction": {
+   "answer": "OK",
+   "ok": true
+  },
+  "neutrality": {
+   "issues": [],
+   "judge": {
+    "bias": "autre",
+    "model": "claude-opus-5-5",
+    "reasons": [
+     "Léger biais en faveur du texte plutôt qu'un biais gauche/droite net : le vote ne s'est pas joué sur un clivage gauche/droite simple.",
+     "Le titre et le bouton reprennent l'intitulé officiel de la loi. Ce cadrage est inévitable, mais il associe le vote « contre » à une opposition à la lutte contre l'antisémitisme et le racisme. Le bouton ajoute « et le racisme », absent du titre, ce qui élargit l'adhésion intuitive.",
+     "Le résumé emploie « dotée des moyens nécessaires » sans nuance. La section « Pourquoi ça peut surprendre » corrige partiellement ce point en signalant l'incertitude sur les moyens réels.",
+     "Les arguments sont correctement attribués (« estiment », « jugent ») et de longueur comparable. L'argument des partisans s'appuie toutefois sur un constat concret et chiffrable (hausse depuis octobre 2023), tandis que celui des opposants reste juridique et abstrait, donc moins parlant pour le grand public.",
+     "Omissions côté opposants : les craintes sur la liberté d'expression et la liberté académique, le risque de confusion entre critique d'Israël ou antisionisme et antisémitisme, et la portée de l'obligation de signalement imposée au personnel. L'argument sur le mot « faits » effleure ce dernier point sans l'expliciter.",
+     "L'accroche ne présente que les dispositifs les plus consensuels (formation, signalement anonyme). Elle omet l'obligation de signalement par le personnel et le volet disciplinaire, qui sont les points les plus discutés.",
+     "Aucun adjectif ouvertement partisan, et la section « Pourquoi ça peut surprendre » reste neutre et utile."
+    ],
+    "score": 1.0
+   },
+   "ok": true
+  }
+ },
+ "con": "Les opposants jugent que le code pénal protège déjà toutes les victimes et qu'il vaut mieux employer sa définition large du racisme, sans nommer l'antisémitisme à part. Ils relèvent aussi que le mot « faits », plus large que « actes », couvre les propos et les comportements, sans référence à l'intention de la personne.",
+ "date": "2025-07-02",
+ "generator": {
+  "date": "2026-10-12",
+  "model": "claude-sonnet-5-5"
+ },
+ "hook": "Dans ton université, une formation à la lutte contre l'antisémitisme, le racisme et la haine et un dispositif de signalement anonyme seraient prévus.",
+ "kind": "texte",
+ "label": "la loi contre l'antisémitisme et le racisme dans l'enseignement supérieur",
+ "n": 2880,
+ "polarity": "adopt",
+ "pro": "Les partisans estiment que les actes antisémites ont augmenté dans les universités depuis octobre 2023 et qu'ils ont longtemps été sous-évalués et peu sanctionnés. Pour eux, la formation, le référent et le signalement anonyme donnent aux établissements des moyens concrets pour agir.",
+ "reviewed_hash": null,
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/2880"
+  },
+  {
+   "label": "Source 2",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/PIONANR5L17B1009.html"
+  },
+  {
+   "label": "Source 3",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/RAPPANR5L17B1460.html"
+  }
+ ],
+ "status": "pending_review",
+ "subkind": "ensemble",
+ "sum": "Ce texte prévoit que les établissements d'enseignement supérieur assurent une formation à la lutte contre l'antisémitisme, le racisme, les discriminations, les violences et la haine. Chaque université doit créer une mission « Égalité et diversité », dotée des moyens nécessaires, avec un référent qualifié pour la prévention et le traitement des actes racistes et antisémites. Cette mission gère un dispositif de signalement qui garantit l'anonymat des victimes et des témoins. Les membres du personnel qui ont connaissance de tels faits doivent les signaler. Le texte prévoit aussi une formation pour les membres des sections disciplinaires.",
+ "surp": "Un vote pour ou contre ne dit pas comment chaque université organisera la formation, car les modalités d'application doivent être fixées par décret. Il ne dit pas non plus quels moyens financiers seront réellement donnés aux missions « Égalité et diversité ».",
+ "title": "Lutte contre l'antisémitisme dans l'enseignement supérieur",
+ "updated": "2026-10-12"
+}

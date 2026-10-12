@@ -40,6 +40,8 @@ class Direction(unittest.TestCase):
         self.assertTrue(D.llm_check(lambda p: "OK.\nParce que…", "t", "x", "adopt")[0])
         self.assertFalse(D.llm_check(lambda p: "**INVERSE**", "t", "x", "adopt")[0])
         self.assertFalse(D.llm_check(lambda p: "OKAY SAUF SI", "t", "x", "adopt")[0])
+        self.assertFalse(D.llm_check(lambda p: "OK mais DOUTE sur la polarité", "t", "x", "adopt")[0])
+        self.assertTrue(D.llm_check(lambda p: 'VOTE ON THE WHOLE BILL; "POUR" = FOR. OK.', "t", "x", "adopt")[0])
 
     def test_llm_check_fails_closed(self):
         self.assertFalse(D.llm_check(lambda p: "DOUTE", "t", "x", "adopt")[0])
