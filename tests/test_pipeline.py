@@ -123,6 +123,19 @@ class WithTmp(unittest.TestCase):
         self.tmp.cleanup()
 
 
+class Cats(WithTmp):
+    def test_every_stored_category_is_known(self):
+        old = store.QDIR; store.QDIR = os.path.join(C.ROOT, "content", "questions")
+        try:
+            self.assertEqual({q["cat"] for q in store.all_questions() if q.get("cat")} - set(C.CATS), set())
+        finally:
+            store.QDIR = old
+
+    def test_invalid_category_blocked(self):
+        q = fiche.check(dict(GOOD, cat="Inconnue"))
+        self.assertEqual(q["status"], "blocked")
+
+
 class Review(WithTmp):
     def test_needs_both_sides_and_two_people(self):
         store.save(json.loads(json.dumps(GOOD)))

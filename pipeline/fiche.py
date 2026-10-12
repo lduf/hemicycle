@@ -14,6 +14,11 @@ SYSTEM = (
     "niveau de détail) ; (5) tu n'utilises QUE les extraits de sources fournis : aucun chiffre ni fait qui n'y figure pas, "
     "et si une information manque tu l'omets ; (6) tu vérifies le sens du vote : un amendement de suppression ou de rejet "
     "inverse le sens de « pour »."
+    " (7) Les arguments portent sur le FOND de la mesure, jamais sur la procédure (« conclure la procédure », « version commune »)."
+    " (8) Les arguments des opposants se tirent des réserves et critiques DOCUMENTÉES dans les extraits (avis du Conseil d'État, "
+    "objections ou limites évoquées dans le rapport, points de vigilance, amendements de suppression) ; reformule-les sans nommer "
+    "qui les porte. Si les extraits ne permettent pas de décrire ce que la mesure change concrètement, ou ne contiennent AUCUNE "
+    "réserve ni critique, réponds uniquement {\"insuffisant\": true} plutôt que d'inventer."
 )
 
 
@@ -42,7 +47,9 @@ def draft(scr, urls, call=None, texts=None):
     ask = call or (lambda p: llm.ask_json(C.MODEL_WRITER, p, system=SYSTEM, max_tokens=1500))
     r = ask(build_prompt(scr, cl, texts))
     if not isinstance(r, dict):
-        return _blocked(scr, cl, "génération indisponible (pas de clé API ou réponse illisible)")
+        return _blocked(scr, cl, "génération indisponible (modèle absent ou réponse illisible)")
+    if r.get("insuffisant") or "sources fournies" in json.dumps(r, ensure_ascii=False).lower():
+        return _blocked(scr, cl, "sources insuffisantes pour décrire la mesure et ses critiques")
     srcs = [dict(label=f"Source {i + 1}", url=texts[i - 1][0]) for i in r.get("source_ids", []) if 1 <= i <= len(texts)]
     srcs.insert(0, dict(label="Scrutin officiel (Assemblée nationale)", url=S.scrutin_url(scr["n"])))
     q = dict(n=scr["n"], date=scr["date"], kind="texte" if cl["kind"] == "ensemble" else "mesure", subkind=cl["kind"],
@@ -60,6 +67,8 @@ def _blocked(scr, cl, why):
 
 def check(q, call_judge=None, call_dir=None):
     """Enchaîne sens du vote (modèle) puis neutralité. Met à jour q['status'] et q['checks']."""
+    if q.get("cat") not in C.CATS:
+        q["status"] = "blocked"; q["blocked_reason"] = f"catégorie invalide : {q.get('cat')!r}"; return q
     if not q.get("label") or not q.get("title"):
         q["status"] = "blocked"; q["blocked_reason"] = "champs manquants"; return q
     scr_title = (C.jload(os.path.join(C.DATA, "scrutins.json"), {}).get(str(q["n"])) or {}).get("titre", q.get("title"))
