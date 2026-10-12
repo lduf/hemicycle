@@ -1,0 +1,62 @@
+{
+ "cat": "Institutions",
+ "checks": {
+  "date": "2026-10-12",
+  "direction": {
+   "answer": "VOTE ON THE WHOLE BILL (ORGANIC LAW) — \"POUR\" = FOR THE BILL = FOR HARMONIZATION",
+   "ok": true
+  },
+  "neutrality": {
+   "issues": [],
+   "judge": {
+    "bias": "autre",
+    "model": "claude-opus-5-5",
+    "reasons": [
+     "Biais léger en faveur du texte plutôt qu'un biais gauche/droite : la réforme a été soutenue par plusieurs groupes politiques.",
+     "Asymétrie d'étayage : les partisans disposent de chiffres précis (37,6 % contre 48,5 %), alors que les arguments des opposants restent généraux et sans données (par exemple le nombre de communes sans liste ou à liste unique).",
+     "Asymétrie des verbes : les partisans « notent », ce qui présente leur propos comme un constat, tandis que les opposants « avancent » et « évoquent », ce qui présente le leur comme une simple allégation.",
+     "Le bouton emploie « harmonisation », un terme à connotation positive. Le titre « Même mode de scrutin pour toutes » suggère aussi l'égalité et la cohérence.",
+     "Le panachage est décrit uniquement comme la possibilité de « rayer des noms ». L'électeur peut aussi en ajouter, et le texte omet que la réforme réduit sa liberté de choisir individuellement ses élus.",
+     "Omissions côté opposants : le risque de liste unique (aucun choix réel), la fin du vote pour des personnes plutôt que pour des listes dans les villages, et le contournement possible par des listes incomplètes, qui limite l'effet paritaire.",
+     "Points d'équilibre : le résumé est factuel, l'accroche est descriptive et la rubrique « Pourquoi ça peut surprendre » nuance la portée de la réforme, ce qui limite le biais."
+    ],
+    "score": 2.0
+   },
+   "ok": true
+  }
+ },
+ "con": "Les opposants avancent la difficulté de trouver assez de candidats, et notamment de femmes, dans de petites communes où peu de citoyens sont prêts à s'engager. Ils évoquent aussi la complexité des règles imposées aux maires et le risque d'une atteinte au pluralisme des courants d'opinions.",
+ "date": "2025-04-07",
+ "generator": {
+  "date": "2026-10-12",
+  "model": "claude-sonnet-5-5"
+ },
+ "hook": "Si ta commune compte moins de 1 000 habitants, tu voterais pour une liste dont les candidats alternent femmes et hommes, et non plus pour des noms choisis un par un.",
+ "kind": "texte",
+ "label": "l'harmonisation du mode de scrutin aux élections municipales",
+ "n": 1304,
+ "polarity": "adopt",
+ "pro": "Les partisans notent que les femmes représentent 37,6 % des conseillers dans les communes de moins de 1 000 habitants, contre 48,5 % dans les autres en 2020, et ils relient cet écart au mode de scrutin. Ils estiment aussi que le panachage décourage l'engagement et fragilise les projets collectifs d'une équipe municipale.",
+ "reviewed_hash": null,
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/1304"
+  },
+  {
+   "label": "Source 2",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/PIONANR5L17B1106.html"
+  },
+  {
+   "label": "Source 3",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/RAPPANR5L17B1246.html"
+  }
+ ],
+ "status": "pending_review",
+ "subkind": "ensemble",
+ "sum": "Cette loi organique modifie le code électoral pour que toutes les communes aient le même mode de scrutin aux élections municipales. Aujourd'hui, les conseillers municipaux des communes de moins de 1 000 habitants sont élus au scrutin majoritaire à deux tours, et l'électeur peut rayer des noms sur le bulletin (le panachage). Avec ce texte, ces communes voteraient comme les autres au scrutin de liste paritaire, où chaque liste alterne un candidat de chaque sexe. Des adaptations sont prévues pour les petites communes, comme le dépôt de listes incomplètes. La loi s'appliquerait dès le prochain renouvellement général des conseils municipaux suivant sa promulgation.",
+ "surp": "Les extraits indiquent que ce changement ne résoudrait pas à lui seul la crise de l'engagement local. D'autres mesures, comme un statut de l'élu local, sont envisagées pour aider les élus à concilier leur mandat avec leur vie professionnelle et personnelle.",
+ "title": "Même mode de scrutin pour toutes les élections municipales",
+ "updated": "2026-10-12"
+}

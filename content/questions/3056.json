@@ -1,0 +1,61 @@
+{
+ "cat": "Logement",
+ "checks": {
+  "date": "2026-10-12",
+  "direction": {
+   "answer": "OK",
+   "ok": true
+  },
+  "neutrality": {
+   "issues": [],
+   "judge": {
+    "bias": "autre",
+    "model": "claude-opus-5-5",
+    "reasons": [
+     "Légère inclinaison favorable au texte plutôt qu'à un camp gauche/droite : le titre et le bouton reprennent l'intitulé officiel « simplification », un terme valorisant, sans formulation alternative comme « assouplissement » ou « dérogations ».",
+     "L'accroche ne présente que l'effet positif annoncé (« plus rapides », « davantage de décisions laissées aux maires ») et ne mentionne aucun risque ni contrepartie.",
+     "La formule « encadre certains recours » est un euphémisme : la mesure restreint les possibilités de contester les autorisations d'urbanisme, ce que le résumé ne dit pas clairement.",
+     "Le résumé omet le contexte environnemental, notamment le lien possible avec l'objectif de zéro artificialisation nette (ZAN) et les dérogations touchant le littoral, qui n'apparaissent que du côté des opposants.",
+     "Points d'équilibre : les arguments des deux camps sont attribués (« selon eux », « ils s'inquiètent »), de longueur et de poids comparables, et le résumé reste factuel.",
+     "La rubrique « Pourquoi ça peut surprendre » nuance l'efficacité du texte (l'offre n'est qu'un levier parmi d'autres), ce qui compense en partie le cadrage positif de l'accroche."
+    ],
+    "score": 1.0
+   },
+   "ok": true
+  }
+ },
+ "con": "Les opposants jugent que le texte multiplie les dérogations plutôt que de simplifier l'ensemble du droit. Ils s'inquiètent aussi pour les espaces naturels, agricoles et littoraux, et pour une participation du public qui reste facultative et peut exclure les personnes éloignées du numérique.",
+ "date": "2025-10-15",
+ "generator": {
+  "date": "2026-10-12",
+  "model": "claude-sonnet-5-5"
+ },
+ "hook": "Les règles pour construire ou transformer un logement près de chez toi pourraient devenir plus rapides à appliquer, avec davantage de décisions laissées aux maires.",
+ "kind": "texte",
+ "label": "la simplification du droit de l'urbanisme et du logement",
+ "n": 3056,
+ "polarity": "adopt",
+ "pro": "Les partisans estiment que des procédures lourdes et nombreuses ralentissent la construction et coûtent cher aux collectivités. Selon eux, passer de quatre à deux procédures et laisser plus de marge aux élus locaux fera gagner du temps et de l'argent, sans abaisser le niveau de protection.",
+ "reviewed_hash": null,
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/3056"
+  },
+  {
+   "label": "Source 2",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/PIONANR5L17B1240.html"
+  },
+  {
+   "label": "Source 3",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/RAPPANR5L17B1672.html"
+  }
+ ],
+ "status": "pending_review",
+ "subkind": "ensemble",
+ "sum": "Ce texte réunit de nombreuses mesures sur l'urbanisme et le logement. Il ramène de quatre à deux les procédures pour faire évoluer les plans locaux d'urbanisme : la révision et la modification. Il permet aussi aux maires d'accorder au cas par cas des dérogations aux règles locales pour construire des logements, et il prévoit une participation du public par voie électronique, facultative, pour des projets de logements. Il autorise enfin, sous conditions, le changement de destination de bâtiments agricoles qui ne servent plus depuis plus de vingt ans, et il encadre certains recours contre les autorisations d'urbanisme. Le texte issu de l'accord entre les deux assemblées a été adopté.",
+ "surp": "Plusieurs intervenants rappellent que l'offre de logements n'est qu'un levier parmi d'autres face à la crise du logement. Une mesure sur la solarisation des bâtiments a été retirée du texte pour être traitée plus tard.",
+ "title": "Simplification du droit de l'urbanisme et du logement",
+ "updated": "2026-10-12"
+}

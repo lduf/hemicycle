@@ -1,0 +1,62 @@
+{
+ "cat": "Institutions",
+ "checks": {
+  "date": "2026-10-12",
+  "direction": {
+   "answer": "OK",
+   "ok": true
+  },
+  "neutrality": {
+   "issues": [],
+   "judge": {
+    "bias": "droite",
+    "model": "claude-opus-5-5",
+    "reasons": [
+     "Le titre, le bouton et le résumé sont factuels et descriptifs. La mention de la source des chiffres (« transmis par le Gouvernement ») est une bonne pratique.",
+     "Les deux camps ne sont pas traités avec le même poids. Les partisans ont un argument concret et humain, chiffré (10 569 personnes) et qualifié (« souvent jeunes », « y ayant le plus souvent toujours vécu », « sont exclues »). Les opposants n'ont que des arguments procéduraux ou juridiques, plus abstraits.",
+     "Omission importante : l'argument de fond des indépendantistes n'apparaît pas. Selon eux, le dégel dilue le poids électoral du peuple kanak et remet en cause le caractère irréversible de l'Accord de Nouméa, qui organise une décolonisation progressive. C'est pourtant le cœur de l'opposition, et c'est lui qui explique la sensibilité du sujet.",
+     "Le contexte des violences de 2024, liées au précédent projet de dégel du corps électoral, est absent. Ce contexte aide à comprendre pourquoi les opposants exigent un accord global.",
+     "Dans les arguments des opposants, une critique venant du camp favorable à un élargissement plus large (« compromis incomplet », absence des conjoints) occupe une place comparable à l'opposition de principe. Cela relativise visuellement le désaccord de fond.",
+     "Le chiffre de 4 145 natifs de statut civil coutumier, placé dans le résumé, peut se lire comme une réponse implicite à l'argument de la dilution du vote kanak, alors que cet argument n'est jamais exposé.",
+     "L'accroche en « tu » présente la mesure sous l'angle d'un droit gagné par le lecteur, ce qui est légèrement favorable au texte. La section « Pourquoi ça peut surprendre » rééquilibre en partie."
+    ],
+    "score": 2.0
+   },
+   "ok": true
+  }
+ },
+ "con": "Les opposants estiment qu'une évolution du corps électoral ne devrait pas intervenir sans accord politique global sur l'avenir institutionnel du territoire. Ils soulignent que cette modification par une loi organique seule soulève des questions de conformité à la Constitution, une telle intervention n'étant admise que pour des adaptations strictement indispensables. D'autres jugent le compromis incomplet, car il n'inclut pas les conjoints d'électeurs.",
+ "date": "2026-05-20",
+ "generator": {
+  "date": "2026-10-12",
+  "model": "claude-sonnet-5-5"
+ },
+ "hook": "Si tu es né en Nouvelle-Calédonie et inscrit sur la liste électorale générale, tu serais inscrit d'office pour voter aux élections provinciales, même sans remplir les anciennes conditions de résidence.",
+ "kind": "texte",
+ "label": "l'intégration des natifs de Nouvelle-Calédonie au corps électoral des élections provinciales",
+ "n": 6753,
+ "polarity": "adopt",
+ "pro": "Les partisans soulignent que 10 569 personnes nées en Nouvelle-Calédonie, souvent jeunes et y ayant le plus souvent toujours vécu, sont exclues d'élections qui désignent les institutions chargées de discuter de l'avenir du territoire. Ils relèvent aussi que ce corps électoral est aujourd'hui plus restreint que celui des consultations de 2018 à 2021, et que la mesure atténue des dérogations à l'égalité du suffrage qui s'accentuent avec le temps.",
+ "reviewed_hash": null,
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/6753"
+  },
+  {
+   "label": "Source 2",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/PIONANR5L17B2804.html"
+  },
+  {
+   "label": "Source 3",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/RAPPANR5L17B2807.html"
+  }
+ ],
+ "status": "pending_review",
+ "subkind": "ensemble",
+ "sum": "Ce texte ajoute les personnes nées en Nouvelle-Calédonie et inscrites sur la liste électorale générale aux électeurs admis à voter pour le congrès et les assemblées de province. Depuis la révision constitutionnelle de 2007, ce corps électoral est gelé : seules les personnes établies sur le territoire avant le 8 novembre 1998 et, sous conditions, leurs descendants peuvent y voter. Le texte prévoit l'inscription d'office des natifs sur la liste électorale spéciale provinciale. Selon les chiffres transmis par le Gouvernement, cela concerne 10 569 personnes, dont 4 145 de statut civil coutumier. La loi entre en vigueur le lendemain de sa publication, avant les élections provinciales prévues le 28 juin 2026.",
+ "surp": "Le texte ne traite ni des conjoints d'électeurs, ni de l'avenir institutionnel du territoire, qui font l'objet de discussions séparées. Les chiffres cités sont ceux transmis par le Gouvernement.",
+ "title": "Natifs et corps électoral provincial en Nouvelle-Calédonie",
+ "updated": "2026-10-12"
+}

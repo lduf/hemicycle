@@ -50,6 +50,9 @@ def draft(scr, urls, call=None, texts=None):
         return _blocked(scr, cl, "génération indisponible (modèle absent ou réponse illisible)")
     if r.get("insuffisant") or "sources fournies" in json.dumps(r, ensure_ascii=False).lower():
         return _blocked(scr, cl, "sources insuffisantes pour décrire la mesure et ses critiques")
+    for k in ("hook", "surp", "sum", "pro", "con"):
+        if isinstance(r.get(k), str):
+            r[k] = N.strip_meta(r[k])
     issues = N.deterministic(dict(r, sources=[dict(url="https://x")]), None)       # une seule passe de réparation, sur les défauts de forme
     if issues and call is None:
         fixed = ask(build_prompt(scr, cl, texts) + "\n\nTa réponse précédente :\n" + json.dumps(r, ensure_ascii=False) +

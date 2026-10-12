@@ -1,0 +1,63 @@
+{
+ "cat": "Agriculture",
+ "checks": {
+  "date": "2026-10-12",
+  "direction": {
+   "answer": "OK",
+   "ok": true
+  },
+  "neutrality": {
+   "issues": [],
+   "judge": {
+    "bias": "droite",
+    "model": "claude-opus-5-5",
+    "reasons": [
+     "Le titre est neutre et descriptif.",
+     "Le libellé du bouton, « adaptation du fonctionnement », est un euphémisme valorisant. Il gomme le fait que le texte assouplit une règle existante, la séparation vente/conseil issue de la loi EGalim. Une formulation plus neutre serait par exemple « Pour la modification des règles de gouvernance ».",
+     "Le résumé présente d'emblée la garantie (« à condition de ne pas participer aux discussions sur le conseil »). Il ne précise pas que la mesure revient sur une interdiction en vigueur : ce contexte n'apparaît que dans l'argument des opposants.",
+     "L'argument des partisans répond par avance à la critique principale des opposants (la règle de retrait « préserve la séparation »). L'argument des opposants ne contient pas de réplique équivalente, ce qui donne un léger avantage rhétorique au camp favorable.",
+     "L'expression « mesure juste » est bien attribuée aux partisans, donc acceptable. Elle reste toutefois plus évaluative que les formulations des opposants.",
+     "L'accroche cadre les deux mesures comme de nouvelles possibilités pour le lecteur (« tu pourras… »), ce qui les rend positives. Elle omet le maintien de l'exclusion des candidats non à jour, que critiquent les opposants.",
+     "Les deux camps sont présentés avec une longueur comparable et un vocabulaire globalement sobre. Le déséquilibre reste donc faible.",
+     "Le texte n'évoque pas l'enjeu sanitaire et environnemental lié aux produits phytopharmaceutiques, qui fonde la séparation vente/conseil. Seuls les opposants l'abordent, de façon indirecte."
+    ],
+    "score": 1.0
+   },
+   "ok": true
+  }
+ },
+ "con": "Les opposants estiment que le texte revient sur la séparation de la vente et du conseil, mise en place pour garantir l'indépendance du conseil donné aux agriculteurs sur les produits phytopharmaceutiques. Ils jugent aussi que l'obligation d'être à jour de ses cotisations pour être candidat écarte des agriculteurs en difficulté, dont le témoignage aurait selon eux toute sa place dans les instances de la MSA.",
+ "date": "2025-02-12",
+ "generator": {
+  "date": "2026-10-12",
+  "model": "claude-sonnet-5-5"
+ },
+ "hook": "Si tu es ou deviens agriculteur, tu pourras voter aux élections de la Mutualité sociale agricole même avec des cotisations en retard, et des administrateurs de coopératives pourront siéger dans les bureaux des chambres d'agriculture.",
+ "kind": "texte",
+ "label": "l'adaptation du fonctionnement des chambres d'agriculture et de la Mutualité sociale agricole",
+ "n": 789,
+ "polarity": "adopt",
+ "pro": "Les partisans estiment que la règle actuelle privait les chambres d'un vivier important de dirigeants, et que la règle de retrait des discussions sur le conseil préserve la séparation entre vente et conseil. Ils jugent aussi que l'ouverture du vote à tous les exploitants, quelle que soit leur situation de cotisations, est une mesure juste qui simplifie les démarches.",
+ "reviewed_hash": null,
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/789"
+  },
+  {
+   "label": "Source 2",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/PIONANR5L17B0584.html"
+  },
+  {
+   "label": "Source 3",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/RAPPANR5L17B0921.html"
+  }
+ ],
+ "status": "pending_review",
+ "subkind": "ensemble",
+ "sum": "Ce texte modifie les règles de fonctionnement des chambres d'agriculture et de la Mutualité sociale agricole (MSA). Il permet aux administrateurs de coopératives agricoles qui vendent des produits phytopharmaceutiques de siéger dans les bureaux des chambres d'agriculture, à condition de ne pas participer aux discussions sur le conseil concernant l'utilisation de ces produits. Pour la MSA, il permet à tous les exploitants de voter, même s'ils ont des cotisations réclamées depuis plus de six mois. Il maintient en revanche l'obligation d'être à jour de ses cotisations pour être candidat comme délégué ou administrateur. Voter pour, c'est adopter ces règles ; voter contre, c'est les rejeter.",
+ "surp": "Le texte ne change pas le mode de scrutin des chambres d'agriculture : un article demandant un rapport sur ce sujet a été supprimé. Il comprend aussi des mesures d'organisation, comme le report des élections de la chambre d'agriculture de Mayotte.",
+ "title": "Gouvernance des chambres d'agriculture et de la MSA",
+ "updated": "2026-10-12"
+}

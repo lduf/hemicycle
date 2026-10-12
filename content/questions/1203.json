@@ -1,0 +1,62 @@
+{
+ "cat": "Économie & fiscalité",
+ "checks": {
+  "date": "2026-10-12",
+  "direction": {
+   "answer": "OK",
+   "ok": true
+  },
+  "neutrality": {
+   "issues": [],
+   "judge": {
+    "bias": "autre",
+    "model": "claude-opus-5-5",
+    "reasons": [
+     "Titre, bouton et résumé sont descriptifs et globalement factuels ; les deux camps ont des arguments de longueur comparable.",
+     "Léger déséquilibre en faveur du texte : les partisans invoquent le 'respect des engagements européens' et une conciliation 'transparence / baisse des contraintes', un cadrage valorisant repris tel quel.",
+     "L'argument des opposants est formulé maladroitement ('les entreprises doivent encourir un risque pénal pour évoluer'), ce qui peut les faire paraître punitifs plutôt que soucieux de l'effectivité des obligations de durabilité.",
+     "Les objections des opposants sont surtout procédurales (calendrier, cohérence du texte). Leur critique de fond probable n'apparaît pas : recul de la transparence environnementale et sociale, affaiblissement de la directive CSRD.",
+     "L'accroche présente le texte comme l'entrée de 'règles européennes' dans le droit français. Elle omet que le report de deux ans et l'allègement des sanctions pénales sont des choix d'allègement, et que le texte contient des mesures nationales, ce qui rend le cadrage plutôt favorable au texte.",
+     "La réforme des actions de groupe est mentionnée sans contenu, ce qui empêche d'évaluer qui elle favorise (consommateurs ou entreprises).",
+     "La section 'Pourquoi ça peut surprendre' signale honnêtement le caractère composite du texte et les lacunes de la fiche, ce qui limite le biais."
+    ],
+    "score": 2.0
+   },
+   "ok": true
+  }
+ },
+ "con": "Les opposants jugent qu'il aurait été plus raisonnable d'attendre la décision européenne avant de fixer un report de deux ans de la publication d'informations de durabilité. Ils estiment aussi que les entreprises doivent encourir un risque pénal pour évoluer, et que mêler des mesures nationales à des mesures de transposition nuit à la cohérence du texte et à la clarté des débats.",
+ "date": "2025-04-02",
+ "generator": {
+  "date": "2026-10-12",
+  "model": "claude-sonnet-5-5"
+ },
+ "hook": "Des règles européennes sur la finance, les entreprises et les actions en justice collectives entrent dans le droit français.",
+ "kind": "texte",
+ "label": "la loi d'adaptation au droit de l'Union européenne",
+ "n": 1203,
+ "polarity": "adopt",
+ "pro": "Les partisans estiment que le texte assure le respect des engagements européens et permet de choisir comment les appliquer en France, en utilisant les marges laissées aux États. Ils jugent aussi que le report de deux ans de la publication d'informations de durabilité concilie la transparence due par les entreprises avec la baisse de leurs contraintes, alors que tous les pays européens n'ont pas transposé la règle.",
+ "reviewed_hash": null,
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/1203"
+  },
+  {
+   "label": "Source 2",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/PRJLANR5L17B0529.html"
+  },
+  {
+   "label": "Source 3",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/RAPPANR5L17B1198.html"
+  }
+ ],
+ "status": "pending_review",
+ "subkind": "ensemble",
+ "sum": "Ce texte regroupe de nombreuses mesures qui adaptent le droit français à des règles européennes, dans l'économie, la finance, l'environnement, l'énergie, les transports et la santé. En finance, il interdit le paiement pour flux d'ordres, confie à l'Autorité des marchés financiers le contrôle des émetteurs d'obligations vertes européennes, avec un pouvoir d'interdire d'en émettre pendant un an au plus, et crée un régime de garanties financières sur les crypto-actifs. Il reporte de deux ans l'obligation de publier des informations de durabilité pour les entreprises concernées, et allège les sanctions pénales liées à ces obligations. Il réforme aussi le régime des actions de groupe. Ce vote porte sur l'ensemble du texte, dans sa version issue de la commission mixte paritaire.",
+ "surp": "Le vote porte sur un texte unique qui rassemble des sujets très différents : on ne peut pas approuver ou refuser une mesure isolément.",
+ "title": "Adaptation du droit français au droit de l'Union européenne",
+ "updated": "2026-10-12"
+}

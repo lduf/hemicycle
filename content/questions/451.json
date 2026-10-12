@@ -1,0 +1,65 @@
+{
+ "blocked_reason": "orientation jugée trop forte (3.0/5, biais autre)",
+ "cat": "Culture & médias",
+ "checks": {
+  "date": "2026-10-12",
+  "direction": {
+   "answer": "OK",
+   "ok": true
+  },
+  "neutrality": {
+   "issues": [
+    "orientation jugée trop forte (3.0/5, biais autre)"
+   ],
+   "judge": {
+    "bias": "autre",
+    "model": "claude-opus-5-5",
+    "reasons": [
+     "Asymétrie des arguments : celui des partisans est substantiel (indépendance du secteur, base juridique durable), tandis que celui des opposants est affaibli. Il ne conteste pas le texte et se limite à dire qu'il est insuffisant ou perfectible.",
+     "L'expression « jugés mineurs » dans l'argument des opposants minimise d'emblée leur critique et la discrédite.",
+     "Omission des oppositions de fond réellement exprimées : rejet du principe d'une imposition affectée (contournement de l'universalité budgétaire), préférence pour les crédits budgétaires ou pour une réduction du périmètre de l'audiovisuel public, critique de l'absence de ressource propre et pérenne équivalente à la redevance, et débat sur le niveau des moyens alloués.",
+     "L'accroche « Ce texte ne crée aucune taxe nouvelle » a une fonction rassurante qui devance une objection et favorise l'adhésion au texte.",
+     "Le seul risque mentionné, l'inquiétude pour l'indépendance du secteur, est associé aux crédits budgétaires, c'est-à-dire à l'alternative au texte. Le texte, lui, n'est jamais présenté comme porteur d'un risque.",
+     "Le biais ne se rattache pas clairement à la gauche ou à la droite : il favorise le texte et le camp de son adoption, dont la majorité gouvernementale et le Sénat, d'où la qualification « autre ».",
+     "Points positifs : le vocabulaire du résumé est factuel, le libellé du bouton est neutre et la section « Pourquoi ça peut surprendre » apporte une précision équilibrée (absence de montant et d'imposition désignés)."
+    ],
+    "score": 3.0
+   },
+   "ok": false
+  }
+ },
+ "con": "Le texte seul ne suffit pas à garantir l'indépendance financière du secteur : d'autres mesures, d'une nature différente, pourraient être nécessaires pour la renforcer. Sa rédaction aurait aussi pu être ajustée sur certains points, jugés mineurs, mais elle a été adoptée sans modification.",
+ "date": "2024-11-20",
+ "generator": {
+  "date": "2026-10-12",
+  "model": "claude-sonnet-5-5"
+ },
+ "hook": "Ce texte ne crée aucune taxe nouvelle : il change le cadre juridique qui finance France Télévisions, Radio France, Arte et les autres médias publics.",
+ "kind": "texte",
+ "label": "la réforme du financement de l'audiovisuel public",
+ "n": 451,
+ "polarity": "adopt",
+ "pro": "Cette réforme permet de maintenir un financement par une imposition affectée, plutôt que par des crédits budgétaires qui suscitent des inquiétudes pour l'indépendance du secteur. Elle donne aussi une base durable à un mode de financement qui ne pouvait pas être reconduit après 2024.",
+ "reviewed_hash": null,
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/451"
+  },
+  {
+   "label": "Source 2",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/PIONANR5L17B0482.html"
+  },
+  {
+   "label": "Source 3",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/RAPPANR5L17B0556.html"
+  }
+ ],
+ "status": "blocked",
+ "subkind": "ensemble",
+ "sum": "Depuis la suppression de la redevance audiovisuelle en 2022, l'audiovisuel public est financé surtout par une fraction de la taxe sur la valeur ajoutée. Avec les règles actuelles sur les lois de finances, ce mode de financement ne peut pas être reconduit après le 31 décembre 2024, faute de lien entre cette taxe et les missions du secteur. Cette proposition de loi organique permet d'affecter directement un montant déterminé d'une imposition de toute nature aux organismes de l'audiovisuel public. À défaut, le projet de budget pour 2025 prévoit de financer le secteur par des crédits budgétaires classiques, à hauteur de 4 029,13 millions d'euros. Le texte a été adopté sans modification après son adoption par le Sénat.",
+ "surp": "Le texte ne désigne pas l'imposition concernée et ne fixe pas de montant : ces choix relèvent des lois de finances. Le montant doit rester suffisant pour que le secteur exerce ses missions, selon l'exigence posée par le Conseil constitutionnel lors de la suppression de la redevance.",
+ "title": "Financement de l'audiovisuel public",
+ "updated": "2026-10-12"
+}

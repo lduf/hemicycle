@@ -1,0 +1,16 @@
+{
+ "blocked_reason": "sources insuffisantes pour décrire la mesure et ses critiques",
+ "date": "2025-06-04",
+ "n": 2244,
+ "polarity": "adopt",
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/2244"
+  }
+ ],
+ "status": "blocked",
+ "title": "l'ensemble de la proposition de loi relative au droit de vote par correspondance des personnes détenues (première lecture).",
+ "updated": "2026-10-12"
+}

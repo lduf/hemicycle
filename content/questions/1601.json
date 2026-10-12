@@ -1,0 +1,61 @@
+{
+ "cat": "Éducation",
+ "checks": {
+  "date": "2026-10-12",
+  "direction": {
+   "answer": "OK",
+   "ok": true
+  },
+  "neutrality": {
+   "issues": [],
+   "judge": {
+    "bias": "autre",
+    "model": "claude-opus-5-5",
+    "reasons": [
+     "Le texte est globalement équilibré : les arguments des partisans et des opposants ont une longueur comparable, sont attribués (« estiment », « font valoir ») et ne contiennent pas d'adjectifs disqualifiants.",
+     "Le libellé du bouton reprend l'intitulé officiel (« Pour la loi contre l'antisémitisme, le racisme… »). C'est factuel, mais ce cadrage rend le vote « contre » implicitement coûteux sur le plan moral, ce qui favorise légèrement la position du texte. Une formulation comme « Pour l'adoption de la proposition de loi relative à… » serait plus neutre.",
+     "Le résumé ne mentionne pas que le texte fait référence à la définition internationale de l'antisémitisme (IHRA). Le lecteur découvre ce point seulement dans l'argument des opposants, ce qui peut le faire passer pour une objection périphérique alors qu'il s'agit d'un élément central du débat.",
+     "Certaines critiques sont omises : risques pour la liberté d'expression et la liberté académique, portée de l'obligation de signalement imposée au personnel, risques liés aux signalements anonymes (abus, droits de la défense). Leur absence allège un peu la position des opposants.",
+     "La formule « dotée de moyens » dans le résumé est légèrement valorisante, alors que la section « Pourquoi ça peut surprendre » souligne justement que les moyens ne sont pas précisés. Il faudrait harmoniser, par exemple avec « devant disposer de moyens ».",
+     "L'accroche et la section « Pourquoi ça peut surprendre » sont factuelles et neutres. Elles signalent utilement l'incertitude sur la mise en œuvre."
+    ],
+    "score": 1.0
+   },
+   "ok": true
+  }
+ },
+ "con": "Les opposants font valoir que le code pénal protège déjà tout le monde et qu'il vaudrait mieux en reprendre la définition, pour couvrir toutes les formes de racisme sans nommer l'antisémitisme à part. Ils jugent aussi non consensuelle la définition internationale de l'antisémitisme mentionnée dans le texte, car elle pourrait assimiler la critique de la politique d'un État à de l'antisémitisme.",
+ "date": "2025-05-07",
+ "generator": {
+  "date": "2026-10-12",
+  "model": "claude-sonnet-5-5"
+ },
+ "hook": "Si tu étudies à l'université, ton établissement devra te former à ces sujets et mettre en place un dispositif de signalement anonyme.",
+ "kind": "texte",
+ "label": "la loi contre l'antisémitisme, le racisme, les discriminations, les violences et la haine dans l'enseignement supérieur",
+ "n": 1601,
+ "polarity": "adopt",
+ "pro": "Les partisans estiment que l'antisémitisme à l'université est mal mesuré, insuffisamment combattu et peu sanctionné. Pour eux, une formation, un référent et un signalement anonyme donnent aux établissements des outils concrets, tout en couvrant les autres formes de racisme, de discrimination, de violence et de haine.",
+ "reviewed_hash": null,
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/1601"
+  },
+  {
+   "label": "Source 2",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/PIONANR5L17B1009.html"
+  },
+  {
+   "label": "Source 3",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/RAPPANR5L17B1460.html"
+  }
+ ],
+ "status": "pending_review",
+ "subkind": "ensemble",
+ "sum": "Ce texte concerne les établissements d'enseignement supérieur. Il prévoit une formation à la lutte contre l'antisémitisme, le racisme, les discriminations, les violences et la haine. Chaque université doit créer une mission « Égalité et diversité » dotée de moyens, avec un référent qualifié. Cette mission gère un dispositif de signalement qui garantit l'anonymat des victimes et des témoins, et tout membre du personnel qui a connaissance d'un acte doit le signaler. Le texte prévoit aussi la formation des membres des sections disciplinaires.",
+ "surp": "Les modalités d'application doivent être précisées par décret, et chaque université garde une marge pour organiser ces dispositifs. Le vote ne dit pas comment les établissements s'y prendront ni quels moyens ils y consacreront.",
+ "title": "Lutte contre l'antisémitisme et le racisme dans l'enseignement supérieur",
+ "updated": "2026-10-12"
+}

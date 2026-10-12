@@ -108,6 +108,11 @@ class Neutrality(unittest.TestCase):
         self.assertTrue(any("asymétrie" in i for i in N.deterministic(dict(GOOD, pro="Oui."), actors={})))
         self.assertTrue(any("résumé" in i for i in N.deterministic(dict(GOOD, sum="Une seule phrase."), actors={})))
 
+    def test_meta_sentences_stripped_and_flagged(self):
+        s = "Le vote porte sur un texte unique. Les extraits fournis ne détaillent pas tous les articles."
+        self.assertEqual(N.strip_meta(s), "Le vote porte sur un texte unique.")
+        self.assertTrue(any("processus" in i for i in N.deterministic(dict(GOOD, surp=s), actors={})))
+
     def test_fail_closed_without_judge(self):
         os.environ.pop("HEMI_ALLOW_NO_JUDGE", None); os.environ["HEMI_LLM"] = "none"
         ev = N.evaluate(GOOD, actors={})

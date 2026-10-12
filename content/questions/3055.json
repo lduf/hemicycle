@@ -1,0 +1,64 @@
+{
+ "cat": "Travail & retraites",
+ "checks": {
+  "date": "2026-10-12",
+  "direction": {
+   "answer": "OK",
+   "ok": true
+  },
+  "neutrality": {
+   "issues": [],
+   "judge": {
+    "bias": "autre",
+    "model": "claude-opus-5-5",
+    "reasons": [
+     "Le biais observé favorise le texte et la majorité qui le porte, sans relever clairement d'un axe gauche/droite.",
+     "Asymétrie des arguments : les partisans ont deux arguments de fond et valorisants (« concessions mutuelles », « respecte l'équilibre », « redonne des perspectives »), alors que les opposants n'ont que des objections techniques et secondaires (une instance de plus, un délai jugé court).",
+     "L'argument des opposants est affaibli par la formule « paraît à certains », qui en relativise la portée. Rien d'équivalent ne tempère les arguments des partisans.",
+     "Le premier argument des opposants porte sur une « instance nationale » que le résumé ne mentionne pas. Le lecteur ne peut donc pas l'évaluer, ce qui le rend moins convaincant.",
+     "La rubrique « Pourquoi ça peut surprendre » rassure au lieu de surprendre : « expérimental », « peut être ajusté si nécessaire ». Elle adopte ainsi le cadrage des défenseurs du texte.",
+     "Le titre et le bouton reprennent le vocabulaire du texte (« salariés expérimentés », « dialogue social »), connoté positivement, plutôt que des termes plus neutres comme « seniors » ou « salariés âgés ».",
+     "Le verbe « assouplit » appliqué aux règles de l'assurance chômage est légèrement valorisant. Il ne précise pas qui gagne ou perd à ces changements, par exemple les employeurs face au bonus-malus.",
+     "Des critiques de fond sont omises : le lien avec le report de l'âge légal de la retraite, le risque d'exonérations ou d'effets d'aubaine pour les employeurs, les inquiétudes syndicales ou de l'opposition sur la protection des salariés seniors. L'opposition est ainsi réduite à des réserves de procédure.",
+     "Le résumé reste globalement factuel et descriptif, sans adjectif ouvertement partisan. Le biais est donc modéré."
+    ],
+    "score": 2.0
+   },
+   "ok": true
+  }
+ },
+ "con": "Le texte crée une instance nationale de plus, alors qu'il existe déjà un comité national pour l'emploi et de nombreuses commissions. Le délai de six mois avant de recruter un ancien salarié en contrat de valorisation de l'expérience paraît à certains trop court pour écarter tout effet d'aubaine.",
+ "date": "2025-10-15",
+ "generator": {
+  "date": "2026-10-12",
+  "model": "claude-sonnet-5-5"
+ },
+ "hook": "Si tu travailles ou vas travailler dans une entreprise, ce texte change les négociations sur l'emploi des salariés expérimentés, les reconversions et certaines règles de l'assurance chômage.",
+ "kind": "texte",
+ "label": "la loi sur l'emploi des salariés expérimentés et le dialogue social",
+ "n": 3055,
+ "polarity": "adopt",
+ "pro": "Ce texte met en œuvre des accords issus de concessions mutuelles entre employeurs et salariés, et il en respecte l'équilibre. Il redonne des perspectives à des salariés souvent écartés du marché du travail bien avant l'âge légal de départ à la retraite.",
+ "reviewed_hash": null,
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/3055"
+  },
+  {
+   "label": "Source 2",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/PRJLANR5L17B1526.html"
+  },
+  {
+   "label": "Source 3",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/RAPPANR5L17B1683.html"
+  }
+ ],
+ "status": "pending_review",
+ "subkind": "ensemble",
+ "sum": "Ce texte reprend dans la loi des accords conclus entre organisations d'employeurs et de salariés. Il prévoit des négociations sur l'emploi des salariés expérimentés, dans les branches professionnelles et dans les entreprises d'au moins trois cents salariés. Il crée à titre expérimental un contrat de valorisation de l'expérience pour recruter des demandeurs d'emploi seniors, avec un délai de six mois avant de pouvoir y recourir pour un ancien salarié de l'entreprise. Il crée aussi une période de reconversion professionnelle, avec réintégration au poste précédent si la formation échoue. Il assouplit enfin des règles de l'assurance chômage, dont le calcul du taux de rupture de contrat des entreprises.",
+ "surp": "Le contrat de valorisation de l'expérience est un dispositif expérimental, et le texte peut être ajusté si nécessaire. Certaines modalités, comme les informations nécessaires aux négociations, seront précisées plus tard par voie réglementaire.",
+ "title": "Emploi des salariés expérimentés et dialogue social",
+ "updated": "2026-10-12"
+}

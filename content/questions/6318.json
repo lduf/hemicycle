@@ -1,0 +1,61 @@
+{
+ "cat": "Justice & sécurité",
+ "checks": {
+  "date": "2026-10-12",
+  "direction": {
+   "answer": "OK",
+   "ok": true
+  },
+  "neutrality": {
+   "issues": [],
+   "judge": {
+    "bias": "droite",
+    "model": "claude-opus-5-5",
+    "reasons": [
+     "Le titre et le bouton reprennent l'intitulé officiel « prévention des attentats », qui pose d'emblée la finalité revendiquée par les partisans sans évoquer les aspects contestés (soins sans consentement, rétention prolongée).",
+     "Asymétrie de force des arguments : les partisans disposent d'un fait concret et marquant (cinq condamnés pour terrorisme remis en liberté), alors que les opposants n'ont qu'une objection abstraite et procédurale (risque d'inconstitutionnalité, vigilance).",
+     "Le verbe « rétablit une base légale » présente la rétention de 210 jours comme la correction d'un vide juridique plutôt que comme une mesure nouvelle ou une réponse à une censure, ce qui oriente favorablement.",
+     "Omissions côté opposants : rien sur les critiques de fond, notamment celles de psychiatres ou de soignants sur l'amalgame entre troubles mentaux et terrorisme, la stigmatisation des malades, le rôle du préfet dans une décision médicale, l'efficacité incertaine des mesures ou leur extension aux détenus de droit commun.",
+     "L'argument des opposants est formulé de façon prudente (« rappellent », « appelle une vigilance ») alors que celui des partisans est affirmatif (« ne permet pas », « permettent d'agir »).",
+     "Points positifs : le résumé est globalement factuel et précis (seuils, durées, plafonds), sans adjectifs chargés. L'accroche et la section « Pourquoi ça peut surprendre » sont équilibrées et informatives sur la nature composite du texte."
+    ],
+    "score": 2.0
+   },
+   "ok": true
+  }
+ },
+ "con": "Les opposants rappellent que ces mesures touchent des libertés garanties : consentir aux soins, aller et venir, vie privée et vie familiale. Ils soulignent qu'une loi précédente a déjà été partiellement censurée par le Conseil constitutionnel et que le texte a dû être ajusté selon les recommandations du Conseil d'État, ce qui appelle une vigilance sur sa conformité à la Constitution.",
+ "date": "2026-05-05",
+ "generator": {
+  "date": "2026-10-12",
+  "model": "claude-sonnet-5-5"
+ },
+ "hook": "Le texte vise surtout des personnes soupçonnées de menace terroriste ou condamnées pour des faits graves, mais il modifie aussi les règles de changement de nom lorsque l'acte de naissance est étranger.",
+ "kind": "texte",
+ "label": "la loi sur la sécurité, la rétention administrative et la prévention des attentats",
+ "n": 6318,
+ "polarity": "adopt",
+ "pro": "Les partisans estiment que le droit actuel ne permet pas de traiter les profils qui cumulent radicalisation et troubles psychiatriques, et que ces mesures permettent d'agir avant un passage à l'acte. Ils soulignent aussi que, faute de base légale pour la rétention, cinq personnes condamnées pour terrorisme ont déjà été remises en liberté.",
+ "reviewed_hash": null,
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/6318"
+  },
+  {
+   "label": "Source 2",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/PIONANR5L17B2180.html"
+  },
+  {
+   "label": "Source 3",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/RAPPANR5L17B2468.html"
+  }
+ ],
+ "status": "pending_review",
+ "subkind": "ensemble",
+ "sum": "Ce texte crée une injonction d'examen psychiatrique décidée par le préfet pour une personne dont il existe des raisons sérieuses de penser qu'elle menace la sécurité du fait d'une radicalisation terroriste et de troubles mentaux. Si les troubles sont constatés, cela peut conduire à des soins psychiatriques sans consentement. Il crée aussi une rétention de sûreté pour certains condamnés pour terrorisme à au moins quinze ans de prison, et étend le suivi après la peine aux personnes de droit commun radicalisées en détention. Il permet au ministre de l'Intérieur de demander un sursis à exécution, de 72 heures au maximum, lorsqu'il fait appel d'un jugement annulant le renouvellement d'une mesure de surveillance individuelle. Enfin, il rétablit une base légale pour retenir jusqu'à 210 jours des étrangers condamnés pour terrorisme, et étend cette durée à certains étrangers condamnés pour des atteintes graves aux personnes.",
+ "surp": "Le vote porte sur l'ensemble du texte, qui regroupe des mesures de nature différente : santé, justice, surveillance, état civil et rétention. Un vote pour ou contre ne permet donc pas d'approuver ou de refuser chaque mesure séparément.",
+ "title": "Sécurité, rétention administrative et prévention des attentats",
+ "updated": "2026-10-12"
+}
