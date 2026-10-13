@@ -1,0 +1,10 @@
+{
+  "titre": "À remplir : titre court de l'étude",
+  "lede": "À remplir : une ou deux phrases en français simple sur ce qui a été mesuré et comment.",
+  "chiffres": [
+    { "label": "À remplir : ce que mesure ce chiffre", "valeur": "à remplir", "note": "À remplir : précision ou limite (facultatif)" },
+    { "label": "À remplir : un deuxième chiffre", "valeur": "à remplir" }
+  ],
+  "verdict": "À remplir : la conclusion honnête, en une phrase.",
+  "rapport_url": "https://exemple.org/remplacer-par-le-lien-du-rapport"
+}

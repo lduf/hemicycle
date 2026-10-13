@@ -41,6 +41,11 @@ python -m unittest discover -s tests
 4. Deux relecteurs de bords opposés : `python -m pipeline.review sign 8427 --by Nom --side gauche --verdict approve` puis `--side droite`. → `published`.
 5. Le build n'inclut que `published`, `pending_review` et `legacy` (ces deux derniers étiquetés « non relue »). Options : `build_site.build(include_pending=False)`.
 
+### Pool du quiz et page Méthode
+- Le site ne propose que les fiches (`published`, `pending_review`, `legacy`, jamais `blocked`) dont le numéro de vote figure dans `content/curated.json` (`python -m pipeline.curate`). Les autres fiches restent en base mais hors quiz. Sans ce fichier, repli explicite : toutes les fiches publiables, et la page Méthode l'annonce (`build_site.py --no-curated` force ce repli).
+- Tirage des questions : `pipeline/templates/draw.js` (stratifié par thème, par origine du texte, par polarité ; ordre et ordre pour/contre aléatoires). Simulation reproductible : `node tests/draw_sim.js [pool.json]` ; tests : `tests/test_draw.py`.
+- Page Méthode : `pipeline/templates/method.js` et `method.css`. Tous les chiffres viennent des données (curated.json, statuts et contrôles des fiches). Étude sur Jev : fichier optionnel `content/jev_summary.json` (schéma et exemple : `content/jev_summary.example.json`, non lu par le build) ; absent, la page affiche « Étude en cours ».
+
 `python -m pipeline.review list` montre l'état ; `data/REVIEW_QUEUE.md` (et le résumé du job GitHub) liste le travail humain.
 
 ### Promesses
