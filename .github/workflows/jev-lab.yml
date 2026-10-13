@@ -10,8 +10,8 @@ on:
         type: choice
         options: [smoke, standard]
       baselines:
-        description: "références : familles (claude-petit,claude-grand,gpt-petit,gemini-flash) ou identifiants exacts"
-        default: "claude-petit,claude-grand"
+        description: "références OpenRouter (vide = Jev seul ; les références Claude passent par `claude -p` dans une session, voir README)"
+        default: ""
       budget:
         description: "plafond de dépense en $ pour le run entier (arrêt net)"
         default: "6"

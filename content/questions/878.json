@@ -1,0 +1,74 @@
+{
+ "blocked_reason": "arguments pour/contre non pertinents ou déséquilibrés",
+ "cat": "Économie & fiscalité",
+ "cat_check": {
+  "classifier": "Économie & fiscalité",
+  "confidence": null,
+  "engine": "claude",
+  "writer": "Économie & fiscalité"
+ },
+ "checks": {
+  "date": "2026-10-13",
+  "direction": {
+   "answer": "{\"correspond\": 0.95, \"sens\": \"adopter\", \"attendu\": \"adopter\", \"engine\": \"claude\"}",
+   "ok": true
+  },
+  "neutrality": {
+   "issues": [],
+   "judge": {
+    "bias": "gauche",
+    "model": "claude-opus-5-5",
+    "reasons": [
+     "Le titre, le bouton et le résumé sont factuels et sans adjectif orienté. Le résumé décrit le mécanisme avec précision (calcul différentiel, assiette, exit tax, date d'entrée en vigueur).",
+     "Les deux camps n'ont pas le même poids concret. Les partisans avancent un chiffre précis (plus de 15 milliards d'euros par an) et des usages valorisants (transition écologique, services publics). Les opposants n'avancent que des objections prudentes : 'reste incertain', 'reste une question ouverte'.",
+     "L'argument des opposants contient une réponse qui l'affaiblit : le risque d'exil est aussitôt suivi de 'que le texte tente de limiter par une taxe de sortie'. L'argument des partisans ne comporte aucune réserve équivalente.",
+     "Une objection centrale des opposants est absente : l'inclusion des biens professionnels. Elle pourrait obliger des actionnaires à céder des parts pour payer l'impôt, avec des risques de perte de contrôle d'entreprises, d'effet sur l'investissement et de taxation de plus-values latentes. Le résumé mentionne pourtant ces biens.",
+     "Le risque constitutionnel est présenté de façon atténuée ('question ouverte'). Les doutes précis ne sont pas cités, notamment le caractère confiscatoire et l'égalité devant les charges publiques.",
+     "L'accroche rassure le lecteur ('ta fiscalité ne change pas directement'), ce qui peut rendre le vote 'pour' plus facile. Elle reste toutefois factuellement exacte.",
+     "La rubrique 'Pourquoi ça peut surprendre' équilibre en partie le texte : elle signale le rejet par le Sénat et l'incertitude sur le nombre de personnes concernées."
+    ],
+    "score": 2.0
+   },
+   "ok": true
+  },
+  "pro_con": null
+ },
+ "con": "Les opposants relèvent que le rendement reste incertain, car les données sur les très grands patrimoines sont insuffisantes. Ils soulignent aussi un risque de départ à l'étranger des personnes concernées, que le texte tente de limiter par une taxe de sortie. Enfin, ils considèrent que la conformité de cet impôt à la jurisprudence du Conseil constitutionnel reste une question ouverte.",
+ "date": "2025-02-20",
+ "generator": {
+  "date": "2026-10-13",
+  "model": "claude-sonnet-5-5"
+ },
+ "hook": "Si ton patrimoine net est inférieur à 100 millions d'euros, ta fiscalité ne change pas directement : la mesure ne vise que les patrimoines au-dessus de ce seuil.",
+ "kind": "texte",
+ "label": "l'impôt plancher de 2 % sur les très grands patrimoines",
+ "n": 878,
+ "polarity": "adopt",
+ "pro": "Les partisans estiment que les très grands patrimoines sont peu imposés par rapport à leurs capacités. Ils expliquent que ces patrimoines sont souvent détenus par des sociétés qui versent peu de revenus imposables. Ils chiffrent le rendement à plus de 15 milliards d'euros par an, pour les finances publiques, la transition écologique et les services publics.",
+ "reviewed_hash": null,
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/878"
+  },
+  {
+   "label": "Source 2",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/PIONANR5L17B0768.html"
+  },
+  {
+   "label": "Source 3",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/RAPPANR5L17B0930.html"
+  },
+  {
+   "label": "Source 4",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/dossiers/DLR5L17N51215"
+  }
+ ],
+ "status": "blocked",
+ "subkind": "ensemble",
+ "sum": "Ce texte crée un impôt plancher sur la fortune pour les personnes dont le patrimoine net dépasse 100 millions d'euros. Chaque année, ces personnes doivent payer au total au moins 2 % de la valeur nette de leur patrimoine. L'impôt dû correspond à la différence, si elle est positive, entre ces 2 % et ce qu'elles ont déjà payé au titre de l'impôt sur le revenu, de l'impôt sur la fortune immobilière, de la CSG, de la CRDS et de la contribution exceptionnelle sur les hauts revenus. Les biens professionnels entrent dans le patrimoine pris en compte. Le texte prévoit aussi qu'une personne installée en France depuis plus de dix ans reste imposable pendant cinq ans après son départ, et une entrée en vigueur au 1er janvier 2026.",
+ "surp": "Ce vote est une première lecture : le texte a été adopté par l'Assemblée nationale, puis rejeté ensuite par le Sénat. Le nombre exact de personnes concernées est lui-même difficile à établir faute de données publiques précises.",
+ "title": "Impôt plancher de 2 % sur les très grands patrimoines",
+ "updated": "2026-10-13"
+}

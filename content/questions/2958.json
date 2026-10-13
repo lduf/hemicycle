@@ -1,0 +1,80 @@
+{
+ "cat": "Immigration",
+ "cat_check": {
+  "classifier": "Immigration",
+  "confidence": null,
+  "engine": "claude",
+  "writer": "Immigration"
+ },
+ "checks": {
+  "date": "2026-10-13",
+  "direction": {
+   "answer": "{\"correspond\": 0.88, \"sens\": \"adopter\", \"attendu\": \"adopter\", \"engine\": \"claude\"}",
+   "ok": true
+  },
+  "neutrality": {
+   "issues": [],
+   "judge": {
+    "bias": "droite",
+    "model": "claude-opus-5-5",
+    "reasons": [
+     "Le titre, le bouton et l'accroche parlent seulement d'« étrangers condamnés ». Or le texte vise aussi des personnes dont le comportement est une menace d'une particulière gravité pour l'ordre public, sans exiger de condamnation. Ce cadrage rend la mesure plus acceptable et passe sous silence la partie la plus contestable de son champ.",
+     "La rubrique « Pourquoi ça peut surprendre » donne deux précisions sur trois qui rassurent : la rétention n'est pas une peine, et un juge autorise chaque prolongation. Elle ne donne aucune précision qui irait dans l'autre sens, par exemple que la durée passe de 90 à 210 jours, soit plus du double, pour les personnes nouvellement concernées.",
+     "La phrase « Cela ne change rien à ton quotidien » minimise un peu l'enjeu. Elle reste toutefois factuelle pour la majorité des lecteurs.",
+     "Dans l'ensemble, le vocabulaire est neutre et juridique : « renvoi », « rétention », « frappés d'une peine ». Le texte n'emploie ni « expulsion » ni « clandestins », et aucun adjectif orienté.",
+     "Les deux camps reçoivent des arguments de poids comparable, chacun appuyé sur des faits chiffrés. Les opposants ont même des données plus précises : 37 personnes concernées en 2024, et des peines d'interdiction du territoire passées de 1 921 à 5 568. Les deux camps citent aussi une référence juridique : le droit européen pour les partisans, la décision de 2011 sur la Constitution pour les opposants.",
+     "Le résumé décrit fidèlement les mesures secondaires : une prolongation de 30 jours au lieu de deux de 15 jours, des délais comptés en heures, et la mention des heures d'alimentation. Il n'en commente aucune."
+    ],
+    "score": 1.0
+   },
+   "ok": true
+  },
+  "pro_con": {
+   "con_fond": 0.85,
+   "con_ok": 0.95,
+   "engine": "claude",
+   "equilibre": 1.0,
+   "ok": true,
+   "pro_fond": 0.93,
+   "pro_ok": 0.96
+  }
+ },
+ "con": "La rétention prive de liberté, et la liberté individuelle ne doit être limitée que par ce qui est nécessaire. En 2011, une prolongation de la rétention jusqu'à dix-huit mois a été jugée contraire à la Constitution. Le régime de 210 jours a concerné 37 personnes en 2024, alors que les peines d'interdiction du territoire sont passées de 1 921 en 2015 à 5 568 en 2023, pour des infractions très variées.",
+ "date": "2025-07-08",
+ "generator": {
+  "date": "2026-10-13",
+  "model": "claude-sonnet-5-5"
+ },
+ "hook": "Cela ne change rien à ton quotidien. Cela change la durée pendant laquelle l'État peut retenir certains étrangers condamnés avant de les renvoyer.",
+ "kind": "texte",
+ "label": "l'allongement de la rétention de certains étrangers condamnés",
+ "n": 2958,
+ "polarity": "adopt",
+ "pro": "Les pays d'origine acceptent difficilement le retour de personnes condamnées pour des infractions graves, ce qui demande plus de temps. En 2024, plus de la moitié des renvois faits avec la durée de 210 jours ont eu lieu après le 90e jour de rétention. Cette durée reste aussi inférieure au maximum que le droit européen permet, qui peut aller jusqu'à dix-huit mois.",
+ "reviewed_hash": null,
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/2958"
+  },
+  {
+   "label": "Source 2",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/PIONANR5L17B1148.html"
+  },
+  {
+   "label": "Source 3",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/RAPPANR5L17B1640.html"
+  },
+  {
+   "label": "Source 4",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/dossiers/DLR5L17N51429"
+  }
+ ],
+ "status": "pending_review",
+ "subkind": "ensemble",
+ "sum": "La rétention administrative permet de maintenir une personne étrangère dans un lieu fermé en attendant son renvoi du pays. Aujourd'hui, elle dure 90 jours au maximum, et jusqu'à 210 jours pour les étrangers condamnés pour terrorisme. Ce texte étend ces 210 jours aux étrangers frappés d'une peine d'interdiction du territoire français, ou dont le comportement est une menace d'une particulière gravité pour l'ordre public. Il remplace aussi deux prolongations de quinze jours par une seule de trente jours, et compte certains délais de rétention en heures plutôt qu'en jours. Il prévoit enfin que le procès-verbal de fin de retenue mentionne les heures auxquelles la personne a pu s'alimenter.",
+ "surp": "Les extraits ne disent pas combien de personnes de plus seraient concernées. La rétention reste une mesure administrative, et non une peine. Un juge doit autoriser chaque prolongation.",
+ "title": "Rétention plus longue de certains étrangers condamnés",
+ "updated": "2026-10-13"
+}

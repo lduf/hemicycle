@@ -41,7 +41,7 @@ def draft(scr, urls, call=None, texts=None):
     cl = D.classify(scr["titre"])
     if cl["polarity"] is None:
         return _blocked(scr, cl, f"sens du vote douteux : {cl['reason']}")
-    texts = texts if texts is not None else [(u, S.fetch_text(u)) for u in urls if S.allowed(u)]
+    texts = texts if texts is not None else [(u, S.fetch_excerpt(u)) for u in urls if S.allowed(u)]
     if not texts:
         return _blocked(scr, cl, "aucun texte officiel exploitable")
     ask = call or (lambda p: llm.ask_json(C.MODEL_WRITER, p, system=SYSTEM, max_tokens=1500))

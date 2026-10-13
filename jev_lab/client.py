@@ -160,7 +160,7 @@ SYS_PROMPT = ("Tu es un système de décision. Réponds UNIQUEMENT par un objet 
 class ChatClient:
     kind = "chat"
 
-    def __init__(self, model, label=None, timeout=120, max_tokens=1000, mock_gold=False):
+    def __init__(self, model, label=None, timeout=120, max_tokens=4000, mock_gold=False):
         self.model = model
         self.name = label or model
         self.timeout = timeout
@@ -189,6 +189,38 @@ class ChatClient:
             # paramétrage, pas une erreur du modèle ; on le compte comme échec d'appel (rejoué à la reprise) et on le publie
             if not (rec["text"] or "").strip() or rec.get("finish_reason") == "length":
                 rec["ok"], rec["error"] = False, f"contenu vide ou tronqué (finish_reason={rec.get('finish_reason')})"
+        return rec
+
+
+class CliClient:
+    """Référence Claude via `claude -p` (abonnement de l'utilisateur, aucun appel OpenRouter), comme le secours de production
+    (`pipeline.llm.ask`, sans consigne système). `free` : rien n'est facturé, le budget n'est pas consommé.
+    Ni température ni jetons max ne sont réglables avec `claude -p` : réglages par défaut du CLI."""
+    kind = "chat"
+    free = True
+
+    def __init__(self, model, label=None, timeout=300):
+        self.model = model
+        self.name = label or f"{model} (claude -p)"
+        self.timeout = timeout
+
+    def call(self, base, prompt, gold=None):
+        from pipeline import llm
+        t0 = time.perf_counter()
+        rec = {**base, "system": self.name, "request": {"model": self.model, "prompt_chars": len(prompt), "via": "claude -p"},
+               "ts": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "attempts": [], "headers": {}, "n_attempts": 1,
+               "usage": _usage(None), "resolved_model": self.model}
+        try:
+            text = llm._ask_cli(self.model, prompt, "", self.timeout)
+            err = None
+        except Exception as e:          # processus en échec, quota, délai dépassé : appel échoué (publié, jamais exclu)
+            text, err = None, str(e)[:400]
+        wall = round(time.perf_counter() - t0, 4)
+        rec.update({"wall_s": wall, "total_s": wall, "status": 200 if err is None else None})
+        if err is None and (text or "").strip():
+            rec.update({"ok": True, "text": text, "finish_reason": "stop"})
+        else:
+            rec.update({"ok": False, "error": err or "contenu vide", "error_text": err})
         return rec
 
 

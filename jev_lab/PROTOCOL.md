@@ -16,8 +16,9 @@ Pas de benchmark général. On mesure les appels réels du pipeline, avec leurs 
 ## 2. Ce qui est comparé
 
 - **Jev** : `POST /api/alpha/decisions`, toutes les questions d'un scénario dans un seul appel, comme en production.
-- **Références** : Claude (modèles OpenRouter résolus à l'exécution par famille, puis **figés** dans `meta.json`), avec la **consigne de secours de production** (`classify.claude_prompt`) : même contrat typé,
-  mêmes questions, mêmes décisions. C'est la vraie alternative aujourd'hui (`claude -p`).
+- **Référence** : Claude **Sonnet 5.5** (`claude-sonnet-5-5`, le juge du pipeline), appelé par **`claude -p`** (abonnement de l'utilisateur, **aucun appel OpenRouter**), avec la **consigne de secours de production** (`classify.claude_prompt`) : même contrat typé, mêmes questions, mêmes décisions. C'est la vraie alternative aujourd'hui.
+  Réglages : ceux par défaut du CLI (`claude -p` n'expose ni température ni jetons max ni niveau de réflexion) ; rien n'est facturé et les jetons ne sont pas relevés.
+- **Deux passes sur le même dossier de run** : le workflow lance Jev seul (clé OpenRouter, toutes les expériences) ; une session Claude Code rejoue ensuite les mêmes entrées avec `--claude-only` (qualité uniquement). La latence, le débit, le déterminisme et le coût ne concernent que Jev : la latence de `claude -p` (démarrage d'un processus) n'est pas comparable à celle d'un appel HTTP.
 - Les références ne sont pas optimisées (pas d'exemples, température 0). Limite assumée : on compare un usage « prêt à l'emploi » des deux côtés.
 
 ## 3. Scénarios et vérité terrain
@@ -83,7 +84,7 @@ Pour trancher davantage : ajouter des fiches (le lot nocturne en produit), et de
 | Fiches d'origine supposées neutres à tort | Écrit dans le rapport ; la note des fiches d'origine est publiée ; relire les « faux rejets » un à un |
 | Réécritures orientées non validées | `gen-variants` écrit dans `content/bench/` (relisible, versionné) ; `show` pour les lire ; limite écrite dans le rapport |
 | Vérité terrain du sens issue de règles | Limitée aux cas certains par construction ; titres ambigus non couverts (dit) |
-| Une référence pénalisée par un artefact de format | `max_tokens` = 1000, `finish_reason` conservé ; réponse vide/tronquée = appel échoué (rejoué, publié) ; consigne de production identique |
+| Une référence pénalisée par un artefact de format | `max_tokens` = 4000 (le test smoke a montré qu'à 1000 une référence bavarde est tronquée dans 45 % des cas), `finish_reason` conservé ; réponse vide/tronquée = appel échoué (rejoué, publié) ; consigne de production identique |
 | Latence écrasée par l'overhead réseau | Connexions persistantes ; bootstrap par fiche ; appels identiques répétés possiblement cachés côté fournisseur (limite écrite) |
 | Doublons après reprise / plafond contourné | Un enregistrement par appel logique ; plafond pour le run entier ; coût estimé réservé avant chaque appel ; le modèle fait partie de la clé de reprise |
 | Versions de modèle qui changent | Version servie lue dans la réponse et notée ; alias résolu puis figé |

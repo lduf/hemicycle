@@ -22,11 +22,17 @@ def need_key():
 
 
 def build_lab(a, store, mock=False, variants_path=None):
-    cat = CL.catalog()
+    wanted = [x for x in (a.baselines or "").split(",") if x]
+    cat = CL.catalog() if any(not w.startswith("cli:") for w in wanted) else []
     prices = {m["id"]: (m["prompt"], m["completion"]) for m in cat}
     baselines, resolved = [], {}
-    fams = CL.resolve_patterns(cat)
+    fams = CL.resolve_patterns(cat) if cat else {}
     for w in [x for x in (a.baselines or "").split(",") if x]:
+        if w.startswith("cli:"):                # Claude via `claude -p` (abonnement), jamais via OpenRouter
+            c = CL.CliClient(w[4:])
+            resolved[c.name] = c.model
+            baselines.append(c)
+            continue
         if "/" in w:
             mid, label = w, w
         elif w in fams:
@@ -40,7 +46,7 @@ def build_lab(a, store, mock=False, variants_path=None):
     # le plafond vaut pour le RUN ENTIER : ce qui a déjà été dépensé dans les sessions précédentes est déduit
     spent0 = sum((r.get("usage") or {}).get("cost") or 0.0 for r in store.read())
     lab = R.Lab(store, B.Budget(a.budget, spent0), CL.JevClient(a.jev_model, mock_gold=mock), baselines, workers=a.workers, mock=mock, prices=prices,
-                variants_path=variants_path)
+                variants_path=variants_path, claude_only=getattr(a, "claude_only", False))
     return lab, resolved
 
 
@@ -128,50 +134,59 @@ def cmd_label_sheet(a):
 
 
 def cmd_gen_variants(a, mock=False, path=None):
-    """Réécriture des fiches par un modèle de langage.  Le résultat est un jeu d'essai : à relire par un humain (voir `show`) avant de s'y fier."""
-    if not mock:
+    """Réécriture des fiches par un modèle de langage.  Le résultat est un jeu d'essai : à relire par un humain (voir `show`) avant de s'y fier.
+    `--gen-model cli:claude-sonnet-5-5` : par `claude -p` (abonnement, rien de facturé) ; sinon un modèle OpenRouter (clé requise)."""
+    from concurrent.futures import ThreadPoolExecutor
+    gm = a.gen_model or ("" if mock else None)
+    if not gm and not mock:
+        sys.exit("--gen-model requis : « cli:claude-sonnet-5-5 » (claude -p) ou un identifiant OpenRouter (voir `models`)")
+    if mock:
+        client, mid = CL.ChatClient(gm or "anthropic/claude-opus-5", mock_gold=False, max_tokens=2000), gm or "mock"
+    elif gm.startswith("cli:"):
+        client = CL.CliClient(gm[4:])
+        mid = f"{gm[4:]} (claude -p)"
+    else:
         need_key()
-    st = ST.RunStore(os.path.join(C.RUNS, "_variants"))
-    lab, _ = build_lab(a, st, mock=mock)
-    if not a.gen_model and not mock:
-        sys.exit("--gen-model requis : identifiant exact du modèle de réécriture (ex. famille claude-grand : voir `models`)")
-    cat = CL.catalog()
-    fams = CL.resolve_patterns(cat)
-    mid = a.gen_model or "anthropic/claude-opus-5"
-    mid = fams[mid]["id"] if mid in fams else mid
-    if mid not in {m["id"] for m in cat}:
-        sys.exit(f"modèle de réécriture absent du catalogue : {mid}")
-    client = CL.ChatClient(mid, mock_gold=False, max_tokens=2000)
+        cat = CL.catalog()
+        fams = CL.resolve_patterns(cat)
+        mid = fams[gm]["id"] if gm in fams else gm
+        if mid not in {m["id"] for m in cat}:
+            sys.exit(f"modèle de réécriture absent du catalogue : {mid}")
+        client = CL.ChatClient(mid, mock_gold=False, max_tokens=4000)
     path = path or H.VARIANTS_PATH
     out = H.load_variants(path)
+    jobs = [(q, k) for q in H.fiches_pro_con() for k in H.SLANTS if k not in (out.get(str(q["n"])) or {})]
     n = 0
-    for q in H.fiches_pro_con():
-        for k in H.SLANTS:
-            if k in (out.get(str(q["n"])) or {}):
-                continue
-            rec = client.call({"experiment": "gen", "task": "neutralite", "item": f"{q['n']}-{k}", "rep": 0, "variant": k, "gold": None}, H.variant_prompt(q, k))
-            r = H.json_in(rec.get("text")) if rec.get("ok") else None
+
+    def one(job):
+        q, k = job
+        rec = client.call({"experiment": "gen", "task": "neutralite", "item": f"{q['n']}-{k}", "rep": 0, "variant": k, "gold": None}, H.variant_prompt(q, k))
+        r = H.json_in(rec.get("text")) if rec.get("ok") else None
+        return q, k, r
+
+    with ThreadPoolExecutor(max_workers=max(1, a.workers)) as ex:
+        for q, k, r in ex.map(one, jobs):
             if isinstance(r, dict) and all(f in r for f in ("sum", "pro", "con")):
                 out.setdefault(str(q["n"]), {})[k] = {f: r.get(f) or q.get(f) for f in H.FIELDS}
                 n += 1
-        os.makedirs(os.path.dirname(path), exist_ok=True)
-        with open(path, "w", encoding="utf-8") as fh:
-            json.dump(out, fh, ensure_ascii=False, indent=1, sort_keys=True)
-    print(f"{n} variantes écrites dans {path} (généré par {mid}) — à relire avant de s'y fier ; `git add` pour le rendre reproductible")
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "w", encoding="utf-8") as fh:
+        json.dump(out, fh, ensure_ascii=False, indent=1, sort_keys=True)
+    print(f"{n}/{len(jobs)} variantes écrites dans {path} (générées par {mid}) — à relire avant de s'y fier ; `git add` pour le rendre reproductible")
 
 
 def cmd_plan(a):
     st = ST.RunStore(os.path.join(C.RUNS, "_plan"))
     lab, _ = build_lab(a, st)
     rows, total = lab.plan(a.suite, a.robust_baselines)
-    print(f"Suite {a.suite} — estimation (jetons estimés à 3,6 caractères ; sortie des modèles de chat estimée à 60 tokens par question)\n")
+    print(f"Suite {a.suite} — estimation (jetons estimés à 3,6 caractères ; sortie des modèles de chat estimée à 600 tokens par appel)\n")
     for exp, by in rows:
         print(f"  {exp:16}" + "   ".join(f"{s}: {n} appels ≈ {c:.4f} $" for s, (n, c) in by.items()))
     print(f"\nTOTAL estimé ≈ {total:.2f} $   (plafond demandé : {a.budget} $)")
 
 
 def cmd_run(a, mock=False, variants_path=None):
-    if not mock:
+    if not mock and not a.claude_only:
         need_key()
     run_dir = os.path.join(C.RUNS, a.run or time.strftime("%Y%m%d-%H%M%S"))
     st = ST.RunStore(run_dir)
@@ -182,14 +197,17 @@ def cmd_run(a, mock=False, variants_path=None):
         sys.exit("L'estimation dépasse sensiblement le plafond : réduire la suite/les références, relever --budget, ou --yes pour s'arrêter au plafond.")
     prev = st.meta()
     kw = {}
-    if "credits_start" not in prev:           # le point de départ des crédits n'est fixé qu'une fois : une reprise ne le réécrit pas
+    if "credits_start" not in prev and not a.claude_only:           # le point de départ des crédits n'est fixé qu'une fois : une reprise ne le réécrit pas
         kw["credits_start"] = None if mock else CL.credits()
     from pipeline import classify, config as HC
+    resolved = {**(prev.get("baselines") or {}), **resolved}        # la passe Claude (locale) s'ajoute à celle de Jev (Actions)
+    if a.claude_only:
+        kw["claude_pass"] = True
     st.write_meta(suite=a.suite, jev_model=lab.jev.model, baselines=resolved, budget=a.budget, mock=mock, seed=lab.seed, sessions=prev.get("sessions", 0) + 1,
                   robust_baselines=a.robust_baselines, **kw, thresholds=dict(classify.THRESHOLDS, neutralite_max=HC.NEUTRALITY_MAX),
                   n_items={sc: len(lab.items(sc)) for sc in R.SUITES[a.suite]["scenarios"]})
     res = lab.run(a.suite, a.robust_baselines)
-    if not mock:
+    if not mock and not a.claude_only:
         st.write_meta(credits_end=CL.credits())
     print(json.dumps({k: v for k, v in res.items() if k != "throughput"}, ensure_ascii=False))
     cmd_report(argparse.Namespace(run=run_dir))
@@ -236,7 +254,7 @@ def main(argv=None):
     sub = ap.add_subparsers(dest="cmd", required=True)
 
     def common(p):
-        p.add_argument("--baselines", default="", help="références : familles (claude-petit,claude-grand,gpt-petit,gemini-flash) ou identifiants exacts, séparés par des virgules")
+        p.add_argument("--baselines", default="", help="références : « cli:claude-sonnet-5-5 » (Claude via `claude -p`, abonnement) ou familles OpenRouter (claude-petit,claude-grand,gpt-petit,gemini-flash) ou identifiants exacts, séparés par des virgules")
         p.add_argument("--budget", type=float, default=5.0, help="plafond de dépense en $ pour le run entier (arrêt net)")
         p.add_argument("--workers", type=int, default=4)
         p.add_argument("--jev-model", default=C.JEV_MODEL)
@@ -253,6 +271,7 @@ def main(argv=None):
         if name == "run":
             p.add_argument("--run", default=None, help="nom du dossier de run (le réutiliser pour reprendre)")
             p.add_argument("--yes", action="store_true")
+            p.add_argument("--claude-only", action="store_true", help="ne rejouer que les références (`cli:...`) sur un dossier de run déjà rempli par Jev : aucune clé OpenRouter, aucun appel Jev")
     p = sub.add_parser("report"); p.add_argument("run")
     p = sub.add_parser("inspect"); p.add_argument("run"); p.add_argument("--scenario"); p.add_argument("--system"); p.add_argument("--errors", action="store_true")
     p.add_argument("--failed", action="store_true"); p.add_argument("--limit", type=int, default=30)

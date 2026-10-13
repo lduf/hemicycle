@@ -33,11 +33,12 @@ class Job:
 
 class Lab:
     def __init__(self, store, budget, jev, baselines, seed=C.SEED, workers=4, mock=False, jev_price=C.CLAIMS["prix_entree_par_M"][0],
-                 prices=None, variants_path=None):
+                 prices=None, variants_path=None, claude_only=False):
         self.store, self.budget, self.jev, self.baselines = store, budget, jev, baselines
         self.seed, self.workers, self.mock, self.jev_price = seed, workers, mock, jev_price
         self.prices = prices or {}                  # modèle -> (prompt $/token, completion $/token), lu au catalogue
-        self.systems = {"jev": jev, **{b.name: b for b in baselines}}
+        self.claude_only = claude_only
+        self.systems = {**({} if claude_only else {"jev": jev}), **{b.name: b for b in baselines}}
         self.variants_path = variants_path
         self._items = {}
         self.stop = threading.Event()
@@ -58,6 +59,8 @@ class Lab:
     def est_cost(self, system, est_in, est_out):
         if system == "jev":
             return est_in * self.jev_price / 1e6
+        if getattr(self.systems[system], "free", False):
+            return 0.0                              # `claude -p` : abonnement, rien de facturé
         pin, pout = self.prices.get(self.systems[system].model, (1e-6, 4e-6))
         return est_in * pin + est_out * pout
 
@@ -70,7 +73,7 @@ class Lab:
             return Job(base, system, tokens_estimate(json.dumps({"s": item["state"], "q": qs}, ensure_ascii=False)), 0,
                        lambda: c.call(base, item["state"], qs, gold=gq))
         prompt = classify.claude_prompt(item["state"], qs)
-        return Job(base, system, tokens_estimate(prompt), 60 * len(qs), lambda: c.call(base, prompt, gold=gq))
+        return Job(base, system, tokens_estimate(prompt), 600, lambda: c.call(base, prompt, gold=gq))
 
     # ----- exécution -----
     def execute(self, jobs, workers=None, shuffle=True, label=""):
@@ -204,6 +207,8 @@ class Lab:
     def all_jobs(self, suite, with_baselines_robust=False):
         s = SUITES[suite]
         out = {"quality": self.jobs_quality(s["scenarios"], s["cap"])}
+        if self.claude_only:        # latence, débit, déterminisme, robustesse, « seules ou ensemble » : propres à Jev, faits dans le workflow
+            return out
         if s["latency"]:
             out["latency_warmup"], out["latency"] = self.jobs_latency(s["scenarios"], **s["latency"])
         if s["robust"] and "categorie" in s["scenarios"]:
@@ -225,7 +230,7 @@ class Lab:
                 c[1] += self.est_cost(j.system, j.est_in, j.est_out)
             rows.append((exp, by))
             total += sum(v[1] for v in by.values())
-        if SUITES[suite]["throughput"]:
+        if SUITES[suite]["throughput"] and not self.claude_only:
             n = sum(max(16, c * SUITES[suite]["throughput"]["per"]) for c in SUITES[suite]["throughput"]["levels"])
             est = n * 1100 * self.jev_price / 1e6
             rows.append(("throughput", {"jev": [n, est]}))
@@ -245,7 +250,7 @@ class Lab:
             if res[exp]["budget_stop"]:
                 log("plafond de budget atteint : arrêt propre (reprise possible avec le même dossier de run)")
                 break
-        if s["throughput"] and not self.stop.is_set():
+        if s["throughput"] and not self.stop.is_set() and not self.claude_only:
             res["throughput"] = self.run_throughput(**s["throughput"])
             log(f"[throughput] {len(res['throughput'])} paliers  dépensé {self.budget.spent:.4f} $")
         return res

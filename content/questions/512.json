@@ -1,0 +1,16 @@
+{
+ "blocked_reason": "sources insuffisantes pour décrire la mesure et ses critiques",
+ "date": "2024-12-03",
+ "n": 512,
+ "polarity": "adopt",
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/512"
+  }
+ ],
+ "status": "blocked",
+ "title": "l'amendement n° 4 de M. Saint-Pasteur après l'article 4 de la proposition de loi visant à optimiser la protection et l'accompagnement des parents d'enfants atteints de cancers, de maladies graves et de handicaps (première lecture).",
+ "updated": "2026-10-13"
+}

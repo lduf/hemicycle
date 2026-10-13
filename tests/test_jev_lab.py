@@ -306,3 +306,33 @@ class TestChaineComplete(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestReferenceClaudeCli(unittest.TestCase):
+    """La référence Claude passe par `claude -p` (abonnement) : aucun appel OpenRouter, aucun coût, journal identique."""
+
+    def test_client_et_mode_claude_seul(self):
+        from pipeline import llm
+        seen = []
+        orig = llm._ask_cli
+        llm._ask_cli = lambda model, prompt, system, timeout: (seen.append((model, system)) or json.dumps({"correspond": {"noul": .9}, "sens": {"choice": "adopter", "confidence": .9}}))
+        try:
+            c = CL.CliClient("claude-sonnet-5-5")
+            with tempfile.TemporaryDirectory() as d:
+                store = ST.RunStore(d)
+                lab = R.Lab(store, B.Budget(1.0, 0.0), CL.JevClient("x"), [c], claude_only=True)
+                self.assertNotIn("jev", lab.systems)
+                rows, total = lab.plan("smoke")
+                self.assertEqual(total, 0.0)                                   # rien de facturé
+                self.assertTrue(all(set(by) == {c.name} for _, by in rows))   # uniquement la référence
+                st = lab.execute(lab.jobs_quality(["sens"], 2)[:2])
+                self.assertEqual(st["run"], 2)
+                recs = store.read()
+                self.assertTrue(all(r["system"] == c.name and r["ok"] and r["usage"].get("cost") in (None, 0) for r in recs))
+                self.assertEqual(seen[0], ("claude-sonnet-5-5", ""))           # consigne de production : pas de consigne système
+            bad = CL.CliClient("m")
+            llm._ask_cli = lambda *a: (_ for _ in ()).throw(RuntimeError("claude -p a échoué (1) : quota"))
+            r = bad.call({"experiment": "quality", "item": "i"}, "p")
+            self.assertFalse(r["ok"])                                           # échec publié, jamais exclu
+        finally:
+            llm._ask_cli = orig
