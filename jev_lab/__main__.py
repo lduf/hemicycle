@@ -134,36 +134,45 @@ def cmd_label_sheet(a):
 
 
 def cmd_gen_variants(a, mock=False, path=None):
-    """Réécriture des fiches par un modèle de langage.  Le résultat est un jeu d'essai : à relire par un humain (voir `show`) avant de s'y fier."""
-    if not mock:
+    """Réécriture des fiches par un modèle de langage.  Le résultat est un jeu d'essai : à relire par un humain (voir `show`) avant de s'y fier.
+    `--gen-model cli:claude-sonnet-5-5` : par `claude -p` (abonnement, rien de facturé) ; sinon un modèle OpenRouter (clé requise)."""
+    from concurrent.futures import ThreadPoolExecutor
+    gm = a.gen_model or ("" if mock else None)
+    if not gm and not mock:
+        sys.exit("--gen-model requis : « cli:claude-sonnet-5-5 » (claude -p) ou un identifiant OpenRouter (voir `models`)")
+    if mock:
+        client, mid = CL.ChatClient(gm or "anthropic/claude-opus-5", mock_gold=False, max_tokens=2000), gm or "mock"
+    elif gm.startswith("cli:"):
+        client = CL.CliClient(gm[4:])
+        mid = f"{gm[4:]} (claude -p)"
+    else:
         need_key()
-    st = ST.RunStore(os.path.join(C.RUNS, "_variants"))
-    lab, _ = build_lab(a, st, mock=mock)
-    if not a.gen_model and not mock:
-        sys.exit("--gen-model requis : identifiant exact du modèle de réécriture (ex. famille claude-grand : voir `models`)")
-    cat = CL.catalog()
-    fams = CL.resolve_patterns(cat)
-    mid = a.gen_model or "anthropic/claude-opus-5"
-    mid = fams[mid]["id"] if mid in fams else mid
-    if mid not in {m["id"] for m in cat}:
-        sys.exit(f"modèle de réécriture absent du catalogue : {mid}")
-    client = CL.ChatClient(mid, mock_gold=False, max_tokens=2000)
+        cat = CL.catalog()
+        fams = CL.resolve_patterns(cat)
+        mid = fams[gm]["id"] if gm in fams else gm
+        if mid not in {m["id"] for m in cat}:
+            sys.exit(f"modèle de réécriture absent du catalogue : {mid}")
+        client = CL.ChatClient(mid, mock_gold=False, max_tokens=4000)
     path = path or H.VARIANTS_PATH
     out = H.load_variants(path)
+    jobs = [(q, k) for q in H.fiches_pro_con() for k in H.SLANTS if k not in (out.get(str(q["n"])) or {})]
     n = 0
-    for q in H.fiches_pro_con():
-        for k in H.SLANTS:
-            if k in (out.get(str(q["n"])) or {}):
-                continue
-            rec = client.call({"experiment": "gen", "task": "neutralite", "item": f"{q['n']}-{k}", "rep": 0, "variant": k, "gold": None}, H.variant_prompt(q, k))
-            r = H.json_in(rec.get("text")) if rec.get("ok") else None
+
+    def one(job):
+        q, k = job
+        rec = client.call({"experiment": "gen", "task": "neutralite", "item": f"{q['n']}-{k}", "rep": 0, "variant": k, "gold": None}, H.variant_prompt(q, k))
+        r = H.json_in(rec.get("text")) if rec.get("ok") else None
+        return q, k, r
+
+    with ThreadPoolExecutor(max_workers=max(1, a.workers)) as ex:
+        for q, k, r in ex.map(one, jobs):
             if isinstance(r, dict) and all(f in r for f in ("sum", "pro", "con")):
                 out.setdefault(str(q["n"]), {})[k] = {f: r.get(f) or q.get(f) for f in H.FIELDS}
                 n += 1
-        os.makedirs(os.path.dirname(path), exist_ok=True)
-        with open(path, "w", encoding="utf-8") as fh:
-            json.dump(out, fh, ensure_ascii=False, indent=1, sort_keys=True)
-    print(f"{n} variantes écrites dans {path} (généré par {mid}) — à relire avant de s'y fier ; `git add` pour le rendre reproductible")
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "w", encoding="utf-8") as fh:
+        json.dump(out, fh, ensure_ascii=False, indent=1, sort_keys=True)
+    print(f"{n}/{len(jobs)} variantes écrites dans {path} (générées par {mid}) — à relire avant de s'y fier ; `git add` pour le rendre reproductible")
 
 
 def cmd_plan(a):

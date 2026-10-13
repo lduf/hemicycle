@@ -39,14 +39,18 @@ def scrutin_url(n):
     return C.URL_SCRUTIN_PAGE.format(n=n)
 
 
-def discover(n):
+def discover(n, dossier_ref=None):
     """Sources officielles d'un scrutin : page du dossier législatif + texte initial (exposé des motifs),
-    trouvés depuis la page officielle du scrutin. Liste vide si le scrutin n'a pas de dossier (résolution, etc.)."""
-    page = fetch_html(scrutin_url(n))
-    m = re.search(r'href="(?:https://www\.assemblee-nationale\.fr)?(/dyn/17/dossiers/[A-Za-z0-9_\\-]+)"', page)
-    if not m:
-        return []
-    dossier = "https://www.assemblee-nationale.fr" + m.group(1)
+    trouvés depuis la page officielle du scrutin, ou directement depuis la référence du dossier (`dossier_ref`, connue de la
+    sélection) quand la page du scrutin n'y renvoie pas. Liste vide si le scrutin n'a pas de dossier."""
+    if dossier_ref:
+        dossier = "https://www.assemblee-nationale.fr/dyn/17/dossiers/" + dossier_ref
+    else:
+        page = fetch_html(scrutin_url(n))
+        m = re.search(r'href="(?:https://www\.assemblee-nationale\.fr)?(/dyn/17/dossiers/[A-Za-z0-9_\\-]+)"', page)
+        if not m:
+            return []
+        dossier = "https://www.assemblee-nationale.fr" + m.group(1)
     d = fetch_html(dossier)
     # texte initial = exposé des motifs (première version déposée) ; à défaut, tout texte déposé
     pats = [r"l17b\d+_(?:projet-loi|proposition-loi|projet-loi-organique|proposition-loi-organique|proposition-resolution)",
