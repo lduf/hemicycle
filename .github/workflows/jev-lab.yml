@@ -1,0 +1,51 @@
+name: jev-lab
+# Étude de Jev (voir jev_lab/PROTOCOL.md). Manuel uniquement : chaque exécution dépense des crédits OpenRouter.
+on:
+  workflow_dispatch:
+    inputs:
+      suite:
+        description: "smoke (quelques centimes) | standard (~3 $ avec 2 références) | full"
+        default: smoke
+        type: choice
+        options: [smoke, standard, full]
+      baselines:
+        description: "références : familles (claude-petit,claude-grand,gpt-petit,gemini-flash) ou identifiants exacts"
+        default: "claude-petit,claude-grand"
+      budget:
+        description: "plafond de dépense en $ (arrêt net)"
+        default: "5"
+      run_name:
+        description: "nom du run (le réutiliser pour reprendre) ; vide = identifiant du workflow"
+        default: ""
+permissions:
+  contents: read
+jobs:
+  lab:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    env:
+      OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+      RUN: ${{ inputs.run_name != '' && inputs.run_name || github.run_id }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Préalable — clé, schéma de réponse, coût (échec fermé)
+        run: |
+          test -n "$OPENROUTER_API_KEY" || { echo "::error::secret OPENROUTER_API_KEY absent (Settings > Secrets and variables > Actions)"; exit 1; }
+          python -m jev_lab ping
+      - name: Estimation du coût
+        run: python -m jev_lab plan --suite "${{ inputs.suite }}" --baselines "${{ inputs.baselines }}" --budget "${{ inputs.budget }}"
+      - name: Étude
+        run: python -m jev_lab run --suite "${{ inputs.suite }}" --baselines "${{ inputs.baselines }}" --budget "${{ inputs.budget }}" --run "$RUN" --yes
+      - name: Rapport dans le résumé du job
+        if: always()
+        run: |
+          if [ -f "jev_lab/runs/$RUN/REPORT.md" ]; then cat "jev_lab/runs/$RUN/REPORT.md" >> "$GITHUB_STEP_SUMMARY"; fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: jev-lab-${{ env.RUN }}
+          path: jev_lab/runs/${{ env.RUN }}
+          retention-days: 90
