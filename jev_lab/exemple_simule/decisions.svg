@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 482" font-family="sans-serif" font-size="11"><rect width="780" height="482" fill="white"/>
+<text x="390.0" y="16" text-anchor="middle" font-weight="bold">Erreurs de décision (intervalle de confiance à 95 %) — plus bas = mieux</text>
+<line x1="250.0" y1="26" x2="250.0" y2="474" stroke="#eee"/><text x="250.0" y="482" text-anchor="middle">0%</text>
+<line x1="352.0" y1="26" x2="352.0" y2="474" stroke="#eee"/><text x="352.0" y="482" text-anchor="middle">10%</text>
+<line x1="454.0" y1="26" x2="454.0" y2="474" stroke="#eee"/><text x="454.0" y="482" text-anchor="middle">20%</text>
+<line x1="556.0" y1="26" x2="556.0" y2="474" stroke="#eee"/><text x="556.0" y="482" text-anchor="middle">30%</text>
+<line x1="658.0" y1="26" x2="658.0" y2="474" stroke="#eee"/><text x="658.0" y="482" text-anchor="middle">40%</text>
+<line x1="760.0" y1="26" x2="760.0" y2="474" stroke="#eee"/><text x="760.0" y="482" text-anchor="middle">50%</text>
+<text x="8" y="42" font-weight="bold">Sens du vote (bouton « Pour …  — fausses acceptations (un</text>
+<line x1="270.4" y1="30" x2="270.4" y2="89" stroke="#f59e0b" stroke-width="2" stroke-dasharray="4"><title>limite 2%</title></line>
+<line x1="250.0" y1="38" x2="275.3060676200711" y2="38" stroke="#2563eb" stroke-width="2"/>
+<circle cx="250.0" cy="38" r="4" fill="#2563eb"/>
+<text x="774" y="42" text-anchor="end" fill="#2563eb" font-size="10">jev</text>
+<line x1="250.0" y1="55" x2="275.3060676200711" y2="55" stroke="#dc2626" stroke-width="2"/>
+<circle cx="250.0" cy="55" r="4" fill="#dc2626"/>
+<text x="774" y="59" text-anchor="end" fill="#dc2626" font-size="10">claude-grand</text>
+<line x1="253.7125313410978" y1="72" x2="297.94304442148797" y2="72" stroke="#16a34a" stroke-width="2"/>
+<circle cx="263.50993377483445" cy="72" r="4" fill="#16a34a"/>
+<text x="774" y="76" text-anchor="end" fill="#16a34a" font-size="10">claude-petit</text>
+<text x="8" y="115" font-weight="bold">Sens du vote (bouton « Pour …  — faux rejets (une bonne e</text>
+<line x1="505.0" y1="103" x2="505.0" y2="162" stroke="#f59e0b" stroke-width="2" stroke-dasharray="4"><title>limite 25%</title></line>
+<line x1="307.15285698147966" y1="111" x2="402.59976763619414" y2="111" stroke="#2563eb" stroke-width="2"/>
+<circle cx="344.56953642384104" cy="111" r="4" fill="#2563eb"/>
+<line x1="282.3038047425763" y1="128" x2="361.57504951881083" y2="128" stroke="#dc2626" stroke-width="2"/>
+<circle cx="310.79470198675494" cy="128" r="4" fill="#dc2626"/>
+<line x1="355.7657095977935" y1="145" x2="472.5597016611963" y2="145" stroke="#16a34a" stroke-width="2"/>
+<circle cx="405.36423841059604" cy="145" r="4" fill="#16a34a"/>
+<text x="8" y="188" font-weight="bold">Neutralité (note d'orientation — fausses acceptations (un</text>
+<line x1="352.0" y1="176" x2="352.0" y2="235" stroke="#f59e0b" stroke-width="2" stroke-dasharray="4"><title>limite 10%</title></line>
+<line x1="258.7087805007612" y1="184" x2="322.3498621524345" y2="184" stroke="#2563eb" stroke-width="2"/>
+<circle cx="275.5" cy="184" r="4" fill="#2563eb"/>
+<line x1="254.67411791197443" y1="201" x2="309.9118693491721" y2="201" stroke="#dc2626" stroke-width="2"/>
+<circle cx="267.0" cy="201" r="4" fill="#dc2626"/>
+<line x1="268.2849815559546" y1="218" x2="345.7189718813395" y2="218" stroke="#16a34a" stroke-width="2"/>
+<circle cx="292.5" cy="218" r="4" fill="#16a34a"/>
+<text x="8" y="261" font-weight="bold">Neutralité (note d'orientation — faux rejets (une bonne e</text>
+<line x1="505.0" y1="249" x2="505.0" y2="308" stroke="#f59e0b" stroke-width="2" stroke-dasharray="4"><title>limite 25%</title></line>
+<line x1="259.3729090199532" y1="257" x2="365.9126727950388" y2="257" stroke="#2563eb" stroke-width="2"/>
+<circle cx="284.0" cy="257" r="4" fill="#2563eb"/>
+<line x1="276.75283962606187" y1="274" x2="412.44091491643076" y2="274" stroke="#dc2626" stroke-width="2"/>
+<circle cx="318.0" cy="274" r="4" fill="#dc2626"/>
+<line x1="276.75283962606187" y1="291" x2="412.44091491643076" y2="291" stroke="#16a34a" stroke-width="2"/>
+<circle cx="318.0" cy="291" r="4" fill="#16a34a"/>
+<text x="8" y="334" font-weight="bold">Pertinence des arguments pour  — fausses acceptations (un</text>
+<line x1="352.0" y1="322" x2="352.0" y2="381" stroke="#f59e0b" stroke-width="2" stroke-dasharray="4"><title>limite 10%</title></line>
+<line x1="262.16038511874444" y1="330" x2="314.63633553642825" y2="330" stroke="#2563eb" stroke-width="2"/>
+<circle cx="278.3333333333333" cy="330" r="4" fill="#2563eb"/>
+<line x1="269.34231155846584" y1="347" x2="329.64742743423227" y2="347" stroke="#dc2626" stroke-width="2"/>
+<circle cx="289.6666666666667" cy="347" r="4" fill="#dc2626"/>
+<line x1="265.67187305625856" y1="364" x2="322.2213567676768" y2="364" stroke="#16a34a" stroke-width="2"/>
+<circle cx="284.0" cy="364" r="4" fill="#16a34a"/>
+<text x="8" y="407" font-weight="bold">Pertinence des arguments pour  — faux rejets (une bonne e</text>
+<line x1="505.0" y1="395" x2="505.0" y2="454" stroke="#f59e0b" stroke-width="2" stroke-dasharray="4"><title>limite 25%</title></line>
+<line x1="749.9771183121122" y1="403" x2="760.0" y2="403" stroke="#2563eb" stroke-width="2"/>
+<circle cx="760.0" cy="403" r="4" fill="#2563eb"/>
+<line x1="683.4154883996113" y1="420" x2="760.0" y2="420" stroke="#dc2626" stroke-width="2"/>
+<circle cx="760.0" cy="420" r="4" fill="#dc2626"/>
+<line x1="760.0" y1="437" x2="760.0" y2="437" stroke="#16a34a" stroke-width="2"/>
+<circle cx="760.0" cy="437" r="4" fill="#16a34a"/>
+</svg>
