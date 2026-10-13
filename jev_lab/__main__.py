@@ -22,11 +22,17 @@ def need_key():
 
 
 def build_lab(a, store, mock=False, variants_path=None):
-    cat = CL.catalog()
+    wanted = [x for x in (a.baselines or "").split(",") if x]
+    cat = CL.catalog() if any(not w.startswith("cli:") for w in wanted) else []
     prices = {m["id"]: (m["prompt"], m["completion"]) for m in cat}
     baselines, resolved = [], {}
-    fams = CL.resolve_patterns(cat)
+    fams = CL.resolve_patterns(cat) if cat else {}
     for w in [x for x in (a.baselines or "").split(",") if x]:
+        if w.startswith("cli:"):                # Claude via `claude -p` (abonnement), jamais via OpenRouter
+            c = CL.CliClient(w[4:])
+            resolved[c.name] = c.model
+            baselines.append(c)
+            continue
         if "/" in w:
             mid, label = w, w
         elif w in fams:
@@ -40,7 +46,7 @@ def build_lab(a, store, mock=False, variants_path=None):
     # le plafond vaut pour le RUN ENTIER : ce qui a déjà été dépensé dans les sessions précédentes est déduit
     spent0 = sum((r.get("usage") or {}).get("cost") or 0.0 for r in store.read())
     lab = R.Lab(store, B.Budget(a.budget, spent0), CL.JevClient(a.jev_model, mock_gold=mock), baselines, workers=a.workers, mock=mock, prices=prices,
-                variants_path=variants_path)
+                variants_path=variants_path, claude_only=getattr(a, "claude_only", False))
     return lab, resolved
 
 
@@ -171,7 +177,7 @@ def cmd_plan(a):
 
 
 def cmd_run(a, mock=False, variants_path=None):
-    if not mock:
+    if not mock and not a.claude_only:
         need_key()
     run_dir = os.path.join(C.RUNS, a.run or time.strftime("%Y%m%d-%H%M%S"))
     st = ST.RunStore(run_dir)
@@ -182,14 +188,17 @@ def cmd_run(a, mock=False, variants_path=None):
         sys.exit("L'estimation dépasse sensiblement le plafond : réduire la suite/les références, relever --budget, ou --yes pour s'arrêter au plafond.")
     prev = st.meta()
     kw = {}
-    if "credits_start" not in prev:           # le point de départ des crédits n'est fixé qu'une fois : une reprise ne le réécrit pas
+    if "credits_start" not in prev and not a.claude_only:           # le point de départ des crédits n'est fixé qu'une fois : une reprise ne le réécrit pas
         kw["credits_start"] = None if mock else CL.credits()
     from pipeline import classify, config as HC
+    resolved = {**(prev.get("baselines") or {}), **resolved}        # la passe Claude (locale) s'ajoute à celle de Jev (Actions)
+    if a.claude_only:
+        kw["claude_pass"] = True
     st.write_meta(suite=a.suite, jev_model=lab.jev.model, baselines=resolved, budget=a.budget, mock=mock, seed=lab.seed, sessions=prev.get("sessions", 0) + 1,
                   robust_baselines=a.robust_baselines, **kw, thresholds=dict(classify.THRESHOLDS, neutralite_max=HC.NEUTRALITY_MAX),
                   n_items={sc: len(lab.items(sc)) for sc in R.SUITES[a.suite]["scenarios"]})
     res = lab.run(a.suite, a.robust_baselines)
-    if not mock:
+    if not mock and not a.claude_only:
         st.write_meta(credits_end=CL.credits())
     print(json.dumps({k: v for k, v in res.items() if k != "throughput"}, ensure_ascii=False))
     cmd_report(argparse.Namespace(run=run_dir))
@@ -236,7 +245,7 @@ def main(argv=None):
     sub = ap.add_subparsers(dest="cmd", required=True)
 
     def common(p):
-        p.add_argument("--baselines", default="", help="références : familles (claude-petit,claude-grand,gpt-petit,gemini-flash) ou identifiants exacts, séparés par des virgules")
+        p.add_argument("--baselines", default="", help="références : « cli:claude-sonnet-5-5 » (Claude via `claude -p`, abonnement) ou familles OpenRouter (claude-petit,claude-grand,gpt-petit,gemini-flash) ou identifiants exacts, séparés par des virgules")
         p.add_argument("--budget", type=float, default=5.0, help="plafond de dépense en $ pour le run entier (arrêt net)")
         p.add_argument("--workers", type=int, default=4)
         p.add_argument("--jev-model", default=C.JEV_MODEL)
@@ -253,6 +262,7 @@ def main(argv=None):
         if name == "run":
             p.add_argument("--run", default=None, help="nom du dossier de run (le réutiliser pour reprendre)")
             p.add_argument("--yes", action="store_true")
+            p.add_argument("--claude-only", action="store_true", help="ne rejouer que les références (`cli:...`) sur un dossier de run déjà rempli par Jev : aucune clé OpenRouter, aucun appel Jev")
     p = sub.add_parser("report"); p.add_argument("run")
     p = sub.add_parser("inspect"); p.add_argument("run"); p.add_argument("--scenario"); p.add_argument("--system"); p.add_argument("--errors", action="store_true")
     p.add_argument("--failed", action="store_true"); p.add_argument("--limit", type=int, default=30)

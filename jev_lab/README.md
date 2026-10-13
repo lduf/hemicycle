@@ -30,18 +30,20 @@ Les chiffres ne disent **rien** de Jev ; ils montrent la forme du rapport, les v
 export OPENROUTER_API_KEY=...                          # jamais dans un fichier du dépôt
 python -m pipeline.ingest                              # titres officiels des scrutins (jeu d'essai du sens du vote)
 python -m jev_lab items                                # le jeu d'essai tiré du dépôt, sans appel
-python -m jev_lab ping --baselines claude-petit        # 1 appel : clé, format de réponse lu par le pipeline. À lancer en premier.
+python -m jev_lab ping                                 # 1 appel : clé, format de réponse lu par le pipeline. À lancer en premier.
 python -m jev_lab models                               # catalogue OpenRouter, modèles de comparaison résolus
 python -m jev_lab gen-variants --gen-model claude-grand --budget 2    # réécrit les fiches pour tester la détection de biais (une fois)
 python -m jev_lab show-variants                        # À RELIRE : la vérité terrain de la neutralité en dépend ; puis git add content/bench
-python -m jev_lab plan --suite standard --baselines claude-petit,claude-grand      # coût estimé, rien n'est dépensé
-python -m jev_lab run  --suite smoke    --baselines claude-petit --budget 1        # quelques centimes : vérifie toute la chaîne
-python -m jev_lab run  --suite standard --baselines claude-petit,claude-grand --budget 6 --run etude1
+python -m jev_lab plan --suite standard                # coût estimé, rien n'est dépensé
+python -m jev_lab run  --suite smoke    --budget 1                # quelques centimes : vérifie toute la chaîne
+python -m jev_lab run  --suite standard --budget 6 --run etude1       # Jev seul (OpenRouter)
+# puis la référence Claude, par `claude -p` (abonnement, rien de facturé), sur le MÊME dossier de run (journal du workflow téléchargé dans jev_lab/runs/etude1/) :
+python -m jev_lab run  --suite standard --baselines cli:claude-sonnet-5-5 --claude-only --run etude1 --yes
 python -m jev_lab report etude1                        # (re)génère jev_lab/runs/etude1/REPORT.md depuis le journal brut
 ```
 
 Une exécution interrompue (réseau, plafond) **se reprend** : même commande, même `--run` (un appel réussi n'est jamais rejoué). Le plafond vaut pour le run **entier**.
-Dans GitHub : *Actions → jev-lab → Run workflow* (secret `OPENROUTER_API_KEY` requis ; rapport en résumé de job, journal brut en artefact). La latence mesurée dépend alors du runner : lancer aussi en local.
+Dans GitHub (Jev seul) : *Actions → jev-lab → Run workflow* (secret `OPENROUTER_API_KEY` requis ; rapport en résumé de job, journal brut en artefact). La latence mesurée dépend alors du runner : lancer aussi en local.
 
 ## Rendre la mesure plus puissante : étiquettes humaines
 
