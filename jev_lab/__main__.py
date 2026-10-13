@@ -139,9 +139,9 @@ def cmd_demo(a):
     from . import mock
     os.environ["JEVLAB_FIXTURES"] = "1"
     os.environ.setdefault("OPENROUTER_API_KEY", "demo-key-not-real")
-    srv, S, url = mock.start(jev_acc=0.9, chat_acc={"claude-opus": .95, "claude-haiku": .85, "default": .88}, latency=(0.004, 0.03))
+    srv, S, url = mock.start(scenario=True, max_inflight=12)
     C.set_base(url)
-    a.suite, a.baselines, a.budget, a.run, a.yes, a.robust_baselines = "smoke", "claude-petit,claude-grand", 5.0, "demo", True, True
+    a.baselines, a.budget, a.run, a.yes, a.robust_baselines = "claude-petit,claude-grand", 50.0, "demo", True, True
     import shutil
     shutil.rmtree(os.path.join(C.RUNS, "demo"), ignore_errors=True)
     cmd_run(a, mock=True)
@@ -161,6 +161,8 @@ def main(argv=None):
     for name in ("ping", "models", "plan", "run", "demo"):
         p = sub.add_parser(name)
         common(p)
+        if name == "demo":
+            p.add_argument("--suite", choices=list(R.SUITES), default="standard")
         if name in ("plan", "run"):
             p.add_argument("--suite", choices=list(R.SUITES), default="smoke")
         if name == "run":

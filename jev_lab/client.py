@@ -80,6 +80,14 @@ def _record(base, res, parse_usage=True):
     return rec
 
 
+def _mock_headers(base, gold):
+    """Uniquement pour le serveur factice : vérité terrain et identité de l'exemple (jamais envoyés à l'API réelle)."""
+    h = {"X-Mock-Meta": json.dumps({"task": base.get("task"), "item": base.get("item"), "variant": base.get("variant"), "rep": base.get("rep")})}
+    if gold is not None:
+        h["X-Mock-Gold"] = json.dumps(gold)
+    return h
+
+
 class JevClient:
     kind = "jev"
 
@@ -91,7 +99,7 @@ class JevClient:
 
     def call(self, base, state, questions, gold=None):
         body = {"model": self.model, "state": state, "questions": questions}
-        extra = {"X-Mock-Gold": json.dumps(gold)} if (self.mock_gold and gold is not None) else None
+        extra = _mock_headers(base, gold) if self.mock_gold else None
         res = http_json(C.JEV_URL, body, self.timeout, extra_headers=extra)
         rec = _record({**base, "system": self.name, "request": body}, res)
         return rec
@@ -114,7 +122,7 @@ class ChatClient:
         # usage.include : demande à OpenRouter de renvoyer le coût réel (sinon le garde-fou de budget serait aveugle)
         body = {"model": self.model, "temperature": 0, "max_tokens": self.max_tokens, "usage": {"include": True},
                 "messages": [{"role": "system", "content": SYS_PROMPT}, {"role": "user", "content": prompt}]}
-        extra = {"X-Mock-Gold": json.dumps(gold)} if (self.mock_gold and gold is not None) else None
+        extra = _mock_headers(base, gold) if self.mock_gold else None
         res = http_json(C.CHAT_URL, body, self.timeout, extra_headers=extra)
         rec = _record({**base, "system": self.name, "request": body}, res)
         if res["ok"]:
