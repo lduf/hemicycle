@@ -226,3 +226,164 @@ class TestChaineComplete(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+from jev_lab import datasets as D, store as STO
+
+
+def _row(task, item, ok=True, correct=True, system="jev", experiment="quality", gold="sports", pred=None, **kw):
+    r = {"experiment": experiment, "task": task, "item": item, "system": system, "model": "m", "variant": "base", "rep": 0, "gold": gold,
+         "primitive": "choice", "ok": ok, "status": 200 if ok else 429, "wall_s": .1, "total_s": .1, "n_attempts": 1, "attempts": [],
+         "usage": {"input_tokens": 100, "output_tokens": 10, "cost": 4.2e-6}}
+    if ok:
+        ch = pred or (gold if correct else "world")
+        r["response"] = {"answers": {"q": {"type": "choice", "choice": ch, "confidence": .9, "probabilities": {}}}}
+        r["text"] = json.dumps({"choice": ch, "confidence": .9})        # lu pour les systèmes de type « chat »
+    r.update(kw)
+    return r
+
+
+class TestCorrectionsRelecture(unittest.TestCase):
+    def test_doublons_apres_reprise_ne_comptent_qu_une_fois(self):
+        recs = [_row("ag_news", f"i{k}") for k in range(10)]
+        recs += [_row("ag_news", "i3", ok=False), _row("ag_news", "i3", ok=True)]       # échec puis réussite du même exemple
+        rows = A.tidy(recs)
+        self.assertEqual(len(rows), 10)
+        c = A.quality(rows)["cells"][("ag_news", "jev")]
+        self.assertEqual((c["n"], c["acc"]), (10, 1.0))
+
+    def test_le_reussi_l_emporte_meme_s_il_est_ecrit_avant_l_echec(self):
+        recs = [_row("ag_news", "i1", ok=True), _row("ag_news", "i1", ok=False)]
+        self.assertTrue(A.tidy(recs)[0]["ok"])
+
+    def test_reponses_invalides_penalisees_pas_exclues(self):
+        t = T.TASKS["sst5"]
+        good = [{**_row("sst5", f"g{k}", gold=2, primitive="score"), "response": {"answers": {"q": {"score": 2.0, "confidence": .9, "probabilities": {"2": .9}}}}} for k in range(5)]
+        bad = [{**_row("sst5", f"b{k}", gold=2, primitive="score"), "response": {"answers": {"q": {"oops": 1}}}} for k in range(5)]
+        c = A.quality(A.tidy(good + bad))["cells"][("sst5", "jev")]
+        self.assertAlmostEqual(c["mae"], (0 * 5 + (len(t.options) - 1) * 5) / 10)      # les invalides reçoivent l'erreur maximale
+        self.assertAlmostEqual(c["valid_rate"], 0.5)
+
+    def test_noul_invalide_vaut_un_demi_pour_l_auc(self):
+        mk = lambda i, g, p: {**_row("sst2", i, gold=g, primitive="noul"), "response": {"answers": {"q": ({"noul": p} if p is not None else {})}}}
+        rows = A.tidy([mk("a", True, .9), mk("b", False, .1), mk("c", True, None), mk("d", False, None)])
+        c = A.quality(rows)["cells"][("sst2", "jev")]
+        self.assertAlmostEqual(c["brier"], (0.01 + 0.01 + 0.25 + 0.25) / 4)
+
+    def test_etiquette_legerement_inferieur_n_est_jamais_recommandee(self):
+        # IC de l'écart entièrement négatif mais dans la marge : H1 est réfutée (borne haute < 0)
+        n = 800
+        jev = [_row("ag_news", f"i{k}", correct=(k % 100 != 0)) for k in range(n)]
+        ref = [_row("ag_news", f"i{k}", system="ref", correct=True) for k in range(n)]
+        for r in ref:
+            r["usage"]["cost"] = 1e-3
+        Q = A.quality(A.tidy(jev + ref))
+        p = Q["pairs"][0]
+        self.assertLess(p["hi"], 0)
+        self.assertTrue(p["label"].startswith("légèrement inférieur") or p["label"].startswith("inférieur"), p["label"])
+        vd = A.verdict(Q, {"pooled": None}, {"serial": {}}, {}, {}, {"cells": {}}, {"noise": [], "shuffle": []})
+        self.assertFalse(vd["par_tache"]["ag_news"][0]["recommande"])
+
+    def test_cout_compare_sur_les_memes_exemples(self):
+        jev = [_row("ag_news", f"i{k}") for k in range(20)]
+        ref = [_row("ag_news", f"i{k}", system="ref") for k in range(10)]
+        for r in ref:
+            r["usage"]["cost"] = 42e-6
+        p = A.quality(A.tidy(jev + ref))["pairs"][0]
+        self.assertAlmostEqual(p["cost_ratio"], 10.0)
+
+    def test_macro_f1_penalise_les_fausses_alarmes_sur_classe_absente(self):
+        a = M.macro_f1(["x", "x"], ["x", "x"])
+        b = M.macro_f1(["x", "ghost"], ["x", "x"])
+        self.assertLess(b, a)
+
+    def test_wilson_et_bootstrap_par_grappes(self):
+        lo, hi = M.wilson(1, 60)
+        self.assertLess(lo, 1 / 60)
+        self.assertGreater(hi, 1 / 60)
+        self.assertTrue(M.bootstrap_clusters([[1, 1], [2, 2], [3, 3], [4, 4]], M.mean)[0] <= 2.5)
+
+    def test_budget_est_cumule_entre_sessions_et_reserve_avant_appel(self):
+        b = B.Budget(1.0, spent0=0.9)
+        with self.assertRaises(B.BudgetExceeded):
+            b.acquire(0.2)
+        b.acquire(0.05)
+        with self.assertRaises(B.BudgetExceeded):
+            b.acquire(0.06)                      # 0,9 + 0,05 déjà réservé + 0,06 > 1
+        b.release(0.05)
+        b.acquire(0.06)
+
+    def test_cle_de_reprise_inclut_le_modele(self):
+        a = STO.rec_key({"experiment": "q", "task": "t", "item": "1", "system": "jev", "model": "typesafe/jev-1.13", "variant": "base", "rep": 0})
+        b = STO.rec_key({"experiment": "q", "task": "t", "item": "1", "system": "jev", "model": "typesafe/jev-1.14", "variant": "base", "rep": 0})
+        self.assertNotEqual(a, b)
+
+    def test_equilibrage_reel_ou_erreur(self):
+        rows_ok = [{"t": str(i), "label": str(i % 2)} for i in range(400)]
+        old = D.pool
+        try:
+            D.pool = lambda *a, **k: rows_ok
+            got = D.sample("d", "c", "s", 100, 1, label_key="label", balanced=True)
+            self.assertEqual(sum(1 for r in got if r["label"] == "1"), 50)
+            D.pool = lambda *a, **k: [{"t": str(i), "label": "1" if i < 5 else "0"} for i in range(400)]     # 1,25 % de positifs
+            with self.assertRaises(RuntimeError):
+                D.sample("d", "c", "s", 100, 1, label_key="label", balanced=True)
+        finally:
+            D.pool = old
+
+    def test_lecture_robuste_des_reponses_des_references(self):
+        t = T.TASKS["comptage"]
+        self.assertEqual(T.parse_chat(t, '{"choice": 3, "confidence": 0.5}')["pred"], "3")             # entier au lieu de la clé "3"
+        self.assertEqual(T.parse_chat(T.TASKS["ag_news"], '{"choice": " Sports ", "confidence": 0.5}')["pred"], "sports")
+        self.assertEqual(T.parse_chat(T.TASKS["ag_news"], 'Exemple {oui}. Réponse : {"choice": "world", "confidence": 0.6}')["pred"], "world")
+        self.assertIsNone(T.parse_chat(T.TASKS["ag_news"], '{"choice": "n_importe_quoi"}')["pred"])
+        self.assertIsNone(T.parse_jev(T.TASKS["sst2"], {"noul": "abc"})["pred"])                       # pas de plantage
+
+    def test_reponse_vide_ou_tronquee_est_un_echec_d_appel(self):
+        for body_ch in ({"message": {"content": ""}, "finish_reason": "stop"}, {"message": {"content": '{"choice":'}, "finish_reason": "length"}):
+            old = CL.http_json
+            CL.http_json = lambda *a, **k: {"ok": True, "status": 200, "wall_s": .1, "total_s": .1, "attempts": [], "headers": {},
+                                            "body": {"choices": [body_ch], "usage": {"prompt_tokens": 5, "completion_tokens": 1000}}}
+            try:
+                rec = CL.ChatClient("m").call({"experiment": "x", "task": "ag_news", "item": "1", "rep": 0, "variant": "base"}, "p")
+            finally:
+                CL.http_json = old
+            self.assertFalse(rec["ok"])
+            self.assertIn("vide ou tronqué", rec["error"])
+
+    def test_meta_restaure_les_options_pour_un_rapport_relu(self):
+        t = T.TASKS["banking77"]
+        saved = t.options
+        try:
+            t.options = {}
+            A.apply_meta({"task_options": {"banking77": {"a": "A", "b": "B"}}})
+            self.assertEqual(set(t.options), {"a", "b"})
+            self.assertIsNone(T.parse_chat(t, '{"choice": "garbage"}')["pred"])
+        finally:
+            t.options = saved
+
+    def test_analyse_tolere_des_reponses_multi_questions_mal_formees(self):
+        bad = {**_row("sst2", "x", primitive="noul", experiment="multi", gold={"pos": True, "neg": False}), "variant": "pair_noul",
+               "response": {"answers": {"pos": {"noul": .9}}}}
+        out = A.multi(A.tidy([bad]))
+        self.assertEqual(out["malformed"], 1)
+
+    def test_connexion_persistante_et_reprise_apres_fermeture(self):
+        os.environ["OPENROUTER_API_KEY"] = "k"
+        srv, S, url = mock.start()
+        old = C.BASE
+        C.set_base(url)
+        try:
+            body = {"model": "m", "state": {"article": "a"}, "questions": {"q": T.spec(T.TASKS["ag_news"])}}
+            r1 = CL.http_json(C.JEV_URL, body)
+            conn = list(CL._tls.pool.values())[0]
+            r2 = CL.http_json(C.JEV_URL, body)
+            self.assertTrue(r1["ok"] and r2["ok"])
+            self.assertIs(list(CL._tls.pool.values())[0], conn)          # même connexion réutilisée
+            conn.close()                                               # le serveur « ferme » entre deux appels
+            r3 = CL.http_json(C.JEV_URL, body)
+            self.assertTrue(r3["ok"])
+            self.assertEqual(len(r3["attempts"]), 1)                   # reconnexion transparente, pas comptée comme échec
+        finally:
+            srv.shutdown()
+            C.set_base(old)

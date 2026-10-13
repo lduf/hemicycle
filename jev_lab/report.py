@@ -130,7 +130,11 @@ def build(R, out_dir, store=None):
         w(f"| Version de Jev effectivement servie | {', '.join(rm)} |")
     if meta.get("baselines"):
         w("| Modèles de comparaison (figés) | " + ", ".join(f"{k} = `{v}`" for k, v in meta["baselines"].items()) + " |")
-    w(f"| Appels enregistrés | {R['n_calls']} |")
+    if meta.get("sessions", 1) > 1:
+        w(f"| Sessions (reprises) | {meta['sessions']} — la réconciliation des crédits n'est alors plus interprétable |")
+    if meta.get("dropped") and any(meta["dropped"].values()):
+        w("| Exemples écartés (mal formés ou étiquette hors options) | " + ", ".join(f"{k}: {v}" for k, v in meta["dropped"].items() if v) + " |")
+    w(f"| Appels enregistrés | {R['n_calls']} (après déduplication des reprises) |")
     w(f"| Dépense rapportée | {usd(R['spend'])}  (" + ", ".join(f"{k}: {usd(v)}" for k, v in sorted(R['by_system_spend'].items())) + ") |\n")
 
     # ---- verdict en tête
@@ -152,7 +156,8 @@ def build(R, out_dir, store=None):
     # ---- qualité
     w("## 2. Qualité par tâche\n")
     w("![précision](accuracy.svg)\n")
-    w("| Tâche | Système | n | Réponses exploitables | Précision [IC 95 %] | Autre mesure | Coût / 1 000 appels | Coût par bonne réponse |\n|---|---|---|---|---|---|---|---|")
+    w("*Une réponse inexploitable ou un appel échoué compte comme **fausse** (jamais exclue). Les cellules ci-dessous ne sont pas appariées (Jev : plus d'exemples que les références coûteuses) : pour comparer, lire les comparaisons appariées plus bas.*\n")
+    w("| Tâche | Système | n | Réponses exploitables | Appels échoués | Précision [IC 95 %] | Autre mesure | Coût / 1 000 appels | Coût par bonne réponse |\n|---|---|---|---|---|---|---|---|---|")
     for task in Q["tasks"]:
         for s in Q["systems"]:
             c = Q["cells"].get((task, s))
@@ -160,7 +165,7 @@ def build(R, out_dir, store=None):
                 continue
             extra = (f"F1 macro {f(c.get('macro_f1'), 3)}" if "macro_f1" in c else f"AUC {f(c.get('auc'), 3)} ; précision équilibrée (seuil réglé sur l'autre moitié) {pc(c.get('bal_acc_2fold'))}" if "auc" in c
                      else f"MAE {f(c.get('mae'), 2)} niveau ; à ±1 : {pc(c.get('within1'))} ; ρ {f(c.get('spearman'), 2)}" if "mae" in c else "")
-            w(f"| {T.TASKS[task].title} | {s} | {c['n']} | {pc(c['valid_rate'])} | {pc(c['acc'])} {ci(c['acc_ci'])} | {extra} | {usd(c['cost_1k'])} | {usd(c['cost_per_correct'])} |")
+            w(f"| {T.TASKS[task].title} | {s} | {c['n']} | {pc(c['valid_rate'])} | {c['errors']} | {pc(c['acc'])} {ci(c['acc_ci'])} | {extra} | {usd(c['cost_1k'])} | {usd(c['cost_per_correct'])} |")
     if Q["pairs"]:
         w("\n### Comparaisons appariées (mêmes exemples)\n")
         w("| Tâche | Réf. | n | Jev | Réf. | Écart [IC 95 %] | p (McNemar) | p (Holm) | Lecture |\n|---|---|---|---|---|---|---|---|---|")
@@ -189,10 +194,18 @@ def build(R, out_dir, store=None):
 
     # ---- latence
     w("## 4. Latence\n")
-    w("Mesure côté client, appels **en série** (un à la fois), systèmes entrelacés, après échauffement. `wall` = tentative réussie ; les attentes de réessai sont comptées à part.\n")
+    w("Mesure côté client, appels **en série** (un à la fois), connexion persistante (pas de DNS/TLS à chaque appel), systèmes entrelacés, après échauffement. "
+      "`wall` = tentative réussie ; les attentes de réessai sont comptées à part. Intervalles : bootstrap **par exemple** (les répétitions d'un même exemple ne sont pas indépendantes). "
+      "Le p50 « poolé » mélange plusieurs tâches de tailles différentes : voir le détail par tâche. Des appels identiques répétés peuvent être mis en cache côté fournisseur (non vérifiable d'ici).\n")
     w("| Système | n | p50 | p90 | p95 | p99 | IC p50 | IC p95 | Échecs |\n|---|---|---|---|---|---|---|---|---|")
     for s, d in lat["serial"].items():
         w(f"| {s} | {d['n']} | {f(d['p50'])} s | {f(d['p90'])} s | {f(d['p95'])} s | {f(d['p99'])} s | {('[' + f(d['p50_ci'][0]) + ' ; ' + f(d['p50_ci'][1]) + ']') if 'p50_ci' in d else ''} | {('[' + f(d['p95_ci'][0]) + ' ; ' + f(d['p95_ci'][1]) + ']') if 'p95_ci' in d else ''} | {d['fail']} |")
+    if lat.get("by_task"):
+        systems = sorted({s for d in lat["by_task"].values() for s in d})
+        w("\n**p50 par tâche**\n")
+        w("| Tâche | " + " | ".join(systems) + " |\n|---|" + "---|" * len(systems))
+        for t, d in lat["by_task"].items():
+            w(f"| {T.TASKS[t].title} | " + " | ".join(f"{f(d[s])} s" if s in d else "–" for s in systems) + " |")
     w(f"\nRevendication de l'éditeur (blog, tickets courts) : p50 {C.CLAIMS['latence_p50_s'][0]} s, p95 {C.CLAIMS['latence_p95_s'][0]} s.\n")
     if R.get("latency_samples"):
         w("![latence](latency.svg)\n")
@@ -230,7 +243,8 @@ def build(R, out_dir, store=None):
         w("")
     if pr.get("reconcile"):
         rc = pr["reconcile"]
-        w(f"**Réconciliation avec le compte OpenRouter** : consommation facturée {usd(rc['billed'])} contre {usd(rc['reported'])} rapportée par les réponses (écart {pc(rc['gap'])}).\n")
+        w(f"**Réconciliation avec le compte OpenRouter** : consommation facturée {usd(rc['billed'])} contre {usd(rc['reported'])} rapportée par les réponses (écart {pc(rc['gap'])})."
+          + ("" if rc.get("reliable", True) else " ⚠ Run repris en plusieurs sessions : cet écart n'est pas interprétable.") + "\n")
     w("**Coût comparé** (par 1 000 appels, voir tableau de la section 2) : le coût par bonne réponse est la métrique à retenir pour décider.\n")
 
     # ---- robustesse
@@ -259,7 +273,10 @@ def build(R, out_dir, store=None):
     d = R["determinism"]
     w("## 7. Déterminisme\n")
     if d.get("by_task"):
-        w("Même appel répété. L'éditeur annonce des probabilités « légèrement différentes d'une exécution à l'autre ».\n")
+        w("Même appel répété. L'éditeur annonce des probabilités « légèrement différentes d'une exécution à l'autre ». "
+          "« Étiquette change » = au moins une des répétitions donne une autre étiquette que les autres.\n")
+        if d.get("flip") is not None:
+            w(f"**Global** : {pc(d['flip'])} des {d['n_items']} exemples changent d'étiquette [IC 95 % {pc(d['flip_ci'][0])} – {pc(d['flip_ci'][1])}] (seuil du protocole : {pc(P['flip_max_determinisme'], 0)}).\n")
         w("| Tâche | Exemples | Répétitions | Étiquette change | Réponse strictement identique | Écart moyen de probabilité | Écart max |\n|---|---|---|---|---|---|---|")
         for t, x in d["by_task"].items():
             w(f"| {T.TASKS[t].title} | {x['items']} | {f(x['reps'], 1)} | {pc(x['flip'])} | {pc(x['identical'])} | {f(x['spread_mean'])} | {f(x['spread_max'])} |")
@@ -293,7 +310,9 @@ def build(R, out_dir, store=None):
             w(f"- Précision : question à choix unique {pc(mu['one_choice']['acc'])} contre question oui/non seule {pc(mu['pair_noul']['acc_pos'])}.")
         if "alone_vs_joint" in mu:
             x = mu["alone_vs_joint"]
-            w(f"- Une question seule contre la même question avec deux autres dans l'appel : étiquette différente dans {pc(x['flip'])} des cas ({x['n']} exemples) ; coût {usd(x['cost_alone'])} → {usd(x['cost_joint'])} ; latence {f(x['lat_alone'])} s → {f(x['lat_joint'])} s.")
+            w(f"- Une question seule contre la même question avec deux autres dans l'appel : étiquette différente dans {pc(x['flip'])} des cas ({x['n']} exemples) ; coût {usd(x['cost_alone'])} → {usd(x['cost_joint'])} ; latence {f(x['lat_alone'])} s → {f(x['lat_joint'])} s (appels concurrents : indicatif seulement).")
+        if mu.get("malformed"):
+            w(f"- {mu['malformed']} réponse(s) multi-questions mal formée(s), exclue(s) de ces taux.")
         w("")
     else:
         w("Pas de données.\n")

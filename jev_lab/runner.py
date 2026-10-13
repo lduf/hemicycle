@@ -19,7 +19,7 @@ SUITES = {
                   throughput=None, robust=None, determinism=None, limits=dict(n=10, probe=False), multi=None, billing=dict(k=4)),
     "standard": dict(tasks=T.ORDER_CORE, n=200, n_base=100, latency=dict(tasks=["ag_news", "boolq", "vitaminc"], k=30, reps=2),
                      throughput=dict(levels=[1, 2, 4, 8, 16], per=8), robust=dict(tasks=["ag_news", "sst2", "xnli_fr"], n=60),
-                     determinism=dict(tasks=["ag_news", "sst2", "avis_fr"], k=20, reps=5), limits=dict(n=60, probe=True),
+                     determinism=dict(tasks=["ag_news", "sst2", "avis_fr"], k=40, reps=5), limits=dict(n=60, probe=True),
                      multi=dict(n=60), billing=dict(k=10)),
     "full": dict(tasks=T.ORDER_CORE, n=500, n_base=250, latency=dict(tasks=["ag_news", "boolq", "vitaminc", "banking77"], k=60, reps=3),
                  throughput=dict(levels=[1, 2, 4, 8, 16, 32, 64], per=10), robust=dict(tasks=["ag_news", "sst2", "xnli_fr", "vitaminc"], n=150),
@@ -99,7 +99,7 @@ class Lab:
         """Un appel : Jev (state + questions) ou modèle de chat (consigne texte équivalente)."""
         c = self.systems[system]
         sv = variant if (variant == "nodesc" or variant.startswith("shuffle")) else "base"   # les autres variantes ne changent pas la consigne
-        base = {**base, "task": task.id, "primitive": task.primitive, "variant": variant, "gold": base.get("gold", gold)}
+        base = {**base, "task": task.id, "primitive": task.primitive, "variant": variant, "gold": base.get("gold", gold), "model": c.model}
         if c.kind == "jev":
             qs = questions or {"q": spec_override or T.spec(task, sv, self.seed)}
             gold_hdr = base["gold"] if questions else {"q": base["gold"]}
@@ -121,21 +121,29 @@ class Lab:
         def go(j):
             if self.stop.is_set():
                 return
+            est = self.est_cost(j.system, j.est_in, j.est_out)
             try:
-                self.budget.check(reserve=self.est_cost(j.system, j.est_in, j.est_out))
+                self.budget.acquire(est)
             except BudgetExceeded:
                 self.stop.set()
                 with lock:
                     stats["budget_stop"] = True
                 return
-            rec = j.run()
-            u = rec.get("usage") or {}
-            if u.get("cost") is None and rec.get("ok") and j.system != "jev" and u.get("input_tokens") is not None:
-                pin, pout = self.prices.get(self.systems[j.system].model, (0, 0))      # coût non rapporté : estimé au tarif du catalogue
-                u["cost"] = u["input_tokens"] * pin + (u.get("output_tokens") or 0) * pout
-                rec["cost_estimated"] = True
-            self.store.append(rec)
-            self.budget.add(j.system, u.get("cost"))
+            try:
+                rec = j.run()
+                u = rec.get("usage") or {}
+                if u.get("cost") is None and rec.get("ok") and u.get("input_tokens") is not None:
+                    # coût non rapporté : estimé au tarif (catalogue pour les modèles de chat, tarif annoncé pour Jev), et signalé
+                    if j.system == "jev":
+                        u["cost"] = u["input_tokens"] * self.jev_price / 1e6
+                    else:
+                        pin, pout = self.prices.get(self.systems[j.system].model, (0, 0))
+                        u["cost"] = u["input_tokens"] * pin + (u.get("output_tokens") or 0) * pout
+                    rec["cost_estimated"] = True
+                self.store.append(rec)
+                self.budget.add(j.system, u.get("cost"))
+            finally:
+                self.budget.release(est)
             with lock:
                 stats["run" if rec.get("ok") else "failed"] += 1
 
@@ -181,16 +189,18 @@ class Lab:
         for s in self.systems:
             for i, it in enumerate(it0):
                 warm.append(self.job(s, {"experiment": "latency_warmup", "item": it["id"], "rep": i, "gold": it["gold"]}, it["state"], t0))
-        # taille d'entrée : un même exemple, de plus en plus de contexte
+        # taille d'entrée : un même exemple, de plus en plus de contexte ; tailles et systèmes mélangés à chaque répétition
         size = []
         t1 = self.task("ag_news" if "ag_news" in T.TASKS else tasks[0])
         base_it = self.items(t1.id, 3)[0]
-        for tokens in (0, 400, 1600, 6400):
-            st = SY.add_noise(t1, base_it["state"], tokens, "before", self.seed) if tokens else base_it["state"]
-            for r in range(max(2, reps)):
-                for s in self.systems:
-                    size.append(self.job(s, {"experiment": "latency_size", "item": f"{base_it['id']}@{tokens}", "rep": r, "gold": base_it["gold"],
-                                             "size_tokens": tokens}, st, t1, variant=f"size:{tokens}"))
+        sizes = (0, 400, 1600, 6400)
+        for r in range(max(4, reps)):
+            order = [(tok, s) for tok in sizes for s in self.systems]
+            rnd.shuffle(order)
+            for tok, s in order:
+                st = SY.add_noise(t1, base_it["state"], tok, "before", self.seed) if tok else base_it["state"]
+                size.append(self.job(s, {"experiment": "latency_size", "item": f"{base_it['id']}@{tok}", "rep": r, "gold": base_it["gold"],
+                                         "size_tokens": tok}, st, t1, variant=f"size:{tok}"))
         return warm, jobs, size
 
     # ----- E4 : débit et limites de cadence -----
@@ -210,7 +220,8 @@ class Lab:
             row = {"experiment": "throughput_batch", "conc": conc, "n": n, "wall_total_s": round(wall, 3), "ok": stats["run"] + stats["already_done"],
                    "failed": stats["failed"], "n_429": n429, "rps": round(n / wall, 2) if wall else None, "ok_flag": True,
                    "task": "ag_news", "item": f"batch-{conc}", "system": "jev", "variant": f"conc:{conc}", "rep": conc}
-            self.store.append(row)
+            if stats["run"] > 0:                # reprise : un palier déjà mesuré n'est pas re-chronométré
+                self.store.append(row)
             out.append(row)
             if n and stats["failed"] / n > 0.2:
                 break

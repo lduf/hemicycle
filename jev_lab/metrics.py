@@ -22,7 +22,7 @@ def accuracy(correct):
 
 
 def macro_f1(preds, golds):
-    labs = sorted({g for g in golds}, key=str)
+    labs = sorted({g for g in golds} | {p for p in preds if p is not None}, key=str)   # les fausses alarmes sur une classe absente du gold comptent
     f = []
     for l in labs:
         tp = sum(1 for p, g in zip(preds, golds) if p == l and g == l)
@@ -151,7 +151,7 @@ def threshold_two_fold(p, y, seed=1):
     return mean(res), ts
 
 
-def ece_ci(conf, correct, b=300, seed=1):
+def ece_ci(conf, correct, b=1000, seed=1):
     """Intervalle de confiance bootstrap de l'ECE (resélection des couples confiance/réussite)."""
     pairs = [(c, k) for c, k in zip(conf, correct) if c is not None]
     if len(pairs) < 30:
@@ -159,3 +159,25 @@ def ece_ci(conf, correct, b=300, seed=1):
     rnd = random.Random(seed)
     est = sorted(calibration([p[0] for p in s], [p[1] for p in s])[0] for s in ([pairs[rnd.randrange(len(pairs))] for _ in pairs] for _ in range(b)))
     return est[int(.025 * b)], est[int(.975 * b) - 1]
+
+
+def wilson(k, n, z=1.96):
+    """Intervalle de Wilson pour une proportion k/n (valable pour de petits effectifs et des proportions proches de 0)."""
+    if n == 0:
+        return (float("nan"), float("nan"))
+    p = k / n
+    d = 1 + z * z / n
+    c = (p + z * z / (2 * n)) / d
+    h = z * math.sqrt(p * (1 - p) / n + z * z / (4 * n * n)) / d
+    return max(0.0, c - h), min(1.0, c + h)
+
+
+def bootstrap_clusters(groups, stat, b=1000, seed=1, alpha=0.05):
+    """Bootstrap par grappes : on rééchantillonne les exemples (grappes), pas les appels, car les répétitions d'un même exemple ne sont pas indépendantes."""
+    groups = [g for g in groups if g]
+    if len(groups) < 3:
+        return (float("nan"), float("nan"))
+    rnd = random.Random(seed)
+    n = len(groups)
+    est = sorted(stat([x for _ in range(n) for x in groups[rnd.randrange(n)]]) for _ in range(b))
+    return est[int(alpha / 2 * b)], est[int((1 - alpha / 2) * b) - 1]

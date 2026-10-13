@@ -59,6 +59,8 @@ def _tok(obj):
 
 def make_handler(S):
     class H(BaseHTTPRequestHandler):
+        protocol_version = "HTTP/1.1"         # connexions persistantes, comme le vrai service
+
         def log_message(self, *a):
             pass
 
@@ -93,6 +95,7 @@ def make_handler(S):
                 self._send(404, {"error": "?"})
 
         def do_POST(self):
+            body = self._body()                 # toujours lire le corps (connexion persistante)
             with S.lock:
                 S.inflight += 1
                 over = S.inflight > S.max_inflight
@@ -100,7 +103,6 @@ def make_handler(S):
                 if over:
                     self._send(429, {"error": {"message": "rate limited"}}, {"Retry-After": "0"})
                     return
-                body = self._body()
                 gold, meta = self._hdr("X-Mock-Gold"), self._hdr("X-Mock-Meta") or {}
                 fam = "jev" if self.path.endswith("/decisions") else fam_of(body.get("model", ""))
                 if S.scenario:

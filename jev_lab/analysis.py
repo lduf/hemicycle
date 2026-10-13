@@ -3,6 +3,7 @@
 Rien n'est lu dans un résumé intermédiaire : tout est recalculable depuis les réponses brutes."""
 import math
 from . import config as C, tasks as T, synth as SY, metrics as M
+from .store import rec_key
 
 P = C.PREREG
 
@@ -11,10 +12,23 @@ def _dict_gold(g):
     return isinstance(g, dict)
 
 
+def dedupe(recs):
+    """Un seul enregistrement par appel logique.  Après une reprise, un appel échoué puis réussi figure deux fois dans le
+    journal : on garde le réussi (sinon le même exemple compterait deux fois, dont une fois comme faux)."""
+    latest = {}
+    for r in recs:
+        k = ("tb", r.get("conc")) if r.get("experiment") == "throughput_batch" else rec_key(r)
+        prev = latest.get(k)
+        if prev is not None and prev.get("ok") and not r.get("ok"):
+            continue
+        latest[k] = r
+    return list(latest.values())
+
+
 def tidy(recs):
     """Un enregistrement par appel, réponse interprétée.  Les appels multi-questions gardent leurs réponses brutes."""
     out = []
-    for r in recs:
+    for r in dedupe(recs):
         exp = r.get("experiment")
         if exp == "throughput_batch" or not r.get("task") or r["task"] not in T.TASKS:
             continue
@@ -69,18 +83,21 @@ def quality(rows):
         cell["cost_per_correct"] = (cell["cost_call"] * n / max(1, sum(cor))) if cell["cost_call"] == cell["cost_call"] else float("nan")
         if t.primitive == "choice":
             cell["macro_f1"] = M.macro_f1([r["pred"] for r in rs], [r["gold"] for r in rs])
+        # Les réponses inexploitables ne sont JAMAIS exclues : elles reçoivent la valeur la plus défavorable (p = 0,5 pour un
+        # oui/non ; erreur maximale pour une échelle).  Sinon un système qui échoue souvent paraîtrait meilleur.
         if t.primitive == "noul":
-            vv = [r for r in rs if r["p_yes"] is not None]
-            cell["auc"] = M.auc([r["p_yes"] for r in vv], [bool(r["gold"]) for r in vv]) if vv else float("nan")
-            if vv:
-                cell["brier"] = M.brier([r["p_yes"] for r in vv], [bool(r["gold"]) for r in vv])
-                cell["bal_acc_2fold"], cell["thresholds"] = M.threshold_two_fold([r["p_yes"] for r in vv], [bool(r["gold"]) for r in vv])
+            p_ = [r["p_yes"] if r["p_yes"] is not None else 0.5 for r in rs]
+            y_ = [bool(r["gold"]) for r in rs]
+            cell["auc"] = M.auc(p_, y_)
+            cell["brier"] = M.brier(p_, y_)
+            cell["bal_acc_2fold"], cell["thresholds"] = M.threshold_two_fold(p_, y_)
         if t.primitive == "score":
-            vv = [r for r in rs if r["pred"] is not None]
-            cell["mae"] = M.mean(abs(r["pred"] - r["gold"]) for r in vv) if vv else float("nan")
-            cell["within1"] = M.mean(abs(r["pred"] - r["gold"]) <= 1 for r in vv) if vv else float("nan")
-            sc = [(r["score"], r["gold"]) for r in vv if r["score"] is not None]
-            cell["spearman"] = M.spearman([a for a, _ in sc], [b for _, b in sc]) if len(sc) > 2 else float("nan")
+            worst = len(t.options) - 1
+            err = [abs(r["pred"] - r["gold"]) if r["pred"] is not None else worst for r in rs]
+            cell["mae"] = M.mean(err)
+            cell["within1"] = M.mean(e <= 1 for e in err)
+            sc = [(r["score"], r["gold"]) for r in rs if r["score"] is not None]
+            cell["spearman"] = M.spearman([a for a, _ in sc], [b for _, b in sc]) if len(sc) > 2 else float("nan")   # sur les réponses exploitables seulement
         res["cells"][(task, system)] = cell
     # comparaisons appariées Jev - référence
     ps = []
@@ -99,14 +116,24 @@ def quality(rows):
             bb = sum(1 for x, y in zip(ja, jb) if x and not y)
             cc = sum(1 for x, y in zip(ja, jb) if y and not x)
             lo, hi = M.bootstrap_ci(diff)
+            cj = [a[i]["cost"] for i in common if a[i]["cost"] is not None]
+            cr = [b[i]["cost"] for i in common if b[i]["cost"] is not None]
+            ratio = (M.mean(cr) / M.mean(cj)) if cj and cr and M.mean(cj) > 0 else float("nan")        # coûts sur les MÊMES exemples
             ps.append({"task": task, "vs": s, "n": len(common), "acc_jev": M.mean(ja), "acc_ref": M.mean(jb), "diff": M.mean(diff), "lo": lo, "hi": hi,
-                       "p": M.mcnemar_exact(bb, cc), "b": bb, "c": cc,
-                       "cost_ratio": (res["cells"][(task, s)]["cost_call"] / res["cells"][(task, "jev")]["cost_call"]) if res["cells"].get((task, "jev"), {}).get("cost_call") else float("nan")})
+                       "p": M.mcnemar_exact(bb, cc), "b": bb, "c": cc, "cost_ratio": ratio,
+                       "valid_ref": M.mean(1.0 if b[i]["valid"] else 0.0 for i in common), "valid_jev": M.mean(1.0 if a[i]["valid"] else 0.0 for i in common)})
     adj = M.holm([p["p"] for p in ps])
     for p, a in zip(ps, adj):
         p["p_holm"] = a
-        p["label"] = ("supérieur" if p["lo"] > 0 else "équivalent" if p["lo"] > -P["delta_non_inferiorite"] else
-                      "inférieur" if p["hi"] < 0 else "inconclusif")
+        d = P["delta_non_inferiorite"]
+        # Ordre voulu : H1 est réfutée dès que la borne haute est < 0, même si l'écart reste dans la marge
+        p["label"] = ("supérieur" if p["lo"] > 0 else
+                      "inférieur" if p["hi"] < -d else
+                      "légèrement inférieur (dans la marge)" if p["hi"] < 0 and p["lo"] > -d else
+                      "inférieur" if p["hi"] < 0 else
+                      "équivalent" if p["lo"] > -d else "inconclusif")
+        if min(p["valid_ref"], p["valid_jev"]) < 0.9:
+            p["label"] += " — comparaison peu fiable (moins de 90 % de réponses exploitables)"
     res["pairs"] = ps
     return res
 
@@ -133,24 +160,32 @@ def calibration(rows):
 
 
 # ---------- E3 : latence ----------
-def _pcts(xs, boot=True):
+def _pcts(xs, groups=None):
     d = {"n": len(xs)}
     for q in (50, 90, 95, 99):
         d[f"p{q}"] = M.percentile(xs, q)
-    if boot and len(xs) >= 20:
-        d["p50_ci"] = M.bootstrap_ci(xs, lambda v: M.percentile(v, 50), b=500)
-        d["p95_ci"] = M.bootstrap_ci(xs, lambda v: M.percentile(v, 95), b=500)
+    if groups and len(groups) >= 10:
+        # Bootstrap PAR EXEMPLE (les répétitions d'un même exemple ne sont pas indépendantes) : intervalles plus larges, plus honnêtes
+        d["p50_ci"] = M.bootstrap_clusters(groups, lambda v: M.percentile(v, 50))
+        d["p95_ci"] = M.bootstrap_clusters(groups, lambda v: M.percentile(v, 95))
     d["mean"] = M.mean(xs)
     return d
 
 
 def latency(rows):
     lat = [r for r in rows if r["experiment"] == "latency"]
-    out = {"serial": {}, "size": {}, "retry": {}}
+    out = {"serial": {}, "by_task": {}, "size": {}, "retry": {}}
     for (s,), rs in _by(lat, "system").items():
-        ok = [r for r in rs if r["ok"]]
-        out["serial"][s] = {**_pcts([r["wall_s"] for r in ok]), "total": _pcts([r["total_s"] for r in ok], boot=False),
+        ok = [r for r in rs if r["ok"] and r["wall_s"] is not None]
+        grp = {}
+        for r in ok:
+            grp.setdefault((r["task"], r["item"]), []).append(r["wall_s"])
+        out["serial"][s] = {**_pcts([r["wall_s"] for r in ok], list(grp.values())), "total": _pcts([r["total_s"] for r in ok]),
                             "fail": sum(1 for r in rs if not r["ok"]), "calls": len(rs)}
+    for (s, task), rs in _by(lat, "system", "task").items():
+        w = [r["wall_s"] for r in rs if r["ok"] and r["wall_s"] is not None]
+        if w:
+            out["by_task"].setdefault(task, {})[s] = M.percentile(w, 50)
     sz = [r for r in rows if r["experiment"] == "latency_size" and r["ok"]]
     for (s, tok), rs in _by([dict(r, tok=r["size_tokens"]) for r in sz], "system", "tok").items():
         out["size"].setdefault(s, {})[tok] = {"p50": M.percentile([r["wall_s"] for r in rs], 50), "n": len(rs),
@@ -165,7 +200,7 @@ def latency(rows):
 
 
 def throughput(recs):
-    return sorted([r for r in recs if r.get("experiment") == "throughput_batch"], key=lambda r: r["conc"])
+    return sorted([r for r in dedupe(recs) if r.get("experiment") == "throughput_batch"], key=lambda r: r["conc"])
 
 
 # ---------- E5 : coût ----------
@@ -192,7 +227,9 @@ def pricing(rows, meta):
     if c0 and c1 and c0.get("total_usage") is not None and c1.get("total_usage") is not None:
         billed = c1["total_usage"] - c0["total_usage"]
         rep = sum(r["cost"] for r in rows if r["cost"] is not None)
-        out["reconcile"] = {"billed": billed, "reported": rep, "gap": (billed - rep) / rep if rep else float("nan")}
+        out["reconcile"] = {"billed": billed, "reported": rep, "gap": (billed - rep) / rep if rep else float("nan"),
+                            "sessions": meta.get("sessions", 1),
+                            "reliable": meta.get("sessions", 1) == 1}   # après une reprise, d'autres usages du compte s'intercalent : écart non interprétable
     return out
 
 
@@ -237,7 +274,11 @@ def determinism(rows):
         out["by_task"][task] = {"items": len(items), "reps": M.mean(len(v) for v in items.values()), "flip": flip, "spread_mean": M.mean(sp), "spread_max": max(sp),
                                 "identical": M.mean(1.0 if spread(v) == 0 else 0.0 for v in items.values())}
     if out["by_task"]:
-        out["flip"] = M.mean(v["flip"] for v in out["by_task"].values())
+        n_items = sum(v["items"] for v in out["by_task"].values())
+        n_flip = sum(round(v["flip"] * v["items"]) for v in out["by_task"].values())
+        out["flip"] = n_flip / n_items if n_items else float("nan")
+        out["flip_ci"] = M.wilson(n_flip, n_items)       # « flip » = au moins une répétition donne une autre étiquette que les autres
+        out["n_items"] = n_items
     return out
 
 
@@ -258,23 +299,35 @@ def limits(rows):
 
 
 # ---------- E9 : multi-questions ----------
+def _g(d, *path):
+    """Lecture tolérante d'une réponse brute : None si le chemin n'existe pas ou n'a pas la forme attendue."""
+    for k in path:
+        if not isinstance(d, dict) or k not in d:
+            return None
+        d = d[k]
+    return d
+
+
 def multi(rows):
-    m = [r for r in rows if r["experiment"] == "multi" and r["ok"] and r["answers"]]
-    out = {}
+    m = [r for r in rows if r["experiment"] == "multi" and r["ok"] and isinstance(r["answers"], dict)]
+    out = {"malformed": 0}
     pair = [r for r in m if r["variant"] == "pair_noul"]
     if pair:
-        inc = [abs(r["answers"]["pos"]["noul"] + r["answers"]["neg"]["noul"] - 1) for r in pair if "pos" in r["answers"] and "neg" in r["answers"]]
-        acc_pos = M.mean(1.0 if (r["answers"]["pos"]["noul"] >= .5) == bool(r["gold"]["pos"]) else 0.0 for r in pair)
-        both = M.mean(1.0 if ((r["answers"]["pos"]["noul"] >= .5) != (r["answers"]["neg"]["noul"] >= .5)) else 0.0 for r in pair)
-        out["pair_noul"] = {"n": len(pair), "inconsistency": M.mean(inc), "acc_pos": acc_pos, "coherent_labels": both}
+        good = [r for r in pair if isinstance(_g(r["answers"], "pos", "noul"), (int, float)) and isinstance(_g(r["answers"], "neg", "noul"), (int, float))]
+        out["malformed"] += len(pair) - len(good)
+        if good:
+            inc = [abs(r["answers"]["pos"]["noul"] + r["answers"]["neg"]["noul"] - 1) for r in good]
+            acc_pos = M.mean(1.0 if (r["answers"]["pos"]["noul"] >= .5) == bool(r["gold"]["pos"]) else 0.0 for r in good)
+            both = M.mean(1.0 if ((r["answers"]["pos"]["noul"] >= .5) != (r["answers"]["neg"]["noul"] >= .5)) else 0.0 for r in good)
+            out["pair_noul"] = {"n": len(good), "inconsistency": M.mean(inc), "acc_pos": acc_pos, "coherent_labels": both}
     ch = [r for r in m if r["variant"] == "one_choice"]
     if ch:
-        out["one_choice"] = {"n": len(ch), "acc": M.mean(1.0 if r["answers"]["c"].get("choice") == r["gold"]["c"] else 0.0 for r in ch)}
+        out["one_choice"] = {"n": len(ch), "acc": M.mean(1.0 if _g(r["answers"], "c", "choice") == r["gold"]["c"] else 0.0 for r in ch)}
     alone = {r["item"]: r for r in m if r["variant"] == "alone"}
     joint = {r["item"]: r for r in m if r["variant"] == "joint"}
-    common = sorted(set(alone) & set(joint))
+    common = [i for i in sorted(set(alone) & set(joint)) if _g(alone[i]["answers"], "a", "choice") and _g(joint[i]["answers"], "a", "choice")]
     if common:
-        flips = M.mean(1.0 if alone[i]["answers"]["a"].get("choice") != joint[i]["answers"]["a"].get("choice") else 0.0 for i in common)
+        flips = M.mean(1.0 if _g(alone[i]["answers"], "a", "choice") != _g(joint[i]["answers"], "a", "choice") else 0.0 for i in common)
         out["alone_vs_joint"] = {"n": len(common), "flip": flips,
                                  "cost_alone": M.mean(alone[i]["cost"] for i in common if alone[i]["cost"] is not None),
                                  "cost_joint": M.mean(joint[i]["cost"] for i in common if joint[i]["cost"] is not None),
@@ -304,7 +357,7 @@ def verdict(Q, cal, lat, det, price, lim, rb):
         if not prs:
             continue
         v["par_tache"][task] = [{"vs": p["vs"], "label": p["label"], "diff": p["diff"], "lo": p["lo"], "hi": p["hi"], "cost_ratio": p["cost_ratio"],
-                                 "recommande": p["label"] in ("supérieur", "équivalent") and p["cost_ratio"] >= P["gain_cout_significatif"]} for p in prs]
+                                 "recommande": p["label"] in ("supérieur", "équivalent") and p["cost_ratio"] == p["cost_ratio"] and p["cost_ratio"] >= P["gain_cout_significatif"]} for p in prs]
     # calibration
     if cal.get("pooled"):
         e, (lo, hi) = cal["pooled"]["ece"], cal["pooled"]["ece_ci"]
@@ -315,22 +368,25 @@ def verdict(Q, cal, lat, det, price, lim, rb):
     if lat["serial"].get("jev"):
         j = lat["serial"]["jev"]
         for s, d in lat["serial"].items():
-            if s != "jev" and d["p50"] and j["p50"]:
+            if s != "jev" and d["p50"] == d["p50"] and j["p50"] == j["p50"] and d["p50"] and j["p50"]:
                 r = d["p50"] / j["p50"]
                 v["global"].append((f"latence vs {s}", "nettement plus rapide" if r >= P["gain_latence_significatif"] else "comparable ou plus lent", f"p50 {j['p50']:.3f}s contre {d['p50']:.3f}s (×{r:.1f})"))
     # déterminisme
     if det.get("flip") is not None:
-        v["global"].append(("déterminisme", "conforme" if det["flip"] <= P["flip_max_determinisme"] else "instable", f"{det['flip']:.1%} d'étiquettes qui changent à l'identique"))
+        lo, hi = det["flip_ci"]
+        lab = "conforme" if hi <= P["flip_max_determinisme"] else "instable" if lo > P["flip_max_determinisme"] else "inconclusif"
+        v["global"].append(("déterminisme", lab, f"{det['flip']:.1%} des exemples changent d'étiquette sur au moins une répétition [IC 95 % {lo:.1%} – {hi:.1%}], {det['n_items']} exemples"))
     # robustesse (Jev)
     for r in rb["noise"]:
-        if r["system"] == "jev" and r["variant"] in ("noise:600:before", "noise:2400:both"):
+        if r["system"] == "jev" and r["variant"] == "noise:600:before":          # le protocole (H7) fixe 600 tokens ; les autres niveaux sont descriptifs
             lo, hi = r["drop_ci"]
             lab = "résiste" if hi <= P["chute_bruit_max"] else "sensible au bruit" if lo > P["chute_bruit_max"] else "inconclusif"
             v["global"].append((f"bruit {r['variant']} : {r['task']}", lab, f"chute {r['drop']:+.1%} [{lo:+.1%} ; {hi:+.1%}]"))
     for r in rb["shuffle"]:
         if r["system"] == "jev":
-            lab = "stable" if r["flip"] <= P["flip_permutation_max"] else "dépend de l'ordre des options"
-            v["global"].append((f"{r['variant']} : {r['task']}", lab, f"{r['flip']:.1%} d'étiquettes changées"))
+            lo, hi = M.wilson(round(r["flip"] * r["n"]), r["n"])
+            lab = "stable" if hi <= P["flip_permutation_max"] else "dépend de l'ordre des options" if lo > P["flip_permutation_max"] else "inconclusif"
+            v["global"].append((f"{r['variant']} : {r['task']}", lab, f"{r['flip']:.1%} d'étiquettes changées [IC 95 % {lo:.1%} – {hi:.1%}], n = {r['n']}"))
     # prix
     if price.get("ratio_median"):
         v["global"].append(("prix", "conforme au tarif annoncé" if price["tol_ok"] else "écart au tarif annoncé", f"coût facturé / (tokens × 0,042 $/M) = {price['ratio_median']:.3f}"))
@@ -343,9 +399,22 @@ def verdict(Q, cal, lat, det, price, lim, rb):
     return v
 
 
+def apply_meta(meta):
+    """Restaure ce que le processus de run connaissait : options découvertes et tâches personnalisées (sinon un rapport relu
+    plus tard validerait n'importe quelle étiquette et différerait de celui du run)."""
+    for tid, spec in (meta.get("custom_tasks") or {}).items():
+        if tid not in T.TASKS:
+            T.TASKS[tid] = T.Task(tid, spec.get("title", tid), spec["primitive"], spec.get("lang", "fr"), spec["instructions"], spec["options"],
+                                  ("", "", ""), None, text_key=spec.get("text_key", "text"), fam="personnalisée")
+    for tid, opts in (meta.get("task_options") or {}).items():
+        if tid in T.TASKS and not T.TASKS[tid].options:
+            T.TASKS[tid].options = opts
+
+
 def run(store):
     recs = store.read()
     meta = store.meta()
+    apply_meta(meta)
     rows = tidy(recs)
     Q = quality(rows)
     cal, lat, thr, pr = calibration(rows), latency(rows), throughput(recs), pricing(rows, meta)

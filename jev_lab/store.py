@@ -13,6 +13,11 @@ def git_sha():
         return ""
 
 
+def rec_key(rec):
+    """Clé d'identité d'un appel (reprise, déduplication à l'analyse).  Le modèle en fait partie."""
+    return "|".join(str(rec.get(k, "")) for k in ("experiment", "task", "item", "system", "model", "variant", "rep"))
+
+
 class RunStore:
     def __init__(self, path):
         self.path = path
@@ -22,7 +27,7 @@ class RunStore:
         self._done = None
 
     def key(self, rec):
-        return "|".join(str(rec.get(k, "")) for k in ("experiment", "task", "item", "system", "variant", "rep"))
+        return rec_key(rec)
 
     def done(self):
         if self._done is None:

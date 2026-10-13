@@ -6,7 +6,7 @@ Principes de mesure :
   - `total_s` = durée totale, attentes de réessai comprises ;
   - on ne réessaie que 429 / 5xx / erreurs réseau, et chaque tentative est consignée : un taux d'erreur caché serait un biais.
 """
-import json, os, random, re, time, urllib.error, urllib.request
+import http.client, json, os, random, re, threading, time, urllib.error, urllib.parse, urllib.request
 from . import config as C
 from .store import KEEP_HEADERS
 
@@ -25,26 +25,75 @@ def _usage(u):
             "cost": u.get("cost")}
 
 
+_tls = threading.local()
+
+
+def _proxied(url):
+    """Un proxy d'environnement s'applique-t-il ? (alors on retombe sur urllib, qui sait le gérer)."""
+    u = urllib.parse.urlparse(url)
+    if (u.hostname or "") in ("localhost", "127.0.0.1"):
+        return False
+    return bool(os.environ.get("https_proxy") or os.environ.get("HTTPS_PROXY") or os.environ.get("http_proxy") or os.environ.get("HTTP_PROXY"))
+
+
+def _attempt_keepalive(url, method, data, hdr, timeout):
+    """Connexion persistante par thread : on ne paie ni DNS ni TLS à chaque appel (sinon la latence fixe écrase les écarts)."""
+    u = urllib.parse.urlparse(url)
+    key = (u.scheme, u.netloc)
+    pool = getattr(_tls, "pool", None)
+    if pool is None:
+        pool = _tls.pool = {}
+    path = u.path + (("?" + u.query) if u.query else "")
+    for second_chance in (True, False):
+        conn = pool.get(key)
+        reused = conn is not None and conn.sock is not None
+        if conn is None:
+            cls = http.client.HTTPSConnection if u.scheme == "https" else http.client.HTTPConnection
+            conn = pool[key] = cls(u.netloc, timeout=timeout)
+        try:
+            conn.request(method, path, body=data, headers=hdr)
+            r = conn.getresponse()
+            text = r.read().decode("utf-8", "replace")
+            return r.status, text, {k.lower(): v for k, v in r.getheaders() if k.lower() in KEEP_HEADERS}, None
+        except (http.client.HTTPException, OSError) as e:
+            try:
+                conn.close()
+            except OSError:
+                pass
+            pool.pop(key, None)
+            stale = reused and isinstance(e, (http.client.RemoteDisconnected, ConnectionResetError, BrokenPipeError))
+            if stale and second_chance:
+                continue                      # connexion fermée par le serveur entre deux appels : on se reconnecte sans compter d'échec
+            return None, "", {}, f"{type(e).__name__}: {e}"
+    return None, "", {}, "inatteignable"
+
+
+def _attempt_urllib(url, method, data, hdr, timeout):
+    status, text, headers, err = None, "", {}, None
+    try:
+        req = urllib.request.Request(url, data=data, method=method, headers=hdr)
+        with urllib.request.urlopen(req, timeout=timeout) as r:
+            status, text = r.status, r.read().decode("utf-8", "replace")
+            headers = {k.lower(): v for k, v in r.headers.items() if k.lower() in KEEP_HEADERS}
+    except urllib.error.HTTPError as e:
+        status, text = e.code, e.read().decode("utf-8", "replace")
+        headers = {k.lower(): v for k, v in e.headers.items() if k.lower() in KEEP_HEADERS}
+    except (urllib.error.URLError, http.client.HTTPException, TimeoutError, ConnectionError, OSError) as e:
+        err = f"{type(e).__name__}: {e}"
+    return status, text, headers, err
+
+
 def http_json(url, body, timeout=90, method="POST", extra_headers=None, attempts=4, sleep=time.sleep):
     """-> dict(ok, status, wall_s, total_s, attempts[list], headers, body|text, error)."""
     data = json.dumps(body, ensure_ascii=False).encode() if body is not None else None
     hdr = {"Authorization": f"Bearer {api_key()}", "Content-Type": "application/json",
            "X-Title": "jev_lab", "HTTP-Referer": "https://github.com/lduf/hemicycle"}
     hdr.update(extra_headers or {})
+    attempt = _attempt_urllib if _proxied(url) else _attempt_keepalive
     log, t_all = [], time.perf_counter()
     for i in range(attempts):
         t0 = time.perf_counter()
-        status, text, headers, err = None, "", {}, None
-        try:
-            req = urllib.request.Request(url, data=data, method=method, headers=hdr)
-            with urllib.request.urlopen(req, timeout=timeout) as r:
-                status, text = r.status, r.read().decode("utf-8", "replace")
-                headers = {k.lower(): v for k, v in r.headers.items() if k.lower() in KEEP_HEADERS}
-        except urllib.error.HTTPError as e:
-            status, text = e.code, e.read().decode("utf-8", "replace")
-            headers = {k.lower(): v for k, v in e.headers.items() if k.lower() in KEEP_HEADERS}
-        except (urllib.error.URLError, TimeoutError, ConnectionError, OSError) as e:
-            err = f"{type(e).__name__}: {e}"
+        status, text, headers, err = attempt(url, method, data, hdr, timeout)
         wall = time.perf_counter() - t0
         log.append({"status": status, "wall_s": round(wall, 4), "error": err})
         retriable = err is not None or status in RETRY_STATUS or (status == 402 and "in_flight" in text)
@@ -111,7 +160,7 @@ SYS_PROMPT = ("Tu es un système de décision. Réponds UNIQUEMENT par un objet 
 class ChatClient:
     kind = "chat"
 
-    def __init__(self, model, label=None, timeout=120, max_tokens=300, mock_gold=False):
+    def __init__(self, model, label=None, timeout=120, max_tokens=1000, mock_gold=False):
         self.model = model
         self.name = label or model
         self.timeout = timeout
@@ -130,9 +179,16 @@ class ChatClient:
                 rec["ok"], rec["error"], rec["error_text"] = False, "erreur fournisseur", json.dumps(res["body"]["error"])[:500]
                 return rec
             try:
-                rec["text"] = res["body"]["choices"][0]["message"]["content"]
+                ch = res["body"]["choices"][0]
+                rec["text"] = ch["message"]["content"]
+                rec["finish_reason"] = ch.get("finish_reason")
             except (KeyError, IndexError, TypeError):
                 rec["ok"], rec["error"] = False, "réponse sans contenu"
+                return rec
+            # contenu vide ou tronqué (budget de sortie consommé par un raisonnement caché, par exemple) : c'est un artefact de
+            # paramétrage, pas une erreur du modèle ; on le compte comme échec d'appel (rejoué à la reprise) et on le publie
+            if not (rec["text"] or "").strip() or rec.get("finish_reason") == "length":
+                rec["ok"], rec["error"] = False, f"contenu vide ou tronqué (finish_reason={rec.get('finish_reason')})"
         return rec
 
 

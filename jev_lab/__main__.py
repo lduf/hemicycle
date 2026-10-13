@@ -34,7 +34,9 @@ def build_lab(a, store, mock=False):
             sys.exit(f"modèle absent du catalogue OpenRouter : {mid}")
         resolved[label] = mid
         baselines.append(CL.ChatClient(mid, label=label, mock_gold=mock))
-    lab = R.Lab(store, B.Budget(a.budget), CL.JevClient(a.jev_model, mock_gold=mock), baselines, workers=a.workers, mock=mock, prices=prices)
+    # le plafond vaut pour le RUN ENTIER : ce qui a déjà été dépensé dans les sessions précédentes est déduit
+    spent0 = sum((r.get("usage") or {}).get("cost") or 0.0 for r in store.read())
+    lab = R.Lab(store, B.Budget(a.budget, spent0), CL.JevClient(a.jev_model, mock_gold=mock), baselines, workers=a.workers, mock=mock, prices=prices)
     for path in (getattr(a, "custom", None) or []):
         lab.custom.append(T.load_custom(path).id)
     return lab, resolved
@@ -61,13 +63,17 @@ def cmd_ping(a):
             if miss:
                 ok = False
                 print(f"⚠ schéma inattendu pour {k} : champs absents {miss}")
+        pk = set((ans.get("urgency") or {}).get("probabilities") or {})
+        if pk != {"0", "1", "2"}:
+            ok = False
+            print(f"⚠ indexation des niveaux de score inattendue : clés {sorted(pk)} (attendu 0, 1, 2) — l'étude lirait des niveaux décalés")
         print("→ schéma conforme à la documentation" if ok else "→ ÉCART avec la documentation : à examiner avant de lancer l'étude")
     for b in (a.baselines or "").split(","):
         if b:
             lab, res = build_lab(a, ST.RunStore(os.path.join(C.RUNS, "_ping")))
             c = lab.baselines[0]
             r = c.call({"experiment": "ping", "task": "ping", "item": "ping", "rep": 0, "variant": "base", "gold": None}, 'Réponds {"ok": true}')
-            print(c.name, r.get("ok"), r.get("wall_s"), r.get("usage"), (r.get("text") or r.get("error_text") or "")[:120])
+            print(c.name, r.get("ok"), r.get("wall_s"), r.get("usage"), "finish_reason=", r.get("finish_reason"), (r.get("text") or r.get("error_text") or r.get("error") or "")[:120])
             break
     sys.exit(0 if ok else 1)
 
@@ -105,12 +111,20 @@ def cmd_run(a, mock=False):
     print(f"Dossier du run : {run_dir}\nCoût estimé ≈ {total:.2f} $ (plafond {a.budget} $)")
     if total > a.budget * 1.2 and not a.yes:
         sys.exit("L'estimation dépasse sensiblement le plafond : réduire la suite/les références, relever --budget, ou --yes pour s'arrêter au plafond.")
-    c0 = None if mock else CL.credits()
-    st.write_meta(suite=a.suite, jev_model=lab.jev.model, baselines=resolved, budget=a.budget, mock=mock, credits_start=c0, seed=lab.seed,
-                  robust_baselines=a.robust_baselines)
+    prev = st.meta()
+    kw = {}
+    if "credits_start" not in prev:           # le point de départ des crédits n'est fixé qu'une fois : une reprise ne le réécrit pas
+        kw["credits_start"] = None if mock else CL.credits()
+    used = [t for t in list(R.SUITES[a.suite]["tasks"]) + lab.custom]
+    st.write_meta(suite=a.suite, jev_model=lab.jev.model, baselines=resolved, budget=a.budget, mock=mock, seed=lab.seed, sessions=prev.get("sessions", 0) + 1,
+                  robust_baselines=a.robust_baselines, **kw,
+                  task_options={t: T.TASKS[t].options for t in used if t in T.TASKS and T.TASKS[t].primitive == "choice" and T.TASKS[t].options},
+                  custom_tasks={t: {"title": T.TASKS[t].title, "primitive": T.TASKS[t].primitive, "instructions": T.TASKS[t].instructions,
+                                    "options": T.TASKS[t].options, "text_key": T.TASKS[t].text_key, "lang": T.TASKS[t].lang} for t in lab.custom},
+                  dropped=dict(T.DROPPED))
     res = lab.run(a.suite, a.robust_baselines)
     if not mock:
-        st.write_meta(credits_end=CL.credits())
+        st.write_meta(credits_end=CL.credits(), dropped=dict(T.DROPPED))
     print(json.dumps({k: v for k, v in res.items() if k != "throughput"}, ensure_ascii=False))
     cmd_report(argparse.Namespace(run=run_dir))
 
@@ -125,7 +139,9 @@ def cmd_report(a):
 
 def cmd_inspect(a):
     path = a.run if os.path.isdir(a.run) else os.path.join(C.RUNS, a.run)
-    rows = A.tidy(ST.RunStore(path).read())
+    store = ST.RunStore(path)
+    A.apply_meta(store.meta())
+    rows = A.tidy(store.read())
     sel = [r for r in rows if (not a.task or r["task"] == a.task) and (not a.system or r["system"] == a.system)]
     if a.failed:
         sel = [r for r in sel if not r["ok"]]

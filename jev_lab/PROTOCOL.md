@@ -51,7 +51,7 @@ et ce que ça coûte en temps et en argent.
 | E8 limites annoncées | dates, comptage, arithmétique, maximum ; sonde de longueur de contexte | tous systèmes / Jev |
 | E9 multi-questions | oui/non opposés vs choix unique ; question seule vs avec deux autres | Jev |
 
-Échantillons : tirés au hasard avec graine fixe (`SEED`), mis en cache, identiques pour tous les systèmes (comparaison **appariée**).
+Échantillons : tirés au hasard avec graine fixe (`SEED`) dans un réservoir mis en cache, **emboîtés** (les 200 premiers exemples sont les mêmes que les 200 premiers d'un tirage de 500), identiques pour tous les systèmes (comparaison **appariée**). Les tâches à classes déséquilibrées (modération) sont échantillonnées équilibrées, ou l'étude refuse de s'exécuter.
 Taille « standard » : 200 exemples par tâche pour Jev, 100 pour les références coûteuses (mêmes 100 premiers exemples).
 Largeur typique de l'intervalle à 95 % sur une précision de 85 % avec n = 200 : ± 5 points ; avec n = 100 : ± 7 points.
 **On ne conclut jamais sur la seule moyenne** : lire l'intervalle.
@@ -62,13 +62,13 @@ Les cinq premières correspondent à ce que l'éditeur laisse entendre ; elles s
 
 | # | Hypothèse | Constat « confirmé » | Constat « réfuté » | Sinon |
 |---|---|---|---|---|
-| H1 | Qualité : Jev est au moins équivalent à une référence | borne basse de l'IC 95 % de (acc_Jev − acc_réf) > −3 points | borne haute < 0 | inconclusif |
+| H1 | Qualité : Jev est au moins équivalent à une référence | borne basse de l'IC 95 % de (acc_Jev − acc_réf) > −3 points **et** borne haute ≥ 0 | borne haute < 0 (même si l'écart reste dans la marge : étiqueté « légèrement inférieur », jamais « recommandé ») | inconclusif |
 | H2 | Coût : Jev ≥ 10 fois moins cher par appel | rapport des coûts moyens ≥ 10 | < 10 | – |
 | H3 | Latence : p50 de Jev ≥ 2 fois plus faible | rapport des p50 ≥ 2 | < 2 | – |
 | H4 | Calibration : la confiance est fiable | borne haute de l'IC de l'ECE ≤ 0,05 (« bonne ») ou ≤ 0,10 (« acceptable ») | borne basse de l'IC > 0,10 | inconclusive |
-| H5 | Déterminisme : au plus 2 % d'étiquettes changent à l'identique | flip ≤ 2 % | > 2 % | – |
+| H5 | Déterminisme : au plus 2 % d'exemples changent d'étiquette sur 5 répétitions identiques | borne haute de l'IC de Wilson ≤ 2 % | borne basse > 2 % | inconclusif |
 | H6 | Facturation : coût = tokens d'entrée × 0,042 $/M (sortie gratuite) | rapport médian dans ±5 % | hors de ±5 % | – |
-| H7 | Robustesse : ≤ 3 points perdus avec 600 tokens de bruit ; ≤ 3 % d'étiquettes changées par permutation des options | borne haute de la chute ≤ 3 points | borne basse > 3 points | inconclusif |
+| H7 | Robustesse : ≤ 3 points perdus avec 600 tokens de bruit placés avant ; ≤ 3 % d'étiquettes changées par permutation de l'ordre des options | borne haute de la chute (resp. de l'IC de Wilson du taux de changement) ≤ 3 points | borne basse > 3 points | inconclusif |
 | H8 | Limites annoncées (dates, comptage, arithmétique) : Jev n'est pas utilisable | borne haute de l'IC de la précision < 90 % | borne basse ≥ 90 % | inconclusif |
 
 « **Recommandé** » pour une tâche = H1 confirmée (équivalent ou supérieur) **et** H2 confirmée, face à une référence donnée.
@@ -90,7 +90,11 @@ Le choix du 90 % pour « utilisable » et des 3 points est une convention de dé
 | Dérive de la charge d'OpenRouter dans le temps | Entrelacement aléatoire des systèmes ; répétition ; heure notée |
 | Versions de modèles qui changent | Version servie lue dans la réponse et notée ; alias résolu puis figé |
 | Fuite de données d'entraînement | Jeux publics donc possible ; ajout de tâches synthétiques et de jeux contrastifs ; limite explicitée dans le rapport |
-| Réponses invalides comptées à tort | Réponse inexploitable = fausse, avec taux de validité publié par système |
+| Réponses invalides comptées à tort ou écartées à tort | Réponse inexploitable ou appel échoué = **fausse** pour toutes les métriques (AUC et Brier : p = 0,5 ; MAE : erreur maximale) ; taux de validité publié ; sous 90 % de réponses exploitables, la comparaison est marquée « peu fiable » |
+| Artefact de format qui pénalise une référence (réponse vide ou tronquée par un raisonnement caché) | `max_tokens` = 1000, `finish_reason` conservé ; une réponse vide ou tronquée est un appel échoué (rejoué à la reprise, publié) et jamais une « mauvaise réponse » du modèle |
+| Overhead réseau fixe qui écrase l'écart de latence | Connexions persistantes (keep-alive) ; bootstrap par exemple ; p50 par tâche ; les appels identiques répétés peuvent être cachés côté fournisseur (limite) |
+| Doublons après reprise | Un seul enregistrement par appel logique à l'analyse (le réussi l'emporte) ; le modèle fait partie de la clé de reprise |
+| Plafond contourné par les reprises ou le parallélisme | Le plafond vaut pour le run entier (dépenses antérieures déduites) ; réservation du coût estimé avant chaque appel |
 | Biais du « modèle juge » | Aucun juge : vérité terrain publique ou calculée |
 | Optimisation sur le test | Seuils fixés ici ; seuil de décision réglé sur l'autre moitié |
 | Dépenses hors de contrôle | Plafond de budget : arrêt net, reprise possible |

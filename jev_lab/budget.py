@@ -7,15 +7,28 @@ class BudgetExceeded(RuntimeError):
 
 
 class Budget:
-    def __init__(self, cap_usd):
+    def __init__(self, cap_usd, spent0=0.0):
+        """spent0 : déjà dépensé par les sessions précédentes du même run (le plafond vaut pour le run entier, pas par session)."""
         self.cap = float(cap_usd)
-        self.spent = 0.0
+        self.spent = float(spent0)
+        self.reserved = 0.0
         self.by_system = {}
         self._lock = threading.Lock()
 
+    def acquire(self, est):
+        """Réserve le coût estimé d'un appel AVANT de l'envoyer : plusieurs appels simultanés ne peuvent pas dépasser le plafond."""
+        with self._lock:
+            if self.spent + self.reserved + est > self.cap:
+                raise BudgetExceeded(f"plafond {self.cap:.2f} $ atteint (dépensé {self.spent:.4f} $, réservé {self.reserved:.4f} $)")
+            self.reserved += est
+
+    def release(self, est):
+        with self._lock:
+            self.reserved = max(0.0, self.reserved - est)
+
     def check(self, reserve=0.0):
         with self._lock:
-            if self.spent + reserve > self.cap:
+            if self.spent + self.reserved + reserve > self.cap:
                 raise BudgetExceeded(f"plafond {self.cap:.2f} $ atteint (dépensé {self.spent:.4f} $)")
 
     def add(self, system, cost):

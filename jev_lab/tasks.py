@@ -122,6 +122,10 @@ ORDER_CORE = ["ag_news", "sst2", "toxic", "injection", "boolq", "xnli_fr", "vita
 
 
 # ---------- construction ----------
+MANY_CLASSES = {"banking77", "massive_fr"}
+DROPPED = {}            # exemples écartés (mal formés ou étiquette inconnue) : publié dans le rapport
+
+
 def discover_options(task, seed=C.SEED):
     """Pour les tâches à nombreuses classes : lit un grand échantillon pour lister les étiquettes."""
     if task.options:
@@ -131,7 +135,7 @@ def discover_options(task, seed=C.SEED):
         task.options = json.load(open(cache, encoding="utf-8"))
         return task.options
     ds, cfg, split = task.hf
-    rows = D.sample(ds, cfg, split, 1200, seed + 1)
+    rows = D.pool(ds, cfg, split, seed, 120)           # même réservoir que l'échantillon : 3 000 lignes, classes toutes vues
     labs = sorted({task.to_item(r)[1] for r in rows})
     task.options = {l: _hum(l) for l in labs}
     os.makedirs(C.CACHE, exist_ok=True)
@@ -180,16 +184,21 @@ def load(task_id, n, seed=C.SEED, fixtures=False):
         random.Random(seed).shuffle(rows)
         rows = rows[:n]
     else:
-        rows = D.sample(ds, cfg, split, n, seed, label_key=t.label_key, balanced=t.balanced)
+        rows = D.sample(ds, cfg, split, n, seed, label_key=t.label_key, balanced=t.balanced, nblocks=120 if t.id in MANY_CLASSES else 40)
     if t.primitive == "choice" and not t.options:
         discover_options(t, seed)
-    items = []
+    items, dropped = [], 0
     for i, r in enumerate(rows):
         try:
             s, g = t.to_item(r)
         except (KeyError, ValueError):
+            dropped += 1
+            continue
+        if t.primitive == "choice" and t.options and g not in t.options:      # étiquette hors des options découvertes : impossible à prédire
+            dropped += 1
             continue
         items.append({"id": f"{task_id}-{i}", "state": s, "gold": g})
+    DROPPED[task_id] = dropped
     return items
 
 
@@ -236,55 +245,81 @@ def chat_prompt(task, state, variant="base", seed=C.SEED):
 
 
 # ---------- lecture des réponses ----------
+def _match(value, options):
+    """Clé d'option correspondant à `value` : exacte, puis sans casse ni espaces, puis entier écrit autrement.  None sinon.
+    Si la tâche n'a pas d'options connues (rapport relu hors du run), on ne valide pas."""
+    if not options:
+        return value if isinstance(value, str) else None
+    if value in options:
+        return value
+    v = str(value).strip()
+    for k in options:
+        if str(k).strip().lower() == v.lower():
+            return k
+    try:
+        iv = str(int(float(v)))
+        if iv in options:
+            return iv
+    except ValueError:
+        pass
+    return None
+
+
+def _num(x, lo=0.0, hi=1.0):
+    try:
+        v = float(x)
+    except (TypeError, ValueError):
+        return None
+    return v if lo <= v <= hi else None
+
+
 def parse_jev(task, ans):
     """-> dict(pred, conf, probs, p_yes, score) ; pred=None si la réponse est inexploitable."""
     if not isinstance(ans, dict):
         return {"pred": None}
     if task.primitive == "choice":
-        c = ans.get("choice")
-        return {"pred": c if (c in task.options or not task.options) else None, "conf": ans.get("confidence"), "probs": ans.get("probabilities") or {}}
+        pr = {k: _num(v) for k, v in (ans.get("probabilities") or {}).items() if _num(v) is not None} if isinstance(ans.get("probabilities"), dict) else {}
+        return {"pred": _match(ans.get("choice"), task.options), "conf": _num(ans.get("confidence")), "probs": pr}
     if task.primitive == "noul":
-        p = ans.get("noul")
+        p = _num(ans.get("noul"))
         return {"pred": None if p is None else p >= .5, "p_yes": p, "conf": None if p is None else max(p, 1 - p)}
-    pr = {int(k): v for k, v in (ans.get("probabilities") or {}).items()}
-    s = ans.get("score")
+    pr = {}
+    for k, v in (ans.get("probabilities") or {}).items() if isinstance(ans.get("probabilities"), dict) else []:
+        try:
+            pr[int(k)] = float(v)
+        except (TypeError, ValueError):
+            pass
+    s = _num(ans.get("score"), -1, 100)
     lvl = max(pr, key=pr.get) if pr else (None if s is None else int(round(s)))
-    return {"pred": lvl, "score": s, "conf": ans.get("confidence"), "probs": pr}
+    return {"pred": lvl, "score": s, "conf": _num(ans.get("confidence")), "probs": pr}
 
 
 def _json_in(text):
-    m = re.search(r"\{.*\}", text or "", re.S)
-    if not m:
-        return None
-    try:
-        return json.loads(m.group(0))
-    except ValueError:
-        return None
+    """Premier objet JSON valide du texte (tolère le markdown, les phrases autour, plusieurs accolades)."""
+    dec = json.JSONDecoder()
+    for m in re.finditer(r"\{", text or ""):
+        try:
+            obj, _ = dec.raw_decode(text[m.start():])
+        except ValueError:
+            continue
+        if isinstance(obj, dict):
+            return obj
+    return None
 
 
 def parse_chat(task, text):
     d = _json_in(text)
     if not isinstance(d, dict):
         return {"pred": None}
-    try:
-        if task.primitive == "choice":
-            c = d.get("choice")
-            return {"pred": c if (c in task.options or not task.options) else None, "conf": _num(d.get("confidence"))}
-        if task.primitive == "noul":
-            p = _num(d.get("p_yes"))
-            return {"pred": None if p is None else p >= .5, "p_yes": p, "conf": None if p is None else max(p, 1 - p)}
-        lv = int(d.get("level"))
-        return {"pred": lv if 0 <= lv < len(task.options) else None, "score": lv, "conf": _num(d.get("confidence"))}
-    except (TypeError, ValueError):
+    if task.primitive == "choice":
+        return {"pred": _match(d.get("choice"), task.options), "conf": _num(d.get("confidence"))}
+    if task.primitive == "noul":
+        p = _num(d.get("p_yes"))
+        return {"pred": None if p is None else p >= .5, "p_yes": p, "conf": None if p is None else max(p, 1 - p)}
+    lv = _num(d.get("level"), 0, len(task.options) - 1)
+    if lv is None or lv != int(lv):
         return {"pred": None}
-
-
-def _num(x):
-    try:
-        v = float(x)
-        return v if 0 <= v <= 1 else None
-    except (TypeError, ValueError):
-        return None
+    return {"pred": int(lv), "score": int(lv), "conf": _num(d.get("confidence"))}
 
 
 # ---------- tâches personnalisées (vos propres données) ----------

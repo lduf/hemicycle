@@ -37,35 +37,43 @@ def rows(dataset, config, split, offset, length):
     return d.get("num_rows_total"), [r["row"] for r in d.get("rows", [])]
 
 
-def sample(dataset, config, split, n, seed, label_key=None, balanced=False):
-    """n lignes tirées au hasard (ou n/k par classe si balanced) ; mises en cache."""
-    tag = f"{dataset.replace('/', '__')}__{config}__{split}__{n}__{seed}__{'bal' if balanced else 'uni'}.jsonl"
+def pool(dataset, config, split, seed, nblocks):
+    """Réservoir de nblocks × BLOCK lignes, blocs tirés au hasard (graine fixe) et mis en cache.
+    L'ordre est entrelacé entre les blocs : les k premières lignes sont donc toujours les mêmes quel que soit le
+    nombre d'exemples demandé ensuite (les échantillons de tailles différentes s'emboîtent, l'appariement tient)."""
+    tag = f"v2__{dataset.replace('/', '__')}__{config}__{split}__{seed}__{nblocks}.jsonl"
     path = os.path.join(C.CACHE, tag)
     if os.path.exists(path):
         with open(path, encoding="utf-8") as f:
             return [json.loads(x) for x in f]
-    total, first = rows(dataset, config, split, 0, BLOCK)
-    rnd = random.Random(seed)
-    want = n * (4 if balanced else 1)
-    nblocks = max(MIN_BLOCKS, -(-want // BLOCK))
-    starts = sorted(rnd.sample(range(0, max(1, (total or BLOCK) - BLOCK + 1)), min(nblocks, max(1, (total or BLOCK) - BLOCK + 1))))
-    got = []
-    for s in starts:
-        got += rows(dataset, config, split, s, BLOCK)[1]
-    rnd.shuffle(got)
-    if balanced and label_key:
-        by = {}
-        for r in got:
-            by.setdefault(r[label_key], []).append(r)
-        per = max(1, n // max(1, len(by)))
-        got = [r for rs in by.values() for r in rs[:per]]
-        rnd.shuffle(got)
-    got = got[:n]
+    total, _ = rows(dataset, config, split, 0, 1)
+    nstarts = max(1, (total or BLOCK) - BLOCK + 1)
+    perm = random.Random(seed).sample(range(nstarts), min(nblocks, nstarts))     # permutation : les premiers blocs ne dépendent pas de nblocks
+    blocks = [rows(dataset, config, split, s, BLOCK)[1] for s in perm]
+    got = [b[j] for j in range(BLOCK) for b in blocks if j < len(b)]
     os.makedirs(C.CACHE, exist_ok=True)
     with open(path, "w", encoding="utf-8") as f:
         for r in got:
             f.write(json.dumps(r, ensure_ascii=False) + "\n")
     return got
+
+
+def sample(dataset, config, split, n, seed, label_key=None, balanced=False, nblocks=40):
+    """n lignes (préfixe stable).  balanced : autant par classe, en alternant les classes ; erreur si une classe manque."""
+    if not balanced:
+        return pool(dataset, config, split, seed, nblocks)[:n]
+    got = pool(dataset, config, split, seed, max(nblocks, 150))
+    by = {}
+    for r in got:
+        by.setdefault(r[label_key], []).append(r)
+    k = len(by)
+    per = -(-n // max(1, k))
+    short = {c: len(v) for c, v in by.items() if len(v) < per}
+    if k < 2 or short:
+        raise RuntimeError(f"échantillon équilibré impossible : classes sous-représentées {short or by.keys()} (besoin de {per} par classe)")
+    cls = sorted(by)
+    out = [by[c][i] for i in range(per) for c in cls]
+    return out[:n]
 
 
 def all_rows(dataset, config, split):
