@@ -131,7 +131,7 @@ def _record(base, res, parse_usage=True):
 
 def _mock_headers(base, gold):
     """Uniquement pour le serveur factice : vérité terrain et identité de l'exemple (jamais envoyés à l'API réelle)."""
-    h = {"X-Mock-Meta": json.dumps({"task": base.get("task"), "item": base.get("item"), "variant": base.get("variant"), "rep": base.get("rep")})}
+    h = {"X-Mock-Meta": json.dumps({"task": base.get("task"), "item": base.get("item"), "group": base.get("group"), "variant": base.get("variant"), "rep": base.get("rep")})}
     if gold is not None:
         h["X-Mock-Gold"] = json.dumps(gold)
     return h

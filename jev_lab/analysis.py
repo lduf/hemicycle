@@ -1,20 +1,20 @@
-"""Analyse : relit le journal brut (calls.jsonl), ré-interprète chaque réponse, calcule toutes les statistiques.
+"""Analyse : relit le journal brut (calls.jsonl), ré-interprète chaque réponse, applique les décisions de PRODUCTION et calcule tout.
 
-Rien n'est lu dans un résumé intermédiaire : tout est recalculable depuis les réponses brutes."""
+Principes :
+  - un seul enregistrement par appel logique (le réussi l'emporte après une reprise) ;
+  - une réponse inexploitable ou un appel échoué n'est JAMAIS exclu : en production la fiche serait refusée (échec fermé), on compte donc un rejet ;
+  - rien n'est lu dans un résumé intermédiaire : tout est recalculable depuis les réponses brutes."""
 import math
-from . import config as C, tasks as T, synth as SY, metrics as M
+from pipeline import config as HC, classify
+from . import config as C, hemicycle as H, metrics as M
 from .store import rec_key
 
 P = C.PREREG
-
-
-def _dict_gold(g):
-    return isinstance(g, dict)
+ORDER = H.ORDER
 
 
 def dedupe(recs):
-    """Un seul enregistrement par appel logique.  Après une reprise, un appel échoué puis réussi figure deux fois dans le
-    journal : on garde le réussi (sinon le même exemple compterait deux fois, dont une fois comme faux)."""
+    """Après une reprise, un appel échoué puis réussi figure deux fois dans le journal : on garde le réussi."""
     latest = {}
     for r in recs:
         k = ("tb", r.get("conc")) if r.get("experiment") == "throughput_batch" else rec_key(r)
@@ -25,34 +25,37 @@ def dedupe(recs):
     return list(latest.values())
 
 
-def tidy(recs):
-    """Un enregistrement par appel, réponse interprétée.  Les appels multi-questions gardent leurs réponses brutes."""
+def qs_for(scenario, variant):
+    """Questions réellement posées pour (scénario, variante) : nécessaires pour relire les réponses d'un modèle de langage."""
+    if variant.startswith("alone:"):
+        name = variant.split(":", 1)[1]
+        return {name: H.questions(scenario)[name]}
+    if scenario == "categorie" and variant in ("nodesc", "shuffle1", "shuffle2"):
+        return H.questions(scenario, variant)
+    return H.questions(scenario)
+
+
+def tidy(recs, thresholds=None):
     out = []
     for r in dedupe(recs):
-        exp = r.get("experiment")
-        if exp == "throughput_batch" or not r.get("task") or r["task"] not in T.TASKS:
+        if r.get("experiment") == "throughput_batch" or r.get("scenario") not in H.SCENARIOS:
             continue
-        t = T.TASKS[r["task"]]
-        u = r.get("usage") or {}
-        row = {"experiment": exp, "task": r["task"], "item": r["item"], "system": r["system"], "variant": r.get("variant", "base"),
-               "rep": r.get("rep", 0), "gold": r.get("gold"), "primitive": r.get("primitive", t.primitive), "ok": bool(r.get("ok")),
-               "status": r.get("status"), "error": r.get("error"), "error_text": r.get("error_text"), "wall_s": r.get("wall_s"),
-               "total_s": r.get("total_s"), "n_attempts": r.get("n_attempts", 1), "attempts": r.get("attempts", []),
-               "in_tok": u.get("input_tokens"), "out_tok": u.get("output_tokens"), "cost": u.get("cost"),
-               "resolved_model": r.get("resolved_model"), "size_tokens": r.get("size_tokens"), "request": r.get("request"),
-               "model": (r.get("request") or {}).get("model")}
-        row["pred"], row["conf"], row["p_yes"], row["probs"], row["score"], row["answers"] = None, None, None, None, None, None
-        if r.get("ok") and not _dict_gold(r.get("gold")):
-            if r["system"] == "jev":
-                ans = ((r.get("response") or {}).get("answers") or {}).get("q")
-                p = T.parse_jev(t, ans)
-            else:
-                p = T.parse_chat(t, r.get("text"))
-            row.update({k: p.get(k) for k in ("pred", "conf", "p_yes", "probs", "score")})
-        elif r.get("ok") and r["system"] == "jev":
-            row["answers"] = (r.get("response") or {}).get("answers")
-        row["valid"] = row["ok"] and (row["pred"] is not None or _dict_gold(r.get("gold")))
-        row["correct"] = bool(row["valid"] and not _dict_gold(r.get("gold")) and row["pred"] == r.get("gold"))
+        sc, variant, u = r["scenario"], r.get("variant", "base"), r.get("usage") or {}
+        row = {"experiment": r["experiment"], "scenario": sc, "item": r["item"], "group": r.get("group"), "system": r["system"], "variant": variant,
+               "rep": r.get("rep", 0), "gold": r.get("gold") or {}, "meta": r.get("meta") or {}, "ok": bool(r.get("ok")), "status": r.get("status"),
+               "error": r.get("error"), "error_text": r.get("error_text"), "wall_s": r.get("wall_s"), "total_s": r.get("total_s"),
+               "n_attempts": r.get("n_attempts", 1), "attempts": r.get("attempts", []), "in_tok": u.get("input_tokens"), "out_tok": u.get("output_tokens"),
+               "cost": u.get("cost"), "resolved_model": r.get("resolved_model"), "state": (r.get("request") or {}).get("state"),
+               "answers": None, "verdict": None}
+        if r.get("ok"):
+            qs = qs_for(sc, variant)
+            ans = H.normalize(qs, (r.get("response") or {}).get("answers")) if r["system"] == "jev" else H.chat_answers(qs, r.get("text"))
+            row["answers"] = ans
+            full = not variant.startswith("alone:")
+            if ans is not None and full:
+                row["verdict"] = H.verdict(sc, {"gold": row["gold"], "meta": row["meta"]}, ans, thresholds)
+        row["valid"] = row["verdict"] is not None
+        row["accept"] = bool(row["valid"] and row["verdict"]["accept"])      # échec fermé : inexploitable = rejeté
         out.append(row)
     return out
 
@@ -64,148 +67,204 @@ def _by(rows, *keys):
     return d
 
 
-def _price_per_call(rows):
-    c = [r["cost"] for r in rows if r.get("cost") is not None]
-    return M.mean(c) if c else float("nan")
+def rate(flags):
+    flags = list(flags)
+    n, k = len(flags), sum(1 for f in flags if f)
+    return {"k": k, "n": n, "p": k / n if n else float("nan"), "ci": M.wilson(k, n)}
 
 
-# ---------- E1 : qualité ----------
-def quality(rows):
-    q = [r for r in rows if r["experiment"] == "quality"]
-    res = {"cells": {}, "pairs": [], "systems": sorted({r["system"] for r in q}), "tasks": sorted({r["task"] for r in q}, key=lambda t: list(T.TASKS).index(t))}
-    for (task, system), rs in _by(q, "task", "system").items():
-        t = T.TASKS[task]
-        n, nv = len(rs), sum(1 for r in rs if r["valid"])
-        cor = [r["correct"] for r in rs]
-        cell = {"n": n, "valid_rate": nv / n if n else float("nan"), "acc": M.accuracy(cor), "acc_ci": M.bootstrap_ci([1.0 if c else 0.0 for c in cor]),
-                "cost_call": _price_per_call(rs), "primitive": t.primitive, "errors": sum(1 for r in rs if not r["ok"])}
-        cell["cost_1k"] = cell["cost_call"] * 1000
-        cell["cost_per_correct"] = (cell["cost_call"] * n / max(1, sum(cor))) if cell["cost_call"] == cell["cost_call"] else float("nan")
-        if t.primitive == "choice":
-            cell["macro_f1"] = M.macro_f1([r["pred"] for r in rs], [r["gold"] for r in rs])
-        # Les réponses inexploitables ne sont JAMAIS exclues : elles reçoivent la valeur la plus défavorable (p = 0,5 pour un
-        # oui/non ; erreur maximale pour une échelle).  Sinon un système qui échoue souvent paraîtrait meilleur.
-        if t.primitive == "noul":
-            p_ = [r["p_yes"] if r["p_yes"] is not None else 0.5 for r in rs]
-            y_ = [bool(r["gold"]) for r in rs]
-            cell["auc"] = M.auc(p_, y_)
-            cell["brier"] = M.brier(p_, y_)
-            cell["bal_acc_2fold"], cell["thresholds"] = M.threshold_two_fold(p_, y_)
-        if t.primitive == "score":
-            worst = len(t.options) - 1
-            err = [abs(r["pred"] - r["gold"]) if r["pred"] is not None else worst for r in rs]
-            cell["mae"] = M.mean(err)
-            cell["within1"] = M.mean(e <= 1 for e in err)
-            sc = [(r["score"], r["gold"]) for r in rs if r["score"] is not None]
-            cell["spearman"] = M.spearman([a for a, _ in sc], [b for _, b in sc]) if len(sc) > 2 else float("nan")   # sur les réponses exploitables seulement
-        res["cells"][(task, system)] = cell
-    # comparaisons appariées Jev - référence
-    ps = []
-    for task in res["tasks"]:
-        a = {r["item"]: r for r in q if r["task"] == task and r["system"] == "jev"}
-        for s in res["systems"]:
-            if s == "jev":
-                continue
-            b = {r["item"]: r for r in q if r["task"] == task and r["system"] == s}
-            common = sorted(set(a) & set(b))
-            if len(common) < 10:
-                continue
-            ja = [1.0 if a[i]["correct"] else 0.0 for i in common]
-            jb = [1.0 if b[i]["correct"] else 0.0 for i in common]
-            diff = [x - y for x, y in zip(ja, jb)]
-            bb = sum(1 for x, y in zip(ja, jb) if x and not y)
-            cc = sum(1 for x, y in zip(ja, jb) if y and not x)
-            lo, hi = M.bootstrap_ci(diff)
-            md = M.mean(diff)
-            sd = math.sqrt(sum((x - md) ** 2 for x in diff) / max(1, len(diff) - 1))
-            cj = [a[i]["cost"] for i in common if a[i]["cost"] is not None]
-            cr = [b[i]["cost"] for i in common if b[i]["cost"] is not None]
-            ratio = (M.mean(cr) / M.mean(cj)) if cj and cr and M.mean(cj) > 0 else float("nan")        # coûts sur les MÊMES exemples
-            ps.append({"task": task, "vs": s, "n": len(common), "acc_jev": M.mean(ja), "acc_ref": M.mean(jb), "diff": M.mean(diff), "lo": lo, "hi": hi,
-                       "p": M.mcnemar_exact(bb, cc), "b": bb, "c": cc, "cost_ratio": ratio, "sd": sd,
-                       # exemples appariés nécessaires pour que la borne basse de l'IC dépasse −δ si les deux systèmes sont réellement égaux
-                       "n_needed": int(math.ceil((1.96 * sd / P["delta_non_inferiorite"]) ** 2)),
-                       "valid_ref": M.mean(1.0 if b[i]["valid"] else 0.0 for i in common), "valid_jev": M.mean(1.0 if a[i]["valid"] else 0.0 for i in common)})
-    adj = M.holm([p["p"] for p in ps])
-    for p, a in zip(ps, adj):
-        p["p_holm"] = a
-        p_h = a
-        d = P["delta_non_inferiorite"]
-        # Ordre voulu : H1 est réfutée dès que la borne haute est < 0, même si l'écart reste dans la marge
-        p["label"] = ("supérieur" if p["lo"] > 0 else
-                      "inférieur" if p["hi"] < -d else
-                      "légèrement inférieur (dans la marge)" if p["hi"] < 0 and p["lo"] > -d else
-                      "inférieur" if p["hi"] < 0 else
-                      "équivalent" if p["lo"] > -d else "inconclusif")
-        if p["label"] in ("supérieur", "inférieur") and p_h >= 0.05:
-            p["label"] += " †"        # † : écart « significatif » pour cette comparaison seule, mais pas après correction de Holm sur l'ensemble des comparaisons
-        if min(p["valid_ref"], p["valid_jev"]) < 0.9:
-            p["label"] += " — comparaison peu fiable (moins de 90 % de réponses exploitables)"
-    res["pairs"] = ps
-    if ps:
-        res["power"] = {"n": M.percentile([p["n"] for p in ps], 50), "halfwidth": M.percentile([(p["hi"] - p["lo"]) / 2 for p in ps], 50),
-                        "n_needed": M.percentile([p["n_needed"] for p in ps], 50), "n_needed_max": max(p["n_needed"] for p in ps)}
-    return res
+def _score_of(scenario, v):
+    """Grandeur continue sur laquelle la décision de production se fonde (pour AUC, seuils, déterminisme)."""
+    return {"categorie": v.get("conf"), "sens": v.get("p_correspond"), "neutralite": v.get("score"), "pro_contre": v.get("min_ok")}[scenario]
 
 
-# ---------- E2 : calibration ----------
-def calibration(rows):
-    j = [r for r in rows if r["experiment"] == "quality" and r["system"] == "jev" and r["valid"] and r["conf"] is not None]
-    out = {"pooled": None, "by_task": {}, "by_primitive": {}}
-    if j:
-        ece, tab = M.calibration([r["conf"] for r in j], [r["correct"] for r in j])
-        out["pooled"] = {"ece": ece, "ece_ci": M.ece_ci([r["conf"] for r in j], [r["correct"] for r in j]), "bins": tab, "n": len(j), "risk_coverage": M.risk_coverage([r["conf"] for r in j], [r["correct"] for r in j])}
-    for k, rs in _by(j, "task").items():
-        ece, tab = M.calibration([r["conf"] for r in rs], [r["correct"] for r in rs])
-        out["by_task"][k[0]] = {"ece": ece, "ece_ci": M.ece_ci([r["conf"] for r in rs], [r["correct"] for r in rs]), "n": len(rs), "risk_coverage": M.risk_coverage([r["conf"] for r in rs], [r["correct"] for r in rs])}
-    for k, rs in _by(j, "primitive").items():
-        ece, tab = M.calibration([r["conf"] for r in rs], [r["correct"] for r in rs])
-        out["by_primitive"][k[0]] = {"ece": ece, "n": len(rs)}
-    # confiance verbalisée des modèles de chat (comparaison indicative)
-    out["chat"] = {}
-    for (s,), rs in _by([r for r in rows if r["experiment"] == "quality" and r["system"] != "jev" and r["valid"] and r["conf"] is not None], "system").items():
-        ece, _ = M.calibration([r["conf"] for r in rs], [r["correct"] for r in rs])
-        out["chat"][s] = {"ece": ece, "n": len(rs)}
+# ---------------------------------------------------------------- E1 : scénarios
+def _cv_cut(pos, neg, higher_pos=True, seed=1):
+    """Seuil choisi sur une moitié (Youden), évalué sur l'autre (et inversement).  pos/neg : scores des cas à détecter / à laisser passer."""
+    import random
+    n = min(len(pos), len(neg))
+    if n < 6:
+        return None
+    rnd = random.Random(seed)
+    ip, ineg = list(range(len(pos))), list(range(len(neg)))
+    rnd.shuffle(ip)
+    rnd.shuffle(ineg)
+    halves = [(ip[: len(ip) // 2], ineg[: len(ineg) // 2]), (ip[len(ip) // 2:], ineg[len(ineg) // 2:])]
+
+    def tpr_fpr(ps, ns, cut):
+        f = (lambda x: x >= cut) if higher_pos else (lambda x: x <= cut)
+        return sum(f(x) for x in ps) / len(ps), sum(f(x) for x in ns) / len(ns)
+
+    def best(ps, ns):
+        cands = sorted(set(ps) | set(ns))
+        return max(cands, key=lambda c: tpr_fpr(ps, ns, c)[0] - tpr_fpr(ps, ns, c)[1])
+    res, cuts = [], []
+    for a, b in ((0, 1), (1, 0)):
+        ps, ns = [pos[i] for i in halves[a][0]], [neg[i] for i in halves[a][1]]
+        c = best(ps, ns)
+        cuts.append(c)
+        t, f = tpr_fpr([pos[i] for i in halves[b][0]], [neg[i] for i in halves[b][1]], c)
+        res.append((t, f))
+    full = best(pos, neg)
+    return {"cuts": cuts, "full_cut": full, "tpr": M.mean(r[0] for r in res), "fpr": M.mean(r[1] for r in res)}
+
+
+def scenario_categorie(rows):
+    q = [r for r in rows if r["experiment"] == "quality" and r["scenario"] == "categorie"]
+    out = {}
+    for (s,), rs in _by(q, "system").items():
+        n = len(rs)
+        cor = [bool(r["valid"] and r["verdict"]["correct"]) for r in rs]
+        top3 = [bool(r["valid"] and r["verdict"]["top3"]) for r in rs]
+        acc_rows = [r for r in rs if r["valid"] and r["verdict"]["accept"]]
+        conf = [(r["verdict"]["conf"] if r["verdict"]["conf"] is not None else None, r["verdict"]["correct"]) for r in rs if r["valid"]]
+        ece, bins = M.calibration([c for c, _ in conf], [k for _, k in conf])
+        out[s] = {"n": n, "valid_rate": sum(1 for r in rs if r["valid"]) / n if n else float("nan"), "top1": rate(cor), "top3": rate(top3),
+                  "accepted": rate([bool(r["valid"] and r["verdict"]["accept"]) for r in rs]),
+                  "precision_accepted": rate([r["verdict"]["correct"] for r in acc_rows]) if acc_rows else None, "ece": ece,
+                  "errors": [{"item": r["item"], "gold": r["gold"].get("cat"), "pred": r["verdict"]["pred"], "conf": r["verdict"]["conf"]}
+                             for r in rs if r["valid"] and not r["verdict"]["correct"]]}
     return out
 
 
-# ---------- E3 : latence ----------
-def _pcts(xs, groups=None):
-    d = {"n": len(xs)}
-    for q in (50, 90, 95, 99):
-        d[f"p{q}"] = M.percentile(xs, q)
-    if groups and len(groups) >= 10:
-        # Bootstrap PAR EXEMPLE (les répétitions d'un même exemple ne sont pas indépendantes) : intervalles plus larges, plus honnêtes
-        d["p50_ci"] = M.bootstrap_clusters(groups, lambda v: M.percentile(v, 50))
-        d["p95_ci"] = M.bootstrap_clusters(groups, lambda v: M.percentile(v, 95))
-    d["mean"] = M.mean(xs)
-    return d
+def _decision_stats(rs):
+    """Pour un système : taux d'acceptation par groupe + FAR (défauts acceptés) et FRR (bonnes entrées rejetées)."""
+    good = [r for r in rs if r["gold"].get("accept") is True]
+    bad = [r for r in rs if r["gold"].get("accept") is False]
+    soft = [r for r in rs if r["gold"].get("accept") is None]
+    groups = {g: rate([r["accept"] for r in v]) for (g,), v in _by(rs, "group").items()}
+    return {"n": len(rs), "valid_rate": sum(1 for r in rs if r["valid"]) / len(rs) if rs else float("nan"),
+            "frr": rate([not r["accept"] for r in good]), "far": rate([r["accept"] for r in bad]),
+            "soft_reject": rate([not r["accept"] for r in soft]) if soft else None, "groups": groups,
+            "invalid_among_rejects": sum(1 for r in good + bad if not r["valid"])}
 
 
+def scenario_decision(rows, scenario):
+    q = [r for r in rows if r["experiment"] == "quality" and r["scenario"] == scenario]
+    out = {}
+    for (s,), rs in _by(q, "system").items():
+        d = _decision_stats(rs)
+        good = [r for r in rs if r["gold"].get("accept") is True]
+        bad = [r for r in rs if r["gold"].get("accept") is False]
+        # AUC sur la grandeur de décision : un cas invalide reçoit la valeur la PIRE pour son camp
+        sc_all = [_score_of(scenario, r["verdict"]) for r in good + bad if r["valid"]]
+        if sc_all:
+            lo, hi = min(sc_all), max(sc_all)
+            # neutralité : score élevé = orienté = à rejeter ; sens/pro_contre : score élevé = à accepter
+            if scenario == "neutralite":
+                pos = [(_score_of(scenario, r["verdict"]) if r["valid"] else lo) for r in bad]       # défauts : score devrait être haut
+                neg = [(_score_of(scenario, r["verdict"]) if r["valid"] else hi) for r in good]
+                d["auc"] = M.auc(pos + neg, [True] * len(pos) + [False] * len(neg))
+                d["cv_cut"] = _cv_cut(pos, neg, higher_pos=True)
+                d["scores"] = {g: M.mean(_score_of(scenario, r["verdict"]) for r in v if r["valid"]) if any(r["valid"] for r in v) else float("nan")
+                               for (g,), v in _by(rs, "group").items()}
+            else:
+                pos = [(_score_of(scenario, r["verdict"]) if r["valid"] else lo) for r in good]      # bonnes entrées : score devrait être haut
+                neg = [(_score_of(scenario, r["verdict"]) if r["valid"] else hi) for r in bad]
+                d["auc"] = M.auc(pos + neg, [True] * len(pos) + [False] * len(neg))
+                d["cv_cut"] = _cv_cut(neg, pos, higher_pos=False)        # on cherche la coupure « accepter si score ≥ c » : défauts = score bas
+        if scenario == "sens":
+            ex = [r for r in good]
+            d["sens_ok"] = rate([bool(r["valid"] and r["verdict"]["sens"] == r["verdict"]["attendu"]) for r in ex])
+            kinds = {}
+            for (k,), v in _by([dict(r, kind=r["group"].split(":")[0]) for r in good + bad], "kind").items():
+                g_, b_ = [r for r in v if r["gold"]["accept"]], [r for r in v if not r["gold"]["accept"]]
+                kinds[k] = {"frr": rate([not r["accept"] for r in g_]), "far": rate([r["accept"] for r in b_])}
+            d["kinds"] = kinds
+        out[s] = d
+    return out
+
+
+def pairs(rows, scenario):
+    """Jev contre chaque référence, sur les MÊMES entrées : écart de FAR et de FRR (intervalle de Newcombe pour données appariées), McNemar."""
+    q = [r for r in rows if r["experiment"] == "quality" and r["scenario"] == scenario]
+    systems = sorted({r["system"] for r in q})
+    res = []
+    for ref in systems:
+        if ref == "jev":
+            continue
+        a = {r["item"]: r for r in q if r["system"] == "jev"}
+        b = {r["item"]: r for r in q if r["system"] == ref}
+        for metric, gold in (("far", False), ("frr", True)):
+            ids = [i for i in sorted(set(a) & set(b)) if a[i]["gold"].get("accept") is gold]
+            if len(ids) < 10:
+                continue
+            f = (lambda r: r["accept"]) if metric == "far" else (lambda r: not r["accept"])
+            ja, jb = [1.0 if f(a[i]) else 0.0 for i in ids], [1.0 if f(b[i]) else 0.0 for i in ids]
+            n11 = sum(1 for x, y in zip(ja, jb) if x and y)
+            bb = sum(1 for x, y in zip(ja, jb) if x and not y)      # erreur de Jev seulement
+            cc = sum(1 for x, y in zip(ja, jb) if y and not x)      # erreur de la référence seulement
+            n00 = len(ids) - n11 - bb - cc
+            diff_, lo, hi = M.newcombe_paired(n11, bb, cc, n00)
+            d = P["delta_non_inferiorite"]
+            # erreurs : plus bas = mieux.  « Équivalent » exige les DEUX bornes dans ±δ (jamais déduit d'un simple zéro désaccord)
+            label = ("plus sûr" if hi < 0 else "plus risqué" if lo > 0 else "équivalent (à ± 3 points)" if (lo > -d and hi < d) else
+                     "pas plus risqué que +3 points" if hi < d else "inconclusif")
+            res.append({"scenario": scenario, "vs": ref, "metric": metric, "n": len(ids), "jev": M.mean(ja), "ref": M.mean(jb), "diff": diff_,
+                        "lo": lo, "hi": hi, "p": M.mcnemar_exact(bb, cc), "label": label})
+    for r, a_ in zip(res, M.holm([r["p"] for r in res])):
+        r["p_holm"] = a_
+    return res
+
+
+# ---------------------------------------------------------------- seuils de production
+def recalibration(rows):
+    """Seuil actuel contre seuil recommandé (validation croisée), Jev seulement : ce que fait réellement le seuil à ce jour."""
+    out = {}
+    q = [r for r in rows if r["experiment"] == "quality" and r["system"] == "jev"]
+    # neutralité : rejet si note > NEUTRALITY_MAX
+    rs = [r for r in q if r["scenario"] == "neutralite" and r["valid"]]
+    good = [r["verdict"]["score"] for r in rs if r["gold"]["accept"] is True]
+    bad = [r["verdict"]["score"] for r in rs if r["gold"]["accept"] is False]
+    if good and bad:
+        T = HC.NEUTRALITY_MAX
+        out["neutralite"] = {"seuil": f"note > {T}", "actuel_far": sum(1 for x in bad if x <= T) / len(bad), "actuel_frr": sum(1 for x in good if x > T) / len(good),
+                             "cv": _cv_cut(bad, good, higher_pos=True), "n_good": len(good), "n_bad": len(bad)}
+    # sens : acceptation si P(correspond) >= dir_ok
+    rs = [r for r in q if r["scenario"] == "sens" and r["valid"]]
+    good = [r["verdict"]["p_correspond"] for r in rs if r["gold"]["accept"] is True]
+    bad = [r["verdict"]["p_correspond"] for r in rs if r["gold"]["accept"] is False]
+    if good and bad:
+        T = classify.THRESHOLDS["dir_ok"]
+        out["sens"] = {"seuil": f"P(correspond) ≥ {T}", "actuel_far": sum(1 for x in bad if x >= T) / len(bad), "actuel_frr": sum(1 for x in good if x < T) / len(good),
+                       "cv": _cv_cut(bad, good, higher_pos=False), "n_good": len(good), "n_bad": len(bad)}
+    # pro/contre : min(pro_ok, con_ok) >= pro_con_ok
+    rs = [r for r in q if r["scenario"] == "pro_contre" and r["valid"]]
+    good = [r["verdict"]["min_ok"] for r in rs if r["gold"]["accept"] is True]
+    bad = [r["verdict"]["min_ok"] for r in rs if r["gold"]["accept"] is False]
+    if good and bad:
+        T = classify.THRESHOLDS["pro_con_ok"]
+        out["pro_contre"] = {"seuil": f"min(pro_ok, con_ok) ≥ {T} (les autres critères de la règle ne sont pas modifiés)",
+                             "actuel_far": sum(1 for x in bad if x >= T) / len(bad), "actuel_frr": sum(1 for x in good if x < T) / len(good),
+                             "cv": _cv_cut(bad, good, higher_pos=False), "n_good": len(good), "n_bad": len(bad),
+                             "far_regle_complete": None}
+    return out
+
+
+# ---------------------------------------------------------------- latence, coût, déterminisme, robustesse, multi-questions
 def latency(rows):
     lat = [r for r in rows if r["experiment"] == "latency"]
-    out = {"serial": {}, "by_task": {}, "size": {}, "retry": {}}
+    out = {"par_scenario": {}, "global": {}, "retry": {}}
+    for (sc, s), rs in _by(lat, "scenario", "system").items():
+        w = [r["wall_s"] for r in rs if r["ok"] and r["wall_s"] is not None]
+        if w:
+            out["par_scenario"].setdefault(sc, {})[s] = {"n": len(w), "p50": M.percentile(w, 50), "p95": M.percentile(w, 95), "fail": sum(1 for r in rs if not r["ok"])}
     for (s,), rs in _by(lat, "system").items():
         ok = [r for r in rs if r["ok"] and r["wall_s"] is not None]
         grp = {}
         for r in ok:
-            grp.setdefault((r["task"], r["item"]), []).append(r["wall_s"])
-        out["serial"][s] = {**_pcts([r["wall_s"] for r in ok], list(grp.values())), "total": _pcts([r["total_s"] for r in ok]),
-                            "fail": sum(1 for r in rs if not r["ok"]), "calls": len(rs)}
-    for (s, task), rs in _by(lat, "system", "task").items():
-        w = [r["wall_s"] for r in rs if r["ok"] and r["wall_s"] is not None]
-        if w:
-            out["by_task"].setdefault(task, {})[s] = M.percentile(w, 50)
-    sz = [r for r in rows if r["experiment"] == "latency_size" and r["ok"]]
-    for (s, tok), rs in _by([dict(r, tok=r["size_tokens"]) for r in sz], "system", "tok").items():
-        out["size"].setdefault(s, {})[tok] = {"p50": M.percentile([r["wall_s"] for r in rs], 50), "n": len(rs),
-                                              "in_tok": M.mean(r["in_tok"] for r in rs if r["in_tok"] is not None) if any(r["in_tok"] for r in rs) else None}
-    allc = [r for r in rows if r["experiment"] in ("quality", "latency", "robust", "limits") and r["system"]]
+            grp.setdefault((r["scenario"], r["item"]), []).append(r["wall_s"])
+        w = [r["wall_s"] for r in ok]
+        d = {"n": len(w), "p50": M.percentile(w, 50), "p90": M.percentile(w, 90), "p95": M.percentile(w, 95), "p99": M.percentile(w, 99), "mean": M.mean(w)}
+        if len(grp) >= 10:       # bootstrap PAR FICHE : les répétitions d'un même appel ne sont pas indépendantes
+            d["p50_ci"] = M.bootstrap_clusters(list(grp.values()), lambda v: M.percentile(v, 50))
+            d["p95_ci"] = M.bootstrap_clusters(list(grp.values()), lambda v: M.percentile(v, 95))
+        out["global"][s] = d
+    allc = [r for r in rows if r["experiment"] in ("quality", "latency")]
     for (s,), rs in _by(allc, "system").items():
-        out["retry"][s] = {"calls": len(rs), "retried": sum(1 for r in rs if r["n_attempts"] > 1),
-                           "n429": sum(1 for r in rs for a in r["attempts"] if a.get("status") == 429),
-                           "n5xx": sum(1 for r in rs for a in r["attempts"] if (a.get("status") or 0) >= 500),
-                           "net": sum(1 for r in rs for a in r["attempts"] if a.get("error")), "failed": sum(1 for r in rs if not r["ok"])}
+        out["retry"][s] = {"calls": len(rs), "retried": sum(1 for r in rs if r["n_attempts"] > 1), "n429": sum(1 for r in rs for a in r["attempts"] if a.get("status") == 429),
+                           "n5xx": sum(1 for r in rs for a in r["attempts"] if (a.get("status") or 0) >= 500), "net": sum(1 for r in rs for a in r["attempts"] if a.get("error")),
+                           "failed": sum(1 for r in rs if not r["ok"])}
     return out
 
 
@@ -213,227 +272,160 @@ def throughput(recs):
     return sorted([r for r in dedupe(recs) if r.get("experiment") == "throughput_batch"], key=lambda r: r["conc"])
 
 
-# ---------- E5 : coût ----------
-def pricing(rows, meta):
+def cost(rows, meta):
+    """Coût par appel, par fiche (catégorie + sens + neutralité + pro/contre) et pour 1 000 fiches ; conformité au tarif annoncé ; réconciliation du compte."""
+    q = [r for r in rows if r["experiment"] == "quality" and r["cost"] is not None]
+    out = {"par_scenario": {}, "par_fiche": {}, "tarif": None}
+    for (sc, s), rs in _by(q, "scenario", "system").items():
+        out["par_scenario"].setdefault(sc, {})[s] = {"call": M.mean(r["cost"] for r in rs), "in_tok": M.mean(r["in_tok"] for r in rs if r["in_tok"] is not None) if any(r["in_tok"] for r in rs) else None,
+                                                     "n": len(rs)}
+    for s in {r["system"] for r in q}:
+        parts = [out["par_scenario"].get(sc, {}).get(s, {}).get("call") for sc in ORDER]
+        if all(p is not None for p in parts):
+            out["par_fiche"][s] = sum(parts)
     j = [r for r in rows if r["system"] == "jev" and r["ok"] and r["in_tok"] and r["cost"] is not None]
-    price = C.CLAIMS["prix_entree_par_M"][0]
-    out = {"n": len(j)}
     if j:
+        price = C.CLAIMS["prix_entree_par_M"][0]
         ratio = [r["cost"] / (r["in_tok"] * price / 1e6) for r in j]
-        out["ratio_median"] = M.percentile(ratio, 50)
-        out["ratio_p5_p95"] = (M.percentile(ratio, 5), M.percentile(ratio, 95))
-        out["implied_price_per_M"] = M.percentile([r["cost"] / r["in_tok"] * 1e6 for r in j], 50)
-        out["out_free"] = M.spearman([r["out_tok"] or 0 for r in j], [r["cost"] / r["in_tok"] for r in j]) if len({r["out_tok"] for r in j}) > 2 else float("nan")
-        out["tol_ok"] = abs(out["ratio_median"] - 1) <= P["tolerance_prix"]
-    # facturation multi-questions
-    b = [r for r in rows if r["experiment"] == "billing" and r["ok"] and r["in_tok"]]
-    if b:
-        tab = {}
-        for (v,), rs in _by(b, "variant").items():
-            tab[int(v.split(":")[1])] = {"in_tok": M.mean(r["in_tok"] for r in rs), "cost": M.mean(r["cost"] for r in rs if r["cost"] is not None), "n": len(rs)}
-        out["multiq"] = dict(sorted(tab.items()))
-    # réconciliation avec le compte
+        out["tarif"] = {"n": len(j), "ratio_median": M.percentile(ratio, 50), "p5_p95": (M.percentile(ratio, 5), M.percentile(ratio, 95)),
+                        "implied": M.percentile([r["cost"] / r["in_tok"] * 1e6 for r in j], 50),
+                        "out_corr": M.spearman([r["out_tok"] or 0 for r in j], [r["cost"] / r["in_tok"] for r in j]) if len({r["out_tok"] for r in j}) > 2 else float("nan"),
+                        "ok": abs(M.percentile(ratio, 50) - 1) <= P["tolerance_prix"]}
     c0, c1 = meta.get("credits_start"), meta.get("credits_end")
     if c0 and c1 and c0.get("total_usage") is not None and c1.get("total_usage") is not None:
         billed = c1["total_usage"] - c0["total_usage"]
         rep = sum(r["cost"] for r in rows if r["cost"] is not None)
-        out["reconcile"] = {"billed": billed, "reported": rep, "gap": (billed - rep) / rep if rep else float("nan"),
-                            "sessions": meta.get("sessions", 1),
-                            "reliable": meta.get("sessions", 1) == 1}   # après une reprise, d'autres usages du compte s'intercalent : écart non interprétable
+        out["reconcile"] = {"billed": billed, "reported": rep, "gap": (billed - rep) / rep if rep else float("nan"), "sessions": meta.get("sessions", 1),
+                            "reliable": meta.get("sessions", 1) == 1}
     return out
 
 
-# ---------- E6 : robustesse ----------
-def robustness(rows):
-    rb = [r for r in rows if r["experiment"] == "robust"]
-    out = {"noise": [], "desc": [], "shuffle": []}
-    key = lambda r: (r["task"], r["system"], r["item"])
-    base = {key(r): r for r in rb if r["variant"] == "base"}
-    for (task, system, variant), rs in _by(rb, "task", "system", "variant").items():
-        if variant == "base":
-            continue
-        pairs = [(base[key(r)], r) for r in rs if key(r) in base]
-        if len(pairs) < 10:
-            continue
-        diff = [(1.0 if b["correct"] else 0.0) - (1.0 if v["correct"] else 0.0) for b, v in pairs]
-        flips = M.mean(1.0 if b["pred"] != v["pred"] else 0.0 for b, v in pairs)
-        row = {"task": task, "system": system, "variant": variant, "n": len(pairs), "acc_base": M.mean(1.0 if b["correct"] else 0.0 for b, _ in pairs),
-               "acc_var": M.mean(1.0 if v["correct"] else 0.0 for _, v in pairs), "drop": M.mean(diff), "drop_ci": M.bootstrap_ci(diff), "flip": flips,
-               "valid_var": M.mean(1.0 if v["valid"] else 0.0 for _, v in pairs)}
-        (out["noise"] if variant.startswith("noise") else out["shuffle"] if variant.startswith("shuffle") else out["desc"]).append(row)
-    return out
-
-
-# ---------- E7 : déterminisme ----------
 def determinism(rows):
-    d = [r for r in rows if r["experiment"] == "determinism" and r["valid"]]
-    out = {"by_task": {}}
-    for (task,), rs in _by(d, "task").items():
+    d = [r for r in rows if r["experiment"] == "determinism"]
+    out = {"par_scenario": {}}
+    for (sc,), rs in _by(d, "scenario").items():
         items = {}
         for r in rs:
             items.setdefault(r["item"], []).append(r)
         items = {k: v for k, v in items.items() if len(v) >= 3}
         if not items:
             continue
-        flip = M.mean(1.0 if len({r["pred"] for r in v}) > 1 else 0.0 for v in items.values())
-        def spread(v):
-            xs = [r["p_yes"] if r["p_yes"] is not None else (r["conf"] if r["conf"] is not None else None) for r in v]
-            xs = [x for x in xs if x is not None]
-            return (max(xs) - min(xs)) if len(xs) > 1 else 0.0
-        sp = [spread(v) for v in items.values()]
-        out["by_task"][task] = {"items": len(items), "reps": M.mean(len(v) for v in items.values()), "flip": flip, "spread_mean": M.mean(sp), "spread_max": max(sp),
-                                "identical": M.mean(1.0 if spread(v) == 0 else 0.0 for v in items.values())}
-    if out["by_task"]:
-        n_items = sum(v["items"] for v in out["by_task"].values())
-        n_flip = sum(round(v["flip"] * v["items"]) for v in out["by_task"].values())
-        out["flip"] = n_flip / n_items if n_items else float("nan")
-        out["flip_ci"] = M.wilson(n_flip, n_items)       # « flip » = au moins une répétition donne une autre étiquette que les autres
-        out["n_items"] = n_items
+        flips = [len({r["accept"] for r in v}) > 1 for v in items.values()]
+        spread = []
+        for v in items.values():
+            xs = [_score_of(sc, r["verdict"]) for r in v if r["valid"] and _score_of(sc, r["verdict"]) is not None]
+            spread.append(max(xs) - min(xs) if len(xs) > 1 else 0.0)
+        out["par_scenario"][sc] = {"items": len(items), "reps": M.mean(len(v) for v in items.values()), "flips": sum(flips), "flip": rate(flips),
+                                   "spread_mean": M.mean(spread), "spread_max": max(spread),
+                                   "identiques": M.mean(1.0 if s == 0 else 0.0 for s in spread)}
+    n = sum(v["items"] for v in out["par_scenario"].values())
+    k = sum(v["flips"] for v in out["par_scenario"].values())
+    if n:
+        out["flip"] = rate([True] * k + [False] * (n - k))
     return out
 
 
-# ---------- E8 : limites annoncées ----------
-def limits(rows):
-    lm = [r for r in rows if r["experiment"] == "limits"]
-    out = {"cells": {}, "probe": []}
-    for (task, system), rs in _by(lm, "task", "system").items():
-        cor = [r["correct"] for r in rs]
-        t = T.TASKS[task]
-        chance = 1 / len(t.options) if t.primitive == "choice" else 0.5
-        out["cells"][(task, system)] = {"n": len(rs), "acc": M.accuracy(cor), "ci": M.bootstrap_ci([1.0 if c else 0.0 for c in cor]), "chance": chance,
-                                        "above_chance": M.bootstrap_ci([1.0 if c else 0.0 for c in cor])[0] > chance}
-    for r in sorted([r for r in rows if r["experiment"] == "ctx_probe"], key=lambda r: r["size_tokens"]):
-        out["probe"].append({"size": r["size_tokens"], "ok": r["ok"], "status": r["status"], "in_tok": r["in_tok"], "wall_s": r["wall_s"],
-                             "error": (r.get("error_text") or r.get("error") or "")[:160]})
+def robustness(rows):
+    """Catégorie : consigne sans descriptions et ordre des options permuté, contre la même consigne de production (même fiches)."""
+    rb = [r for r in rows if r["experiment"] == "robust"]
+    base = {(r["system"], r["item"]): r for r in rb if r["variant"] == "base"}
+    out = []
+    for (s, v), rs in _by(rb, "system", "variant").items():
+        if v == "base":
+            continue
+        ps = [(base[(s, r["item"])], r) for r in rs if (s, r["item"]) in base]
+        if len(ps) < 10:
+            continue
+        cor = lambda r: 1.0 if (r["valid"] and r["verdict"]["correct"]) else 0.0
+        diff = [cor(b) - cor(x) for b, x in ps]
+        out.append({"system": s, "variant": v, "n": len(ps), "acc_base": M.mean(cor(b) for b, _ in ps), "acc_var": M.mean(cor(x) for _, x in ps), "drop": M.mean(diff),
+                    "drop_ci": M.bootstrap_ci(diff), "flip": M.mean(1.0 if (b["valid"] and x["valid"] and b["verdict"]["pred"] != x["verdict"]["pred"]) else 0.0 for b, x in ps)})
     return out
-
-
-# ---------- E9 : multi-questions ----------
-def _g(d, *path):
-    """Lecture tolérante d'une réponse brute : None si le chemin n'existe pas ou n'a pas la forme attendue."""
-    for k in path:
-        if not isinstance(d, dict) or k not in d:
-            return None
-        d = d[k]
-    return d
 
 
 def multi(rows):
-    m = [r for r in rows if r["experiment"] == "multi" and r["ok"] and isinstance(r["answers"], dict)]
-    out = {"malformed": 0}
-    pair = [r for r in m if r["variant"] == "pair_noul"]
-    if pair:
-        good = [r for r in pair if isinstance(_g(r["answers"], "pos", "noul"), (int, float)) and isinstance(_g(r["answers"], "neg", "noul"), (int, float))]
-        out["malformed"] += len(pair) - len(good)
-        if good:
-            inc = [abs(r["answers"]["pos"]["noul"] + r["answers"]["neg"]["noul"] - 1) for r in good]
-            acc_pos = M.mean(1.0 if (r["answers"]["pos"]["noul"] >= .5) == bool(r["gold"]["pos"]) else 0.0 for r in good)
-            both = M.mean(1.0 if ((r["answers"]["pos"]["noul"] >= .5) != (r["answers"]["neg"]["noul"] >= .5)) else 0.0 for r in good)
-            out["pair_noul"] = {"n": len(good), "inconsistency": M.mean(inc), "acc_pos": acc_pos, "coherent_labels": both}
-    ch = [r for r in m if r["variant"] == "one_choice"]
-    if ch:
-        out["one_choice"] = {"n": len(ch), "acc": M.mean(1.0 if _g(r["answers"], "c", "choice") == r["gold"]["c"] else 0.0 for r in ch)}
-    alone = {r["item"]: r for r in m if r["variant"] == "alone"}
-    joint = {r["item"]: r for r in m if r["variant"] == "joint"}
-    common = [i for i in sorted(set(alone) & set(joint)) if _g(alone[i]["answers"], "a", "choice") and _g(joint[i]["answers"], "a", "choice")]
-    if common:
-        flips = M.mean(1.0 if _g(alone[i]["answers"], "a", "choice") != _g(joint[i]["answers"], "a", "choice") else 0.0 for i in common)
-        out["alone_vs_joint"] = {"n": len(common), "flip": flips,
-                                 "cost_alone": M.mean(alone[i]["cost"] for i in common if alone[i]["cost"] is not None),
-                                 "cost_joint": M.mean(joint[i]["cost"] for i in common if joint[i]["cost"] is not None),
-                                 "lat_alone": M.mean(alone[i]["wall_s"] for i in common), "lat_joint": M.mean(joint[i]["wall_s"] for i in common)}
+    """Production = toutes les questions dans un appel.  Posées seules, donnent-elles les mêmes réponses et la même décision ?"""
+    out = {}
+    base = {(r["scenario"], r["item"]): r for r in rows if r["experiment"] == "quality" and r["system"] == "jev" and r["valid"]}
+    alone = {}
+    for r in rows:
+        if r["experiment"] == "multi" and r["ok"] and r["answers"]:
+            alone.setdefault((r["scenario"], r["item"]), {})[r["variant"].split(":", 1)[1]] = r
+    for sc in ("neutralite", "pro_contre"):
+        qs = H.questions(sc)
+        flips, drifts, n = [], [], 0
+        cost_alone, cost_joint, lat_alone, lat_joint = [], [], [], []
+        for (s_, item), parts in alone.items():
+            if s_ != sc or set(parts) != set(qs) or (sc, item) not in base:
+                continue
+            j = base[(sc, item)]
+            ans = {name: parts[name]["answers"][name] for name in qs}
+            norm = H.normalize(qs, ans)
+            if norm is None:
+                continue
+            v = H.verdict(sc, {"gold": j["gold"], "meta": j["meta"]}, norm)
+            flips.append(v["accept"] != j["verdict"]["accept"])
+            drifts.append(abs(_score_of(sc, v) - _score_of(sc, j["verdict"])))
+            cost_alone.append(sum(p["cost"] or 0 for p in parts.values()))
+            cost_joint.append(j["cost"] or 0)
+            lat_alone.append(sum(p["wall_s"] or 0 for p in parts.values()))
+            lat_joint.append(j["wall_s"] or 0)
+        if flips:
+            out[sc] = {"n": len(flips), "flip": rate(flips), "drift_mean": M.mean(drifts), "drift_max": max(drifts), "cost_alone": M.mean(cost_alone),
+                       "cost_joint": M.mean(cost_joint), "lat_alone": M.mean(lat_alone), "lat_joint": M.mean(lat_joint), "questions": len(qs)}
     return out
 
 
-# ---------- erreurs les plus confiantes ----------
-def confident_errors(rows, k=12):
-    e = [r for r in rows if r["experiment"] == "quality" and r["system"] == "jev" and r["valid"] and not r["correct"] and r["conf"] is not None]
-    e.sort(key=lambda r: -r["conf"])
+# ---------------------------------------------------------------- erreurs les plus graves
+def worst_errors(rows, k=6):
+    """Fausses acceptations de Jev (un défaut est passé) : les plus assurées d'abord."""
+    out = {}
+    for sc in ("sens", "neutralite", "pro_contre"):
+        e = [r for r in rows if r["experiment"] == "quality" and r["system"] == "jev" and r["scenario"] == sc and r["gold"].get("accept") is False and r["accept"]]
+        key = (lambda r: -(_score_of(sc, r["verdict"]) or 0)) if sc != "neutralite" else (lambda r: (_score_of(sc, r["verdict"]) or 0))
+        e.sort(key=key)
+        out[sc] = [{"item": r["item"], "group": r["group"], "score": _score_of(sc, r["verdict"]),
+                    "state": " | ".join(f"{a}: {str(b)[:140]}" for a, b in (r["state"] or {}).items())} for r in e[:k]]
+    return out
+
+
+# ---------------------------------------------------------------- verdict (grille du protocole)
+def safety_verdicts(dec):
+    """Chaque système, chaque scénario : FAR et FRR face aux seuils de sûreté FIXÉS AVANT les mesures."""
     out = []
-    for r in e[:k]:
-        st = (r.get("request") or {}).get("state")
-        txt = " | ".join(f"{a}: {str(b)[:160]}" for a, b in (st or {}).items()) if isinstance(st, dict) else str(st)[:200]
-        out.append({"task": r["task"], "gold": r["gold"], "pred": r["pred"], "conf": r["conf"], "state": txt})
+    for sc, T in C.SAFETY.items():
+        for s, d in (dec.get(sc) or {}).items():
+            for metric in ("far", "frr"):
+                r = d[metric]
+                if not r["n"]:
+                    continue
+                lim = T[metric]
+                lo, hi = r["ci"]
+                label = "respecté" if hi <= lim else "dépassé" if lo > lim else "inconclusif"
+                out.append({"scenario": sc, "system": s, "metric": metric, "p": r["p"], "k": r["k"], "n": r["n"], "ci": r["ci"], "limit": lim, "label": label})
     return out
-
-
-# ---------- synthèse et verdict ----------
-def verdict(Q, cal, lat, det, price, lim, rb):
-    """Applique la grille FIXÉE dans PROTOCOL.md.  Renvoie des constats, jamais une opinion."""
-    v = {"par_tache": {}, "global": []}
-    refs = [s for s in Q["systems"] if s != "jev"]
-    for task in Q["tasks"]:
-        prs = [p for p in Q["pairs"] if p["task"] == task]
-        if not prs:
-            continue
-        v["par_tache"][task] = [{"vs": p["vs"], "label": p["label"], "diff": p["diff"], "lo": p["lo"], "hi": p["hi"], "cost_ratio": p["cost_ratio"],
-                                 "recommande": p["label"] in ("supérieur", "équivalent") and p["cost_ratio"] == p["cost_ratio"] and p["cost_ratio"] >= P["gain_cout_significatif"]} for p in prs]
-    # calibration
-    if cal.get("pooled"):
-        e, (lo, hi) = cal["pooled"]["ece"], cal["pooled"]["ece_ci"]
-        # le biais de l'ECE est positif sur petit échantillon : on ne conclut « bonne » que si la borne HAUTE est sous le seuil
-        lab = ("bonne" if hi <= P["ece_bon"] else "acceptable" if hi <= P["ece_acceptable"] else "mauvaise" if lo > P["ece_acceptable"] else "inconclusive")
-        v["global"].append(("calibration", lab, f"ECE {e:.3f} [IC 95 % {lo:.3f} – {hi:.3f}] sur {cal['pooled']['n']} réponses" if hi == hi else f"ECE {e:.3f} sur {cal['pooled']['n']} réponses (trop peu pour un intervalle)"))
-    # latence
-    if lat["serial"].get("jev"):
-        j = lat["serial"]["jev"]
-        for s, d in lat["serial"].items():
-            if s != "jev" and d["p50"] == d["p50"] and j["p50"] == j["p50"] and d["p50"] and j["p50"]:
-                r = d["p50"] / j["p50"]
-                v["global"].append((f"latence vs {s}", "nettement plus rapide" if r >= P["gain_latence_significatif"] else "comparable ou plus lent", f"p50 {j['p50']:.3f}s contre {d['p50']:.3f}s (×{r:.1f})"))
-    # déterminisme
-    if det.get("flip") is not None:
-        lo, hi = det["flip_ci"]
-        lab = "conforme" if hi <= P["flip_max_determinisme"] else "instable" if lo > P["flip_max_determinisme"] else "inconclusif"
-        v["global"].append(("déterminisme", lab, f"{det['flip']:.1%} des exemples changent d'étiquette sur au moins une répétition [IC 95 % {lo:.1%} – {hi:.1%}], {det['n_items']} exemples"))
-    # robustesse (Jev)
-    for r in rb["noise"]:
-        if r["system"] == "jev" and r["variant"] == "noise:600:before":          # le protocole (H7) fixe 600 tokens ; les autres niveaux sont descriptifs
-            lo, hi = r["drop_ci"]
-            lab = "résiste" if hi <= P["chute_bruit_max"] else "sensible au bruit" if lo > P["chute_bruit_max"] else "inconclusif"
-            v["global"].append((f"bruit {r['variant']} : {r['task']}", lab, f"chute {r['drop']:+.1%} [{lo:+.1%} ; {hi:+.1%}]"))
-    for r in rb["shuffle"]:
-        if r["system"] == "jev":
-            lo, hi = M.wilson(round(r["flip"] * r["n"]), r["n"])
-            lab = "stable" if hi <= P["flip_permutation_max"] else "dépend de l'ordre des options" if lo > P["flip_permutation_max"] else "inconclusif"
-            v["global"].append((f"{r['variant']} : {r['task']}", lab, f"{r['flip']:.1%} d'étiquettes changées [IC 95 % {lo:.1%} – {hi:.1%}], n = {r['n']}"))
-    # prix
-    if price.get("ratio_median"):
-        v["global"].append(("prix", "conforme au tarif annoncé" if price["tol_ok"] else "écart au tarif annoncé", f"coût facturé / (tokens × 0,042 $/M) = {price['ratio_median']:.3f}"))
-    # limites annoncées
-    for task in SY.SYNTH_IDS:
-        c = lim["cells"].get((task, "jev"))
-        if c:
-            lab = ("limite confirmée (non utilisable)" if c["ci"][1] < P["utilisable"] else "limite non confirmée (utilisable)" if c["ci"][0] >= P["utilisable"] else "inconclusif")
-            v["global"].append((f"limite annoncée : {task}", lab, f"précision {c['acc']:.0%} [{c['ci'][0]:.0%}–{c['ci'][1]:.0%}], hasard {c['chance']:.0%}, seuil d'usage {P['utilisable']:.0%}"))
-    return v
 
 
 def apply_meta(meta):
-    """Restaure ce que le processus de run connaissait : options découvertes et tâches personnalisées (sinon un rapport relu
-    plus tard validerait n'importe quelle étiquette et différerait de celui du run)."""
-    for tid, spec in (meta.get("custom_tasks") or {}).items():
-        if tid not in T.TASKS:
-            T.TASKS[tid] = T.Task(tid, spec.get("title", tid), spec["primitive"], spec.get("lang", "fr"), spec["instructions"], spec["options"],
-                                  ("", "", ""), None, text_key=spec.get("text_key", "text"), fam="personnalisée")
-    for tid, opts in (meta.get("task_options") or {}).items():
-        if tid in T.TASKS and not T.TASKS[tid].options:
-            T.TASKS[tid].options = opts
+    """Réservé : conserve l'interface (le rapport relu plus tard n'a besoin d'aucun état du processus du run)."""
+    return meta
 
 
 def run(store):
     recs = store.read()
     meta = store.meta()
-    apply_meta(meta)
     rows = tidy(recs)
-    Q = quality(rows)
-    cal, lat, thr, pr = calibration(rows), latency(rows), throughput(recs), pricing(rows, meta)
-    rb, det, lim, mu = robustness(rows), determinism(rows), limits(rows), multi(rows)
-    vd = verdict(Q, cal, lat, det, pr, lim, rb)
+    cat = scenario_categorie(rows)
+    dec = {sc: scenario_decision(rows, sc) for sc in ("sens", "neutralite", "pro_contre")}
+    pr = {sc: pairs(rows, sc) for sc in ("sens", "neutralite", "pro_contre")}
     samples = {}
     for r in rows:
         if r["experiment"] == "latency" and r["ok"] and r["wall_s"] is not None:
             samples.setdefault(r["system"], []).append(r["wall_s"])
-    return {"latency_samples": samples, "resolved_models": sorted({r["resolved_model"] for r in rows if r["system"] == "jev" and r["resolved_model"]}), "meta": meta, "n_calls": len(recs), "quality": Q, "calibration": cal, "latency": lat, "throughput": thr, "pricing": pr, "robust": rb,
-            "determinism": det, "limits": lim, "multi": mu, "errors": confident_errors(rows), "verdict": vd,
-            "spend": sum(r["cost"] for r in rows if r["cost"] is not None), "by_system_spend": {k[0]: sum(r["cost"] for r in rs if r["cost"] is not None) for k, rs in _by(rows, "system").items()}}
+    return {"meta": meta, "n_calls": len(recs), "categorie": cat, "decisions": dec, "pairs": pr, "safety": safety_verdicts(dec),
+            "recalibration": recalibration(rows), "latency": latency(rows), "latency_samples": samples, "throughput": throughput(recs), "cost": cost(rows, meta),
+            "determinism": determinism(rows), "robust": robustness(rows), "multi": multi(rows), "worst": worst_errors(rows),
+            "resolved_models": sorted({r["resolved_model"] for r in rows if r["system"] == "jev" and r["resolved_model"]}),
+            "spend": sum(r["cost"] for r in rows if r["cost"] is not None),
+            "by_system_spend": {k[0]: sum(r["cost"] for r in rs if r["cost"] is not None) for k, rs in _by(rows, "system").items()},
+            "n_items": {sc: len({r["item"] for r in rows if r["scenario"] == sc and r["experiment"] == "quality"}) for sc in ORDER}}

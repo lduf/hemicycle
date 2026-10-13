@@ -1,19 +1,23 @@
 name: jev-lab
-# Étude de Jev (voir jev_lab/PROTOCOL.md). Manuel uniquement : chaque exécution dépense des crédits OpenRouter.
+# Étude de Jev sur les usages réels du pipeline hémicycle (voir jev_lab/PROTOCOL.md).
+# Manuel uniquement : chaque exécution dépense des crédits OpenRouter (plafond dur).
 on:
   workflow_dispatch:
     inputs:
       suite:
-        description: "smoke (quelques centimes) | standard (~3 $ avec 2 références) | full"
+        description: "smoke (quelques centimes) | standard (jeu d'essai complet, toutes les expériences)"
         default: smoke
         type: choice
-        options: [smoke, standard, full]
+        options: [smoke, standard]
       baselines:
         description: "références : familles (claude-petit,claude-grand,gpt-petit,gemini-flash) ou identifiants exacts"
         default: "claude-petit,claude-grand"
       budget:
-        description: "plafond de dépense en $ (arrêt net)"
-        default: "5"
+        description: "plafond de dépense en $ pour le run entier (arrêt net)"
+        default: "6"
+      gen_model:
+        description: "modèle qui réécrit les fiches pour tester la détection de biais (famille ou identifiant) ; vide = variantes déjà committées"
+        default: ""
       run_name:
         description: "nom du run (le réutiliser pour reprendre) ; vide = identifiant du workflow"
         default: ""
@@ -31,10 +35,20 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Préalable — clé, schéma de réponse, coût (échec fermé)
+      - run: pip install -r requirements.txt
+      - name: Tests (le banc et le pipeline qu'il mesure)
+        run: python -m unittest discover -s tests
+      - name: Titres officiels des scrutins (jeu d'essai du sens du vote)
+        run: python -m pipeline.ingest
+      - name: Préalable — clé et format de réponse lu par le pipeline (échec fermé)
         run: |
           test -n "$OPENROUTER_API_KEY" || { echo "::error::secret OPENROUTER_API_KEY absent (Settings > Secrets and variables > Actions)"; exit 1; }
-          python -m jev_lab ping
+          python -m jev_lab ping --baselines "${{ inputs.baselines }}"
+      - name: Variantes de neutralité (réécritures par un modèle de langage)
+        if: ${{ inputs.gen_model != '' }}
+        run: python -m jev_lab gen-variants --gen-model "${{ inputs.gen_model }}" --budget 2
+      - name: Jeu d'essai
+        run: python -m jev_lab items
       - name: Estimation du coût
         run: python -m jev_lab plan --suite "${{ inputs.suite }}" --baselines "${{ inputs.baselines }}" --budget "${{ inputs.budget }}"
       - name: Étude
@@ -47,5 +61,7 @@ jobs:
         if: always()
         with:
           name: jev-lab-${{ env.RUN }}
-          path: jev_lab/runs/${{ env.RUN }}
+          path: |
+            jev_lab/runs/${{ env.RUN }}
+            content/bench
           retention-days: 90

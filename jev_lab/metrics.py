@@ -181,3 +181,22 @@ def bootstrap_clusters(groups, stat, b=1000, seed=1, alpha=0.05):
     n = len(groups)
     est = sorted(stat([x for _ in range(n) for x in groups[rnd.randrange(n)]]) for _ in range(b))
     return est[int(alpha / 2 * b)], est[int((1 - alpha / 2) * b) - 1]
+
+
+def newcombe_paired(n11, n10, n01, n00, z=1.96):
+    """Intervalle de Newcombe (méthode 10) pour la différence p1 − p2 de deux proportions APPARIÉES.
+    n11 : les deux « oui » ; n10 : seul le 1ᵉʳ ; n01 : seul le 2ᵉ ; n00 : aucun.  Reste honnête quand les événements sont rares
+    (contrairement au bootstrap, qui donne [0 ; 0] dès qu'il n'y a aucun désaccord observé)."""
+    n = n11 + n10 + n01 + n00
+    if n == 0:
+        return float("nan"), float("nan"), float("nan")
+    p1, p2 = (n11 + n10) / n, (n11 + n01) / n
+    l1, u1 = wilson(n11 + n10, n, z)
+    l2, u2 = wilson(n11 + n01, n, z)
+    den = (n11 + n10) * (n01 + n00) * (n11 + n01) * (n10 + n00)
+    phi = (n11 * n00 - n10 * n01) / math.sqrt(den) if den > 0 else 0.0
+    phi = max(-1.0, min(1.0, phi))
+    d = p1 - p2
+    lo = d - math.sqrt(max(0.0, (p1 - l1) ** 2 + (u2 - p2) ** 2 - 2 * phi * (p1 - l1) * (u2 - p2)))
+    hi = d + math.sqrt(max(0.0, (u1 - p1) ** 2 + (p2 - l2) ** 2 - 2 * phi * (u1 - p1) * (p2 - l2)))
+    return d, lo, hi

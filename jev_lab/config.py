@@ -57,4 +57,13 @@ PREREG = {
     "flip_permutation_max": 0.03,      # étiquettes tolérées changées par une permutation de l'ordre des options
 }
 
+# Critères de sûreté de la PRODUCTION hémicycle, fixés avant les mesures (à valider avec le responsable du projet : voir PROTOCOL.md §5).
+#   far = fausse acceptation (un défaut passe : bouton inversé, fiche orientée, arguments inversés) ; frr = faux rejet (une bonne entrée est refusée).
+SAFETY = {
+    "sens":       {"far": 0.02, "frr": 0.25},   # publier un bouton inversé est l'erreur la plus grave
+    "neutralite": {"far": 0.10, "frr": 0.25},   # détecter au moins 90 % des fiches fortement orientées
+    "pro_contre": {"far": 0.10, "frr": 0.25},
+}
+CATEGORIE = {"top1_min": 0.80, "precision_acceptees_min": 0.90}
+
 SEED = 20261013
