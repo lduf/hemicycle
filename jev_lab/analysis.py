@@ -163,6 +163,21 @@ def scenario_decision(rows, scenario):
                 neg = [(_score_of(scenario, r["verdict"]) if r["valid"] else hi) for r in bad]
                 d["auc"] = M.auc(pos + neg, [True] * len(pos) + [False] * len(neg))
                 d["cv_cut"] = _cv_cut(neg, pos, higher_pos=False)        # on cherche la coupure « accepter si score ≥ c » : défauts = score bas
+        T = classify.THRESHOLDS
+        rej = [r for r in good if r["valid"] and not r["accept"]]
+        if scenario == "pro_contre" and good:
+            d["causes_frr"] = {"réponse inexploitable ou appel échoué": sum(1 for r in good if not r["valid"]),
+                               f"pro_ok ou con_ok < {T['pro_con_ok']}": sum(1 for r in rej if r["verdict"]["min_ok"] < T["pro_con_ok"]),
+                               f"argument pas « de fond » (< {T['substance_ok']})": sum(1 for r in rej if min(r["verdict"]["pro_fond"], r["verdict"]["con_fond"]) < T["substance_ok"]),
+                               f"équilibre hors de {T['balance']}": sum(1 for r in rej if not (T["balance"][0] <= r["verdict"]["equilibre"] <= T["balance"][1])),
+                               "_rejetées": len(rej)}
+        if scenario == "sens" and good:
+            d["causes_frr"] = {"réponse inexploitable ou appel échoué": sum(1 for r in good if not r["valid"]),
+                               f"P(correspond) < {T['dir_ok']}": sum(1 for r in rej if r["verdict"]["p_correspond"] < T["dir_ok"]),
+                               "sens lu autrement que prévu": sum(1 for r in rej if r["verdict"]["sens"] != r["verdict"]["attendu"]), "_rejetées": len(rej)}
+        if scenario == "neutralite" and good:
+            d["causes_frr"] = {"réponse inexploitable ou appel échoué": sum(1 for r in good if not r["valid"]),
+                               f"note > {HC.NEUTRALITY_MAX}": sum(1 for r in rej if r["verdict"]["score"] > HC.NEUTRALITY_MAX), "_rejetées": len(rej)}
         if scenario == "sens":
             ex = [r for r in good]
             d["sens_ok"] = rate([bool(r["valid"] and r["verdict"]["sens"] == r["verdict"]["attendu"]) for r in ex])
@@ -198,8 +213,9 @@ def pairs(rows, scenario):
             diff_, lo, hi = M.newcombe_paired(n11, bb, cc, n00)
             d = P["delta_non_inferiorite"]
             # erreurs : plus bas = mieux.  « Équivalent » exige les DEUX bornes dans ±δ (jamais déduit d'un simple zéro désaccord)
-            label = ("plus sûr" if hi < 0 else "plus risqué" if lo > 0 else "équivalent (à ± 3 points)" if (lo > -d and hi < d) else
-                     "pas plus risqué que +3 points" if hi < d else "inconclusif")
+            better, worse = (("plus sûr", "plus risqué") if metric == "far" else ("moins de faux rejets", "plus de faux rejets"))
+            label = (better if hi < 0 else worse if lo > 0 else "équivalent (à ± 3 points)" if (lo > -d and hi < d) else
+                     "pas pire que +3 points" if hi < d else "inconclusif")
             res.append({"scenario": scenario, "vs": ref, "metric": metric, "n": len(ids), "jev": M.mean(ja), "ref": M.mean(jb), "diff": diff_,
                         "lo": lo, "hi": hi, "p": M.mcnemar_exact(bb, cc), "label": label})
     for r, a_ in zip(res, M.holm([r["p"] for r in res])):
@@ -218,7 +234,7 @@ def recalibration(rows):
     bad = [r["verdict"]["score"] for r in rs if r["gold"]["accept"] is False]
     if good and bad:
         T = HC.NEUTRALITY_MAX
-        out["neutralite"] = {"seuil": f"note > {T}", "actuel_far": sum(1 for x in bad if x <= T) / len(bad), "actuel_frr": sum(1 for x in good if x > T) / len(good),
+        out["neutralite"] = {"seuil": f"note > {T} (c'est toute la règle)", "actuel_far": sum(1 for x in bad if x <= T) / len(bad), "actuel_frr": sum(1 for x in good if x > T) / len(good),
                              "cv": _cv_cut(bad, good, higher_pos=True), "n_good": len(good), "n_bad": len(bad)}
     # sens : acceptation si P(correspond) >= dir_ok
     rs = [r for r in q if r["scenario"] == "sens" and r["valid"]]
@@ -226,7 +242,7 @@ def recalibration(rows):
     bad = [r["verdict"]["p_correspond"] for r in rs if r["gold"]["accept"] is False]
     if good and bad:
         T = classify.THRESHOLDS["dir_ok"]
-        out["sens"] = {"seuil": f"P(correspond) ≥ {T}", "actuel_far": sum(1 for x in bad if x >= T) / len(bad), "actuel_frr": sum(1 for x in good if x < T) / len(good),
+        out["sens"] = {"seuil": f"P(correspond) ≥ {T} — ce critère seul (la règle complète exige aussi le bon sens)", "actuel_far": sum(1 for x in bad if x >= T) / len(bad), "actuel_frr": sum(1 for x in good if x < T) / len(good),
                        "cv": _cv_cut(bad, good, higher_pos=False), "n_good": len(good), "n_bad": len(bad)}
     # pro/contre : min(pro_ok, con_ok) >= pro_con_ok
     rs = [r for r in q if r["scenario"] == "pro_contre" and r["valid"]]
@@ -234,7 +250,7 @@ def recalibration(rows):
     bad = [r["verdict"]["min_ok"] for r in rs if r["gold"]["accept"] is False]
     if good and bad:
         T = classify.THRESHOLDS["pro_con_ok"]
-        out["pro_contre"] = {"seuil": f"min(pro_ok, con_ok) ≥ {T} (les autres critères de la règle ne sont pas modifiés)",
+        out["pro_contre"] = {"seuil": f"min(pro_ok, con_ok) ≥ {T} — ce critère seul (la règle complète en cumule 3 autres)",
                              "actuel_far": sum(1 for x in bad if x >= T) / len(bad), "actuel_frr": sum(1 for x in good if x < T) / len(good),
                              "cv": _cv_cut(bad, good, higher_pos=False), "n_good": len(good), "n_bad": len(bad),
                              "far_regle_complete": None}
@@ -337,9 +353,12 @@ def robustness(rows):
         if len(ps) < 10:
             continue
         cor = lambda r: 1.0 if (r["valid"] and r["verdict"]["correct"]) else 0.0
-        diff = [cor(b) - cor(x) for b, x in ps]
-        out.append({"system": s, "variant": v, "n": len(ps), "acc_base": M.mean(cor(b) for b, _ in ps), "acc_var": M.mean(cor(x) for _, x in ps), "drop": M.mean(diff),
-                    "drop_ci": M.bootstrap_ci(diff), "flip": M.mean(1.0 if (b["valid"] and x["valid"] and b["verdict"]["pred"] != x["verdict"]["pred"]) else 0.0 for b, x in ps)})
+        n11 = sum(1 for b, x in ps if cor(b) and cor(x))
+        n10 = sum(1 for b, x in ps if cor(b) and not cor(x))
+        n01 = sum(1 for b, x in ps if cor(x) and not cor(b))
+        dd, lo, hi = M.newcombe_paired(n11, n10, n01, len(ps) - n11 - n10 - n01)       # reste honnête quand aucun cas ne change
+        out.append({"system": s, "variant": v, "n": len(ps), "acc_base": M.mean(cor(b) for b, _ in ps), "acc_var": M.mean(cor(x) for _, x in ps), "drop": dd,
+                    "drop_ci": (lo, hi), "flip": M.mean(1.0 if (b["valid"] and x["valid"] and b["verdict"]["pred"] != x["verdict"]["pred"]) else 0.0 for b, x in ps)})
     return out
 
 

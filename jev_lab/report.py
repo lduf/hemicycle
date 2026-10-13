@@ -207,7 +207,7 @@ def build(R, out_dir):
         for s in systems:
             d = dec["neutralite"].get(s)
             if d:
-                sc_ = ", ".join(f"{g}: {f(v, 2)}" for g, v in (d.get("scores") or {}).items())
+                sc_ = ", ".join(f"{g}: {f(d['scores'][g], 2)}" for g in ("orig", "pour", "contre", "subtil") if g in (d.get("scores") or {}))
                 w(f"| {sysname(s)} | {sc_} | {rc(d['frr'])} | {rc(d['far'])} | {rc(d['soft_reject'])} | {f(d.get('auc'))} |")
         w("")
     # pro/contre
@@ -223,12 +223,27 @@ def build(R, out_dir):
                 w(f"| {sysname(s)} | {rc(d['frr'])} | " + " | ".join(rc(g.get(k)) for k in ("permutes", "contre_tronque", "contre_d_une_autre_mesure")) + f" | {rc(d['far'])} | {f(d.get('auc'))} |")
         w("")
 
+    # ---- pourquoi les bonnes entrées sont refusées
+    causes = [(sc, dec[sc].get("jev", {}).get("causes_frr")) for sc in ("sens", "neutralite", "pro_contre")]
+    if any(c for _, c in causes):
+        w("### 2.5 Pourquoi Jev refuse de bonnes entrées\n")
+        w("Une règle de production qui combine plusieurs conditions **cumule** leurs erreurs : une fiche est refusée si *une seule* condition échoue. Les causes ci-dessous peuvent se recouvrir "
+          "(une fiche peut échouer à plusieurs conditions). À lire avant de toucher à un seuil : c'est la condition qui refuse le plus qu'il faut regarder.\n")
+        w("| Scénario (Jev) | Bonnes entrées | Rejetées | Cause |\n|---|---|---|---|")
+        for sc, c in causes:
+            if c:
+                n_good = dec[sc]["jev"]["frr"]["n"]
+                for k, v in c.items():
+                    if not k.startswith("_"):
+                        w(f"| {SCN[sc]} | {n_good} | {c['_rejetées']} | {k} : **{v}** |")
+        w("")
+
     # ---- seuils
     w("## 3. Les seuils actuels sont-ils bien placés ?\n")
     w("Pour Jev : ce que fait le seuil de production aujourd'hui, et le seuil que suggère l'étude (choisi sur une moitié des cas, évalué sur l'autre : jamais optimisé sur ce qui le mesure).\n")
     rcb = R["recalibration"]
     if rcb:
-        w("| Décision | Seuil actuel | Fausses acceptations | Faux rejets | Seuil suggéré (validation croisée) | à ce seuil : détection / fausse alerte |\n|---|---|---|---|---|---|")
+        w("| Décision | Seuil actuel | Fausses acceptations (ce critère seul) | Faux rejets (ce critère seul) | Seuil suggéré (validation croisée) | à ce seuil : détection / fausse alerte |\n|---|---|---|---|---|---|")
         for sc, d in rcb.items():
             cv = d.get("cv")
             sug = (f"{'rejeter si ≥' if sc == 'neutralite' else 'rejeter si ≤'} {f(cv['full_cut'], 2)}" if cv else "–")
