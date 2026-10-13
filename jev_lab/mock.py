@@ -31,6 +31,18 @@ def u_item(task, item):
     return int(hashlib.md5(f"{task}|{item}".encode()).hexdigest()[:8], 16) / 0xFFFFFFFF
 
 
+def _scenario_answer(fam, task, item, variant, qname, rnd, salt=""):
+    """Réussite STABLE par exemple (deux tirages figés : difficulté u, aléa v) et confiance calibrée par construction (+ un léger excès).
+    p = probabilité de réussite de CET exemple ; la moyenne des p sur les exemples vaut la précision du scénario."""
+    off = "" if qname in ("q", "a") else "#" + qname
+    u, v = u_item(task + salt + off, item), u_item(task + salt + "#v" + off, item)
+    a = acc_eff(fam, task, variant)
+    p = min(0.995, max(0.30, a + 0.6 * (0.5 - u)))
+    ok = v < p
+    conf = min(0.999, max(0.34, p + 0.03 + rnd.gauss(0, 0.03)))
+    return ok, conf
+
+
 def acc_eff(fam, task, variant):
     a = ACC[fam].get(task, .8)
     m = re.match(r"noise:(\d+):", variant or "")
@@ -38,6 +50,8 @@ def acc_eff(fam, task, variant):
         a -= NOISE_SENS[fam] * math.log2(1 + int(m.group(1)) / 150)
     if variant == "nodesc":
         a -= 0.02 if fam == "jev" else 0.01
+    if (variant or "").startswith("shuffle"):
+        a -= 0.012 if fam == "jev" else 0.006       # légère sensibilité à l'ordre des options (SCÉNARIO)
     return max(0.05, a)
 
 
@@ -125,11 +139,7 @@ def make_handler(S):
             if not S.scenario:
                 ok = S.rnd.random() < S.jev_acc
                 return ok, min(0.999, max(0.34, S.rnd.gauss(S.jev_acc, 0.12)))
-            u = (u_item(task, item) + (0 if qname in ("q", "a") else u_item("q", qname))) % 1.0
-            ok = u < acc_eff(fam, task, variant)
-            # confiance décroissante avec la difficulté (+ bruit) : plutôt bien calibrée, légèrement optimiste
-            conf = 0.985 - 0.62 * u ** 1.4 + S.rnd.gauss(0, 0.035)
-            return ok, min(0.999, max(0.34, conf))
+            return _scenario_answer(fam, task, item, variant, qname, S.rnd)
 
         def _decisions(self, body, gold, meta):
             nt = _tok({"s": body["state"], "q": body["questions"]})
@@ -149,8 +159,8 @@ def make_handler(S):
                     ans[name] = {"type": "noul", "noul": round(conf if yes else 1 - conf, 3)}
                 elif q["type"] == "choice":
                     opts = list(q["criteria"])
-                    wrong = [o for o in opts if o != g] or opts
-                    pick = g if (ok and g in opts) else wrong[int(u_item(task, item) * 997) % len(wrong)]
+                    wrong = sorted(o for o in opts if o != g) or sorted(opts)
+                    pick = g if (ok and g in opts) else wrong[int(u_item(task + "#w", item) * 997) % len(wrong)]
                     rest = [o for o in opts if o != pick]
                     pr = {o: round((1 - conf) / max(1, len(rest)), 3) for o in rest}
                     pr[pick] = round(conf, 3)
@@ -178,9 +188,8 @@ def make_handler(S):
             txt = body["messages"][-1]["content"]
             task, item, variant = meta.get("task") or "ag_news", meta.get("item") or "?", meta.get("variant") or "base"
             if S.scenario:
-                u = u_item(task + "#" + fam, item)
-                ok = u < acc_eff(fam, task, variant)
-                conf = min(0.95, max(0.5, 0.92 - 0.4 * u))
+                ok, conf = _scenario_answer(fam, task, item, variant, "q", S.rnd, salt="@" + fam)
+                conf = min(0.95, max(0.5, conf))
             else:
                 ok = S.rnd.random() < S.chat_acc.get(key, S.chat_acc.get("default", .9))
                 conf = 0.8
@@ -193,8 +202,8 @@ def make_handler(S):
                 out = {"level": lv, "confidence": round(conf, 2)}
             else:
                 opts = re.findall(r"^- ([^:\n]+):", txt, re.M)
-                wrong = [o for o in opts if o != g] or ["?"]
-                out = {"choice": g if (ok and g is not None) else wrong[int(u_item(task, item) * 997) % len(wrong)], "confidence": round(conf, 2)}
+                wrong = sorted(o for o in opts if o != g) or ["?"]
+                out = {"choice": g if (ok and g is not None) else wrong[int(u_item(task + "#w", item) * 997) % len(wrong)], "confidence": round(conf, 2)}
             content = json.dumps(out)
             cost = (nin * pin + 30 * pout) / 1e6
             with S.lock:

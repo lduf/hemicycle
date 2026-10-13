@@ -116,11 +116,15 @@ def quality(rows):
             bb = sum(1 for x, y in zip(ja, jb) if x and not y)
             cc = sum(1 for x, y in zip(ja, jb) if y and not x)
             lo, hi = M.bootstrap_ci(diff)
+            md = M.mean(diff)
+            sd = math.sqrt(sum((x - md) ** 2 for x in diff) / max(1, len(diff) - 1))
             cj = [a[i]["cost"] for i in common if a[i]["cost"] is not None]
             cr = [b[i]["cost"] for i in common if b[i]["cost"] is not None]
             ratio = (M.mean(cr) / M.mean(cj)) if cj and cr and M.mean(cj) > 0 else float("nan")        # coûts sur les MÊMES exemples
             ps.append({"task": task, "vs": s, "n": len(common), "acc_jev": M.mean(ja), "acc_ref": M.mean(jb), "diff": M.mean(diff), "lo": lo, "hi": hi,
-                       "p": M.mcnemar_exact(bb, cc), "b": bb, "c": cc, "cost_ratio": ratio,
+                       "p": M.mcnemar_exact(bb, cc), "b": bb, "c": cc, "cost_ratio": ratio, "sd": sd,
+                       # exemples appariés nécessaires pour que la borne basse de l'IC dépasse −δ si les deux systèmes sont réellement égaux
+                       "n_needed": int(math.ceil((1.96 * sd / P["delta_non_inferiorite"]) ** 2)),
                        "valid_ref": M.mean(1.0 if b[i]["valid"] else 0.0 for i in common), "valid_jev": M.mean(1.0 if a[i]["valid"] else 0.0 for i in common)})
     adj = M.holm([p["p"] for p in ps])
     for p, a in zip(ps, adj):
@@ -135,6 +139,9 @@ def quality(rows):
         if min(p["valid_ref"], p["valid_jev"]) < 0.9:
             p["label"] += " — comparaison peu fiable (moins de 90 % de réponses exploitables)"
     res["pairs"] = ps
+    if ps:
+        res["power"] = {"n": M.percentile([p["n"] for p in ps], 50), "halfwidth": M.percentile([(p["hi"] - p["lo"]) / 2 for p in ps], 50),
+                        "n_needed": M.percentile([p["n_needed"] for p in ps], 50), "n_needed_max": max(p["n_needed"] for p in ps)}
     return res
 
 

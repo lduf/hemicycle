@@ -139,6 +139,12 @@ def build(R, out_dir, store=None):
 
     # ---- verdict en tête
     w("## 1. Ce qu'on peut dire (grille du protocole)\n")
+    pw = Q.get("power")
+    if pw:
+        w(f"**Puissance statistique (à lire avant tout le reste).** Avec {f(pw['n'], 0)} exemples appariés par tâche, l'intervalle sur l'écart de précision fait en médiane "
+          f"**± {pc(pw['halfwidth'])}**. Pour établir qu'un système est équivalent à 3 points près, il faut en médiane **≈ {f(pw['n_needed'], 0)} exemples appariés** "
+          f"(jusqu'à {pw['n_needed_max']} pour les tâches les plus bruitées). Quand n est plus petit, « inconclusif » est le résultat **normal** : il ne dit pas que Jev est mauvais, "
+          f"il dit que l'échantillon ne permet pas de trancher.\n")
     if vd["par_tache"]:
         w("Pour chaque tâche et chaque référence : Jev est-il **supérieur**, **équivalent** (non-inférieur à 3 points près), **inférieur** ou **inconclusif** ? "
           "« Recommandé » = au moins équivalent ET au moins 10 fois moins cher.\n")
@@ -168,9 +174,9 @@ def build(R, out_dir, store=None):
             w(f"| {T.TASKS[task].title} | {s} | {c['n']} | {pc(c['valid_rate'])} | {c['errors']} | {pc(c['acc'])} {ci(c['acc_ci'])} | {extra} | {usd(c['cost_1k'])} | {usd(c['cost_per_correct'])} |")
     if Q["pairs"]:
         w("\n### Comparaisons appariées (mêmes exemples)\n")
-        w("| Tâche | Réf. | n | Jev | Réf. | Écart [IC 95 %] | p (McNemar) | p (Holm) | Lecture |\n|---|---|---|---|---|---|---|---|---|")
+        w("| Tâche | Réf. | n | Jev | Réf. | Écart [IC 95 %] | p (McNemar) | p (Holm) | n pour trancher à 3 pts | Lecture |\n|---|---|---|---|---|---|---|---|---|---|")
         for p in Q["pairs"]:
-            w(f"| {T.TASKS[p['task']].title} | {p['vs']} | {p['n']} | {pc(p['acc_jev'])} | {pc(p['acc_ref'])} | {pc(p['diff'])} [{pc(p['lo'])} ; {pc(p['hi'])}] | {f(p['p'], 4)} | {f(p['p_holm'], 4)} | {p['label']} |")
+            w(f"| {T.TASKS[p['task']].title} | {p['vs']} | {p['n']} | {pc(p['acc_jev'])} | {pc(p['acc_ref'])} | {pc(p['diff'])} [{pc(p['lo'])} ; {pc(p['hi'])}] | {f(p['p'], 4)} | {f(p['p_holm'], 4)} | {p['n_needed']} | {p['label']} |")
         w("")
 
     # ---- calibration
@@ -250,22 +256,42 @@ def build(R, out_dir, store=None):
     # ---- robustesse
     rb = R["robust"]
     w("## 6. Robustesse\n")
+
+    def order(rows):
+        return sorted(rows, key=lambda r: (list(T.TASKS).index(r["task"]), r["system"] != "jev", r["system"]))
+
     if rb["noise"]:
-        w("**Détails non pertinents** (texte administratif ajouté avant/après) : chute de précision par rapport à la même consigne sans bruit.\n")
-        w("| Tâche | Système | Variante | n | Base | Avec bruit | Chute [IC 95 %] | Étiquettes changées |\n|---|---|---|---|---|---|---|---|")
-        for r in rb["noise"]:
-            w(f"| {T.TASKS[r['task']].title} | {r['system']} | {r['variant']} | {r['n']} | {pc(r['acc_base'])} | {pc(r['acc_var'])} | {pc(r['drop'])} {ci(r['drop_ci'])} | {pc(r['flip'])} |")
+        cols = ["noise:150:before", "noise:600:before", "noise:2400:before", "noise:600:after", "noise:2400:both"]
+        w("**Détails non pertinents** (texte administratif ajouté). Chute de précision par rapport à la même consigne sans bruit ; "
+          "ex. « +10,0 % * » = 10 points perdus ; * = l'intervalle de confiance exclut 0. Les « ± x » en pied de cellule sont les étiquettes changées.\n")
+        w("| Tâche | Système | n | " + " | ".join(c.replace("noise:", "").replace(":", " ") + " tok" for c in cols) + " |\n|---|---|---|" + "---|" * len(cols))
+        seen = {}
+        for r in order(rb["noise"]):
+            seen.setdefault((r["task"], r["system"]), {})[r["variant"]] = r
+        for (task, sys_), d in seen.items():
+            def cell(c):
+                r = d.get(c)
+                if not r:
+                    return "–"
+                star = " *" if (r["drop_ci"][0] > 0 or r["drop_ci"][1] < 0) else ""
+                return f"{100 * r['drop']:+.1f} %{star}"
+            n = next(iter(d.values()))["n"]
+            w(f"| {T.TASKS[task].title} | {sys_} | {n} | " + " | ".join(cell(c) for c in cols) + " |")
         w("")
     if rb["shuffle"]:
-        w("**Ordre des options permuté** (une réponse correcte ne devrait pas dépendre de l'ordre)\n")
-        w("| Tâche | Système | Variante | n | Base | Permuté | Étiquettes changées |\n|---|---|---|---|---|---|---|")
-        for r in rb["shuffle"]:
-            w(f"| {T.TASKS[r['task']].title} | {r['system']} | {r['variant']} | {r['n']} | {pc(r['acc_base'])} | {pc(r['acc_var'])} | {pc(r['flip'])} |")
+        w("**Ordre des options permuté** : part des exemples dont l'étiquette change quand on permute l'ordre des options (une bonne réponse ne devrait pas en dépendre).\n")
+        w("| Tâche | Système | n | permutation 1 | permutation 2 |\n|---|---|---|---|---|")
+        seen = {}
+        for r in order(rb["shuffle"]):
+            seen.setdefault((r["task"], r["system"]), {})[r["variant"]] = r
+        for (task, sys_), d in seen.items():
+            n = next(iter(d.values()))["n"]
+            w(f"| {T.TASKS[task].title} | {sys_} | {n} | {pc(d['shuffle1']['flip']) if 'shuffle1' in d else '–'} | {pc(d['shuffle2']['flip']) if 'shuffle2' in d else '–'} |")
         w("")
     if rb["desc"]:
         w("**Sans descriptions** (libellés seuls)\n")
         w("| Tâche | Système | n | Avec descriptions | Sans | Chute [IC 95 %] |\n|---|---|---|---|---|---|")
-        for r in rb["desc"]:
+        for r in order(rb["desc"]):
             w(f"| {T.TASKS[r['task']].title} | {r['system']} | {r['n']} | {pc(r['acc_base'])} | {pc(r['acc_var'])} | {pc(r['drop'])} {ci(r['drop_ci'])} |")
         w("")
 

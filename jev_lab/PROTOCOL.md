@@ -56,6 +56,25 @@ Taille « standard » : 200 exemples par tâche pour Jev, 100 pour les référen
 Largeur typique de l'intervalle à 95 % sur une précision de 85 % avec n = 200 : ± 5 points ; avec n = 100 : ± 7 points.
 **On ne conclut jamais sur la seule moyenne** : lire l'intervalle.
 
+### Puissance : combien d'exemples faut-il pour trancher ?
+
+Pour dire « Jev est équivalent à une référence à 3 points près », la borne basse de l'intervalle sur l'écart apparié doit dépasser −3 points.
+Si les deux systèmes sont réellement égaux et ne diffèrent que sur une part *d* des exemples (exemples « discordants »), l'écart a un écart-type ≈ √d, et il faut
+n ≈ (1,96 × √d / marge)² exemples appariés :
+
+| Part d'exemples discordants | marge 3 points | marge 5 points |
+|---|---|---|
+| 5 % | ≈ 210 | ≈ 77 |
+| 10 % | ≈ 430 | ≈ 154 |
+| 20 % | ≈ 850 | ≈ 307 |
+
+Conséquence : **avec 100 exemples par référence, presque toutes les comparaisons sortiront « inconclusif »**, quelle que soit la qualité de Jev.
+Ce n'est pas un défaut de l'outil, c'est de l'arithmétique. Trois façons de le traiter, à choisir **avant** le run :
+(1) accepter que `standard` ne tranche que les écarts francs (≥ 10 points) et sert à repérer où creuser ;
+(2) élargir à `full` (250 exemples par référence) sur les tâches qui comptent pour vous ;
+(3) assouplir la marge à 5 points (à écrire ici, daté, avant de mesurer).
+Le rapport calcule, pour chaque comparaison, le nombre d'exemples qui aurait été nécessaire.
+
 ## 5. Hypothèses et seuils (grille de lecture)
 
 Les cinq premières correspondent à ce que l'éditeur laisse entendre ; elles sont formulées pour pouvoir être **réfutées**.

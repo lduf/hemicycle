@@ -7,6 +7,13 @@ Banc d'essai **indépendant** (il ne dépend pas du projet hémicycle) pour rép
 > Toute la chaîne a été testée contre un serveur factice (`python -m jev_lab demo`, 20 tests) ; ses rapports portent un bandeau « DONNÉES SIMULÉES ».
 > Les seuils de lecture sont dans [`PROTOCOL.md`](PROTOCOL.md), fixés avant les mesures.
 
+## Voir à quoi ressemble un rapport avant de dépenser quoi que ce soit
+
+[`exemple_simule/REPORT.md`](exemple_simule/REPORT.md) est un rapport complet produit contre un **serveur factice** qui joue un « Jev imaginaire »
+(forts sur la classification simple, faible sur l'arithmétique, sensible au bruit : tout cela est écrit à la main dans `mock.py`).
+Les chiffres ne disent **rien** de Jev ; ils montrent la forme du rapport, les sections, la façon dont les verdicts sont formulés et ce que « inconclusif » veut dire.
+Pour le régénérer : `python -m jev_lab demo --suite standard` (gratuit, 6 minutes).
+
 ## Démarrage en 5 minutes
 
 ```bash
