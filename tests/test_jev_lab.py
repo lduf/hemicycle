@@ -3,6 +3,19 @@ from pipeline import classify, config as HC
 from jev_lab import config as C, metrics as M, client as CL, store as ST, budget as B, runner as R, analysis as A, report as RP, mock, hemicycle as H
 
 
+def _faux_scrutins():
+    """data/ n'est pas versionné (CI) : titres officiels fictifs, un par fiche + des cas certains par construction."""
+    d = {str(q["n"]): {"n": q["n"], "titre": f"l'ensemble de la proposition de loi n° {q['n']} visant à tester."} for q in H._fiches({"legacy", "pending_review", "published", "blocked"})}
+    for i in range(1000, 1040):
+        d[str(i)] = {"n": i, "titre": f"l'ensemble du projet de loi relatif au sujet {i}."}
+        d[str(i + 1000)] = {"n": i + 1000, "titre": f"l'amendement n° {i} de suppression de l'article {i % 7 + 1}."}
+    return d
+
+
+if not os.path.exists(os.path.join(HC.DATA, "scrutins.json")):
+    H.scrutins = _faux_scrutins
+
+
 def rec(scenario, item, system="jev", group="", gold=None, answers=None, ok=True, experiment="quality", variant="base", rep=0, meta=None, text=None, cost=4.2e-6):
     """Un enregistrement du journal, tel que le client l'écrit."""
     r = {"experiment": experiment, "task": scenario, "scenario": scenario, "item": item, "group": group, "system": system, "model": "m", "variant": variant,
