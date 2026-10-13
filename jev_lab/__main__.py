@@ -164,7 +164,7 @@ def cmd_plan(a):
     st = ST.RunStore(os.path.join(C.RUNS, "_plan"))
     lab, _ = build_lab(a, st)
     rows, total = lab.plan(a.suite, a.robust_baselines)
-    print(f"Suite {a.suite} — estimation (jetons estimés à 3,6 caractères ; sortie des modèles de chat estimée à 60 tokens par question)\n")
+    print(f"Suite {a.suite} — estimation (jetons estimés à 3,6 caractères ; sortie des modèles de chat estimée à 600 tokens par appel)\n")
     for exp, by in rows:
         print(f"  {exp:16}" + "   ".join(f"{s}: {n} appels ≈ {c:.4f} $" for s, (n, c) in by.items()))
     print(f"\nTOTAL estimé ≈ {total:.2f} $   (plafond demandé : {a.budget} $)")

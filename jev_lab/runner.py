@@ -70,7 +70,7 @@ class Lab:
             return Job(base, system, tokens_estimate(json.dumps({"s": item["state"], "q": qs}, ensure_ascii=False)), 0,
                        lambda: c.call(base, item["state"], qs, gold=gq))
         prompt = classify.claude_prompt(item["state"], qs)
-        return Job(base, system, tokens_estimate(prompt), 60 * len(qs), lambda: c.call(base, prompt, gold=gq))
+        return Job(base, system, tokens_estimate(prompt), 600, lambda: c.call(base, prompt, gold=gq))
 
     # ----- exécution -----
     def execute(self, jobs, workers=None, shuffle=True, label=""):

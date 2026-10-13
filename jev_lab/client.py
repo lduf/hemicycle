@@ -160,7 +160,7 @@ SYS_PROMPT = ("Tu es un système de décision. Réponds UNIQUEMENT par un objet 
 class ChatClient:
     kind = "chat"
 
-    def __init__(self, model, label=None, timeout=120, max_tokens=1000, mock_gold=False):
+    def __init__(self, model, label=None, timeout=120, max_tokens=4000, mock_gold=False):
         self.model = model
         self.name = label or model
         self.timeout = timeout
