@@ -1,0 +1,81 @@
+{
+ "cat": "Justice & sécurité",
+ "cat_check": {
+  "classifier": "Justice & sécurité",
+  "confidence": null,
+  "engine": "claude",
+  "writer": "Transports"
+ },
+ "checks": {
+  "date": "2026-10-13",
+  "direction": {
+   "answer": "{\"correspond\": 0.85, \"sens\": \"adopter\", \"attendu\": \"adopter\", \"engine\": \"claude\"}",
+   "ok": true
+  },
+  "neutrality": {
+   "issues": [],
+   "judge": {
+    "bias": "droite",
+    "model": "claude-opus-5-5",
+    "reasons": [
+     "Le titre « Sûreté dans les transports » est neutre, mais le bouton « Pour le renforcement de la sûreté » reprend le cadrage favorable du texte : on peut difficilement être contre la « sûreté ».",
+     "Le résumé dit que le texte « renforce la sûreté » au lieu de dire qu'il « vise à » la renforcer : il présente comme un fait l'objectif des partisans.",
+     "Le résumé insiste sur les garde-fous (« consentement exprès », « dans certaines circonstances », « un court moment », caméras « qui n'enregistrent pas en permanence »). Ces précisions rassurent et affaiblissent par avance l'argument des opposants sur les libertés.",
+     "Les deux camps ont des arguments de poids comparable et chiffrés, mais sur des périodes différentes (2018-2023 pour les partisans, 2022-2023 pour les opposants). Chaque camp choisit sa période, et la fiche ne le signale pas.",
+     "Le dernier argument des opposants (dispositions supprimées en commission) n'est pas vraiment un argument contre le texte. Il affaiblit un peu leur position.",
+     "Omissions : la fiche ne précise pas quelles dispositions le Conseil constitutionnel a censurées. Elle ne cite pas non plus de critiques identifiées, comme celles de la Défenseure des droits ou de la CNIL, ni de risque de contrôles discriminatoires.",
+     "L'accroche est plutôt neutre : elle décrit concrètement ce qui peut arriver à l'usager, sans jugement."
+    ],
+    "score": 1.0
+   },
+   "ok": true
+  },
+  "pro_con": {
+   "con_fond": 0.8,
+   "con_ok": 0.85,
+   "engine": "claude",
+   "equilibre": 1.0,
+   "ok": true,
+   "pro_fond": 0.95,
+   "pro_ok": 0.95
+  }
+ },
+ "con": "Les opposants relèvent que les palpations, les fouilles, les caméras et les interdictions d'accès touchent aux libertés individuelles. Ils notent aussi que le nombre de victimes de vols ou de violences a baissé de 10 % entre 2022 et 2023, et que plusieurs dispositions, comme la saisie d'objets, ont été supprimées en commission.",
+ "date": "2025-03-18",
+ "generator": {
+  "date": "2026-10-13",
+  "model": "claude-sonnet-5-5"
+ },
+ "hook": "Dans les gares et les transports en commun, tu peux être concerné·e par un contrôle de bagages, une palpation, une interdiction d'accès ou un enregistrement par caméra.",
+ "kind": "texte",
+ "label": "le renforcement de la sûreté dans les transports",
+ "n": 1041,
+ "polarity": "adopt",
+ "pro": "Les partisans citent 4 146 introductions d'objets à risque sur le réseau de la SNCF en 2023, contre 1 447 en 2018. Ils notent aussi que le nombre de victimes de violences sexuelles a augmenté de 22 % entre 2018 et 2023, et que donner plus de moyens aux agents répond à ces risques.",
+ "reviewed_hash": null,
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/1041"
+  },
+  {
+   "label": "Source 2",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/PIONANR5L17B0134.html"
+  },
+  {
+   "label": "Source 3",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/RAPPANR5L17B0636.html"
+  },
+  {
+   "label": "Source 4",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/dossiers/DLR5L16N49176"
+  }
+ ],
+ "status": "pending_review",
+ "subkind": "ensemble",
+ "sum": "Ce texte renforce la sûreté dans les transports publics en donnant plus de moyens aux agents de sécurité de la SNCF et de la RATP. Ces agents peuvent faire des palpations de sécurité avec le consentement exprès de la personne, dans certaines circonstances, et intervenir un court moment sur la voie publique près des gares. Les agents chargés de la police du transport peuvent interdire l'accès aux gares et stations à une personne qui trouble l'ordre public. Des caméras individuelles, qui n'enregistrent pas en permanence, sont prévues pour les agents de contrôle, et à titre expérimental pour les conducteurs de bus et d'autocars.",
+ "surp": "Les extraits décrivent des versions antérieures du texte, et la version finale votée a pu être modifiée par rapport à elles. Le dossier législatif indique aussi que le Conseil constitutionnel a jugé la loi partiellement conforme.",
+ "title": "Sûreté dans les transports",
+ "updated": "2026-10-13"
+}

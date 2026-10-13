@@ -1,0 +1,69 @@
+{
+ "blocked_reason": "arguments pour/contre non pertinents ou déséquilibrés",
+ "cat": "Écologie & énergie",
+ "cat_check": {
+  "classifier": "Écologie & énergie",
+  "confidence": null,
+  "engine": "claude",
+  "writer": "Écologie & énergie"
+ },
+ "checks": {
+  "date": "2026-10-13",
+  "direction": {
+   "answer": "{\"correspond\": 0.95, \"sens\": \"adopter\", \"attendu\": \"adopter\", \"engine\": \"claude\"}",
+   "ok": true
+  },
+  "neutrality": {
+   "issues": [],
+   "judge": {
+    "bias": "autre",
+    "model": "claude-opus-5-5",
+    "reasons": [
+     "Biais léger en faveur du texte, et non d'un camp gauche/droite : les partisans ont des arguments fondés sur des bénéfices concrets (sécurité d'approvisionnement, prix « stables et abordables »), alors que les opposants n'ont que des objections de forme (« trop précis »). Leurs critiques de fond sont omises.",
+     "Le texte a été rejeté par des opposants de bords différents, mais la fiche ne montre pas cette diversité. Elle omet les critiques sur la place trop grande du nucléaire, le niveau des renouvelables, l'éolien ou le coût. Le lecteur peut croire que le rejet tenait à des détails techniques.",
+     "Le résumé détaille d'abord et surtout le nucléaire. Pour les renouvelables, il ne cite que le photovoltaïque et ne dit rien de l'éolien. Les objectifs de sobriété et d'efficacité énergétique ne sont pas présentés.",
+     "L'échéance « au moins 10 gigawatts d'ici 2026 » semble peu plausible pour construire de nouvelles capacités, surtout avec un horizon 2035. Il faut vérifier s'il s'agit d'engager la construction ou de la réaliser.",
+     "L'accroche réduit le texte à l'électricité alors qu'il couvre l'énergie au sens large (hydrogène, stockage du carbone, fiscalité). Ce cadrage met en avant le volet nucléaire.",
+     "Le vocabulaire est globalement factuel et la fiche reconnaît honnêtement ses limites dans « Pourquoi ça peut surprendre ». Le titre et le bouton sont neutres."
+    ],
+    "score": 2.0
+   },
+   "ok": true
+  },
+  "pro_con": null
+ },
+ "con": "Les opposants jugent trop précis certains objectifs fixés dans la loi : les parts de nucléaire en pourcentage, la construction d'au moins 10 gigawatts dont six réacteurs, et le retraitement des combustibles comme principal mode de gestion. Ils critiquent aussi la suppression de l'objectif sur l'autoconsommation et l'abrogation de l'objectif de hausse de la part carbone dans les taxes sur l'énergie.",
+ "date": "2025-06-24",
+ "generator": {
+  "date": "2026-10-13",
+  "model": "claude-sonnet-5-5"
+ },
+ "hook": "Le texte fixe dans la loi les grands choix sur la façon dont la France produira son électricité dans les années à venir.",
+ "kind": "texte",
+ "label": "la loi de programmation nationale sur l'énergie",
+ "n": 2653,
+ "polarity": "adopt",
+ "pro": "Les partisans mettent en avant des objectifs chiffrés et datés, qui donnent des repères pour la production d'électricité, la sécurité d'approvisionnement et des prix stables et abordables. Ils soulignent aussi que le texte prévoit à la fois du nucléaire, des énergies renouvelables, de l'hydrogène et du stockage.",
+ "reviewed_hash": null,
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/2653"
+  },
+  {
+   "label": "Source 2",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/PIONANR5L17B0463.html"
+  },
+  {
+   "label": "Source 3",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/dossiers/DLR5L16N49849"
+  }
+ ],
+ "status": "blocked",
+ "subkind": "ensemble",
+ "sum": "Ce texte inscrit dans la loi des objectifs chiffrés pour la politique de l'énergie, à l'horizon 2030, 2035 et 2050. Pour le nucléaire, il vise plus de 60 % de la production d'électricité en 2030, le maintien en fonctionnement des installations existantes et la construction d'au moins 10 gigawatts de nouvelles capacités d'ici 2026, dont six réacteurs de grande puissance. Il fixe aussi des objectifs pour le photovoltaïque (au moins 50 gigawatts en 2030), l'hydrogène et le stockage du dioxyde de carbone. Voter pour, c'était adopter l'ensemble du texte. Il a été rejeté.",
+ "surp": "Un vote sur l'ensemble du texte regroupe de nombreuses mesures, et on peut approuver certaines et en refuser d'autres. Les extraits ne chiffrent ni le coût des objectifs ni leur effet sur les factures.",
+ "title": "Programmation nationale de l'énergie à l'horizon 2035",
+ "updated": "2026-10-13"
+}

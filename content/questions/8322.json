@@ -1,0 +1,83 @@
+{
+ "blocked_reason": "sens du vote : {\"correspond\": 0.05, \"sens\": \"supprimer\", \"attendu\": \"supprimer\", \"engine\": \"claude\"}",
+ "cat": "Famille & social",
+ "cat_check": {
+  "classifier": "Famille & social",
+  "confidence": null,
+  "engine": "claude",
+  "writer": "Famille & social"
+ },
+ "checks": {
+  "date": "2026-10-13",
+  "direction": {
+   "answer": "{\"correspond\": 0.05, \"sens\": \"supprimer\", \"attendu\": \"supprimer\", \"engine\": \"claude\"}",
+   "ok": false
+  },
+  "neutrality": {
+   "issues": [],
+   "judge": {
+    "bias": "autre",
+    "model": "claude-opus-5-5",
+    "reasons": [
+     "Biais en faveur du texte gouvernemental (maintien de l'article), et non un biais gauche/droite net : la fiche reprend le cadrage et les objectifs de l'article sans reprendre ceux de ses détracteurs.",
+     "Résumé asymétrique : l'article est décrit uniquement par ses objectifs affichés (« fixer plus rapidement le statut juridique », « sous le contrôle du juge des enfants », « encourageait l'adoption simple »). Rien n'y indique les risques ou les critiques qui ont motivé la suppression.",
+     "L'argument des partisans de la suppression est faible et mal formulé. Sa première phrase est descriptive (« Les règles… changent la procédure ») et n'explique pas pourquoi c'est un problème : risque de séparer durablement des enfants de parents vulnérables, malades ou handicapés, ou en situation de précarité. Le préjudice n'est jamais nommé.",
+     "L'argument des opposants est rédigé en termes concrets et centrés sur l'enfant (« statut juridique stable », « solutions durables », « éviter des ruptures répétées »), ce qui le rend plus convaincant que l'argument adverse.",
+     "L'accroche reprend le vocabulaire des promoteurs du texte : « accélère la fixation du statut juridique des enfants placés » a une connotation positive. Elle n'évoque pas l'autre enjeu, les droits des parents et le risque de rupture prématurée du lien familial.",
+     "La rubrique « Pourquoi ça peut surprendre » insiste sur les garanties déjà ajoutées avant le vote. Elle suggère ainsi que la suppression complète était excessive, ce qui est un jugement implicite.",
+     "Omissions : on ne sait pas qui a déposé l'amendement ni avec quel résultat de vote, et les acteurs critiques (associations de parents, défenseurs des droits des personnes handicapées) ne sont pas mentionnés.",
+     "Points positifs : pas d'adjectifs ouvertement militants, titre et bouton neutres et factuels, et l'adoption de l'amendement est indiquée clairement."
+    ],
+    "score": 2.0
+   },
+   "ok": true
+  },
+  "pro_con": {
+   "con_fond": 0.95,
+   "con_ok": 0.95,
+   "engine": "claude",
+   "equilibre": 1.0,
+   "ok": true,
+   "pro_fond": 0.72,
+   "pro_ok": 0.8
+  }
+ },
+ "con": "Garder l'article permettrait d'agir plus tôt pour donner un statut juridique stable aux enfants dont le retour en famille n'est plus envisageable. Il ouvrirait aussi des solutions durables, comme l'accueil par une famille agréée ou l'adoption simple, afin d'éviter des ruptures répétées de lieux d'accueil.",
+ "date": "2026-07-16",
+ "generator": {
+  "date": "2026-10-13",
+  "model": "claude-sonnet-5-5"
+ },
+ "hook": "Ça change quoi pour moi ? Cela décide si la loi accélère ou non la fixation du statut juridique des enfants placés qui ne peuvent plus retourner dans leur famille.",
+ "kind": "mesure",
+ "label": "la suppression de l'article 2 sur le délaissement parental et l'adoption simple",
+ "n": 8322,
+ "polarity": "remove",
+ "pro": "Les règles sur le délaissement parental changent la procédure, et l'une d'elles prévoit qu'une mesure de protection ou un trouble psychiatrique durable ne soit pas en soi un obstacle au délaissement. Supprimer l'article éviterait aussi que le refus des parents de consentir à l'adoption soit considéré comme abusif sans garanties suffisantes.",
+ "reviewed_hash": null,
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/8322"
+  },
+  {
+   "label": "Source 2",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/PRJLANR5L17B2841.html"
+  },
+  {
+   "label": "Source 3",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/RAPPANR5L17B3018.html"
+  },
+  {
+   "label": "Source 4",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/dossiers/DLR5L17N54372"
+  }
+ ],
+ "status": "blocked",
+ "subkind": "amendement",
+ "sum": "L'article 2 du projet de loi visait à fixer plus rapidement le statut juridique des enfants confiés à l'aide sociale à l'enfance, lorsque le retour en famille n'est plus envisageable. Il modifiait la procédure de délaissement parental pour la rendre plus rapide. Il permettait aussi de confier des enfants en risque de délaissement, ou sans perspective de retour familial, à des familles agréées en vue d'adoption, sous le contrôle du juge des enfants. Il encourageait enfin l'adoption simple pour certains enfants confiés. L'amendement de suppression a été adopté : voter pour revenait à retirer ces dispositions du texte.",
+ "surp": "Avant ce vote, des garanties avaient déjà été ajoutées à l'article sur le délaissement parental et l'adoption simple. Le vote porte donc sur sa suppression complète, pas sur sa modification.",
+ "title": "Suppression de l'article 2 : délaissement parental et adoption simple",
+ "updated": "2026-10-13"
+}

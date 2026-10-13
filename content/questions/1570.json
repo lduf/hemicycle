@@ -1,0 +1,16 @@
+{
+ "blocked_reason": "sources insuffisantes pour décrire la mesure et ses critiques",
+ "date": "2025-05-06",
+ "n": 1570,
+ "polarity": "adopt",
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/1570"
+  }
+ ],
+ "status": "blocked",
+ "title": "l'article unique de la proposition de résolution européenne appelant à la libération immédiate et inconditionnelle de Boualem Sansal.",
+ "updated": "2026-10-13"
+}

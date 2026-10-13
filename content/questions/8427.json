@@ -1,0 +1,82 @@
+{
+ "cat": "Agriculture",
+ "cat_check": {
+  "classifier": "Agriculture",
+  "confidence": null,
+  "engine": "claude",
+  "writer": "Agriculture"
+ },
+ "checks": {
+  "date": "2026-10-13",
+  "direction": {
+   "answer": "{\"correspond\": 0.97, \"sens\": \"adopter\", \"attendu\": \"adopter\", \"engine\": \"claude\"}",
+   "ok": true
+  },
+  "neutrality": {
+   "issues": [],
+   "judge": {
+    "bias": "droite",
+    "model": "claude-opus-5-5",
+    "reasons": [
+     "Le titre et le bouton reprennent tels quels l'intitulé officiel (« protection », « souveraineté », « urgence »). Ces mots ont une connotation positive et ne sont ni mis entre guillemets ni présentés comme l'intitulé officiel, ce qui favorise le vote « pour ».",
+     "Le résumé, qui se présente comme factuel, décrit surtout les mesures consensuelles ou populaires : contrôle des importations, produits de l'UE dans les cantines, stockage de l'eau, protection des troupeaux. Les mesures les plus contestées (réintroduction de néonicotinoïdes, assouplissement des règles sur les produits phytosanitaires) n'y figurent pas et n'apparaissent que dans l'argument des opposants. Elles passent ainsi pour une opinion plutôt que pour un contenu du texte.",
+     "L'accroche reprend uniquement deux mesures favorables au texte (cantines, importations) et passe sous silence le volet environnemental.",
+     "Les verbes ne sont pas symétriques : les partisans « estiment » et « jugent », alors que les opposants « craignent ». Ce dernier verbe renvoie à une émotion et à une hypothèse.",
+     "L'argument des partisans sur l'eau est formulé comme une évidence concrète (« stocker l'eau tombée en hiver permet de s'en servir l'été »). Celui des opposants reste abstrait et technique (« cadre local actuel », « rapports de force entre usages »), donc moins compréhensible et moins convaincant pour le grand public.",
+     "L'expression « protection des troupeaux face à la prédation » reprend le cadrage des défenseurs du texte, sans dire de quoi il s'agit concrètement (statut du loup, tirs).",
+     "Points positifs : chaque camp a deux arguments, il n'y a pas d'adjectif ouvertement partisan, et la section « Pourquoi ça peut surprendre » est équilibrée.",
+     "Le biais est classé « droite » parce que le cadrage est favorable au texte, soutenu surtout par la droite et le centre. Il s'agit davantage d'un biais « pro-texte » que d'un parti pris idéologique explicite."
+    ],
+    "score": 2.0
+   },
+   "ok": true
+  },
+  "pro_con": {
+   "con_fond": 0.93,
+   "con_ok": 0.94,
+   "engine": "claude",
+   "equilibre": 1.05,
+   "ok": true,
+   "pro_fond": 0.96,
+   "pro_ok": 0.95
+  }
+ },
+ "con": "Les opposants craignent que le texte affaiblisse la protection de l'environnement, avec la réintroduction de certains néonicotinoïdes et un allègement des règles sur les produits phytosanitaires. Ils estiment aussi que les changements sur la gestion de l'eau remettent en cause le cadre local actuel et accentuent les rapports de force entre usages.",
+ "date": "2026-07-20",
+ "generator": {
+  "date": "2026-10-13",
+  "model": "claude-sonnet-5-5"
+ },
+ "hook": "Ça peut changer l'origine des produits servis dans les cantines publiques et les règles sur les produits alimentaires importés.",
+ "kind": "texte",
+ "label": "la loi d'urgence pour la protection et la souveraineté agricoles",
+ "n": 8427,
+ "polarity": "adopt",
+ "pro": "Les partisans estiment que le texte protège les producteurs français d'une concurrence qui ne respecte pas les mêmes normes. Ils jugent aussi que stocker l'eau tombée en hiver permet de s'en servir l'été face aux sécheresses.",
+ "reviewed_hash": null,
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/8427"
+  },
+  {
+   "label": "Source 2",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/PRJLANR5L17B2632.html"
+  },
+  {
+   "label": "Source 3",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/RAPPANR5L17B3067.html"
+  },
+  {
+   "label": "Source 4",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/dossiers/DLR5L17N54085"
+  }
+ ],
+ "status": "pending_review",
+ "subkind": "ensemble",
+ "sum": "Ce texte, dans sa version issue de la commission mixte paritaire, rassemble de nombreuses mesures sur l'agriculture et prévoit une reconnaissance et un accompagnement prioritaire pour des « projets d'avenir agricole » portés par les acteurs d'un territoire. Il permet de suspendre ou d'encadrer l'importation de denrées contenant des résidus de substances interdites dans l'Union européenne. Il interdit aussi aux restaurants collectifs publics de proposer des repas dont les produits ne viennent pas de l'Union européenne, sauf absence d'offre. Il comprend enfin des mesures sur le stockage de l'eau, la protection des troupeaux face à la prédation et les négociations commerciales. Le vote a eu lieu le 20 juillet 2026 et le texte a été adopté.",
+ "surp": "Un vote sur l'ensemble ne permet pas de se prononcer mesure par mesure : le texte réunit des sujets très différents, comme l'eau, les importations, la restauration collective, l'élevage et les prix. Plus de 70 articles restaient en discussion avant l'accord entre les deux assemblées.",
+ "title": "Loi d'urgence pour la protection et la souveraineté agricoles",
+ "updated": "2026-10-13"
+}

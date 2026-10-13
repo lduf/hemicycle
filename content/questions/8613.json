@@ -1,0 +1,16 @@
+{
+ "blocked_reason": "sources insuffisantes pour décrire la mesure et ses critiques",
+ "date": "2026-10-08",
+ "n": 8613,
+ "polarity": "remove",
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/8613"
+  }
+ ],
+ "status": "blocked",
+ "title": "l'amendement n° 7 de Mme Belluco de suppression de l'article unique de la proposition de loi visant à abroger les zones à faibles émissions-mobilités (première lecture).",
+ "updated": "2026-10-13"
+}

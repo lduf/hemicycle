@@ -1,0 +1,82 @@
+{
+ "cat": "Économie & fiscalité",
+ "cat_check": {
+  "classifier": "Économie & fiscalité",
+  "confidence": null,
+  "engine": "claude",
+  "writer": "Économie & fiscalité"
+ },
+ "checks": {
+  "date": "2026-10-13",
+  "direction": {
+   "answer": "{\"correspond\": 0.95, \"sens\": \"adopter\", \"attendu\": \"adopter\", \"engine\": \"claude\"}",
+   "ok": true
+  },
+  "neutrality": {
+   "issues": [],
+   "judge": {
+    "bias": "aucun",
+    "model": "claude-opus-5-5",
+    "reasons": [
+     "Le titre et le bouton reprennent l'intitulé officiel du projet de loi. Le mot « simplification » a une connotation positive voulue par ses auteurs, mais c'est le nom légal du texte. Le biais est donc faible et courant pour ce type de fiche.",
+     "Le résumé reste factuel et descriptif. Il emploie des verbes neutres (supprime, prévoit, relève, modifie) et n'utilise pas d'adjectif évaluatif.",
+     "Les deux camps ont un poids comparable : deux phrases chacun, de longueur similaire. Les jugements sont clairement attribués (« estiment », « soulignent », « relèvent », « jugent »).",
+     "La mesure la plus clivante, la suppression des zones à faibles émissions (ZFE), n'est défendue par aucun argument des partisans. Leurs justifications habituelles, comme l'exclusion des ménages modestes, l'équité territoriale ou le coût du remplacement des véhicules, sont omises. Sur ce point précis, seule la critique des opposants est présentée, ce qui crée un léger déséquilibre.",
+     "Inversement, les opposants ne disent rien du relèvement du seuil des marchés publics passés sans publicité ni mise en concurrence. Les risques souvent avancés (transparence, favoritisme) sont absents, alors que les partisans présentent cette mesure comme un progrès (« facilite l'accès à la commande publique »). Les deux omissions se compensent en partie.",
+     "Les opposants évoquent la limitation de l'artificialisation des sols et les conseils économiques, sociaux et environnementaux régionaux (CESER), deux sujets absents du résumé. Le lecteur ne peut donc pas évaluer ces points. C'est un défaut de cohérence plus qu'un biais orienté.",
+     "L'accroche met en avant les ZFE à côté des entreprises, ce qui est justifié par l'impact sur le grand public. Elle n'est pas orientée.",
+     "La rubrique « Pourquoi ça peut surprendre » ne présente rien de surprenant : elle décrit seulement la procédure (commission mixte paritaire, décision du Conseil constitutionnel, promulgation). Elle est neutre mais peu informative, et elle ne précise pas quelles dispositions ont été censurées."
+    ],
+    "score": 1.0
+   },
+   "ok": true
+  },
+  "pro_con": {
+   "con_fond": 0.72,
+   "con_ok": 0.96,
+   "engine": "claude",
+   "equilibre": 1.1,
+   "ok": true,
+   "pro_fond": 0.95,
+   "pro_ok": 0.97
+  }
+ },
+ "con": "Les opposants relèvent que la suppression de dispositions comme les zones à faibles émissions ou la limitation de l'artificialisation des sols n'a fait l'objet d'aucune étude d'impact. Ils jugent que supprimer les zones à faibles émissions néglige la qualité de l'air et la santé, et que laisser les régions supprimer leur conseil économique, social et environnemental retire un lieu de rencontre des forces vives.",
+ "date": "2025-06-17",
+ "generator": {
+  "date": "2026-10-13",
+  "model": "claude-sonnet-5-5"
+ },
+ "hook": "Si tu travailles dans une entreprise, en crées une ou en diriges une, plusieurs règles et démarches changent, et le texte touche aussi aux zones à faibles émissions des villes.",
+ "kind": "texte",
+ "label": "la loi de simplification de la vie économique",
+ "n": 2458,
+ "polarity": "adopt",
+ "pro": "Les partisans estiment que le texte allège les démarches des entreprises et réduit le nombre d'instances administratives. Ils soulignent qu'il facilite l'accès à la commande publique et rééquilibre les relations avec les banques et les assurances au bénéfice des entrepreneurs.",
+ "reviewed_hash": null,
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/2458"
+  },
+  {
+   "label": "Source 2",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/PRJLANR5L17B0481.html"
+  },
+  {
+   "label": "Source 3",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/RAPPANR5L17B2357.html"
+  },
+  {
+   "label": "Source 4",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/dossiers/DLR5L16N49868"
+  }
+ ],
+ "status": "pending_review",
+ "subkind": "ensemble",
+ "sum": "Ce projet de loi rassemble de nombreuses mesures pour simplifier les règles qui s'appliquent aux entreprises. Il supprime plusieurs comités, commissions et observatoires. Il prévoit aussi que toute nouvelle instance créée par la loi disparaisse au bout de trois ans, sauf si elle prouve son utilité. Il relève le seuil en dessous duquel un acheteur public peut passer un marché de travaux sans publicité ni mise en concurrence préalables. Il modifie aussi les relations entre les entreprises et les banques ou les assurances, et supprime les zones à faibles émissions.",
+ "surp": "Après ce vote, des députés et des sénateurs se sont réunis pour s'accorder sur les dispositions restant en discussion. Le Conseil constitutionnel a ensuite jugé le texte partiellement conforme à la Constitution, et la loi a été promulguée le 26 mai 2026.",
+ "title": "Simplification de la vie économique",
+ "updated": "2026-10-13"
+}

@@ -1,0 +1,77 @@
+{
+ "blocked_reason": "sens du vote : {\"correspond\": 0.82, \"sens\": \"adopter\", \"attendu\": \"adopter\", \"engine\": \"claude\"}",
+ "cat": "Immigration",
+ "cat_check": {
+  "classifier": "Immigration",
+  "confidence": null,
+  "engine": "claude",
+  "writer": "Immigration"
+ },
+ "checks": {
+  "date": "2026-10-13",
+  "direction": {
+   "answer": "{\"correspond\": 0.82, \"sens\": \"adopter\", \"attendu\": \"adopter\", \"engine\": \"claude\"}",
+   "ok": false
+  },
+  "neutrality": {
+   "issues": [],
+   "judge": {
+    "bias": "gauche",
+    "model": "claude-opus-5-5",
+    "reasons": [
+     "Le titre, le bouton et le résumé sont factuels et décrivent fidèlement le dispositif, sans adjectif orienté.",
+     "Le choix des verbes n'est pas symétrique : les opposants « rappellent » que la liberté du mariage a valeur constitutionnelle, ce qui présente leur position comme un fait établi. Les partisans « estiment », et leur argument est en plus mis au conditionnel (« serait un indice »), ce qui prend de la distance avec leur position.",
+     "La rubrique « Pourquoi ça peut surprendre » se termine sur le fait que l'ampleur des mariages frauduleux est mal connue. Cela fragilise la justification des partisans, sans élément équivalent qui nuancerait la position des opposants (par exemple le nombre de signalements au parquet ou des cas documentés).",
+     "Le résumé insiste sur le fait que ces éléments ne conditionnent pas le mariage, ce qui est exact. Les deux camps sont toutefois présentés avec un poids comparable.",
+     "L'accroche en « tu » parle du point de vue du conjoint d'une personne étrangère. Le dispositif apparaît donc d'abord comme une contrainte personnelle, plutôt que comme un outil de contrôle des fraudes. L'effet de cadrage est léger.",
+     "Il manque un peu de contexte, utile aux deux camps : la jurisprudence du Conseil constitutionnel (décision de 2003 sur la liberté du mariage des étrangers en situation irrégulière) et des données chiffrées sur les saisines du procureur."
+    ],
+    "score": 1.0
+   },
+   "ok": true
+  },
+  "pro_con": {
+   "con_fond": 0.92,
+   "con_ok": 0.85,
+   "engine": "claude",
+   "equilibre": 1.0,
+   "ok": true,
+   "pro_fond": 0.75,
+   "pro_ok": 0.93
+  }
+ },
+ "con": "Les opposants rappellent que la liberté du mariage a valeur constitutionnelle. Selon eux, une situation irrégulière ne peut pas, à elle seule, faire obstacle à un mariage, ni être toujours considérée comme un indice sérieux d'absence de consentement.",
+ "date": "2025-06-26",
+ "generator": {
+  "date": "2026-10-13",
+  "model": "claude-sonnet-5-5"
+ },
+ "hook": "Si tu veux te marier avec une personne de nationalité étrangère, elle devra remettre à la mairie des éléments permettant d'apprécier sa situation de séjour.",
+ "kind": "mesure",
+ "label": "l'obligation, pour un futur époux étranger, de fournir à la mairie des éléments sur sa situation de séjour",
+ "n": 2742,
+ "polarity": "adopt",
+ "pro": "Les partisans estiment que l'officier de l'état civil doit pouvoir vérifier que le mariage correspond à une vraie intention matrimoniale, et qu'il manque aujourd'hui d'informations pour le faire. Pour eux, la situation de séjour serait un indice parmi d'autres, sans condition automatique pour se marier.",
+ "reviewed_hash": null,
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/2742"
+  },
+  {
+   "label": "Source 2",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/PIONANR5L17B1008.html"
+  },
+  {
+   "label": "Source 3",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/RAPPANR5L17B1583.html"
+  }
+ ],
+ "status": "blocked",
+ "subkind": "article",
+ "sum": "Cet article modifie le code civil pour obliger les futurs époux de nationalité étrangère à fournir à l'officier de l'état civil tout élément lui permettant d'apprécier leur situation au regard du séjour. Aujourd'hui, la liste des pièces demandées ne comprend rien sur le séjour, et l'officier de l'état civil ne peut pas exiger cette preuve. Ces éléments ne sont pas une condition pour publier les bans ou célébrer le mariage. L'officier de l'état civil peut en revanche s'en servir parmi les indices qu'il transmet au procureur de la République quand il doute de la validité d'un mariage. L'Assemblée nationale a adopté cet article.",
+ "surp": "Ce vote ne porte que sur l'obligation de fournir des éléments. L'interdiction de se marier en situation irrégulière et l'allongement du délai d'enquête du procureur font l'objet d'articles séparés. Le rapport indique aussi que l'ampleur des mariages frauduleux est mal connue.",
+ "title": "Éléments sur le séjour des futurs époux étrangers",
+ "updated": "2026-10-13"
+}
