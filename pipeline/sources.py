@@ -83,3 +83,13 @@ def rapport_url(dossier_html):
         return None
     h = re.search(r'href="(/dyn/opendata/RAPPANR5L17B\d+\.html)"', fetch_html(m.group(1)))
     return "https://www.assemblee-nationale.fr" + h.group(1) if h else None
+
+
+def fetch_excerpt(url, texte=14000, rapport=30000):
+    """Extrait utile d'une source pour la rédaction : le texte déposé commence à l'exposé des motifs ; un rapport commence après sa table des matières
+    (« Mesdames, Messieurs, ») et en garde davantage, car c'est là que figurent l'analyse et les critiques documentées."""
+    t = fetch_text(url, limit=10 ** 7)
+    if "RAPPANR" in url or "/rapports/" in url:
+        return t[body_start(t):][:rapport]
+    i = t.find("EXPOSÉ DES MOTIFS")
+    return (t[i:] if i >= 0 else t)[:texte]
