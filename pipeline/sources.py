@@ -1,5 +1,5 @@
 """Récupération des textes officiels qui nourrissent les fiches. Domaines autorisés uniquement."""
-import re, subprocess, html, time
+import os, re, subprocess, html, time
 from urllib.parse import urlparse
 from . import config as C
 
@@ -85,9 +85,10 @@ def rapport_url(dossier_html):
     return "https://www.assemblee-nationale.fr" + h.group(1) if h else None
 
 
-def fetch_excerpt(url, texte=14000, rapport=30000):
+def fetch_excerpt(url, texte=14000, rapport=None):
     """Extrait utile d'une source pour la rédaction : le texte déposé commence à l'exposé des motifs ; un rapport commence après sa table des matières
     (« Mesdames, Messieurs, ») et en garde davantage, car c'est là que figurent l'analyse et les critiques documentées."""
+    rapport = rapport or int(os.environ.get("HEMI_RAPPORT_CHARS", "30000"))
     t = fetch_text(url, limit=10 ** 7)
     if "RAPPANR" in url or "/rapports/" in url:
         return t[body_start(t):][:rapport]

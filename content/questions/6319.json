@@ -1,16 +1,70 @@
 {
- "blocked_reason": "aucun texte officiel exploitable",
+ "blocked_reason": "arguments pour/contre non pertinents ou déséquilibrés",
+ "cat": "Économie & fiscalité",
+ "cat_check": {
+  "classifier": "Économie & fiscalité",
+  "confidence": null,
+  "engine": "claude",
+  "writer": "Économie & fiscalité"
+ },
+ "checks": {
+  "date": "2026-10-13",
+  "direction": {
+   "answer": "{\"correspond\": 0.95, \"sens\": \"adopter\", \"attendu\": \"adopter\", \"engine\": \"claude\"}",
+   "ok": true
+  },
+  "neutrality": {
+   "issues": [],
+   "judge": {
+    "bias": "aucun",
+    "model": "claude-opus-5-5",
+    "reasons": [
+     "Le titre et le bouton reprennent l'intitulé officiel du projet de loi, sans qualificatif ajouté. Le verbe « durcit » et l'expression « soustraits à la solidarité nationale » sont mis dans la bouche des partisans ou restent descriptifs.",
+     "Les deux camps ont un poids comparable et sont présentés de la même façon (« Pour les partisans » / « Pour les opposants »). Chacun avance un chiffre et une préoccupation de fond.",
+     "Léger déséquilibre de construction : l'argument des partisans répond à l'avance à une critique des opposants (suspension limitée à trois mois, droit de présenter ses observations). Cette garantie figure aussi dans le résumé, elle est donc citée deux fois, ce qui renforce un peu la position favorable.",
+     "À l'inverse, l'argument des opposants est plus long et plus chiffré (deux tiers des dispositions, 80 à 100 milliards contre environ 14). Il est aussi soutenu indirectement par le résumé, dont les exemples concrets portent surtout sur les prestations sociales (RSA, suspension). Ces deux effets se compensent à peu près.",
+     "Incohérence de chiffres pouvant dérouter le lecteur : environ 13 milliards côté partisans, environ 14 milliards de fraude sociale côté opposants. On ne sait pas si les deux chiffres mesurent la même chose, ni quelles sont leurs sources.",
+     "Omissions : les sources des estimations (Cour des comptes, HCFiPS, syndicats, etc.) ne sont pas citées. Le résumé ne donne aucun exemple de mesure visant spécifiquement la fraude fiscale des entreprises ou des ménages aisés. Ce manque nuit surtout à la compréhension, sans orienter clairement le texte.",
+     "L'accroche et la section « Pourquoi ça peut surprendre » sont factuelles et neutres."
+    ],
+    "score": 1.0
+   },
+   "ok": true
+  },
+  "pro_con": null
+ },
+ "con": "Pour les opposants, près des deux tiers des dispositions visent les bénéficiaires de prestations, alors que la fraude fiscale est estimée à 80 à 100 milliards d'euros, contre environ 14 pour la fraude sociale. Ils craignent une suspicion à l'égard des personnes précaires, sans distinction suffisante entre fraude et erreur. Ils s'inquiètent aussi de la proportionnalité de pénalités pouvant atteindre plusieurs fois les montants perçus et d'une atteinte aux droits fondamentaux.",
  "date": "2026-05-05",
+ "generator": {
+  "date": "2026-10-13",
+  "model": "claude-sonnet-5-5"
+ },
+ "hook": "Les administrations pourront davantage se transmettre des informations pour contrôler les prestations sociales et les impôts, et les sanctions en cas de fraude sont renforcées.",
+ "kind": "texte",
+ "label": "la loi contre les fraudes sociales et fiscales",
  "n": 6319,
  "polarity": "adopt",
+ "pro": "Pour les partisans, près de 13 milliards d'euros par an sont soustraits à la solidarité nationale. Le texte donne aux services de meilleurs moyens pour détecter, sanctionner et recouvrer, et il met fin au cloisonnement entre services. Ils soulignent aussi que la suspension d'une prestation est limitée à trois mois et que la personne peut présenter ses observations.",
+ "reviewed_hash": null,
  "reviews": [],
  "sources": [
   {
    "label": "Scrutin officiel (Assemblée nationale)",
    "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/6319"
+  },
+  {
+   "label": "Source 2",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/PRJLANR5L17B2115.html"
+  },
+  {
+   "label": "Source 3",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/RAPPANR5L17B2701.html"
   }
  ],
  "status": "blocked",
- "title": "l'ensemble du projet de loi relatif à la lutte contre les fraudes sociales et fiscales (texte de la commission mixte paritaire).",
+ "subkind": "ensemble",
+ "sum": "Ce vote porte sur l'ensemble du projet de loi relatif à la lutte contre les fraudes sociales et fiscales, dans la version issue de l'accord entre députés et sénateurs. Le texte facilite l'échange d'informations entre administrations, organismes de sécurité sociale et départements. Il donne par exemple aux agents des départements un accès aux fichiers de l'administration fiscale pour lutter contre la fraude au revenu de solidarité active. Il prévoit que les organismes de sécurité sociale portent plainte au-delà d'un seuil fixé par décret, et qu'une suspension conservatoire de certaines prestations ne peut pas dépasser trois mois. Il durcit aussi les sanctions, avec un taux de majoration de 60 % pour le travail dissimulé en bande organisée et une garde à vue pouvant aller jusqu'à 96 heures pour l'escroquerie aux finances publiques en bande organisée.",
+ "surp": "Le texte compte plus d'une centaine d'articles, et ce vote porte sur l'ensemble : il ne permet pas de se prononcer mesure par mesure. Plusieurs articles discutés au fil de l'examen ont été retirés de la version finale.",
+ "title": "Loi contre les fraudes sociales et fiscales",
  "updated": "2026-10-13"
 }

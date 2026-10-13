@@ -1,0 +1,16 @@
+{
+ "blocked_reason": "sources insuffisantes pour décrire la mesure et ses critiques",
+ "date": "2025-10-30",
+ "n": 3274,
+ "polarity": "adopt",
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/3274"
+  }
+ ],
+ "status": "blocked",
+ "title": "l'article premier de la proposition de loi relative à la gratuité des parkings d'hôpitaux publics (première lecture).",
+ "updated": "2026-10-13"
+}

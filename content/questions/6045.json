@@ -1,16 +1,73 @@
 {
- "blocked_reason": "sources insuffisantes pour décrire la mesure et ses critiques",
+ "blocked_reason": "sens du vote : {\"correspond\": 0.55, \"sens\": \"adopter\", \"attendu\": \"adopter\", \"engine\": \"claude\"}; arguments pour/contre non pertinents ou déséquilibrés",
+ "cat": "Institutions",
+ "cat_check": {
+  "classifier": "Institutions",
+  "confidence": null,
+  "engine": "claude",
+  "writer": "Institutions"
+ },
+ "checks": {
+  "date": "2026-10-13",
+  "direction": {
+   "answer": "{\"correspond\": 0.55, \"sens\": \"adopter\", \"attendu\": \"adopter\", \"engine\": \"claude\"}",
+   "ok": false
+  },
+  "neutrality": {
+   "issues": [],
+   "judge": {
+    "bias": "autre",
+    "model": "claude-opus-5-5",
+    "reasons": [
+     "Le titre, le bouton et le résumé sont descriptifs et factuels. Ils ne contiennent aucun adjectif orienté et expliquent le mécanisme (sortie du Grand Est, transfert des biens et personnels) sans le juger.",
+     "Les verbes sont légèrement asymétriques. Les partisans « estiment » et « avancent », ce qui présente leurs propos comme des opinions. Les opposants « relèvent » et « rappellent », ce qui présente leurs propos comme des faits établis. Ce choix favorise un peu les opposants. Mieux vaut des verbes équivalents des deux côtés, par exemple « soulignent » et « soulignent ».",
+     "Les deux camps reçoivent un argument chiffré ou sourcé, ce qui équilibre l'ensemble : un sondage à 80 % pour les partisans, un rapport de 2024 pour les opposants. Mais aucune des deux sources n'est identifiée (institut, commanditaire, date du sondage ; auteur du rapport). Il faut les préciser ou les retirer toutes les deux.",
+     "« Des acteurs institutionnels craignent une instabilité » est vague. On ne sait pas qui parle, ce qui affaiblit la vérifiabilité. À préciser (Région Grand Est ? préfecture ?).",
+     "L'accroche « Ailleurs en France, rien ne change » est inexacte. La région Grand Est perdrait une partie de son territoire, de ses compétences et de ses personnels, donc les habitants des autres départements du Grand Est sont aussi concernés. Il manque cette conséquence pour le reste de la région, par exemple ses effets budgétaires.",
+     "Le clivage n'est pas gauche/droite : le sujet est transpartisan et oppose surtout régionalistes et partisans du maintien du Grand Est. D'où le biais « autre ». L'orientation reste très faible, avec une légère inclinaison vers les opposants dans la formulation, compensée par le chiffre de 80 % côté partisans."
+    ],
+    "score": 1.0
+   },
+   "ok": true
+  },
+  "pro_con": null
+ },
+ "con": "Les opposants relèvent que le texte a été adopté sans étude d'impact économique et que des acteurs institutionnels craignent une instabilité pour les habitants. Ils rappellent aussi qu'aucune consultation des habitants n'est prévue, et qu'un rapport de 2024 a conclu que supprimer un échelon ne suffit pas, à lui seul, à faire des économies.",
  "date": "2026-04-08",
+ "generator": {
+  "date": "2026-10-13",
+  "model": "claude-sonnet-5-5"
+ },
+ "hook": "Si tu vis en Alsace, une seule collectivité exercerait les compétences du département et de la région. Ailleurs en France, rien ne change.",
+ "kind": "texte",
+ "label": "la création d'une collectivité unique en Alsace",
  "n": 6045,
  "polarity": "adopt",
+ "pro": "Les partisans estiment qu'une seule collectivité rendrait l'action publique plus lisible, avec moins de doublons entre département et région et un seul interlocuteur pour les habitants et les associations. Ils avancent aussi que cela répond à un souhait ancien des Alsaciens et de leurs élus, qu'un sondage chiffre à 80 % pour une sortie du Grand Est.",
+ "reviewed_hash": null,
  "reviews": [],
  "sources": [
   {
    "label": "Scrutin officiel (Assemblée nationale)",
    "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/6045"
+  },
+  {
+   "label": "Source 2",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/PIONANR5L17B1800.html"
+  },
+  {
+   "label": "Source 3",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/RAPPANR5L17B2606.html"
+  },
+  {
+   "label": "Source 4",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/dossiers/DLR5L17N52750"
   }
  ],
  "status": "blocked",
- "title": "l'ensemble de la proposition de loi visant à simplifier le millefeuille territorial par la collectivité unique (première lecture).",
- "updated": "2026-10-12"
+ "subkind": "ensemble",
+ "sum": "Ce texte transforme la Collectivité européenne d'Alsace, qui exerce aujourd'hui les compétences d'un département et quatre compétences supplémentaires, en collectivité à statut particulier. Elle exercerait à la fois les compétences des départements et celles de la région. Elle sortirait donc de la région Grand Est, car deux collectivités ne peuvent pas exercer les compétences régionales sur le même territoire. La nouvelle collectivité serait créée au prochain renouvellement des conseils régionaux, et les biens, contrats et personnels liés aux compétences régionales lui seraient transférés. L'article qui aurait permis à d'autres territoires de créer une collectivité unique a été supprimé en commission.",
+ "surp": "Le vote porte sur l'ensemble du texte tel que modifié en commission, qui ne concerne plus que l'Alsace. Il s'agit d'une première lecture : le texte doit encore être examiné par le Sénat.",
+ "title": "Une collectivité unique pour l'Alsace",
+ "updated": "2026-10-13"
 }

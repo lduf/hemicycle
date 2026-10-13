@@ -1,0 +1,74 @@
+{
+ "blocked_reason": "arguments pour/contre non pertinents ou déséquilibrés",
+ "cat": "Agriculture",
+ "cat_check": {
+  "classifier": "Agriculture",
+  "confidence": null,
+  "engine": "claude",
+  "writer": "Agriculture"
+ },
+ "checks": {
+  "date": "2026-10-13",
+  "direction": {
+   "answer": "{\"correspond\": 0.97, \"sens\": \"adopter\", \"attendu\": \"adopter\", \"engine\": \"claude\"}",
+   "ok": true
+  },
+  "neutrality": {
+   "issues": [],
+   "judge": {
+    "bias": "droite",
+    "model": "claude-opus-5-5",
+    "reasons": [
+     "Le titre et le bouton reprennent tels quels le cadrage du gouvernement (« souveraineté alimentaire », « renouvellement des générations »). Ces termes sont valorisants et difficiles à contester, alors qu'aucun élément du titre ne signale que le texte est contesté.",
+     "Les verbes ne sont pas symétriques. Les partisans « estiment » que le texte « répond à des difficultés vécues », ce qui présente le problème comme un fait établi. Les opposants « relèvent » que cela « pose des questions » et « craignent », des formulations plus hypothétiques et plus faibles.",
+     "L'argument des partisans est concret et touche le lecteur : environ trente exploitations disparaissent par jour, l'objectif est de 400 000 exploitations, les prix sont faibles. L'argument des opposants est juridique et abstrait (conformité à la Constitution, articulation entre principes) et ne donne aucun chiffre ni effet concret.",
+     "Des critiques importantes sont absentes. La fiche ne parle pas de l'allègement des sanctions pénales pour certaines atteintes à l'environnement (dépénalisation partielle, absence d'intention présumée), ni des règles sur les haies, ni de la présomption d'« intérêt général majeur » pour certains ouvrages (retenues d'eau, élevages).",
+     "La fiche ne donne qu'une partie des critiques de l'opposition. Elle retient le volet environnemental, mais omet celles sur le revenu agricole et les prix (le texte ne réglerait pas la question de la rémunération) et celles qui jugent le texte insuffisant sur les normes et la concurrence. L'opposition paraît ainsi uniquement écologiste.",
+     "Le résumé met en avant l'objectif de 21 % d'agriculture biologique, un élément « vert » qui contrebalance d'avance les critiques environnementales. En face, les mesures de simplification contestées ne sont décrites que de façon vague (« remplacement du terme », « certains produits »).",
+     "Points positifs : le vocabulaire reste sobre et sans adjectifs ouvertement partisans. Les deux camps sont présentés et l'encadré « Pourquoi ça peut surprendre » est neutre et pédagogique. Le biais reste donc modéré."
+    ],
+    "score": 2.0
+   },
+   "ok": true
+  },
+  "pro_con": null
+ },
+ "con": "Les opposants relèvent que le principe de « non-régression » de la souveraineté alimentaire pose des questions de conformité à la Constitution et d'articulation avec le principe de non-régression en matière d'environnement. Ils craignent aussi que le remplacement du terme « agroécologie » dans le texte, le choix de ne pas interdire certains produits sans solution de remplacement et l'adaptation de la loi Littoral n'entraînent des conséquences pour l'environnement.",
+ "date": "2025-02-19",
+ "generator": {
+  "date": "2026-10-13",
+  "model": "claude-sonnet-5-5"
+ },
+ "hook": "Ce texte fixe les priorités de la politique agricole et alimentaire, de l'installation des futurs agriculteurs à la formation et aux règles applicables aux exploitations.",
+ "kind": "texte",
+ "label": "la loi d'orientation agricole",
+ "n": 844,
+ "polarity": "adopt",
+ "pro": "Les partisans estiment que le texte répond à des difficultés vécues par les agriculteurs : prix faibles et variables, concurrence de produits importés, disparition d'environ trente exploitations par jour. Ils soulignent l'objectif d'au moins 400 000 exploitations d'ici 2035 et le guichet unique destiné à accompagner l'installation et la transmission.",
+ "reviewed_hash": null,
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/844"
+  },
+  {
+   "label": "Source 2",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/PRJLANR5L17B0990.html"
+  },
+  {
+   "label": "Source 3",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/RAPPANR5L17B0992.html"
+  },
+  {
+   "label": "Source 4",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/dossiers/DLR5L16N49726"
+  }
+ ],
+ "status": "blocked",
+ "subkind": "ensemble",
+ "sum": "Ce texte est une loi d'orientation pour la souveraineté alimentaire et agricole et le renouvellement des générations en agriculture. Il fixe les priorités de la politique agricole : renouvellement des générations d'actifs, compétitivité, recherche, rémunération et sécurité alimentaire. Il fait de la souveraineté alimentaire un intérêt fondamental de la Nation, y inscrit un principe de « non-régression » et prévoit des conférences de filières en 2026. Il reprend l'objectif de 21 % de la surface agricole utile cultivée en agriculture biologique au 1er janvier 2030. Il crée aussi un guichet unique pour l'installation et la transmission des exploitations, appelé « France services agriculture ».",
+ "surp": "Un vote sur l'ensemble du texte ne permet pas de se prononcer article par article : la même loi réunit des mesures sur la formation, l'installation, les normes et l'environnement. Le texte soumis au vote est un compromis entre les deux assemblées, adopté ou rejeté en bloc.",
+ "title": "Loi d'orientation agricole : souveraineté alimentaire et renouvellement des générations",
+ "updated": "2026-10-13"
+}

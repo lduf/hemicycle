@@ -1,0 +1,82 @@
+{
+ "cat": "Économie & fiscalité",
+ "cat_check": {
+  "classifier": "Économie & fiscalité",
+  "confidence": null,
+  "engine": "claude",
+  "writer": "Économie & fiscalité"
+ },
+ "checks": {
+  "date": "2026-10-13",
+  "direction": {
+   "answer": "{\"correspond\": 0.85, \"sens\": \"adopter\", \"attendu\": \"adopter\", \"engine\": \"claude\"}",
+   "ok": true
+  },
+  "neutrality": {
+   "issues": [],
+   "judge": {
+    "bias": "aucun",
+    "model": "claude-opus-5-5",
+    "reasons": [
+     "Le titre et le résumé sont factuels et descriptifs, sans adjectif orienté : « change les règles », « passe de 66 % à 75 % ».",
+     "Le bouton « Pour l'augmentation de la réduction d'impôt » reprend simplement l'objet du vote, sans formule chargée comme « soutenir Mayotte » ou « aider les sinistrés ».",
+     "Les deux camps reçoivent un poids comparable. Les partisans ont deux idées (incitation, financement des repas, soins et logements), les opposants trois (effet incitatif limité, perte de recettes, avantage réservé à une minorité). Le léger surplus côté opposants est compensé par le cadre humanitaire du résumé, qui joue plutôt en faveur de la mesure.",
+     "L'argument des partisans « envoie un signal en faveur de la poursuite de la générosité » reste vague, mais il n'est pas tendancieux.",
+     "L'argument des opposants « les plus gros dons ne sont accessibles qu'à une minorité » est mal formulé et peu clair. Il vaudrait mieux dire que la réduction ne profite qu'aux foyers imposables, soit environ la moitié des foyers. Ce n'est pas un biais, mais un manque de clarté qui affaiblit cet argument.",
+     "L'accroche a un ton légèrement incitatif, presque publicitaire (« tu peux déduire une part plus grande »). Le verbe « déduire » est aussi imprécis : il s'agit d'une réduction d'impôt, pas d'une déduction du revenu. Et seuls les contribuables imposables en profitent, ce qui n'est pas dit.",
+     "Plusieurs points utiles sont omis : le plafond des dons ouvrant droit au taux de 75 %, le fait que les foyers non imposables n'en tirent aucun avantage, et l'application rétroactive à des dons déjà versés avant le vote. Ce dernier point appuie d'ailleurs l'argument des opposants sur l'effet incitatif limité.",
+     "La seconde phrase de « Pourquoi ça peut surprendre » (il est difficile de mesurer l'effet) rejoint discrètement l'argument des opposants. La première phrase (cumul avec le dispositif général) est neutre, ce qui garde l'ensemble équilibré."
+    ],
+    "score": 1.0
+   },
+   "ok": true
+  },
+  "pro_con": {
+   "con_fond": 0.95,
+   "con_ok": 0.94,
+   "engine": "claude",
+   "equilibre": 1.1,
+   "ok": true,
+   "pro_fond": 0.95,
+   "pro_ok": 0.96
+  }
+ },
+ "con": "Les opposants relèvent que l'effet incitatif est limité, car la plupart des dons ont lieu dans les premiers jours ou les premières semaines après le cyclone. Ils notent aussi que la mesure réduit les recettes de l'État et que les plus gros dons ne sont accessibles qu'à une minorité de donateurs.",
+ "date": "2025-01-21",
+ "generator": {
+  "date": "2026-10-13",
+  "model": "claude-sonnet-5-5"
+ },
+ "hook": "Si tu donnes à une association qui aide les habitants de Mayotte, tu peux déduire une part plus grande de ton don de tes impôts.",
+ "kind": "mesure",
+ "label": "l'augmentation de la réduction d'impôt pour les dons en faveur de Mayotte",
+ "n": 555,
+ "polarity": "adopt",
+ "pro": "Les partisans estiment qu'une réduction d'impôt plus forte encourage les dons pour Mayotte et envoie un signal en faveur de la poursuite de la générosité. Selon eux, ces dons financent des repas, des soins et des logements pour des personnes en difficulté.",
+ "reviewed_hash": null,
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/555"
+  },
+  {
+   "label": "Source 2",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/PRJLANR5L17B0772.html"
+  },
+  {
+   "label": "Source 3",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/RAPPANR5L17B0920.html"
+  },
+  {
+   "label": "Source 4",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/dossiers/DLR5L17N51222"
+  }
+ ],
+ "status": "pending_review",
+ "subkind": "article",
+ "sum": "Le 14 décembre 2024, le cyclone Chido a touché Mayotte. L'article 16 change les règles de réduction d'impôt pour les dons faits en faveur de la reconstruction de l'archipel. Il vise les dons aux associations et fondations qui fournissent gratuitement des repas ou des soins aux personnes en difficulté, ou qui contribuent à les loger. Le taux de la réduction d'impôt passe de 66 % à 75 %. Le dispositif s'applique aux dons reçus entre le 14 décembre 2024 et le 17 mai 2025.",
+ "surp": "Le dispositif général de réduction d'impôt pour les dons reste utilisable en parallèle et peut se cumuler avec cette mesure. Il est difficile de mesurer à l'avance combien de dons supplémentaires une telle mesure provoque.",
+ "title": "Réduction d'impôt pour les dons en faveur de Mayotte",
+ "updated": "2026-10-13"
+}

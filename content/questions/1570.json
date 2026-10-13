@@ -1,16 +1,81 @@
 {
- "blocked_reason": "sources insuffisantes pour décrire la mesure et ses critiques",
+ "cat": "Droits & société",
+ "cat_check": {
+  "classifier": "Droits & société",
+  "confidence": null,
+  "engine": "claude",
+  "writer": "Institutions"
+ },
+ "checks": {
+  "date": "2026-10-13",
+  "direction": {
+   "answer": "{\"correspond\": 0.95, \"sens\": \"adopter\", \"attendu\": \"adopter\", \"engine\": \"claude\"}",
+   "ok": true
+  },
+  "neutrality": {
+   "issues": [],
+   "judge": {
+    "bias": "droite",
+    "model": "claude-opus-5-5",
+    "reasons": [
+     "Le titre, le bouton et le résumé sont factuels et attribuent les demandes au texte (« Le texte demande… »). Aucun adjectif n'est orienté.",
+     "Les deux camps ont un poids comparable : trois arguments de chaque côté, de longueur similaire. L'argument des opposants sur la « contradiction » est présenté sans être disqualifié.",
+     "Léger déséquilibre émotionnel : les partisans ont des détails personnels qui suscitent la sympathie (« 80 ans », « malade »), alors que les opposants n'ont que des arguments abstraits (dialogue, discrétion, population algérienne).",
+     "La rubrique « Pourquoi ça peut surprendre » cite le score très large du Parlement européen (533 contre 24). Cela suggère un consensus en faveur du « pour » et pèse dans ce sens. Le résultat du vote à l'Assemblée et la répartition des groupes ne sont pas donnés, ce qui aurait équilibré.",
+     "Contexte omis : le motif concret des poursuites (des déclarations de l'écrivain sur les frontières de l'Algérie) et le contexte des tensions diplomatiques entre la France et l'Algérie. Sans ce contexte, l'accusation d'« atteinte à la sûreté de l'État » paraît purement arbitraire, et la formule « détenues pour leurs opinions » se lit plus facilement comme un constat que comme la position du texte.",
+     "Dans ce débat, le soutien à la résolution venait surtout de la droite et du centre, et l'opposition surtout d'une partie de la gauche. Les biais relevés, même faibles, penchent donc légèrement à droite.",
+     "Point factuel à vérifier (ce n'est pas un biais) : la mention « risque la prison à vie » est datée. D'après mes informations, à vérifier sur une source à jour, l'écrivain a été condamné à 5 ans de prison en 2025, puis gracié et libéré en novembre 2025. Pour un quiz publié aujourd'hui, il faut préciser la date du vote ou mettre à jour la situation."
+    ],
+    "score": 1.0
+   },
+   "ok": true
+  },
+  "pro_con": {
+   "con_fond": 0.88,
+   "con_ok": 0.9,
+   "engine": "claude",
+   "equilibre": 1.05,
+   "ok": true,
+   "pro_fond": 0.95,
+   "pro_ok": 0.96
+  }
+ },
+ "con": "Les opposants jugent que obtenir une libération passe par le dialogue, la négociation et la discrétion, et que remettre en cause les discussions avec l'Algérie risque de rompre ce dialogue. Ils relèvent une contradiction entre demander une libération inconditionnelle et conditionner des avancées à celle-ci. Ils craignent aussi que cette conditionnalité pénalise la population algérienne.",
  "date": "2025-05-06",
+ "generator": {
+  "date": "2026-10-13",
+  "model": "claude-sonnet-5-5"
+ },
+ "hook": "Ça change quoi pour moi ? Rien de direct : le vote fixe la position officielle de l'Assemblée sur la liberté d'expression et sur les relations de la France avec l'Algérie.",
+ "kind": "texte",
+ "label": "la résolution demandant la libération de l'écrivain franco-algérien détenu en Algérie",
  "n": 1570,
  "polarity": "adopt",
+ "pro": "Les partisans estiment qu'on ne peut pas emprisonner une personne pour ses opinions. Ils rappellent que l'écrivain a 80 ans et qu'il est malade. Selon eux, l'Algérie s'est engagée par plusieurs accords à respecter les droits fondamentaux, ce qui justifie de lier les avancées des discussions avec elle à ce respect.",
+ "reviewed_hash": null,
  "reviews": [],
  "sources": [
   {
    "label": "Scrutin officiel (Assemblée nationale)",
    "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/1570"
+  },
+  {
+   "label": "Source 2",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/PNREANR5L17B0852.html"
+  },
+  {
+   "label": "Source 3",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/RAPPANR5L17B0914.html"
+  },
+  {
+   "label": "Source 4",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/dossiers/DLR5L17N51375"
   }
  ],
- "status": "blocked",
- "title": "l'article unique de la proposition de résolution européenne appelant à la libération immédiate et inconditionnelle de Boualem Sansal.",
+ "status": "pending_review",
+ "subkind": "ensemble",
+ "sum": "Cette résolution européenne a été votée par l'Assemblée nationale. Elle concerne un écrivain franco-algérien arrêté en Algérie le 16 novembre 2024. Il est accusé d'atteinte à la sûreté de l'État et risque la prison à vie. Le texte demande sa libération immédiate et inconditionnelle, ainsi que celle des autres personnes détenues en Algérie pour leurs opinions. Il appelle aussi le Gouvernement et la Commission européenne à lier les versements de fonds européens à des progrès sur les libertés, et à suspendre les avancées favorables à l'Algérie dans la renégociation de l'accord d'association tant que l'écrivain n'est pas libéré.",
+ "surp": "Le Parlement européen avait voté un texte comparable le 23 janvier 2025, avec 533 voix pour et 24 contre. Un vote pour ou contre ne dit pas quel effet ce texte aura sur la situation de l'écrivain.",
+ "title": "Libération d'un écrivain franco-algérien détenu en Algérie",
  "updated": "2026-10-13"
 }

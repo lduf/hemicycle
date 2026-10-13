@@ -1,0 +1,81 @@
+{
+ "cat": "Justice & sécurité",
+ "cat_check": {
+  "classifier": "Justice & sécurité",
+  "confidence": null,
+  "engine": "claude",
+  "writer": "Justice & sécurité"
+ },
+ "checks": {
+  "date": "2026-10-13",
+  "direction": {
+   "answer": "{\"correspond\": 0.93, \"sens\": \"adopter\", \"attendu\": \"adopter\", \"engine\": \"claude\"}",
+   "ok": true
+  },
+  "neutrality": {
+   "issues": [],
+   "judge": {
+    "bias": "autre",
+    "model": "claude-opus-5-5",
+    "reasons": [
+     "Le libellé du bouton (« Pour le renforcement de la protection des professionnels de santé ») reprend l'objectif affiché du texte plutôt que son contenu (durcissement des peines, extension de l'outrage). Voter « contre » peut alors sembler s'opposer à la protection des soignants. Une formulation plus neutre serait : « Pour le durcissement des peines pour les violences contre les soignants ».",
+     "Ce biais favorise l'adoption du texte, sans orientation gauche/droite nette. La mesure a été portée de façon assez transpartisane, d'où la catégorie « autre ».",
+     "Le résumé est factuel et précis : liste des lieux, accord écrit du salarié, « dans certains cas » pour les ordres professionnels. Le verbe « durcit » est descriptif.",
+     "Les arguments sont équilibrés : deux arguments de chaque côté, de longueur comparable, introduits par la même formule (« estiment que »). Les opposants ont un argument juridique précis (lien avec la mission de service public, inégalité de protection), ce qui leur donne du poids.",
+     "L'accroche décrit seulement l'effet concret de la loi, sans parler de son efficacité. Elle reste neutre sur le fond, mais elle présente le texte sous l'angle de ce qu'il apporte.",
+     "La rubrique « Pourquoi ça peut surprendre » (40 mesures sur 42 ne relèvent pas de la loi) relativise la portée du texte et rejoint l'argument des opposants sur les moyens. Elle compense en partie le cadrage du bouton.",
+     "Omissions mineures : rien sur le résultat du vote, la répartition des groupes ou l'origine du texte. Elles ne créent pas de biais net mais limitent le contexte."
+    ],
+    "score": 1.0
+   },
+   "ok": true
+  },
+  "pro_con": {
+   "con_fond": 0.85,
+   "con_ok": 0.93,
+   "engine": "claude",
+   "equilibre": 1.0,
+   "ok": true,
+   "pro_fond": 0.95,
+   "pro_ok": 0.97
+  }
+ },
+ "con": "Les opposants estiment que durcir les peines ne changera pas le comportement des auteurs de violences et qu'il faudrait plutôt augmenter les moyens humains de sécurité. Ils relèvent aussi que l'extension de l'outrage s'écarte de son lien avec une mission de service public et que sa rédaction ne protège pas toutes les personnes de la même manière.",
+ "date": "2025-06-25",
+ "generator": {
+  "date": "2026-10-13",
+  "model": "claude-sonnet-5-5"
+ },
+ "hook": "Si tu travailles ou te fais soigner dans un lieu de soins, les violences, les insultes et les vols visant les soignants et le personnel sont punis plus sévèrement.",
+ "kind": "texte",
+ "label": "le renforcement de la protection des professionnels de santé",
+ "n": 2685,
+ "polarity": "adopt",
+ "pro": "Les partisans estiment que des peines plus lourdes envoient un signal aux auteurs de violences et montrent aux soignants que la loi les soutient. Ils jugent aussi que la plainte déposée par l'employeur peut réduire l'autocensure des victimes, qui hésitent à porter plainte par peur des représailles.",
+ "reviewed_hash": null,
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/2685"
+  },
+  {
+   "label": "Source 2",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/PIONANR5L17B1423.html"
+  },
+  {
+   "label": "Source 3",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/RAPPANR5L17B1441.html"
+  },
+  {
+   "label": "Source 4",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/dossiers/DLR5L16N49299"
+  }
+ ],
+ "status": "pending_review",
+ "subkind": "ensemble",
+ "sum": "Ce texte durcit les peines pour les violences commises contre les professionnels de santé et contre le personnel des lieux de soins (hôpitaux, cabinets, pharmacies, laboratoires, structures sociales et médico-sociales). Il étend le délit d'outrage à ces personnes et aggrave les peines de vol quand il vise un soignant ou du matériel médical. Un employeur peut déposer plainte à la place d'un salarié victime, avec son accord écrit. Les ordres professionnels, comme ceux des infirmiers et des masseurs-kinésithérapeutes, peuvent se porter partie civile dans certains cas. Un vote « pour » adopte ces mesures.",
+ "surp": "Un vote pour ou contre ne dit pas quelles mesures non législatives accompagnent le texte. Les extraits précisent que, dans le plan de sécurité des professionnels de santé, quarante mesures sur quarante-deux ne relèvent pas de la loi.",
+ "title": "Sécurité des professionnels de santé",
+ "updated": "2026-10-13"
+}

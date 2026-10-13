@@ -1,5 +1,5 @@
 {
- "cap_bloc": 24,
+ "cap_bloc": 30,
  "entonnoir": [
   [
    "Dossiers de la 17e législature",
@@ -15,7 +15,7 @@
   ],
   [
    "…retenus (importance parlementaire, plafond par origine)",
-   80
+   100
   ]
  ],
  "indicateurs": [
@@ -1864,6 +1864,466 @@
    "vote_kind": "amendement",
    "vote_sort": "adopté",
    "vote_titre": "l'amendement n° 29 de M. Delautrette après l'article premier du projet de loi spéciale prévue par l'article 45 de la loi organique du 1er août 2001 relative aux lois de finances (première lecture)."
+  },
+  {
+   "bloc": "gauche",
+   "div": 0.91,
+   "dossier": "DLR5L17N51510",
+   "origine": "ECOS",
+   "rang": 81,
+   "score": 0.572,
+   "signaux": {
+    "amendements": 38,
+    "duree_min": 163.2,
+    "interventions": 238,
+    "orateurs": 37,
+    "scrutins": 8
+   },
+   "titre_dossier": "Renforcer le contrôle du Parlement en période d’expédition des affaires courantes",
+   "type": "proposition de loi",
+   "votants": 163,
+   "vote": 1210,
+   "vote_date": "2025-04-02",
+   "vote_kind": "amendement",
+   "vote_sort": "adopté",
+   "vote_titre": "l'amendement n° 10 de M. Coulomme à l'article 2 de la proposition de loi visant à renforcer le contrôle du Parlement en période d'expédition des affaires courantes (première lecture)."
+  },
+  {
+   "bloc": "centre",
+   "div": 0.22,
+   "dossier": "DLR5L17N51017",
+   "origine": "EPR",
+   "rang": 82,
+   "score": 0.557,
+   "signaux": {
+    "amendements": 67,
+    "duree_min": 180.1,
+    "interventions": 205,
+    "orateurs": 32,
+    "scrutins": 2
+   },
+   "titre_dossier": "Renforcer la lutte contre les violences faites aux femmes et aux enfants",
+   "type": "proposition de loi",
+   "votants": 221,
+   "vote": 657,
+   "vote_date": "2025-01-28",
+   "vote_kind": "ensemble",
+   "vote_sort": "adopté",
+   "vote_titre": "l'ensemble de la proposition de loi visant à renforcer la lutte contre les violences sexuelles et sexistes (première lecture)."
+  },
+  {
+   "bloc": "gouvernement",
+   "div": 0.6,
+   "dossier": "DLR5L17N53981",
+   "origine": "gouvernement",
+   "rang": 83,
+   "score": 0.55,
+   "signaux": {
+    "amendements": 157,
+    "duree_min": 210.7,
+    "interventions": 259,
+    "orateurs": 48,
+    "scrutins": 5
+   },
+   "titre_dossier": "Projet de loi portant transposition de l’avenant n°3 du 25 février 2026 au protocole d’accord du 10 novembre 2023 relatif à l’assurance chômage",
+   "type": "projet de loi",
+   "votants": 504,
+   "vote": 7260,
+   "vote_date": "2026-06-02",
+   "vote_kind": "ensemble",
+   "vote_sort": "adopté",
+   "vote_titre": "l'ensemble du projet de loi portant transposition de l'avenant n° 3 du 25 février 2026 au protocole d'accord du 10 novembre 2023 relatif à l'assurance chômage (deuxième lecture)."
+  },
+  {
+   "bloc": "gouvernement",
+   "div": 0.89,
+   "dossier": "DLR5L17N53135",
+   "origine": "gouvernement",
+   "rang": 84,
+   "score": 0.538,
+   "signaux": {
+    "amendements": 210,
+    "duree_min": 595.0,
+    "interventions": 993,
+    "orateurs": 108,
+    "scrutins": 14
+   },
+   "titre_dossier": "Projet de loi de finances de fin de gestion pour 2025",
+   "type": "budget",
+   "votants": 514,
+   "vote": 4442,
+   "vote_date": "2025-12-02",
+   "vote_kind": "ensemble",
+   "vote_sort": "adopté",
+   "vote_titre": "l'ensemble du projet de loi de fin de gestion pour 2025 (texte de la commission mixte paritaire)."
+  },
+  {
+   "bloc": "autre",
+   "div": 0.91,
+   "dossier": "DLR5L17N51052",
+   "origine": "autre",
+   "rang": 85,
+   "score": 0.537,
+   "signaux": {
+    "amendements": 57,
+    "duree_min": 163.2,
+    "interventions": 189,
+    "orateurs": 38,
+    "scrutins": 1
+   },
+   "titre_dossier": "Proposition de loi relative au droit de vote par correspondance des personnes détenues",
+   "type": "proposition de loi",
+   "votants": 171,
+   "vote": 2244,
+   "vote_date": "2025-06-04",
+   "vote_kind": "ensemble",
+   "vote_sort": "adopté",
+   "vote_titre": "l'ensemble de la proposition de loi relative au droit de vote par correspondance des personnes détenues (première lecture)."
+  },
+  {
+   "bloc": "gauche",
+   "div": 0.6,
+   "dossier": "DLR5L17N51499",
+   "origine": "SOC",
+   "rang": 86,
+   "score": 0.517,
+   "signaux": {
+    "amendements": 19,
+    "duree_min": 135.6,
+    "interventions": 178,
+    "orateurs": 37,
+    "scrutins": 3
+   },
+   "titre_dossier": "Reconnaissance de la Nation envers les rapatriés d’Indochine et réparation des préjudices subis par ceux-ci et leurs familles du fait de l'indignité de leurs conditions d'accueil et de vie dans certaines structures sur le territoire français",
+   "type": "proposition de loi",
+   "votants": 206,
+   "vote": 2218,
+   "vote_date": "2025-06-03",
+   "vote_kind": "amendement",
+   "vote_sort": "rejeté",
+   "vote_titre": "l'amendement n° 2 du Gouvernement à l'article 3 de la proposition de loi portant reconnaissance de la Nation envers les rapatriés d'Indochine et réparation des préjudices subis par ceux-ci et leurs familles du fait de l'indignité de leurs conditions d'accueil et de vie dans certaines structures sur le territoire français (première lecture)."
+  },
+  {
+   "bloc": "gouvernement",
+   "div": 0.73,
+   "dossier": "DLR5L16N49726",
+   "origine": "gouvernement",
+   "rang": 87,
+   "score": 0.492,
+   "signaux": {
+    "amendements": 0,
+    "duree_min": 129.2,
+    "interventions": 242,
+    "orateurs": 53,
+    "scrutins": 2
+   },
+   "titre_dossier": "Souveraineté en matière agricole et renouvellement des générations en agriculture",
+   "type": "projet de loi",
+   "votants": 531,
+   "vote": 844,
+   "vote_date": "2025-02-19",
+   "vote_kind": "ensemble",
+   "vote_sort": "adopté",
+   "vote_titre": "l'ensemble du projet de loi d'orientation pour la souveraineté alimentaire et agricole et le renouvellement des générations en agriculture (texte de la commission mixte paritaire)."
+  },
+  {
+   "bloc": "droite",
+   "div": 0.73,
+   "dossier": "DLR5L17N53300",
+   "origine": "DR",
+   "rang": 88,
+   "score": 0.48,
+   "signaux": {
+    "amendements": 0,
+    "duree_min": 88.7,
+    "interventions": 201,
+    "orateurs": 32,
+    "scrutins": 1
+   },
+   "titre_dossier": "Suspendre toute nouvelle création d’instances administratives pour lutter contre le phénomène d’agencification de l’État et rendre plus lisible le fonctionnement de l’administration française",
+   "type": "résolution",
+   "votants": 224,
+   "vote": 5107,
+   "vote_date": "2026-01-22",
+   "vote_kind": "ensemble",
+   "vote_sort": "adopté",
+   "vote_titre": "la proposition de résolution visant à suspendre toute nouvelle création d'instances administratives pour lutter contre le phénomène d'agencification de l'État et rendre plus lisible le fonctionnement de l'administration française (art. 34-1 de la Constitution)."
+  },
+  {
+   "bloc": "autre",
+   "div": 0.73,
+   "dossier": "DLR5L16N48739",
+   "origine": "autre",
+   "rang": 89,
+   "score": 0.472,
+   "signaux": {
+    "amendements": 0,
+    "duree_min": 135.5,
+    "interventions": 172,
+    "orateurs": 27,
+    "scrutins": 3
+   },
+   "titre_dossier": "Création d'un homicide routier et visant à lutter contre la violence routière",
+   "type": "proposition de loi",
+   "votants": 403,
+   "vote": 3296,
+   "vote_date": "2025-10-31",
+   "vote_kind": "amendement",
+   "vote_sort": "rejeté",
+   "vote_titre": "l'amendement n° 2378 de M. Coquerel après l'article 3 (examen prioritaire) du projet de loi de finances pour 2026 (première lecture)."
+  },
+  {
+   "bloc": "autre",
+   "div": 0.25,
+   "dossier": "DLR5L16N49299",
+   "origine": "autre",
+   "rang": 90,
+   "score": 0.459,
+   "signaux": {
+    "amendements": 0,
+    "duree_min": 100.3,
+    "interventions": 170,
+    "orateurs": 41,
+    "scrutins": 1
+   },
+   "titre_dossier": "Renforcer la sécurité des professionnels de santé",
+   "type": "proposition de loi",
+   "votants": 185,
+   "vote": 2685,
+   "vote_date": "2025-06-25",
+   "vote_kind": "ensemble",
+   "vote_sort": "adopté",
+   "vote_titre": "l'ensemble de la proposition de loi visant à renforcer la sécurité des professionnels de santé (texte de la commission mixte paritaire)."
+  },
+  {
+   "bloc": "centre",
+   "div": 0.73,
+   "dossier": "DLR5L17N53772",
+   "origine": "HOR",
+   "rang": 91,
+   "score": 0.42,
+   "signaux": {
+    "amendements": 137,
+    "duree_min": 108.0,
+    "interventions": 205,
+    "orateurs": 28,
+    "scrutins": 16
+   },
+   "titre_dossier": "Garantir le bénéfice des prestations familiales aux enfants placés",
+   "type": "proposition de loi",
+   "votants": 163,
+   "vote": 6092,
+   "vote_date": "2026-04-09",
+   "vote_kind": "amendement",
+   "vote_sort": "rejeté",
+   "vote_titre": "l'amendement n° 20 (2e rect.) de Mme Colin-Oesterlé à l'article premier (supprimé) de la proposition de loi visant à garantir le bénéfice des prestations familiales aux enfants placés (première lecture)."
+  },
+  {
+   "bloc": "gauche",
+   "div": 0.73,
+   "dossier": "DLR5L17N53005",
+   "origine": "SOC",
+   "rang": 92,
+   "score": 0.418,
+   "signaux": {
+    "amendements": 10,
+    "duree_min": 103.0,
+    "interventions": 90,
+    "orateurs": 25,
+    "scrutins": 4
+   },
+   "titre_dossier": "Le traitement judiciaire des violences sexuelles incestueuses parentales commises contre les enfants et la situation des parents protecteurs, notamment des mères protectrices",
+   "type": "résolution",
+   "votants": 194,
+   "vote": 5224,
+   "vote_date": "2026-01-28",
+   "vote_kind": "amendement",
+   "vote_sort": "rejeté",
+   "vote_titre": "l'amendement n° 2 de Mme Taurinya à l'article unique de la proposition de résolution tendant à la création d'une commission d'enquête sur le traitement judiciaire des violences sexuelles incestueuses parentales commises contre les enfants et la situation des parents protecteurs, notamment des mères protectrices."
+  },
+  {
+   "bloc": "gouvernement",
+   "div": 0.8,
+   "dossier": "DLR5L17N50838",
+   "origine": "gouvernement",
+   "rang": 93,
+   "score": 0.413,
+   "signaux": {
+    "amendements": 227,
+    "duree_min": 366.7,
+    "interventions": 771,
+    "orateurs": 102,
+    "scrutins": 4
+   },
+   "titre_dossier": "Projet de loi de finances de fin de gestion pour 2024",
+   "type": "budget",
+   "votants": 204,
+   "vote": 445,
+   "vote_date": "2024-11-19",
+   "vote_kind": "ensemble",
+   "vote_sort": "rejeté",
+   "vote_titre": "l'ensemble de la première partie du projet de loi de finances de fin des gestion pour 2024 (première lecture)."
+  },
+  {
+   "bloc": "autre",
+   "div": 0.44,
+   "dossier": "DLR5L16N48701",
+   "origine": "autre",
+   "rang": 94,
+   "score": 0.381,
+   "signaux": {
+    "amendements": 0,
+    "duree_min": 113.7,
+    "interventions": 82,
+    "orateurs": 28,
+    "scrutins": 2
+   },
+   "titre_dossier": "Proposition de loi créant une dérogation à la participation minimale pour la maîtrise d'ouvrage pour les communes rurales",
+   "type": "proposition de loi",
+   "votants": 187,
+   "vote": 945,
+   "vote_date": "2025-03-11",
+   "vote_kind": "amendement",
+   "vote_sort": "adopté",
+   "vote_titre": "l'amendement n° 3 de M. Bex à l'article unique de la proposition de loi créant une dérogation à la participation minimale pour la maîtrise d'ouvrage  pour les communes rurales (première lecture)."
+  },
+  {
+   "bloc": "gauche",
+   "div": 0.4,
+   "dossier": "DLR5L17N51161",
+   "origine": "SOC",
+   "rang": 95,
+   "score": 0.376,
+   "signaux": {
+    "amendements": 34,
+    "duree_min": 101.9,
+    "interventions": 124,
+    "orateurs": 24,
+    "scrutins": 3
+   },
+   "titre_dossier": "Proroger le dispositif d’expérimentation favorisant l’égalité des chances pour l’accès à certaines écoles de service public",
+   "type": "proposition de loi",
+   "votants": 184,
+   "vote": 840,
+   "vote_date": "2025-02-18",
+   "vote_kind": "ensemble",
+   "vote_sort": "adopté",
+   "vote_titre": "l'ensemble de la proposition de loi visant à proroger le dispositif d'expérimentation favorisant l'égalité des chances pour l'accès à certaines écoles de service public (première lecture)."
+  },
+  {
+   "bloc": "centre",
+   "div": 0.36,
+   "dossier": "DLR5L16N47722",
+   "origine": "EPR",
+   "rang": 96,
+   "score": 0.369,
+   "signaux": {
+    "amendements": 0,
+    "duree_min": 88.0,
+    "interventions": 127,
+    "orateurs": 34,
+    "scrutins": 2
+   },
+   "titre_dossier": "Remédier aux déséquilibres du marché locatif en zone tendue",
+   "type": "proposition de loi",
+   "votants": 222,
+   "vote": 289,
+   "vote_date": "2024-11-07",
+   "vote_kind": "ensemble",
+   "vote_sort": "adopté",
+   "vote_titre": "l'ensemble de la proposition de loi visant à renforcer les outils de régulation des meublés de tourisme à l'échelle locale (texte de la commission mixte paritaire)."
+  },
+  {
+   "bloc": "gauche",
+   "div": 0.55,
+   "dossier": "DLR5L17N51981",
+   "origine": "GDR",
+   "rang": 97,
+   "score": 0.321,
+   "signaux": {
+    "amendements": 30,
+    "duree_min": 100.4,
+    "interventions": 77,
+    "orateurs": 19,
+    "scrutins": 3
+   },
+   "titre_dossier": "Renforcer la solidarité envers les retraités pauvres",
+   "type": "proposition de loi",
+   "votants": 167,
+   "vote": 7353,
+   "vote_date": "2026-06-11",
+   "vote_kind": "amendement",
+   "vote_sort": "rejeté",
+   "vote_titre": "l'amendement n° 10 de M. Muller à l'article premier de la proposition de loi visant à renforcer la solidarité envers les retraités pauvres (première lecture)."
+  },
+  {
+   "bloc": "gauche",
+   "div": 0.73,
+   "dossier": "DLR5L16N49258",
+   "origine": "SOC",
+   "rang": 98,
+   "score": 0.311,
+   "signaux": {
+    "amendements": 0,
+    "duree_min": 93.5,
+    "interventions": 103,
+    "orateurs": 22,
+    "scrutins": 2
+   },
+   "titre_dossier": "Réduire et encadrer les frais bancaires sur succession",
+   "type": "proposition de loi",
+   "votants": 223,
+   "vote": 3385,
+   "vote_date": "2025-11-03",
+   "vote_kind": "amendement",
+   "vote_sort": "rejeté",
+   "vote_titre": "l'amendement n° 596 de M. Maurel après l'article 3 du projet de loi de finances pour 2026 (première lecture)."
+  },
+  {
+   "bloc": "autre",
+   "div": 0.67,
+   "dossier": "DLR5L16N49801",
+   "origine": "autre",
+   "rang": 99,
+   "score": 0.277,
+   "signaux": {
+    "amendements": 0,
+    "duree_min": 91.0,
+    "interventions": 54,
+    "orateurs": 21,
+    "scrutins": 2
+   },
+   "titre_dossier": "Prise en charge intégrale des soins liés au traitement du cancer du sein par l'assurance maladie",
+   "type": "proposition de loi",
+   "votants": 159,
+   "vote": 4000,
+   "vote_date": "2025-11-19",
+   "vote_kind": "amendement",
+   "vote_sort": "adopté",
+   "vote_titre": "l'amendement n° 1277 de M. Le Coq de suppression de l'article 23 du projet de loi de finances pour 2026 (première lecture)."
+  },
+  {
+   "bloc": "gauche",
+   "div": 0.29,
+   "dossier": "DLR5L16N49263",
+   "origine": "SOC",
+   "rang": 100,
+   "score": 0.241,
+   "signaux": {
+    "amendements": 0,
+    "duree_min": 75.3,
+    "interventions": 56,
+    "orateurs": 23,
+    "scrutins": 2
+   },
+   "titre_dossier": "Reconnaître la responsabilité de l’État et indemniser les victimes du chlordécone",
+   "type": "proposition de loi",
+   "votants": 216,
+   "vote": 3382,
+   "vote_date": "2025-11-03",
+   "vote_kind": "amendement",
+   "vote_sort": "adopté",
+   "vote_titre": "l'amendement n° 3924 du Gouvernement après l'article 3 du projet de loi de finances pour 2026 (première lecture)."
   }
  ],
  "limites": [
@@ -1875,8 +2335,8 @@
  ],
  "min_div": 0.2,
  "min_votants": 150,
- "n": 80,
- "n_cible": 80,
+ "n": 100,
+ "n_cible": 100,
  "refuses_par_plafond": [],
  "repartition": {
   "bloc": {
@@ -1888,11 +2348,11 @@
     "gouvernement": 27
    },
    "selection": {
-    "autre": 9,
-    "centre": 19,
-    "droite": 13,
-    "gauche": 17,
-    "gouvernement": 22
+    "autre": 14,
+    "centre": 22,
+    "droite": 14,
+    "gauche": 24,
+    "gouvernement": 26
    },
    "univers": {
     "autre": 48,
@@ -1904,11 +2364,11 @@
   },
   "type": {
    "selection": {
-    "budget": 4,
+    "budget": 6,
     "constitutionnel/organique": 5,
-    "projet de loi": 13,
-    "proposition de loi": 49,
-    "résolution": 9
+    "projet de loi": 15,
+    "proposition de loi": 63,
+    "résolution": 11
    },
    "univers": {
     "budget": 6,
