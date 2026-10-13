@@ -19,11 +19,11 @@ SUITES = {
                   throughput=None, robust=None, determinism=None, limits=dict(n=10, probe=False), multi=None, billing=dict(k=4)),
     "standard": dict(tasks=T.ORDER_CORE, n=200, n_base=100, latency=dict(tasks=["ag_news", "boolq", "vitaminc"], k=30, reps=2),
                      throughput=dict(levels=[1, 2, 4, 8, 16], per=8), robust=dict(tasks=["ag_news", "sst2", "xnli_fr"], n=60),
-                     determinism=dict(tasks=["ag_news", "sst2", "avis_fr"], k=40, reps=5), limits=dict(n=60, probe=True),
+                     determinism=dict(tasks=["ag_news", "sst2", "avis_fr"], k=70, reps=5), limits=dict(n=60, probe=True),
                      multi=dict(n=60), billing=dict(k=10)),
     "full": dict(tasks=T.ORDER_CORE, n=500, n_base=250, latency=dict(tasks=["ag_news", "boolq", "vitaminc", "banking77"], k=60, reps=3),
                  throughput=dict(levels=[1, 2, 4, 8, 16, 32, 64], per=10), robust=dict(tasks=["ag_news", "sst2", "xnli_fr", "vitaminc"], n=150),
-                 determinism=dict(tasks=["ag_news", "sst2", "avis_fr", "vitaminc"], k=40, reps=5), limits=dict(n=150, probe=True),
+                 determinism=dict(tasks=["ag_news", "sst2", "avis_fr", "vitaminc"], k=100, reps=5), limits=dict(n=150, probe=True),
                  multi=dict(n=150), billing=dict(k=20)),
 }
 

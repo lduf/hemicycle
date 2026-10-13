@@ -75,6 +75,10 @@ Ce n'est pas un défaut de l'outil, c'est de l'arithmétique. Trois façons de l
 (3) assouplir la marge à 5 points (à écrire ici, daté, avant de mesurer).
 Le rapport calcule, pour chaque comparaison, le nombre d'exemples qui aurait été nécessaire.
 
+**Multiplicité.** Le tableau contient une vingtaine de comparaisons (tâches × références). À 95 %, on attend environ une comparaison « significative » par pur hasard, même entre deux systèmes identiques.
+Le rapport l'écrit en tête de tableau et marque d'un † les écarts qui ne survivent pas à la correction de Holm ; un verdict marqué † n'est jamais une conclusion.
+**Déterminisme.** Pour pouvoir conclure « au plus 2 % d'exemples changent » même sans aucun changement observé, il faut ≈ 190 exemples ou plus : la suite `standard` en répète 210.
+
 ## 5. Hypothèses et seuils (grille de lecture)
 
 Les cinq premières correspondent à ce que l'éditeur laisse entendre ; elles sont formulées pour pouvoir être **réfutées**.

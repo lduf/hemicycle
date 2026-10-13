@@ -129,6 +129,7 @@ def quality(rows):
     adj = M.holm([p["p"] for p in ps])
     for p, a in zip(ps, adj):
         p["p_holm"] = a
+        p_h = a
         d = P["delta_non_inferiorite"]
         # Ordre voulu : H1 est réfutée dès que la borne haute est < 0, même si l'écart reste dans la marge
         p["label"] = ("supérieur" if p["lo"] > 0 else
@@ -136,6 +137,8 @@ def quality(rows):
                       "légèrement inférieur (dans la marge)" if p["hi"] < 0 and p["lo"] > -d else
                       "inférieur" if p["hi"] < 0 else
                       "équivalent" if p["lo"] > -d else "inconclusif")
+        if p["label"] in ("supérieur", "inférieur") and p_h >= 0.05:
+            p["label"] += " †"        # † : écart « significatif » pour cette comparaison seule, mais pas après correction de Holm sur l'ensemble des comparaisons
         if min(p["valid_ref"], p["valid_jev"]) < 0.9:
             p["label"] += " — comparaison peu fiable (moins de 90 % de réponses exploitables)"
     res["pairs"] = ps

@@ -148,6 +148,8 @@ def build(R, out_dir, store=None):
     if vd["par_tache"]:
         w("Pour chaque tâche et chaque référence : Jev est-il **supérieur**, **équivalent** (non-inférieur à 3 points près), **inférieur** ou **inconclusif** ? "
           "« Recommandé » = au moins équivalent ET au moins 10 fois moins cher.\n")
+        w(f"⚠ Ce tableau contient {len(Q['pairs'])} comparaisons : à 95 %, on s'attend à environ {len(Q['pairs']) * 0.05:.0f} écart(s) « significatif(s) » **par pur hasard**. "
+          "Le signe † marque un écart qui ne survit pas à la correction de Holm (colonne p (Holm) plus bas) : à ne pas prendre pour une conclusion.\n")
         w("| Tâche | Référence | Écart de précision (Jev − réf.) | Lecture | Rapport de coût (réf./Jev) | Recommandé |\n|---|---|---|---|---|---|")
         for task, lst in vd["par_tache"].items():
             for p in lst:
