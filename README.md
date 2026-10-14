@@ -52,6 +52,10 @@ python -m unittest discover -s tests
 Déposer les programmes dans `content/programmes/` (voir son README), puis `python -m pipeline.promises propose` et
 `confirm`. Rien n'est affiché sans confirmation humaine. `promises coverage` liste les groupes sans promesse (DR, UDR, LIOT aujourd'hui).
 
+### Choisir les sujets : `pipeline/curate.py`
+`python -m pipeline.curate --n 100` écrit `content/curated.json` : entonnoir compté à chaque étape (dossiers de la législature → dossiers législatifs avec scrutin public, hors ratifications → vote lisible : sens certain, ≥ 150 votants, groupes divisés → retenus par importance parlementaire, plafond par origine du texte), répartition par origine et par type, limites. Aucun jugement sur le fond.
+`python -m pipeline.curate --n 100 --draft --debates` rédige ensuite les fiches manquantes ; `--debates` ajoute aux sources officielles les débats en séance (`pipeline/debats.py`, propos anonymisés). Beaucoup de sujets restent bloqués faute de critiques documentées dans les sources : c'est voulu (échec fermé), le bilan est affiché sur la page Méthode.
+
 ## Qui fait quoi : LLM pour rédiger, Jev pour classer
 
 | Tâche | Moteur | Où |
