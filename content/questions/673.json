@@ -1,0 +1,70 @@
+{
+ "blocked_reason": "sens du vote : {\"correspond\": 0.82, \"sens\": \"adopter\", \"attendu\": \"adopter\", \"engine\": \"claude\"}; arguments pour/contre non pertinents ou déséquilibrés",
+ "cat": "Logement",
+ "cat_check": {
+  "classifier": "Logement",
+  "confidence": null,
+  "engine": "claude",
+  "writer": "Logement"
+ },
+ "checks": {
+  "date": "2026-10-13",
+  "direction": {
+   "answer": "{\"correspond\": 0.82, \"sens\": \"adopter\", \"attendu\": \"adopter\", \"engine\": \"claude\"}",
+   "ok": false
+  },
+  "neutrality": {
+   "issues": [],
+   "judge": {
+    "bias": "aucun",
+    "model": "claude-opus-5-5",
+    "reasons": [
+     "Le vocabulaire est globalement descriptif. Les jugements de valeur sont attribués aux camps concernés ('selon eux', 'jugés urgents').",
+     "Les deux camps ont un poids comparable : deux arguments concrets chacun, de longueur similaire.",
+     "Le titre 'cas particuliers' est un peu euphémisant. Il ne dit pas que plusieurs de ces dispositions présument que l'obligation est respectée, ce qui revient à assouplir l'interdiction de louer.",
+     "L'accroche s'adresse au locataire et met en avant la réduction de loyer, qui est le seul avantage pour lui. Elle passe sous silence les exonérations accordées au bailleur, qui forment l'essentiel de l'article. Le cadrage est donc légèrement favorable au texte.",
+     "Le résumé ne précise pas qui a porté l'article ni l'ampleur du rejet. C'est neutre, mais le contexte manque.",
+     "Les opposants invoquent la situation des petits propriétaires, un argument peu attendu de ce côté. Cela brouille la lecture gauche/droite sans créer de déséquilibre.",
+     "La section 'Pourquoi ça peut surprendre' est factuelle et utile : elle sépare cet article du calendrier de 2021."
+    ],
+    "score": 1.0
+   },
+   "ok": true
+  },
+  "pro_con": null
+ },
+ "con": "Les opposants relèvent que l'absence de cadre temporel clair pour réaliser les travaux de copropriété risque de multiplier les litiges et de repousser des travaux jugés urgents. Ils ajoutent que la réduction de loyer ne tient pas compte de la situation financière des petits propriétaires, dont les loyers couvrent parfois des emprunts ou des charges.",
+ "date": "2025-01-29",
+ "generator": {
+  "date": "2026-10-13",
+  "model": "claude-sonnet-5-5"
+ },
+ "hook": "Si tu loues un logement, cela précise à quel moment les règles de performance énergétique s'appliquent à ton bail et dans quels cas ton loyer peut être réduit.",
+ "kind": "mesure",
+ "label": "les règles précisant la décence énergétique des logements loués",
+ "n": 673,
+ "polarity": "adopt",
+ "pro": "Les partisans estiment que la loi de 2021 ne traite pas plusieurs situations : refus de travaux par la copropriété, locataire qui s'oppose aux travaux, moment où l'obligation s'applique. Selon eux, ces précisions évitent des litiges et le retrait du marché de logements dont le propriétaire a fait les démarches, tout en permettant au juge de réduire le loyer.",
+ "reviewed_hash": null,
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/673"
+  },
+  {
+   "label": "Source 2",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/PIONANR5L17B0546.html"
+  },
+  {
+   "label": "Source 3",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/dossiers/DLR5L17N50854"
+  }
+ ],
+ "status": "blocked",
+ "subkind": "article",
+ "sum": "Cet article complète la loi de 2021 qui interdit progressivement de louer les logements les moins performants sur le plan énergétique. Il prévoit que l'obligation est réputée respectée si le logement atteint le niveau exigible à la date où le bail est conclu, reconduit ou tacitement renouvelé, si le propriétaire a fait tous les travaux possibles alors que d'autres sont impossibles techniquement ou refusés par décision administrative, ou si l'assemblée générale de la copropriété a voté des travaux. Un locataire qui empêche les travaux ne peut pas reprocher un manquement à son bailleur. Le juge peut aussi réduire le loyer jusqu'à l'exécution des travaux. L'Assemblée nationale a rejeté cet article.",
+ "surp": "Ce vote porte sur le seul premier article, et pas sur le calendrier d'interdiction de location fixé en 2021 (2025 pour les logements classés G, 2028 pour les F, 2034 pour les E). Les extraits indiquent que ce calendrier n'est pas remis en cause par le texte.",
+ "title": "Décence énergétique des logements loués : cas particuliers",
+ "updated": "2026-10-13"
+}

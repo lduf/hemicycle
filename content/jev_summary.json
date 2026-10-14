@@ -1,0 +1,38 @@
+{
+ "titre": "Jev à l'essai : ce qu'il sait contrôler",
+ "lede": "Jev est un modèle qui répond par des probabilités. Le pipeline lui confie quatre contrôles sur les fiches. On a rejoué ces contrôles 3 442 fois sur de vraies fiches et des défauts fabriqués, puis compté ce qui passe et ce qui est refusé à tort.",
+ "chiffres": [
+  {
+   "label": "Neutralité : textes orientés qui passent",
+   "valeur": "0,7 % (1/152)",
+   "note": "limite fixée à 10 %"
+  },
+  {
+   "label": "Neutralité : bonnes fiches refusées",
+   "valeur": "3,9 % (3/76)",
+   "note": "limite fixée à 25 %"
+  },
+  {
+   "label": "Catégorie : bonne réponse",
+   "valeur": "91 % (31/34)",
+   "note": "34 fiches classées à la main : jeu trop petit pour mieux"
+  },
+  {
+   "label": "Pour / contre : défauts qui passent",
+   "valeur": "4,4 % (10/228)",
+   "note": "mais 54 % (41/76) des bonnes fiches sont refusées"
+  },
+  {
+   "label": "Sens du vote : boutons inversés qui passent",
+   "valeur": "27 % (51/187)",
+   "note": "limite fixée à 2 % : ce contrôle ne peut pas être confié à Jev tel quel"
+  },
+  {
+   "label": "Sens du vote lu sur le titre seul (piste)",
+   "valeur": "5,3 % (10/187)",
+   "note": "boutons inversés qui passent ; à confirmer sur de nouveaux votes"
+  }
+ ],
+ "verdict": "Jev tient le contrôle de neutralité et classe bien les fiches; il refuse trop de bonnes fiches sur les arguments pour/contre, et il ne sait pas vérifier seul le sens d'un vote tel que le pipeline le lui demande.",
+ "rapport_url": "etude-jev.html"
+}

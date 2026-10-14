@@ -1,0 +1,78 @@
+{
+ "blocked_reason": "sens du vote : {\"correspond\": 0.8, \"sens\": \"adopter\", \"attendu\": \"adopter\", \"engine\": \"claude\"}",
+ "cat": "Famille & social",
+ "cat_check": {
+  "classifier": "Famille & social",
+  "confidence": null,
+  "engine": "claude",
+  "writer": "Famille & social"
+ },
+ "checks": {
+  "date": "2026-10-13",
+  "direction": {
+   "answer": "{\"correspond\": 0.8, \"sens\": \"adopter\", \"attendu\": \"adopter\", \"engine\": \"claude\"}",
+   "ok": false
+  },
+  "neutrality": {
+   "issues": [],
+   "judge": {
+    "bias": "aucun",
+    "model": "claude-opus-5-5",
+    "reasons": [
+     "Les deux camps ont chacun trois arguments de longueur comparable, sans adjectif péjoratif ni mélioratif ; les opposants ont le dernier mot dans la fiche, mais leurs arguments ne sont pas plus forts pour autant.",
+     "Le résumé est factuel et emploie le conditionnel (« resteraient », « irait », « pourrait »). Il présente l'exception d'un an pour un premier placement et la possibilité laissée au juge de déroger, ce qui évite de caricaturer la mesure.",
+     "Le bouton est ambigu : « Pour le rétablissement du versement des allocations familiales à ceux qui accueillent » laisse croire qu'on rétablirait un versement qui existait avant. Or c'est l'article 1er qui est rétabli. Cette formulation donne une impression de retour à la normale qui avantage un peu la mesure. Une version comme « Pour le rétablissement de l'article 1er (versement des allocations à ceux qui accueillent l'enfant placé) » serait plus neutre.",
+     "Le cadre légal actuel n'est décrit que dans l'argument des partisans (« le maintien aux parents est l'exception en droit, mais il est devenu courant dans les faits »). Le résumé ne l'explique pas de façon neutre. Le constat « devenu courant dans les faits » est présenté sans source ni chiffre, alors qu'il porte une grande partie de l'argumentation des partisans.",
+     "L'accroche décrit bien la mesure sans prendre parti. Elle omet cependant le pouvoir de dérogation du juge et pourrait mentionner « sauf décision du juge ».",
+     "La fiche ne dit pas qui a déposé la proposition de loi ni comment les groupes ont voté. C'est acceptable pour la neutralité, mais le lecteur a moins de contexte.",
+     "La seconde phrase de « Pourquoi ça peut surprendre » (sur les moyens de la protection de l'enfance) est confuse. Elle n'est pas orientée, mais elle pourrait être reformulée."
+    ],
+    "score": 1.0
+   },
+   "ok": true
+  },
+  "pro_con": {
+   "con_fond": 0.85,
+   "con_ok": 0.93,
+   "engine": "claude",
+   "equilibre": 1.0,
+   "ok": true,
+   "pro_fond": 0.92,
+   "pro_ok": 0.95
+  }
+ },
+ "con": "Cette règle limite le pouvoir d'appréciation du juge, qui a besoin de souplesse pour juger chaque situation dans l'intérêt de l'enfant. Les allocations aident aussi à garder le lien entre l'enfant et sa famille, notamment pendant les droits de visite et pour préparer un retour. Elles risquent de fragiliser des familles déjà en difficulté, sans garantie que l'argent redirigé bénéficie directement à l'enfant.",
+ "date": "2026-04-09",
+ "generator": {
+  "date": "2026-10-13",
+  "model": "claude-sonnet-5-5"
+ },
+ "hook": "Quand un enfant est placé plus d'un an, ses allocations familiales iraient en principe à ceux qui l'accueillent plutôt qu'à ses parents.",
+ "kind": "mesure",
+ "label": "le rétablissement du versement des allocations familiales à ceux qui accueillent l'enfant placé",
+ "n": 6092,
+ "polarity": "adopt",
+ "pro": "Les allocations familiales sont destinées à l'entretien de l'enfant, et elles devraient aller à celui qui s'en occupe au quotidien. Aujourd'hui, le maintien du versement aux parents est l'exception en droit, mais il est devenu courant dans les faits. Le maintien pendant un an pour un premier placement vise à ne pas fragiliser les familles pendant une phase qui peut être temporaire.",
+ "reviewed_hash": null,
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/6092"
+  },
+  {
+   "label": "Source 2",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/PIONANR5L17B2493.html"
+  },
+  {
+   "label": "Source 3",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/dossiers/DLR5L17N53772"
+  }
+ ],
+ "status": "blocked",
+ "subkind": "amendement",
+ "sum": "Cet amendement rétablit l'article premier de la proposition de loi, supprimé en commission, dans une nouvelle rédaction. Pour un premier placement qui ne dépasse pas un an, les allocations familiales resteraient en principe versées à la famille d'origine, et le juge pourrait y déroger. Si le placement est renouvelé ou dure plus d'un an, la part correspondant à l'enfant irait au service d'aide sociale à l'enfance ou au tiers digne de confiance, qui serait reconnu comme bénéficiaire. Le juge pourrait maintenir le versement à la famille seulement s'il est prouvé qu'elle assume au moins en partie la charge matérielle de l'enfant, après avis consultatif du président du conseil départemental. L'amendement a été rejeté : l'article reste supprimé.",
+ "surp": "Ce vote ne porte que sur l'article premier : l'allocation de rentrée scolaire et la majoration du RSA sont traitées dans d'autres articles. Un pour ou un contre ne dit pas non plus si les moyens de la protection de l'enfance seraient réglés par un autre texte.",
+ "title": "Allocations familiales des enfants placés : rétablissement de l'article 1er",
+ "updated": "2026-10-13"
+}

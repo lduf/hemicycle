@@ -345,10 +345,15 @@ h1, h2, h3 { font-weight: 700; letter-spacing: -.028em; }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
   ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
 }
+/*__METHOD_CSS__*/
 </style>
 <div class="wrap" id="app"></div>
 <script>
+/*__DRAW__*/
 const D = __DATA__;
+const METHOD = __METHOD__;
+const POOL = D.q.map(q => ({ n: q.n, cat: q.cat, bloc: q.bloc, pol: q.pol }));
+const REF = D.q[0]; // sert de gabarit pour les sièges (intro, récap, carte) : la composition des groupes y est la même
 const EMO = {'Éducation':'🎓','Sport':'⚽','Écologie & énergie':'🌱','Économie & fiscalité':'💶','Famille & social':'👪','Santé & fin de vie':'🩺','Justice & sécurité':'⚖️','Immigration':'🌍','Numérique':'📱','Défense':'🛡️','Agriculture':'🌾','Droits & société':'✊','Travail & retraites':'💼','Logement':'🏠','Institutions':'🏛️','Transports':'🚆','Culture & médias':'🎭'};
 const SIGS = Object.keys(D.groups);
 const ORDER = ['GDR','LFI-NFP','ECOS','SOC','LIOT','DEM','EPR','HOR','DR','UDR','RN','NI']; // disposition indicative, de gauche à droite
@@ -396,7 +401,7 @@ const say = (qn, v) => (v === 'pour' ? 'Pour ' : 'Contre ') + X[qn];
 const SRC = __SRC__;
 const PROM = __PROM__;
 
-const state = { screen:'intro', prio:[], answers:{}, order:[], idx:0, reveal:null, tab:'prox', hl:null, openQ:null, still:false, preds:{}, predict:null, slide:0, nq:15, pron:false, more:false, cardUrl:null, busy:false, pPrev:0, factIdx:Math.floor(Math.random()*100) };
+const state = { screen:'intro', prio:[], answers:{}, order:[], idx:0, reveal:null, tab:'prox', hl:null, openQ:null, still:false, preds:{}, predict:null, slide:0, nq:15, pron:false, more:false, cardUrl:null, busy:false, pPrev:0, argOrder:{}, mtab:'bloc', mfilter:'all', mopen:false, sim:null, factIdx:Math.floor(Math.random()*100) };
 const $app = document.getElementById('app');
 const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
 const rnd = () => Math.random() * 1e9 | 0;
@@ -416,8 +421,6 @@ function layout(N) {
   const rad = 0.4 * Math.min(dr, Math.PI / (cnt[R - 1] - 1));
   return lay[N] = { seats, rad };
 }
-function rng(seed) { let a = seed >>> 0; return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
-function shuffle(arr, seed) { const r = rng(seed); for (let i = arr.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [arr[i], arr[j]] = [arr[j], arr[i]]; } return arr; }
 function svg(seats, rad, fn, label, opt) {
   opt = opt || {};
   const c = seats.map((s, i) => { const o = fn(i); return `<circle class="seat ${o.cls}" style="--i:${i}${o.to ? ';--to:' + o.to : ''}" cx="${s.x.toFixed(3)}" cy="${s.y.toFixed(3)}" r="${rad.toFixed(4)}"${o.g ? ` data-g="${o.g}"` : ''}></circle>`; }).join('');
@@ -448,11 +451,7 @@ function scoreGroup(sig) {
   return { score: w ? s / w : null, n };
 }
 function scoreByCat(sig) { const o = {}; answered().forEach(qn => { const q = byN[qn], a = state.answers[qn], m = stance(q.g[sig] || [0, 0, 0]); if (m === null) return; const v = 1 - Math.abs((a === 'pour' ? 1 : -1) - m) / 2; (o[q.cat] = o[q.cat] || { s: 0, n: 0 }); o[q.cat].s += v; o[q.cat].n++; }); Object.keys(o).forEach(c => o[c].s /= o[c].n); return o; }
-function buildOrder() {
-  const all = D.q.slice(), pr = shuffle(all.filter(q => state.prio.includes(q.cat)), rnd()).slice(0, Math.round(state.nq * .6));
-  const rest = shuffle(all.filter(q => !pr.includes(q)), rnd());
-  state.order = shuffle(pr.concat(rest).slice(0, state.nq).map(q => q.n), rnd());
-}
+function buildOrder() { state.order = drawQuiz(POOL, { n: state.nq, prio: state.prio }); }
 function bar(c) { const t = c[0] + c[1] + c[2] || 1; return `<div class="bar" title="${c[0]} pour, ${c[1]} contre, ${c[2]} abst."><i class="p" style="width:${c[0] / t * 100}%"></i><i class="c" style="width:${c[1] / t * 100}%"></i><i class="a" style="width:${c[2] / t * 100}%"></i></div>`; }
 const stLabel = m => m === null ? 'n.d.' : m >= .5 ? 'pour' : m <= -.5 ? 'contre' : 'partagé';
 const fmtD = d => new Date(d).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
@@ -461,7 +460,7 @@ const topbar = () => `<div class="top"><div class="brand"><svg width="26" height
 
 /* ---------- vues ---------- */
 function viewIntro() {
-  const demo = byN[2521];
+  const demo = REF;
   return `<section class="intro"><div class="intro-in">
   <div class="brand">${LOGO}Dans l’hémicycle</div>
   <h1>Oublie les promesses.<br><span class="hl">Regarde les votes.</span></h1>
@@ -518,7 +517,7 @@ function viewReveal(q) {
 function ranking() { return SIGS.map(s => ({ s, ...scoreGroup(s) })).filter(x => x.score !== null).sort((a, b) => b.score - a.score); }
 function colorFor(r, s) { const sc = r.map(x => x.score), mn = Math.min(...sc), mx = Math.max(...sc), x = r.find(y => y.s === s); if (!x) return 'var(--surface2)'; const p = mx === mn ? 50 : (x.score - mn) / (mx - mn) * 100; return `color-mix(in srgb, var(--accent) ${Math.round(8 + p * .92)}%, var(--surface2))`; }
 function hemiResult(r, story) {
-  const a = seatArr(byN[8611]), L = layout(a.length);
+  const a = seatArr(REF), L = layout(a.length);
   return svg(L.seats, L.rad, i => { const g = a[i].g; return { cls: 'sc', g, to: story ? storyColor(r, g) : (g === 'NI' ? 'var(--line)' : colorFor(r, g)) }; }, 'Hémicycle coloré selon la proximité avec tes réponses', { named: true, labels: SIDES + groupLabels(L, a.map(x => x.g)) });
 }
 function viewResult() {
@@ -534,7 +533,7 @@ function viewResult() {
   <div class="tabs" role="tablist">${tabs.map(t => `<button role="tab" aria-selected="${state.tab === t[0]}" data-act="tab" data-v="${t[0]}">${t[1]}</button>`).join('')}</div>
   ${state.tab === 'prox' ? tabProx(r) : state.tab === 'prom' ? tabProm() : state.tab === 'votes' ? tabVotes() : tabMeth()}
   <div class="card"><h3>Des chiffres qui surprennent</h3>${factCards(factsNamed())}<p class="small muted">Participation aux scrutins publics seulement : ce n’est pas une mesure du travail total d’un groupe.</p></div>
-  <div class="card"><h3>Envie d’aller plus loin ?</h3><button class="btn primary" data-act="story">▶ Revoir mon récap et partager ma carte</button><button class="btn" data-act="how">🔍 Comment c’est fait</button><button class="btn" data-act="stats">📊 Qui vote vraiment ? Présence et discipline des groupes</button><div class="row"><button class="btn primary" data-act="more">+ 5 votes pour affiner</button><button class="btn" data-act="again">15 autres votes</button></div></div>`;
+  <div class="card"><h3>Envie d’aller plus loin ?</h3><button class="btn primary" data-act="story">▶ Revoir mon récap et partager ma carte</button><button class="btn" data-act="how">🔍 Comment c’est fait</button><button class="btn" data-act="stats">📊 Qui vote vraiment ? Présence et discipline des groupes</button><div class="row">${state.order.length < POOL.length ? '<button class="btn primary" data-act="more">+ 5 votes pour affiner</button>' : ''}<button class="btn" data-act="again">15 autres votes</button></div></div>`;
 }
 function divergences(sig) {
   return answered().map(qn => { const q = byN[qn], m = stance(q.g[sig] || [0, 0, 0]); if (m === null) return null; const u = state.answers[qn] === 'pour' ? 1 : -1; return { q, u, m, d: Math.abs(u - m) }; }).filter(Boolean).sort((a, b) => b.d - a.d);
@@ -578,15 +577,12 @@ function tabVotes() {
 function tabMeth() {
   return `<div class="card reveal"><h3>Comment lire ce résultat</h3><ul class="m small">
   <li>Chaque réponse est comparée à la position majoritaire de chaque groupe : 100 % si le groupe vote comme toi, 0 % s’il vote l’inverse, l’abstention compte pour moitié. Les thèmes prioritaires pèsent double.</li>
-  <li>Les ${state.order.length} votes sont tirés au hasard parmi ${D.q.length}. Un autre tirage peut donner un autre classement : c’est un signal, pas un verdict.</li>
-  <li>Répondre « pour » à tout rapproche mécaniquement de la plupart des groupes, car beaucoup de textes sont adoptés. C’est un biais connu du format.</li>
+  <li>Les ${state.order.length} votes sont tirés parmi ${D.q.length}, de façon équilibrée entre les thèmes et les origines des textes. Un autre tirage peut donner un autre classement : c’est un signal, pas un verdict.</li>
+  <li>Répondre « pour » à tout rapproche mécaniquement de la plupart des groupes, car beaucoup de textes sont adoptés. C’est un biais connu du format, que le mélange des questions limite sans le supprimer.</li>
   <li>Un vote sur un texte entier mélange souvent plusieurs mesures : un groupe peut voter contre pour une seule disposition.</li>
-  <li>Peu de députés votent à chaque scrutin (parfois moins de 100 sur 577). Une position de groupe peut reposer sur très peu de voix.</li>
-  <li>Les deux composantes du groupe UDR (avant et après septembre 2025) sont fusionnées. Les non-inscrits ne sont pas scorés.</li>
-  <li>Chaque point est placé selon le numéro de siège officiel du député (données de vote de l’Assemblée), projeté sur un hémicycle schématique : l’ordre gauche-droite est réel, la géométrie exacte des rangées est simplifiée.</li>
-  <li>Les résumés et les mots expliqués sont rédigés par une IA à partir de sources publiques et n’ont pas encore été relus par des personnes de sensibilités opposées.</li>
-  <li>Promesses : tirées de trois articles de presse et d’un comparatif tiers, avec paraphrase. Les attributions incertaines sont signalées.</li></ul>
-  <p class="small muted">Données : Assemblée nationale, open data, 17e législature.</p><button class="btn" data-act="how">🔍 Page complète : comment c’est fait</button></div>`;
+  <li>Peu de députés votent à chaque scrutin. Une position de groupe peut reposer sur très peu de voix. Les non-inscrits ne sont pas scorés.</li>
+  <li>Les résumés sont rédigés par une IA à partir de sources officielles et n’ont pas été relus par des personnes de sensibilités opposées.</li></ul>
+  <p class="small muted">Données : Assemblée nationale, open data, 17e législature.</p><button class="btn primary" data-act="how">🔍 La méthode en détail : sujets, fiches, IA, limites</button></div>`;
 }
 
 /* ---------- stats de présence ---------- */
@@ -760,7 +756,7 @@ function slideGo(d) { const n = slideCount(), k = Math.max(0, Math.min(n - 1, st
 async function makeCard() {
   const W = 1080, H = 1350, c = document.createElement('canvas'); c.width = W; c.height = H; const x = c.getContext('2d');
   const g = x.createLinearGradient(0, 0, W, H); g.addColorStop(0, '#3a1fd0'); g.addColorStop(.62, '#1d4fd8'); g.addColorStop(1, '#0d7a8a'); x.fillStyle = g; x.fillRect(0, 0, W, H);
-  const r = ranking(), ans = answered(), a = seatArr(byN[8611]), L = layout(a.length), ps = predScore();
+  const r = ranking(), ans = answered(), a = seatArr(REF), L = layout(a.length), ps = predScore();
   const DF = "-apple-system, 'SF Pro Display', 'Inter', system-ui, sans-serif", BF = "-apple-system, 'SF Pro Text', 'Inter', system-ui, sans-serif";
   x.fillStyle = '#fff'; x.textAlign = 'center';
   x.font = `800 72px ${DF}`; x.fillText('Mon hémicycle', W / 2, 120);
@@ -783,18 +779,7 @@ async function shareCard() {
   download(url);
 }
 
-/* ---------- comment c'est fait ---------- */
-function viewHow() {
-  return `${topbar()}<button class="link" data-act="back" style="align-self:flex-start">← Retour</button>
-  <div class="card hero reveal"><h1 style="font-size:clamp(1.9rem,7vw,2.6rem)">Comment c’est <span class="hl">fait</span></h1><p>Ce site compare tes réponses à de vrais votes. Voici d’où viennent les données, comment on choisit, et ce qu’il ne faut pas en conclure.</p></div>
-  <div class="card reveal"><span class="tag warn">⚠️ Statut : prototype, textes non relus</span><p class="small">Les résumés et les explications de mots sont écrits par une IA à partir de sources publiques. Ils n’ont pas encore été relus par deux personnes de sensibilités politiques opposées, étape prévue avant toute publication large. Chaque vote renvoie vers le scrutin officiel pour que tu puisses vérifier.</p></div>
-  <div class="card reveal"><h3>D’où viennent les votes</h3><p class="small">Des données ouvertes de l’Assemblée nationale : les scrutins publics de la 17e législature, avec le vote de chaque député et sa place dans l’hémicycle. Rien n’est inventé ni estimé : les points absents sont des députés qui n’ont pas voté.</p></div>
-  <div class="card reveal"><h3>Comment les questions sont choisies</h3><p class="small">Dans ce prototype, ${D.q.length} votes ont été choisis à la main pour couvrir ${D.cats.length} thèmes, puis tirés au hasard. À terme, la sélection serait automatisée avec des critères publics : désaccord réel entre groupes, participation suffisante, mesure précise plutôt que texte fourre-tout.</p></div>
-  <div class="card reveal"><h3>Règles de neutralité</h3><ul class="m small"><li>Aucun nom de parti ni de personne pendant le quiz : tu juges la mesure, pas l’étiquette.</li><li>Chaque fiche présente des arguments des deux côtés, avec le même poids.</li><li>Les boutons disent précisément pour quoi ou contre quoi tu votes, car un « contre » peut vouloir dire supprimer, rejeter ou refuser une mesure.</li><li>Après chaque vote, une explication montre pourquoi le résultat peut surprendre.</li></ul></div>
-  <div class="card reveal"><h3>Ce que ce site ne dit pas</h3><ul class="m small"><li>Ce n’est pas une consigne de vote : un petit nombre de votes donne un signal fragile.</li><li>Un groupe peut voter contre un texte pour d’autres raisons que son principe.</li><li>Les promesses sont tirées d’articles de presse et d’un comparatif tiers, avec paraphrase. Les programmes de la droite républicaine, de l’UDR et de LIOT ne sont pas encore traités.</li><li>Les chiffres de présence mesurent la participation aux scrutins publics, pas tout le travail d’un député (commissions, circonscription).</li></ul></div>
-  <div class="card reveal"><h3>Sources des promesses</h3><ul class="m small">${Object.keys(SRC).map(k => `<li><a href="${SRC[k][1]}" target="_blank" rel="noopener">${esc(SRC[k][0])}</a></li>`).join('')}</ul></div>
-  <button class="btn primary" data-act="back">← Retour</button>`;
-}
+/*__METHOD_JS__*/
 
 /* ---------- rendu et événements ---------- */
 function countUps() {
@@ -808,13 +793,14 @@ function paint(keep) {
   const sc = state.screen, ps = document.querySelector('.pscroll'), psTop = ps ? ps.scrollTop : 0;
   $app.classList.toggle('still', !!state.still);
   const page = h => `<div class="page">${h}</div>`;
-  $app.innerHTML = sc === 'intro' ? viewIntro() : sc === 'prio' ? viewPrio() : sc === 'quiz' ? viewQuiz() : sc === 'stats' ? page(viewStats()) : sc === 'how' ? page(viewHow()) : sc === 'story' ? viewStory() : page(viewResult());
+  $app.innerHTML = sc === 'intro' ? viewIntro() : sc === 'prio' ? viewPrio() : sc === 'quiz' ? viewQuiz() : sc === 'stats' ? page(viewStats()) : sc === 'how' ? page(viewMethod()) : sc === 'story' ? viewStory() : page(viewResult());
   if (sc === 'quiz') bindSwipe();
   if (keep && sc === 'prio') { const n = document.querySelector('.pscroll'); if (n) n.scrollTop = psTop; }
   if (sc === 'result') { state.still = true; setTimeout(() => document.querySelectorAll('.sc').forEach(s => s.classList.add('on')), state.still && keep ? 0 : 450); }
   document.body.style.overflow = sc === 'story' ? 'hidden' : '';
   if (sc === 'story') { setTimeout(() => document.querySelectorAll('.sc').forEach(s => s.classList.add('on')), 350); if (document.getElementById('cardimg')) ensureCard(); }
   const tc = document.querySelector('meta[name=theme-color]'); if (tc) tc.content = sc === 'intro' ? '#000000' : getComputedStyle(document.body).backgroundColor;
+  if (sc === 'how') initMethod();
   countUps();
   if (!keep) window.scrollTo({ top: 0 });
 }
@@ -867,7 +853,7 @@ function openSheet(title, html) {
 function sheetFor(kind) {
   const q = byN[state.order[state.idx]]; if (!q) return;
   if (kind === 'words') openSheet('Comprendre les mots', `<dl>${(GLOSS[q.n] || []).map(t => `<dt>${esc(t[0])}</dt><dd>${esc(t[1])}</dd>`).join('')}</dl>`);
-  else if (kind === 'args') openSheet('Les arguments en débat', `<div class="arg"><b>En faveur</b>${esc(q.pro)}</div><div class="arg"><b>En défaveur</b>${esc(q.con)}</div>`);
+  else if (kind === 'args') { const A = { pro: `<div class="arg"><b>En faveur</b>${esc(q.pro)}</div>`, con: `<div class="arg"><b>En défaveur</b>${esc(q.con)}</div>` }, f = argFirst(state.argOrder, q.n); openSheet('Les arguments en débat', f === 'pro' ? A.pro + A.con : A.con + A.pro); }
   else if (kind === 'surp') openSheet('Pourquoi ce résultat ?', surpBlock(q));
 }
 function applyHl() { document.querySelectorAll('#hemires .seat').forEach(s => s.classList.toggle('dim', !!state.hl && s.dataset.g !== state.hl)); }
@@ -896,8 +882,13 @@ $app.addEventListener('click', e => {
   else if (a === 'tab') { state.tab = v; render(true); applyHl(); }
   else if (a === 'hl') { state.hl = state.hl === v ? null : v; render(true); applyHl(); }
   else if (a === 'oq') { state.openQ = state.openQ === +v ? null : +v; render(true); applyHl(); }
-  else if (a === 'more') { const left = D.q.filter(q => !state.order.includes(q.n)).map(q => q.n); if (!left.length) return; const add = shuffle(left, rnd()).slice(0, 5); state.idx = state.order.length; state.order = state.order.concat(add); state.reveal = null; state.predict = null; state.more = true; state.screen = 'quiz'; state.still = false; render(); }
+  else if (a === 'more') { if (state.order.length >= POOL.length) return; const add = drawQuiz(POOL, { n: 5, prio: state.prio, prioShare: 0, already: state.order }); state.idx = state.order.length; state.order = state.order.concat(add); state.reveal = null; state.predict = null; state.more = true; state.screen = 'quiz'; state.still = false; render(); }
   else if (a === 'again') { state.answers = {}; state.preds = {}; state.predict = null; state.more = false; state.cardUrl = null; state.idx = 0; state.reveal = null; state.hl = null; state.openQ = null; state.tab = 'prox'; state.still = false; state.pPrev = 0; buildOrder(); state.screen = 'quiz'; render(); }
+  else if (a === 'mtab') { state.mtab = v; state.still = true; render(true); state.still = false; }
+  else if (a === 'mlist') { state.mopen = !state.mopen; state.still = true; render(true); state.still = false; }
+  else if (a === 'mfilter') { state.mfilter = v; state.still = true; render(true); state.still = false; }
+  else if (a === 'sim') { state.sim = simRun(400); state.still = true; render(true); state.still = false; }
+  else if (a === 'msec') { const el = document.getElementById(v); if (el) el.scrollIntoView({ behavior: REDUCED.matches ? 'auto' : 'smooth', block: 'start' }); }
   else if (a === 'stats') { state.prev = state.screen; state.screen = 'stats'; state.still = false; render(); }
   else if (a === 'back') { state.screen = state.prev || 'intro'; state.still = state.screen === 'result'; render(); if (state.screen === 'result') applyHl(); }
   else if (a === 'restart') { Object.assign(state, { pPrev: 0, busy: false, still: false, screen: 'intro', prio: [], answers: {}, preds: {}, predict: null, more: false, cardUrl: null, slide: 0, order: [], idx: 0, reveal: null, tab: 'prox', hl: null, openQ: null }); render(); }

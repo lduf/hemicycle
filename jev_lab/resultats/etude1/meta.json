@@ -1,0 +1,46 @@
+{
+ "suite": "standard",
+ "jev_model": "typesafe/jev-1.13",
+ "baselines": {
+  "claude-sonnet-5-5 (claude -p)": "claude-sonnet-5-5"
+ },
+ "budget": 6.0,
+ "mock": false,
+ "seed": 20261013,
+ "sessions": 2,
+ "robust_baselines": false,
+ "credits_start": {
+  "total_credits": 150,
+  "total_usage": 75.483329955,
+  "ts": 1791937236.475766
+ },
+ "thresholds": {
+  "cat_min": 0.5,
+  "dir_ok": 0.85,
+  "pro_con_ok": 0.8,
+  "substance_ok": 0.6,
+  "balance": [
+   0.5,
+   1.5
+  ],
+  "source_ok": 0.5,
+  "neutralite_max": 2
+ },
+ "n_items": {
+  "categorie": 34,
+  "sens": 374,
+  "neutralite": 304,
+  "pro_contre": 304
+ },
+ "started": "2026-10-14T00:20:36Z",
+ "git": "68d70e7",
+ "python": "3.12.15",
+ "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+ "credits_end": {
+  "total_credits": 150,
+  "total_usage": 75.551121987,
+  "ts": 1791937355.462781
+ },
+ "claude_pass": true,
+ "notes": "Jev : exécution complète du workflow (run etude2, Actions) ; référence Claude Sonnet 5.5 : session locale par `claude -p` (abonnement, rien de facturé), mêmes entrées."
+}

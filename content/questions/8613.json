@@ -1,16 +1,70 @@
 {
- "blocked_reason": "sources insuffisantes pour décrire la mesure et ses critiques",
+ "blocked_reason": "arguments pour/contre non pertinents ou déséquilibrés",
+ "cat": "Écologie & énergie",
+ "cat_check": {
+  "classifier": "Écologie & énergie",
+  "confidence": null,
+  "engine": "claude",
+  "writer": "Écologie & énergie"
+ },
+ "checks": {
+  "date": "2026-10-13",
+  "direction": {
+   "answer": "{\"correspond\": 0.92, \"sens\": \"supprimer\", \"attendu\": \"supprimer\", \"engine\": \"claude\"}",
+   "ok": true
+  },
+  "neutrality": {
+   "issues": [],
+   "judge": {
+    "bias": "autre",
+    "model": "claude-opus-5-5",
+    "reasons": [
+     "Le texte penche légèrement en faveur du maintien des ZFE. Ce camp est surtout pro-environnement : au Parlement, l'abrogation a été soutenue au-delà d'un seul bloc gauche-droite, d'où le biais 'autre'.",
+     "Les verbes ne sont pas symétriques. Les partisans de l'amendement 'soulignent', ce qui présente leur propos comme un fait. Les opposants 'estiment' deux fois, ce qui le présente comme une opinion.",
+     "Les chiffres ne sont pas traités de la même façon. Les '40 000 décès prématurés' et les '7 000' sont donnés comme des faits, sans source. Les '90 %' des opposants sont mis à distance avec 'selon une étude citée'.",
+     "Le camp pro-ZFE s'appuie sur des 'résultats mesurés' et une réfutation ('abrogation sans solution de remplacement'). Le camp pro-abrogation a des chiffres plus abstraits ('potentiellement concernées'), ce qui affaiblit sa crédibilité.",
+     "Des éléments manquent de chaque côté. Pour le maintien : les aides à la conversion existantes et les dérogations. Pour l'abrogation : le coût concret pour les ménages et la carte des agglomérations touchées. Ces manques s'équilibrent à peu près, mais les détails rendent l'argument santé plus concret.",
+     "Il y a un problème de cohérence important. Le bouton 'Pour l'abrogation' ne correspond pas au vote réel : voter pour l'amendement revenait à refuser l'abrogation. Les étiquettes 'partisans/opposants' renvoient à l'amendement et non à l'abrogation annoncée dans le titre. Cela peut induire le joueur en erreur sans être un biais politique en soi.",
+     "Le titre, le résumé, l'accroche et la section 'Pourquoi ça peut surprendre' sont formulés de façon factuelle et neutre."
+    ],
+    "score": 2.0
+   },
+   "ok": true
+  },
+  "pro_con": null
+ },
+ "con": "Les opposants à l'amendement estiment que les ZFE limitent la liberté de circulation et l'égalité entre habitants, car 15 millions de personnes sont potentiellement concernées. Ils estiment que l'amélioration de l'air vient surtout du renouvellement des véhicules, pour 90 % selon une étude citée, et que les ménages modestes ont du mal à en changer.",
  "date": "2026-10-08",
+ "generator": {
+  "date": "2026-10-13",
+  "model": "claude-sonnet-5-5"
+ },
+ "hook": "Selon le résultat, les restrictions de circulation visant certains véhicules dans les grandes agglomérations sont supprimées ou restent en place.",
+ "kind": "mesure",
+ "label": "l'abrogation des zones à faibles émissions-mobilités",
  "n": 8613,
  "polarity": "remove",
+ "pro": "Les partisans de la suppression de l'article soulignent que la pollution de l'air cause près de 40 000 décès prématurés par an, dont 7 000 liés aux oxydes d'azote. Ils citent des résultats mesurés dans le Grand Paris et à Lyon, et jugent qu'une abrogation sans solution de remplacement laisse de côté l'enjeu de santé.",
+ "reviewed_hash": null,
  "reviews": [],
  "sources": [
   {
    "label": "Scrutin officiel (Assemblée nationale)",
    "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/8613"
+  },
+  {
+   "label": "Source 2",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/PIONANR5L17B2970.html"
+  },
+  {
+   "label": "Source 3",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/dossiers/DLR5L17N54557"
   }
  ],
  "status": "blocked",
- "title": "l'amendement n° 7 de Mme Belluco de suppression de l'article unique de la proposition de loi visant à abroger les zones à faibles émissions-mobilités (première lecture).",
+ "subkind": "amendement",
+ "sum": "Le texte comporte un article unique qui abroge les zones à faibles émissions-mobilités (ZFE-m). Il supprime ces zones et leurs contrôles. Il retire aussi les obligations qui imposent aux maires de transférer certaines compétences aux présidents d'intercommunalité dans ce cadre. Les mentions de ces zones sont enlevées du code des transports et du code de l'environnement. Cet amendement proposait de supprimer cet article : voter pour revenait donc à refuser l'abrogation, et l'amendement a été rejeté.",
+ "surp": "Ce vote ne dit pas quelles mesures d'accompagnement ou de remplacement pourraient être adoptées plus tard. Il ne règle pas non plus le calendrier des contrôles et des amendes dans chaque ville.",
+ "title": "Abrogation des zones à faibles émissions",
  "updated": "2026-10-13"
 }

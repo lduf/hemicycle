@@ -16,7 +16,7 @@ SYSTEM = (
     "inverse le sens de « pour »."
     " (7) Les arguments portent sur le FOND de la mesure, jamais sur la procédure (« conclure la procédure », « version commune »)."
     " (8) Les arguments des opposants se tirent des réserves et critiques DOCUMENTÉES dans les extraits (avis du Conseil d'État, "
-    "objections ou limites évoquées dans le rapport, points de vigilance, amendements de suppression) ; reformule-les sans nommer "
+    "objections ou limites évoquées dans le rapport ou dans les débats en séance publique (propos fournis sans nom d'orateur), points de vigilance, amendements de suppression) ; reformule-les sans nommer "
     "qui les porte. Si les extraits ne permettent pas de décrire ce que la mesure change concrètement, ou ne contiennent AUCUNE "
     "réserve ni critique, réponds uniquement {\"insuffisant\": true} plutôt que d'inventer."
 )

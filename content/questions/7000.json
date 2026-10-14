@@ -1,0 +1,16 @@
+{
+ "blocked_reason": "sources insuffisantes pour décrire la mesure et ses critiques",
+ "date": "2026-05-28",
+ "n": 7000,
+ "polarity": "adopt",
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/7000"
+  }
+ ],
+ "status": "blocked",
+ "title": "l'amendement n° 27 de M. Nilor à l'article 2 de la proposition de loi portant abrogation du « code noir » (première lecture).",
+ "updated": "2026-10-13"
+}

@@ -1,16 +1,74 @@
 {
- "blocked_reason": "sources insuffisantes pour décrire la mesure et ses critiques",
+ "blocked_reason": "arguments pour/contre non pertinents ou déséquilibrés",
+ "cat": "Économie & fiscalité",
+ "cat_check": {
+  "classifier": "Économie & fiscalité",
+  "confidence": null,
+  "engine": "claude",
+  "writer": "Économie & fiscalité"
+ },
+ "checks": {
+  "date": "2026-10-14",
+  "direction": {
+   "answer": "{\"correspond\": 0.95, \"sens\": \"adopter\", \"attendu\": \"adopter\", \"engine\": \"claude\"}",
+   "ok": true
+  },
+  "neutrality": {
+   "issues": [],
+   "judge": {
+    "bias": "autre",
+    "model": "claude-opus-5-5",
+    "reasons": [
+     "Le texte est globalement factuel : le titre et le bouton sont descriptifs, et le dérapage du déficit (4,4 % prévu, 6,1 % attendu) est donné sans adjectif.",
+     "Les deux camps ont un poids comparable : chacun a deux arguments, avec des chiffres et une attribution claire ('Ils estiment', 'Ils jugent').",
+     "Léger penchant pro-gouvernement : l'accroche reprend 'sans créer de nouvel impôt', déjà dit dans le résumé. Ce point est mis en avant et présenté comme positif, ce qui sert surtout le discours de la majorité.",
+     "L'argument des partisans finit sur un scénario négatif en cas de rejet (déficit au-delà de 6,2 ou 6,3 %). Les opposants n'ont pas de réponse symétrique, et cette dernière phrase oriente le lecteur vers le vote pour.",
+     "'Au strict nécessaire' reprend le vocabulaire valorisant du gouvernement. C'est bien attribué aux partisans, mais ce n'est pas mis à distance.",
+     "Certains éléments manquent : les causes du dérapage par rapport à la prévision initiale ne sont pas présentées comme une erreur de prévision du gouvernement, et les oppositions qui ne demandaient pas plus de recettes (critiques venant de la droite ou du RN) ne sont pas représentées.",
+     "La section 'Pourquoi ça peut surprendre' est neutre et utile."
+    ],
+    "score": 1.0
+   },
+   "ok": true
+  },
+  "pro_con": null
+ },
+ "con": "Ils jugent insuffisantes les explications sur les écarts de recettes et de remboursements, ce qui nuit à la transparence des comptes et pose la question de la fiabilité des prévisions. Ils soulignent aussi que la dégradation vient surtout d'une baisse de 24,3 milliards d'euros de recettes fiscales, et que des recettes supplémentaires auraient pu être envisagées plutôt que des coupes.",
  "date": "2024-11-19",
+ "generator": {
+  "date": "2026-10-14",
+  "model": "claude-sonnet-5-5"
+ },
+ "hook": "Ce vote fixe le cadre des recettes et du déficit de l'État pour 2024, sans créer de nouvel impôt.",
+ "kind": "texte",
+ "label": "la première partie du budget de fin de gestion 2024",
  "n": 445,
  "polarity": "adopt",
+ "pro": "Ils estiment que le texte limite la dépense de l'État au strict nécessaire, avec une exécution 6 milliards d'euros sous le budget initial, ce qui permet de contenir le déficit à 6,1 % du PIB. Ils ajoutent que rejeter le texte ne rééquilibrerait pas les comptes et que le déficit pourrait alors dépasser 6,2 ou 6,3 %.",
+ "reviewed_hash": null,
  "reviews": [],
  "sources": [
   {
    "label": "Scrutin officiel (Assemblée nationale)",
    "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/445"
+  },
+  {
+   "label": "Source 2",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/PRJLANR5L17B0538.html"
+  },
+  {
+   "label": "Source 3",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/RAPPANR5L17B0553.html"
+  },
+  {
+   "label": "Source 4",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/dossiers/DLR5L17N50838"
   }
  ],
  "status": "blocked",
- "title": "l'ensemble de la première partie du projet de loi de finances de fin des gestion pour 2024 (première lecture).",
- "updated": "2026-10-12"
+ "subkind": "ensemble",
+ "sum": "Ce vote porte sur la première partie du projet de loi de finances de fin de gestion pour 2024, qui fixe les conditions générales de l'équilibre financier de l'année. Elle ajuste l'affectation de certaines ressources à des tiers, corrige le montant de la part de TVA versée à l'audiovisuel public et fixe l'équilibre général du budget et de la trésorerie. Le déficit public de 2024 est prévu à 6,1 % du PIB, contre 4,4 % dans la loi de finances initiale, et le déficit de l'État à 163,2 milliards d'euros. Le texte ne contient aucune mesure fiscale nouvelle.",
+ "surp": "Un pour ou un contre ne dit pas quelles dépenses précises sont ouvertes ou annulées, ces choix figurant dans la seconde partie du texte. Il ne dit pas non plus ce que prévoit le budget de 2025, examiné en même temps.",
+ "title": "Budget de fin de gestion 2024 : première partie",
+ "updated": "2026-10-14"
 }

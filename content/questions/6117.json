@@ -1,0 +1,74 @@
+{
+ "blocked_reason": "arguments pour/contre non pertinents ou déséquilibrés",
+ "cat": "Justice & sécurité",
+ "cat_check": {
+  "classifier": "Justice & sécurité",
+  "confidence": null,
+  "engine": "claude",
+  "writer": "Justice & sécurité"
+ },
+ "checks": {
+  "date": "2026-10-13",
+  "direction": {
+   "answer": "{\"correspond\": 0.85, \"sens\": \"adopter\", \"attendu\": \"adopter\", \"engine\": \"claude\"}",
+   "ok": true
+  },
+  "neutrality": {
+   "issues": [],
+   "judge": {
+    "bias": "autre",
+    "model": "claude-opus-5-5",
+    "reasons": [
+     "Le titre et le bouton sont factuels. Le mot « renforcé(es) » reprend toutefois le cadrage des promoteurs du texte. Une formulation plus neutre serait « création d'un délit d'organisation de rave-party non déclarée ».",
+     "Le résumé est précis et chiffré : peines, confiscation, exemples, exclusion de la réduction des risques. Il y a une petite incohérence de mode : « serait puni » pour les participants, alors que le reste est à l'indicatif.",
+     "Les arguments des opposants sont affaiblis. Le premier signale un risque que le texte a déjà corrigé (« ce qui a rendu nécessaire une exclusion explicite »), donc il se neutralise lui-même. Les arguments classiques des opposants sont absents : proportionnalité de la peine de prison, liberté de réunion, sanction des simples participants, risque de rendre les événements plus clandestins et donc plus dangereux.",
+     "Les arguments des partisans sont formulés de façon cohérente et opérationnelle (dissuasion, garde à vue dès l'installation), sans réfutation. Cela penche vers le camp favorable au texte.",
+     "À l'inverse, la rubrique « Pourquoi ça peut surprendre » ne contient que des éléments qui mettent en doute l'efficacité du texte : seuil de 500 personnes face à une moyenne de 300, enquêtes coûteuses, « le texte ne précise pas comment il y répond ». Ces critiques ne sont pas attribuées (« sont décrites comme ») et devraient plutôt figurer dans l'argumentaire des opposants.",
+     "L'accroche met en avant un cas concret et frappant : risquer la prison pour avoir transporté du matériel de sonorisation. Le résumé cite aussi le camion de restauration. Ce choix souligne la sévérité ou l'étendue du délit et oriente légèrement le lecteur contre le texte.",
+     "Bilan : les déséquilibres vont dans les deux sens. Les arguments des opposants sont faibles, mais l'accroche et la rubrique « surprise » sont critiques. Le texte n'est pas franchement partisan, mais la symétrie n'est pas respectée. Il faudrait déplacer les critiques d'efficacité vers les arguments des opposants et remplacer leur premier argument par une objection de fond."
+    ],
+    "score": 2.0
+   },
+   "ok": true
+  },
+  "pro_con": null
+ },
+ "con": "Des intervenants de réduction des risques pourraient être assimilés à des organisateurs, ce qui a rendu nécessaire une exclusion explicite pour les protéger. Les rassemblements peuvent déjà donner lieu à des poursuites sous d'autres motifs, comme le tapage nocturne ou les infractions liées aux stupéfiants.",
+ "date": "2026-04-09",
+ "generator": {
+  "date": "2026-10-13",
+  "model": "claude-sonnet-5-5"
+ },
+ "hook": "Aider à monter une rave-party interdite ou non déclarée, par exemple en transportant du matériel de sonorisation, pourrait mener à de la prison, et y participer à une amende.",
+ "kind": "mesure",
+ "label": "le renforcement des sanctions contre l'organisation de rave-parties",
+ "n": 6117,
+ "polarity": "adopt",
+ "pro": "Les sanctions actuelles, une contravention de cinquième classe, sont jugées insuffisamment dissuasives face à l'ampleur de certains événements. Le passage au délit permettrait d'interpeller des personnes et de les placer en garde à vue dès l'installation du rassemblement.",
+ "reviewed_hash": null,
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/6117"
+  },
+  {
+   "label": "Source 2",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/PIONANR5L17B1133.html"
+  },
+  {
+   "label": "Source 3",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/RAPPANR5L17B2618.html"
+  },
+  {
+   "label": "Source 4",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/dossiers/DLR5L17N51711"
+  }
+ ],
+ "status": "blocked",
+ "subkind": "article",
+ "sum": "Cet article crée un délit pour le fait de participer à l'organisation d'une rave-party non déclarée ou interdite par le préfet. Ce délit est puni de six mois de prison et de 5 000 euros d'amende, alors que l'organisation est aujourd'hui sanctionnée par une contravention de cinquième classe. Le juge doit confisquer le matériel saisi, sauf décision spécialement motivée, et le texte cite comme exemples de participation le transport de matériel de sonorisation, l'installation du mur de son ou la mise en place d'un camion de restauration. Participer à un tel rassemblement serait puni d'une amende de cinquième classe, soit 1 500 euros. Le texte examiné exclut aussi de ce délit les acteurs de la réduction des risques.",
+ "surp": "Le seuil de déclaration, fixé à 500 personnes, n'est pas modifié par cet article, alors que ces rassemblements en réunissent en moyenne 300. Les enquêtes pour identifier les organisateurs sont décrites comme longues et coûteuses, et le texte ne précise pas comment il y répond.",
+ "title": "Sanctions pénales renforcées contre l'organisation de rave-parties",
+ "updated": "2026-10-13"
+}

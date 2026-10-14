@@ -1,16 +1,76 @@
 {
- "blocked_reason": "sources insuffisantes pour décrire la mesure et ses critiques",
+ "cat": "Institutions",
+ "cat_check": {
+  "classifier": "Institutions",
+  "confidence": null,
+  "engine": "claude",
+  "writer": "Institutions"
+ },
+ "checks": {
+  "date": "2026-10-13",
+  "direction": {
+   "answer": "{\"correspond\": 0.9, \"sens\": \"adopter\", \"attendu\": \"adopter\", \"engine\": \"claude\"}",
+   "ok": true
+  },
+  "neutrality": {
+   "issues": [],
+   "judge": {
+    "bias": "droite",
+    "model": "claude-opus-5-5",
+    "reasons": [
+     "L'accroche reprend comme un fait la justification des partisans (« pour que l'on sache mieux qui fait quoi ») au lieu de l'attribuer. C'est le principal écart, et il se trouve dans la partie la plus lue de la fiche.",
+     "Le résumé prend ses distances de façon neutre (« objectifs affichés », « invite »), et le titre comme le bouton reprennent l'intitulé de la mesure sans adjectif orienté.",
+     "Les deux camps ont un poids comparable et des arguments chiffrés : les partisans citent des volumes d'organismes et la dette, les opposants le rapport du Sénat et les risques sans étude d'impact.",
+     "Asymétrie mineure : les opposants réfutent un chiffre de 2 milliards d'euros d'économies que l'argumentaire des partisans ne présente pas. Cela rend leur argument moins lisible.",
+     "La rubrique « Pourquoi ça peut surprendre » souligne le flou du texte (pas de liste ni de calendrier), ce qui compense en partie l'accroche favorable.",
+     "Omissions : la fiche ne donne ni le résultat chiffré du vote ni les groupes qui ont soutenu ou combattu le texte. Le lecteur ne peut donc pas situer politiquement la mesure."
+    ],
+    "score": 1.0
+   },
+   "ok": true
+  },
+  "pro_con": {
+   "con_fond": 0.92,
+   "con_ok": 0.9,
+   "engine": "claude",
+   "equilibre": 1.05,
+   "ok": true,
+   "pro_fond": 0.94,
+   "pro_ok": 0.96
+  }
+ },
+ "con": "Les opposants estiment que la dette ne vient pas de ces structures et que les économies attendues sont limitées. Ils citent un rapport du Sénat dont la fourchette haute est environ quatre fois inférieure aux 2 milliards d'euros avancés. Ils soulignent que certaines agences apportent une expertise sur les risques naturels, industriels et sur la transition écologique, et que supprimer des structures sans étude d'impact peut coûter cher à long terme.",
  "date": "2026-01-22",
+ "generator": {
+  "date": "2026-10-13",
+  "model": "claude-sonnet-5-5"
+ },
+ "hook": "L'Assemblée demande au Gouvernement de ne plus créer de nouveaux organismes publics, pour que l'on sache mieux qui fait quoi dans l'administration.",
+ "kind": "texte",
+ "label": "la suspension des créations d'instances administratives",
  "n": 5107,
  "polarity": "adopt",
+ "pro": "Les partisans estiment que la multiplication des structures fragmente l'action publique et que les citoyens ne savent plus qui fait quoi. Ils rappellent que les documents budgétaires recensent 437 opérateurs de l'État, 318 organismes consultatifs et 1 153 organismes publics nationaux. Pour eux, face à une dette de 3 400 milliards d'euros, suspendre les créations clarifie les responsabilités et aide à maîtriser la dépense.",
+ "reviewed_hash": null,
  "reviews": [],
  "sources": [
   {
    "label": "Scrutin officiel (Assemblée nationale)",
    "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/5107"
+  },
+  {
+   "label": "Source 2",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/PNREANR5L17B2206.html"
+  },
+  {
+   "label": "Source 3",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/dossiers/DLR5L17N53300"
   }
  ],
- "status": "blocked",
- "title": "la proposition de résolution visant à suspendre toute nouvelle création d'instances administratives pour lutter contre le phénomène d'agencification de l'État et rendre plus lisible le fonctionnement de l'administration française (art. 34-1 de la Constitution).",
- "updated": "2026-10-12"
+ "status": "pending_review",
+ "subkind": "ensemble",
+ "sum": "L'Assemblée nationale a voté une proposition de résolution sur les agences, comités, opérateurs et autorités administratives indépendantes de l'État. Ce texte invite le Gouvernement à suspendre toute nouvelle création de ces structures. Il l'invite aussi à rationaliser celles qui existent déjà. Les objectifs affichés sont de simplifier le paysage administratif et de mieux maîtriser la dépense publique. Une résolution exprime une position de l'Assemblée et s'adresse au Gouvernement.",
+ "surp": "Le texte invite le Gouvernement sans donner de liste des structures concernées ni de calendrier. Il ne précise pas non plus comment les entités existantes seraient rationalisées.",
+ "title": "Suspendre la création de nouvelles instances administratives",
+ "updated": "2026-10-13"
 }

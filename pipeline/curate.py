@@ -108,7 +108,7 @@ def run(n_target=N_DEFAUT):
     print(f"[curate] {len(avec_vote)} dossiers avec scrutin → {len(elig)} éligibles → {len(out_items)} retenus ; blocs {dict(par_bloc)}")
     return res
 
-def draft_missing(workers=4, limit=None, only=None):
+def draft_missing(workers=4, limit=None, only=None, debates=False):
     """Rédige les fiches des votes retenus qui n'en ont pas (sources officielles découvertes depuis la page du scrutin)."""
     from concurrent.futures import ThreadPoolExecutor
     from . import fiche, sources as SR, store
@@ -126,8 +126,14 @@ def draft_missing(workers=4, limit=None, only=None):
         except Exception as e:
             urls = []
             print(f"[curate] {n} : sources introuvables ({str(e)[:80]})")
+        texts = None
+        if debates and urls:
+            from . import debats
+            texts = [(u, SR.fetch_excerpt(u, rapport=20000)) for u in urls if SR.allowed(u) and "/dossiers/" not in u]
+            doss = "https://www.assemblee-nationale.fr/dyn/17/dossiers/" + ref[n]
+            texts.append((doss, debats.extraits([ref[n]])[ref[n]][:30000]))
         try:
-            fiche.save_and_report(fiche.draft(sc[str(n)], urls))
+            fiche.save_and_report(fiche.draft(sc[str(n)], urls, texts=texts))
         except Exception as e:
             print(f"[curate] {n} : ÉCHEC {type(e).__name__} {str(e)[:120]}")
 
@@ -141,7 +147,8 @@ if __name__ == "__main__":
     ap.add_argument("--draft", action="store_true", help="rédiger les fiches manquantes (claude -p)")
     ap.add_argument("--workers", type=int, default=4)
     ap.add_argument("--limit", type=int)
+    ap.add_argument("--debates", action="store_true", help="ajoute les débats en séance (anonymisés) aux sources du rédacteur")
     a = ap.parse_args()
     run(a.n)
     if a.draft:
-        draft_missing(a.workers, a.limit)
+        draft_missing(a.workers, a.limit, debates=a.debates)

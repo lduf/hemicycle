@@ -1,16 +1,81 @@
 {
- "blocked_reason": "sources insuffisantes pour décrire la mesure et ses critiques",
+ "cat": "Économie & fiscalité",
+ "cat_check": {
+  "classifier": "Économie & fiscalité",
+  "confidence": null,
+  "engine": "claude",
+  "writer": "Économie & fiscalité"
+ },
+ "checks": {
+  "date": "2026-10-13",
+  "direction": {
+   "answer": "{\"correspond\": 0.97, \"sens\": \"adopter\", \"attendu\": \"adopter\", \"engine\": \"claude\"}",
+   "ok": true
+  },
+  "neutrality": {
+   "issues": [],
+   "judge": {
+    "bias": "autre",
+    "model": "claude-opus-5-5",
+    "reasons": [
+     "Le vocabulaire reste globalement mesuré : on ne trouve pas d'adjectifs nettement orientés, et chaque camp est présenté avec des formules prudentes (« y voient », « jugent que », « craignent »).",
+     "Les deux argumentaires ne sont pas traités de la même façon. Celui des partisans reste abstrait et proche des éléments de langage (« étape de redressement », « plus grande justice fiscale », « missions essentielles »). Celui des opposants est concret et touche au quotidien (chauffage, électricité, véhicules, pouvoir d'achat). Il est donc plus parlant pour un public large.",
+     "L'accroche « Ça change quoi pour moi ? » reprend surtout des exemples des opposants (TVA sur le chauffage, malus). Elle ne cite pas les mesures mises en avant dans le résumé, comme la contribution sur les hauts revenus ou celle sur les grandes entreprises. Le lecteur est ainsi orienté vers une lecture de ce qu'il va payer en plus.",
+     "Le résumé ne mentionne pas la hausse de TVA sur l'électricité ni le malus, alors que l'argument des opposants les présente comme centraux. Le résumé et les arguments ne sont donc pas cohérents entre eux.",
+     "Les deux camps mélangent recettes et dépenses. Les partisans parlent de « réduction de la dépense publique » et les opposants de « baisse des crédits de missions ». Or la première partie porte sur les recettes, et la fiche indique elle-même que les dépenses n'ont pas été examinées. Ces arguments ne correspondent donc pas à l'objet du vote.",
+     "C'est l'omission la plus importante : le texte rejeté le 12 novembre 2024 avait été profondément modifié en séance par des amendements, surtout ceux du Nouveau Front populaire, qui ajoutaient de nombreuses recettes nouvelles. Ce sont surtout les députés du NFP qui ont voté pour. Le bloc gouvernemental, LR et le RN ont voté contre ou se sont abstenus. Les « partisans » présentés ici défendent en réalité le projet initial du gouvernement, dont les soutiens ont rejeté la version amendée. Le quiz peut donc induire en erreur sur qui a voté quoi et pourquoi.",
+     "Le titre et le bouton sont neutres et descriptifs. L'encadré « Pourquoi ça peut surprendre » est factuel et ne prend pas parti."
+    ],
+    "score": 2.0
+   },
+   "ok": true
+  },
+  "pro_con": {
+   "con_fond": 0.97,
+   "con_ok": 0.96,
+   "engine": "claude",
+   "equilibre": 1.0,
+   "ok": true,
+   "pro_fond": 0.97,
+   "pro_ok": 0.96
+  }
+ },
+ "con": "Les opposants jugent que plusieurs mesures pèsent sur le pouvoir d'achat, comme la hausse de la TVA sur le chauffage et sur les abonnements d'électricité, ou le malus sur certains véhicules. Ils critiquent aussi la baisse des crédits de missions comme l'emploi, l'écologie, la recherche ou la santé, dont ils craignent l'effet sur la vie quotidienne.",
  "date": "2024-11-12",
+ "generator": {
+  "date": "2026-10-13",
+  "model": "claude-sonnet-5-5"
+ },
+ "hook": "Ça change quoi pour moi ? Cette partie du budget fixe les impôts et taxes de 2025, comme le barème de l'impôt sur le revenu, la TVA sur le chauffage ou le malus sur certains véhicules.",
+ "kind": "texte",
+ "label": "la première partie du budget 2025",
  "n": 438,
  "polarity": "adopt",
+ "pro": "Les partisans y voient une étape de redressement des finances publiques. Ils mettent en avant la réduction de la dépense publique, avec le maintien des missions essentielles de l'État, et une plus grande justice fiscale. Ils soulignent aussi que le barème de l'impôt sur le revenu suivrait l'inflation.",
+ "reviewed_hash": null,
  "reviews": [],
  "sources": [
   {
    "label": "Scrutin officiel (Assemblée nationale)",
    "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/438"
+  },
+  {
+   "label": "Source 2",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/PRJLANR5L17B0324.html"
+  },
+  {
+   "label": "Source 3",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/RAPPANR5L17B0873.html"
+  },
+  {
+   "label": "Source 4",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/dossiers/DLR5L17N50198"
   }
  ],
- "status": "blocked",
- "title": "la première partie du projet de loi de finances pour 2025 (première lecture).",
- "updated": "2026-10-12"
+ "status": "pending_review",
+ "subkind": "ensemble",
+ "sum": "Cette première partie du projet de budget pour 2025 porte sur les recettes de l'État et sur l'équilibre général des finances publiques. Elle prévoit d'indexer sur l'inflation le barème de l'impôt sur le revenu pour les revenus de 2024. Elle crée une contribution sur les hauts revenus et une contribution exceptionnelle sur les bénéfices des grandes entreprises. Elle reporte de trois ans la suppression progressive de la cotisation sur la valeur ajoutée des entreprises, et elle fixe aussi le montant des dotations de l'État aux collectivités. L'Assemblée nationale a rejeté cette première partie le 12 novembre 2024.",
+ "surp": "Un vote contre cette première partie entraînait le rejet de l'ensemble du texte en première lecture à l'Assemblée nationale. La partie sur les dépenses n'a donc pas été examinée en séance publique par les députés.",
+ "title": "Première partie du budget de l'État 2025",
+ "updated": "2026-10-13"
 }

@@ -257,6 +257,50 @@ def recalibration(rows):
     return out
 
 
+def explo_sens_titre(recs):
+    """Sens lu dans le titre seul (sans libellé de bouton) : accepté si le sens lu égale le sens annoncé. Même jeu d'essai que « sens »."""
+    rs = [r for r in dedupe(recs) if r.get("experiment") == "explo_sens"]
+    if not rs:
+        return None
+    good, bad = [], []
+    for r in rs:
+        ch = None
+        if r.get("ok"):
+            a = ((r.get("response") or {}).get("answers") or {}).get("sens") or {}
+            ch = a.get("choice")
+        want = "supprimer" if (r.get("meta") or {}).get("polarity_claimed") == "remove" else "adopter"
+        accepted = ch == want                      # inexploitable = rejeté (échec fermé)
+        (good if (r.get("gold") or {}).get("accept") else bad).append((accepted, r.get("group", "").split(":")[0], ch))
+    by = {}
+    for ok_, lst in ((True, good), (False, bad)):
+        for acc, g, ch in lst:
+            by.setdefault(g, {"good": [], "bad": []})["good" if ok_ else "bad"].append(acc)
+    return {"far": rate([a for a, _, _ in bad]), "frr": rate([not a for a, _, _ in good]),
+            "kinds": {g: {"far": rate(v["bad"]), "frr": rate([not a for a in v["good"]])} for g, v in by.items()}}
+
+
+def exploratoire(rows):
+    """Règles alternatives, imaginées APRÈS avoir vu les résultats : piste à confirmer sur de nouvelles données, jamais une conclusion.
+    Chaque règle est évaluée sur les mêmes entrées que la règle de production (fausse acceptation / faux rejet, Wilson)."""
+    T = classify.THRESHOLDS
+    out = {}
+    q = [r for r in rows if r["experiment"] == "quality"]
+    rules = {
+        "sens": [("sens lu dans le titre seul (sans la question « correspond »)",
+                  lambda v: v["sens"] == v["attendu"])],
+        "pro_contre": [("sans la condition « de fond » (pro_ok, con_ok et équilibre seuls)",
+                        lambda v: min(v["pro_ok"], v["con_ok"]) >= T["pro_con_ok"] and T["balance"][0] <= v["equilibre"] <= T["balance"][1])],
+    }
+    for sc, lst in rules.items():
+        for (s,), rs in _by([r for r in q if r["scenario"] == sc], "system").items():
+            good = [r for r in rs if r["gold"].get("accept") is True]
+            bad = [r for r in rs if r["gold"].get("accept") is False]
+            for name, fn in lst:
+                acc = lambda r: bool(r["valid"] and fn(r["verdict"]))
+                out.setdefault(sc, {}).setdefault(s, []).append({"regle": name, "far": rate([acc(r) for r in bad]), "frr": rate([not acc(r) for r in good])})
+    return out
+
+
 # ---------------------------------------------------------------- latence, coût, déterminisme, robustesse, multi-questions
 def latency(rows):
     lat = [r for r in rows if r["experiment"] == "latency"]
@@ -442,7 +486,7 @@ def run(store):
         if r["experiment"] == "latency" and r["ok"] and r["wall_s"] is not None:
             samples.setdefault(r["system"], []).append(r["wall_s"])
     return {"meta": meta, "n_calls": len(recs), "categorie": cat, "decisions": dec, "pairs": pr, "safety": safety_verdicts(dec),
-            "recalibration": recalibration(rows), "latency": latency(rows), "latency_samples": samples, "throughput": throughput(recs), "cost": cost(rows, meta),
+            "recalibration": recalibration(rows), "exploratoire": exploratoire(rows), "explo_sens_titre": explo_sens_titre(recs), "latency": latency(rows), "latency_samples": samples, "throughput": throughput(recs), "cost": cost(rows, meta),
             "determinism": determinism(rows), "robust": robustness(rows), "multi": multi(rows), "worst": worst_errors(rows),
             "resolved_models": sorted({r["resolved_model"] for r in rows if r["system"] == "jev" and r["resolved_model"]}),
             "spend": sum(r["cost"] for r in rows if r["cost"] is not None),

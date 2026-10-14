@@ -1,0 +1,78 @@
+{
+ "blocked_reason": "sens du vote : {\"correspond\": 0.85, \"sens\": \"supprimer\", \"attendu\": \"adopter\", \"engine\": \"claude\"}; arguments pour/contre non pertinents ou déséquilibrés",
+ "cat": "Travail & retraites",
+ "cat_check": {
+  "classifier": "Travail & retraites",
+  "confidence": null,
+  "engine": "claude",
+  "writer": "Travail & retraites"
+ },
+ "checks": {
+  "date": "2026-10-13",
+  "direction": {
+   "answer": "{\"correspond\": 0.85, \"sens\": \"supprimer\", \"attendu\": \"adopter\", \"engine\": \"claude\"}",
+   "ok": false
+  },
+  "neutrality": {
+   "issues": [],
+   "judge": {
+    "bias": "autre",
+    "model": "claude-opus-5-5",
+    "reasons": [
+     "Le titre et le bouton (« Abrogation de la réforme… », « Pour l'abrogation… ») laissent croire que le vote abroge la loi. Or une proposition de résolution n'a aucun effet juridique contraignant. La fiche ne le dit pas clairement et renvoie cette information à « Les extraits ne précisent pas les effets juridiques ». C'est une omission importante qui grossit la portée du vote.",
+     "Les deux camps ne sont pas présentés de la même façon. Les arguments des partisans sont mis à distance (« Selon les auteurs du texte », « Ils ajoutent »). Ceux des opposants sont énoncés comme des faits (« Un déficit du système de retraite reste prévu ») et appuyés par une source d'autorité (« projections officielles », « deux évaluations indépendantes »). Cette différence donne plus de crédibilité aux opposants.",
+     "Les opposants s'appuient sur un seul argument, le déficit, accompagné d'une formule méta peu informative (« Les extraits indiquent que ce déficit ne doit pas être négligé »). Leurs arguments habituels manquent : hausse du taux d'emploi des seniors, comparaison européenne, équilibre entre générations. Les partisans, eux, ont trois arguments chiffrés.",
+     "Les deux blocs se contredisent sur le déficit (« proche de celui estimé avant la loi » contre un déficit maintenu), sans que la fiche aide le lecteur à comparer les deux affirmations.",
+     "La rubrique « Pourquoi ça peut surprendre » se termine sur la question du financement du déficit. C'est un cadrage qui sert plutôt les opposants à l'abrogation.",
+     "Il y a des imprécisions factuelles qui ne sont pas orientées en elles-mêmes. Le recul de trois mois ne concerne que les personnes nées à partir du 1er septembre 1961, pas toute la génération 1961. La fiche ne dit pas non plus que la résolution a été déposée par le groupe RN et soutenue aussi par la gauche, ce qui aiderait à situer politiquement le vote.",
+     "Le vocabulaire reste globalement sobre et sans adjectifs chargés. L'accroche est neutre. Les biais qui tirent dans des sens opposés (titre qui grossit la portée du vote, présentation qui favorise les opposants) se compensent en partie, d'où un score modéré et un biais qualifié d'« autre »."
+    ],
+    "score": 2.0
+   },
+   "ok": true
+  },
+  "pro_con": {
+   "con_fond": 0.9,
+   "con_ok": 0.6,
+   "engine": "claude",
+   "equilibre": 0.85,
+   "ok": false,
+   "pro_fond": 0.95,
+   "pro_ok": 0.9
+  }
+ },
+ "con": "Un déficit du système de retraite reste prévu : 0,4 % du PIB en 2030, puis jusqu'à 0,8 % à plus long terme selon les projections officielles de juin 2024. Les extraits indiquent que ce déficit ne doit pas être négligé et que deux évaluations indépendantes aboutissent à des chiffres proches.",
+ "date": "2025-06-05",
+ "generator": {
+  "date": "2026-10-13",
+  "model": "claude-sonnet-5-5"
+ },
+ "hook": "Cette loi a fait passer l'âge minimal de départ à la retraite de 62 à 64 ans et la durée de cotisation pour une carrière complète à 43 annuités. Le vote porte sur son abrogation.",
+ "kind": "texte",
+ "label": "l'abrogation de la réforme des retraites de 2023",
+ "n": 2257,
+ "polarity": "adopt",
+ "pro": "Selon les auteurs du texte, la part des départs avec décote est passée de 7 à 8 % à 13 à 14 % des départs, et cette décote s'applique à vie. Ils ajoutent que parmi les 60-64 ans en activité, 41 % sont à temps partiel, et que le déficit prévu reste proche de celui estimé avant la loi.",
+ "reviewed_hash": null,
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/2257"
+  },
+  {
+   "label": "Source 2",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/PNREANR5L17B1352.html"
+  },
+  {
+   "label": "Source 3",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/dossiers/DLR5L17N51999"
+  }
+ ],
+ "status": "blocked",
+ "subkind": "ensemble",
+ "sum": "Ce texte est une proposition de résolution qui vise à abroger la loi du 14 avril 2023 sur les retraites. Cette loi a relevé l'âge de départ de 62 à 64 ans et porté la durée de cotisation à 43 annuités dès 2027 au lieu de 2035. Elle s'est appliquée dès 2023 à la génération née en 1961, dont l'âge minimal de départ a reculé de trois mois. Voter « pour » revient à adopter cette résolution, qui a été adoptée le 5 juin 2025 en lecture unique à l'Assemblée nationale.",
+ "surp": "Les extraits ne précisent pas les effets juridiques de ce vote ni ce qui remplacerait la loi en cas d'abrogation. Ils ne disent pas non plus comment serait financé le déficit prévu.",
+ "title": "Abrogation de la réforme des retraites de 2023",
+ "updated": "2026-10-13"
+}

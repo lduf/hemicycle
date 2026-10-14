@@ -1,0 +1,76 @@
+{
+ "cat": "Économie & fiscalité",
+ "cat_check": {
+  "classifier": "Économie & fiscalité",
+  "confidence": null,
+  "engine": "claude",
+  "writer": "Économie & fiscalité"
+ },
+ "checks": {
+  "date": "2026-10-13",
+  "direction": {
+   "answer": "{\"correspond\": 0.95, \"sens\": \"adopter\", \"attendu\": \"adopter\", \"engine\": \"claude\"}",
+   "ok": true
+  },
+  "neutrality": {
+   "issues": [],
+   "judge": {
+    "bias": "aucun",
+    "model": "claude-opus-5-5",
+    "reasons": [
+     "Le titre, le bouton et l'accroche sont descriptifs et ne contiennent aucun adjectif orienté.",
+     "Les deux camps ont des arguments de longueur et de précision comparables, et chacun est attribué à ses auteurs (« estiment », « jugent », « soulignent »).",
+     "Le résumé ne présente que des mesures agricoles plutôt favorables aux bénéficiaires. Les mesures de recettes plus contestées de cette partie du texte (hausses de prélèvements, révision des allègements généraux, fiscalité comportementale) ne sont pas mentionnées. Ce choix peut rendre l'adoption plus attrayante, même si la rubrique « Pourquoi ça peut surprendre » signale que la sélection est partielle.",
+     "L'expression « En contrepartie » suggère un échange équilibré entre le calcul sur les 25 meilleures années et la fusion des cotisations. C'est un léger cadrage favorable, alors que l'effet de cette fusion sur le niveau des cotisations n'est pas précisé.",
+     "Les partisans mettent en avant des bénéfices concrets (droits à pension, coût du travail, lutte contre le travail dissimulé). Les opposants avancent des critiques plus générales (efficacité non démontrée, effet difficile à mesurer), compensées en partie par un chiffre précis sur le déficit.",
+     "Les critiques des opposants mêlent une critique de gauche (efficacité des exonérations) et une critique budgétaire (déficit). Aucun camp politique n'est donc visiblement favorisé."
+    ],
+    "score": 1.0
+   },
+   "ok": true
+  },
+  "pro_con": {
+   "con_fond": 0.96,
+   "con_ok": 0.92,
+   "engine": "claude",
+   "equilibre": 1.0,
+   "ok": true,
+   "pro_fond": 0.97,
+   "pro_ok": 0.95
+  }
+ },
+ "con": "Les opposants jugent que les exonérations de cotisations ont une efficacité non démontrée et un effet incitatif faible. Ils soulignent aussi que la trajectoire financière laisse un déficit élevé, autour de 15 milliards d'euros pour 2025 dans les régimes de base, et que l'effet de certaines exonérations sur les comptes des caisses est difficile à mesurer.",
+ "date": "2024-11-04",
+ "generator": {
+  "date": "2026-10-13",
+  "model": "claude-sonnet-5-5"
+ },
+ "hook": "Ça fixe les recettes de la sécurité sociale pour 2025, avec des effets sur la retraite des agriculteurs et sur l'emploi saisonnier agricole.",
+ "kind": "texte",
+ "label": "l'adoption des recettes et de l'équilibre de la sécurité sociale pour 2025",
+ "n": 242,
+ "polarity": "adopt",
+ "pro": "Les partisans estiment que le calcul sur les 25 meilleures années améliore les droits à pension des exploitants agricoles, car les moins bonnes années sont écartées. Ils jugent aussi que la prolongation de l'exonération sur l'emploi saisonnier baisse le coût du travail, aide les filières qui emploient beaucoup de saisonniers et lutte contre le travail dissimulé.",
+ "reviewed_hash": null,
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/242"
+  },
+  {
+   "label": "Source 2",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/PRJLANR5L17B0325.html"
+  },
+  {
+   "label": "Source 3",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/RAPPANR5L17B0638.html"
+  }
+ ],
+ "status": "pending_review",
+ "subkind": "ensemble",
+ "sum": "Ce vote porte sur l'ensemble de la deuxième partie du projet de budget de la sécurité sociale pour 2025, qui traite des recettes et de l'équilibre général. Parmi ses mesures, la retraite des exploitants agricoles serait calculée à terme sur leurs 25 meilleures années de revenus. En contrepartie, leurs cotisations d'assurance vieillesse seraient fusionnées en une cotisation unique, alignée sur celle des autres travailleurs indépendants. L'exonération de cotisations patronales pour l'emploi de travailleurs occasionnels demandeurs d'emploi serait prolongée au-delà de 2025, et son plafond passerait de 1,20 à 1,25 Smic. Le texte a été adopté.",
+ "surp": "Ce vote porte sur un ensemble de nombreux articles, dont seuls quelques-uns sont présentés ici. Voter pour ou contre l'ensemble ne dit pas comment chaque mesure aurait été jugée prise séparément.",
+ "title": "Recettes et équilibre de la sécurité sociale pour 2025",
+ "updated": "2026-10-13"
+}

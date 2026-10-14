@@ -1,16 +1,76 @@
 {
- "blocked_reason": "sources insuffisantes pour décrire la mesure et ses critiques",
+ "cat": "Travail & retraites",
+ "cat_check": {
+  "classifier": "Travail & retraites",
+  "confidence": null,
+  "engine": "claude",
+  "writer": "Travail & retraites"
+ },
+ "checks": {
+  "date": "2026-10-13",
+  "direction": {
+   "answer": "{\"correspond\": 0.88, \"sens\": \"adopter\", \"attendu\": \"adopter\", \"engine\": \"claude\"}",
+   "ok": true
+  },
+  "neutrality": {
+   "issues": [],
+   "judge": {
+    "bias": "autre",
+    "model": "claude-opus-5-5",
+    "reasons": [
+     "Ensemble globalement neutre : le titre, le bouton, le résumé et l'accroche sont factuels. Ils décrivent les paramètres (âge, trimestres, générations) sans adjectif orienté, et l'issue du vote est donnée sans commentaire.",
+     "Les deux camps sont présentés de façon à peu près équilibrée : chacun s'appuie sur des chiffres (9 mois contre 5 et 25 centimes par euro d'un côté, 3,5 puis 16 milliards et 40 % des actifs de l'autre). Les opposants disposent toutefois de trois arguments contre deux pour les partisans.",
+     "Léger déséquilibre vers les opposants au texte. La rubrique « Pourquoi ça peut surprendre » reprend presque mot pour mot leur argument selon lequel le débat devrait porter sur l'emploi des seniors et les conditions de travail. Cela donne en conclusion plus de poids à leur cadrage, sans contrepoint équivalent pour les partisans.",
+     "La phrase « le gage prévu ne répond pas à cette question » n'est pas contrebalancée. Le résumé ne précise pas que le gage est un mécanisme de recevabilité habituel, souvent une taxe sur le tabac. Le lecteur peut donc en conclure que le texte n'est pas financé.",
+     "Omissions possibles : le résumé ne donne aucun contexte sur les auteurs de la proposition ni sur les groupes qui l'ont soutenue ou rejetée. Il ne dit rien non plus de l'adoption de la réforme de 2023 par le 49.3, ni de la situation financière du système de retraite. Ces éléments manquent des deux côtés, sans pencher clairement pour l'un.",
+     "Le biais est classé « autre » plutôt que gauche ou droite. Le retour à 62 ans était soutenu à la fois par la gauche et par le RN, et rejeté par le bloc central et une partie de LR. La légère inclinaison relevée favorise les opposants au texte, pas un camp politique simple à placer sur l'axe gauche-droite."
+    ],
+    "score": 1.0
+   },
+   "ok": true
+  },
+  "pro_con": {
+   "con_fond": 0.85,
+   "con_ok": 0.92,
+   "engine": "claude",
+   "equilibre": 1.0,
+   "ok": true,
+   "pro_fond": 0.96,
+   "pro_ok": 0.93
+  }
+ },
+ "con": "Les opposants jugent que le texte ne dit pas comment financer son coût, estimé à 3,5 milliards d'euros en 2025 puis 16 milliards en 2032, et que le gage prévu ne répond pas à cette question. Ils soulignent aussi que le nouvel âge de départ ne s'applique pas à 40 % des actifs (inaptitude, invalidité, handicap) et que le débat devrait porter sur l'emploi des seniors et les conditions de travail.",
  "date": "2024-10-31",
+ "generator": {
+  "date": "2026-10-13",
+  "model": "claude-sonnet-5-5"
+ },
+ "hook": "Selon ce texte, l'âge d'ouverture des droits à la retraite serait de 62 ans au lieu de 64 ans pour les générations concernées.",
+ "kind": "texte",
+ "label": "le retour de l'âge de départ à la retraite à 62 ans et de la durée de cotisation à 42 ans",
  "n": 217,
  "polarity": "adopt",
+ "pro": "Les partisans estiment que le recul de l'âge de départ pèse davantage sur les carrières longues ou hachées, sur les métiers pénibles et sur les femmes, dont l'âge moyen de départ augmenterait de 9 mois contre 5 pour les hommes. Ils ajoutent que cette réforme reporte des dépenses sur d'autres prestations sociales, à hauteur de 25 centimes pour chaque euro économisé.",
+ "reviewed_hash": null,
  "reviews": [],
  "sources": [
   {
    "label": "Scrutin officiel (Assemblée nationale)",
    "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/217"
+  },
+  {
+   "label": "Source 2",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/PIONANR5L17B0284.html"
+  },
+  {
+   "label": "Source 3",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/dossiers/DLR5L17N50453"
   }
  ],
- "status": "blocked",
- "title": "l'ensemble de la proposition de loi visant à restaurer un système de retraite plus juste en annulant les dernières réformes portant sur l'âge de départ et le nombre d'annuités (première lecture).",
- "updated": "2026-10-12"
+ "status": "pending_review",
+ "subkind": "ensemble",
+ "sum": "Cette proposition de loi revient sur la réforme des retraites de 2023. Elle rétablit l'âge d'ouverture des droits à 62 ans à partir de la génération 1955, au lieu de 64 ans à partir de la génération 1968. Elle fixe aussi la durée de cotisation pour le taux plein à 168 trimestres (42 ans) à partir de la génération 1961, au lieu de 172 trimestres (43 ans) à partir de la génération 1965. Un article prévoit un gage financier pour ces mesures. Le texte a été rejeté en première lecture : voter « pour » revenait à l'adopter.",
+ "surp": "Le vote ne porte que sur l'âge d'ouverture des droits et sur la durée de cotisation. L'emploi des seniors et les conditions de travail, évoqués dans les débats, ne figurent pas dans les articles du texte.",
+ "title": "Retraites : retour à 62 ans et 42 annuités",
+ "updated": "2026-10-13"
 }

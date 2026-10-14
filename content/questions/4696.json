@@ -1,16 +1,82 @@
 {
- "blocked_reason": "sources insuffisantes pour décrire la mesure et ses critiques",
+ "cat": "Santé & fin de vie",
+ "cat_check": {
+  "classifier": "Santé & fin de vie",
+  "confidence": null,
+  "engine": "claude",
+  "writer": "Famille & social"
+ },
+ "checks": {
+  "date": "2026-10-13",
+  "direction": {
+   "answer": "{\"correspond\": 0.95, \"sens\": \"adopter\", \"attendu\": \"adopter\", \"engine\": \"claude\"}",
+   "ok": true
+  },
+  "neutrality": {
+   "issues": [],
+   "judge": {
+    "bias": "autre",
+    "model": "claude-opus-5-5",
+    "reasons": [
+     "Omission majeure : la suspension de la réforme des retraites de 2023, mesure politique centrale de la nouvelle lecture, n'apparaît nulle part. Le lecteur ne peut donc pas comprendre les positions de vote, notamment le compromis avec le PS.",
+     "Les chiffres de déficit (17,5 Md€ contre 29 Md€) viennent du texte initial, alors que le vote porte sur la version de nouvelle lecture. Le texte final a été modifié et le déficit revu à la hausse. Le lecteur ne voit que les chiffres les plus favorables au texte.",
+     "L'accroche et le résumé mettent en avant des mesures attractives (congé de naissance, retraite des femmes, prévention), qui sont aussi les arguments des partisans. Les mesures d'économies (franchises, gel des prestations, hausses de prélèvements) n'apparaissent que du côté des opposants. Le cadrage descriptif favorise donc l'adoption.",
+     "Asymétrie rhétorique inverse dans les arguments : celui des opposants s'appuie sur une citation forte (« intenable, incohérente et globalement insincère ») et sur un vote antérieur (« large majorité »). Ces éléments pèsent plus que les arguments assez génériques des partisans.",
+     "La citation « intenable, incohérente et globalement insincère » n'est pas attribuée. S'il s'agit d'un organe indépendant comme le Haut Conseil des finances publiques, il faut le dire ; sinon, elle passe pour une simple charge partisane.",
+     "Les arguments des opposants reprennent surtout les critiques de gauche (gel des prestations, franchises). Les critiques de droite (hausses de prélèvements, coût de la suspension de la réforme des retraites, effort d'économies jugé insuffisant) sont absentes. Le pluralisme de l'opposition est incomplet.",
+     "Formulation maladroite : « Voter pour, c'est adopter l'ensemble du texte, et il a été adopté » mélange la définition du vote et son résultat, ce qui peut orienter la réponse dans un quiz.",
+     "Points positifs : le titre et le bouton sont neutres, le vocabulaire reste globalement factuel et la section « Pourquoi ça peut surprendre » est équilibrée."
+    ],
+    "score": 2.0
+   },
+   "ok": true
+  },
+  "pro_con": {
+   "con_fond": 0.85,
+   "con_ok": 0.95,
+   "engine": "claude",
+   "equilibre": 1.15,
+   "ok": true,
+   "pro_fond": 0.96,
+   "pro_ok": 0.97
+  }
+ },
+ "con": "Les opposants jugent que plusieurs choix du texte sont contestables. Ils citent une prévision de dépenses de santé qualifiée d'« intenable, incohérente et globalement insincère », ainsi que le gel des prestations, rejeté par une large majorité lors de la première lecture. Ils relèvent aussi que le texte demande un effort aux assurés par l'extension des franchises et des participations forfaitaires.",
  "date": "2025-12-09",
+ "generator": {
+  "date": "2026-10-13",
+  "model": "claude-sonnet-5-5"
+ },
+ "hook": "Ce budget fixe, entre autres, les règles du congé de naissance (jusqu'à deux mois par parent dans le texte initial), de la retraite des femmes et des remboursements de santé.",
+ "kind": "texte",
+ "label": "l'adoption du budget de la Sécurité sociale pour 2026",
  "n": 4696,
  "polarity": "adopt",
+ "pro": "Les partisans estiment que sans mesure nouvelle le déficit atteindrait 29 milliards d'euros en 2026 et qu'il faut redresser les comptes. Ils notent que les dépenses sociales continueraient d'augmenter et que le texte finance des mesures concrètes : congé de naissance, retraite des femmes, prévention.",
+ "reviewed_hash": null,
  "reviews": [],
  "sources": [
   {
    "label": "Scrutin officiel (Assemblée nationale)",
    "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/4696"
+  },
+  {
+   "label": "Source 2",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/PRJLANR5L17B1907.html"
+  },
+  {
+   "label": "Source 3",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/RAPPANR5L17B2144.html"
+  },
+  {
+   "label": "Source 4",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/dossiers/DLR5L17N52922"
   }
  ],
- "status": "blocked",
- "title": "l'ensemble du projet de loi de financement de la sécurité sociale pour 2026 (nouvelle lecture).",
- "updated": "2026-10-12"
+ "status": "pending_review",
+ "subkind": "ensemble",
+ "sum": "Ce vote porte sur l'ensemble de la loi de financement de la sécurité sociale pour 2026. Cette loi fixe les recettes et les dépenses de la Sécurité sociale (santé, retraites, famille, autonomie). Le texte initial prévoyait de ramener le déficit à 17,5 milliards d'euros en 2026, contre 29 milliards sans mesure nouvelle. Il combine des économies, des recettes nouvelles et des mesures sur la prévention, le congé de naissance et la retraite des femmes. Voter pour, c'est adopter l'ensemble du texte, et il a été adopté.",
+ "surp": "Un vote sur l'ensemble ne dit pas quelles mesures précises figurent dans la version finale, car chaque article a été débattu séparément.",
+ "title": "Budget de la Sécurité sociale pour 2026 (nouvelle lecture)",
+ "updated": "2026-10-13"
 }

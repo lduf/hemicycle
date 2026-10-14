@@ -1,0 +1,76 @@
+{
+ "cat": "Santé & fin de vie",
+ "cat_check": {
+  "classifier": "Santé & fin de vie",
+  "confidence": null,
+  "engine": "claude",
+  "writer": "Santé & fin de vie"
+ },
+ "checks": {
+  "date": "2026-10-13",
+  "direction": {
+   "answer": "{\"correspond\": 0.85, \"sens\": \"adopter\", \"attendu\": \"adopter\", \"engine\": \"claude\"}",
+   "ok": true
+  },
+  "neutrality": {
+   "issues": [],
+   "judge": {
+    "bias": "aucun",
+    "model": "claude-opus-5-5",
+    "reasons": [
+     "Le titre, le bouton et le résumé sont factuels. Ils décrivent le dispositif sans adjectif orienté et indiquent clairement le rejet par l'Assemblée.",
+     "Les deux camps ont un poids comparable : deux phrases chacun, au conditionnel ou introduites par « estiment / jugent ». L'idée de payer « une seconde fois » vient de la rhétorique des partisans, mais elle leur est explicitement attribuée.",
+     "Le registre diffère légèrement. Les partisans jouent sur l'émotion (accès aux soins, « un proche hospitalisé »), les opposants sur la technique et les finances (propriété du terrain, contrats en cours, recettes perdues). Cet écart reflète la nature des arguments plus qu'un parti pris de rédaction.",
+     "L'accroche met en avant le bénéfice personnel (« pourrait ne plus être payant ») et peut donner une impression favorable à la mesure. Elle est aussi un peu trompeuse, car l'article a été rejeté. Mieux vaudrait écrire « aurait pu ne plus être payant ».",
+     "« Pourquoi ça peut surprendre » relève une imprécision du texte et mentionne des alternatives plus ciblées. Cela penche très légèrement du côté des critiques, ce qui compense en partie l'accroche.",
+     "Omissions mineures : le texte ne dit pas quel groupe a porté l'amendement, ne donne pas le résultat chiffré du vote et n'estime pas le coût pour l'État. Ces informations aideraient à situer le débat, mais leur absence n'oriente pas le lecteur dans un sens précis."
+    ],
+    "score": 1.0
+   },
+   "ok": true
+  },
+  "pro_con": {
+   "con_fond": 0.8,
+   "con_ok": 0.96,
+   "engine": "claude",
+   "equilibre": 1.1,
+   "ok": true,
+   "pro_fond": 0.95,
+   "pro_ok": 0.97
+  }
+ },
+ "con": "Les opposants estiment que la mesure est difficile à appliquer quand l'hôpital n'est pas propriétaire du terrain ou quand un contrat de gestion est en cours, et que rompre ces contrats coûterait cher. Ils jugent aussi qu'elle déplace la charge vers l'État et prive les hôpitaux de recettes qui financent des investissements.",
+ "date": "2025-10-30",
+ "generator": {
+  "date": "2026-10-13",
+  "model": "claude-sonnet-5-5"
+ },
+ "hook": "Si tu vas voir un proche à l'hôpital public, ou si tu y travailles, le stationnement pourrait ne plus être payant.",
+ "kind": "mesure",
+ "label": "la gratuité des parkings des hôpitaux publics",
+ "n": 3274,
+ "polarity": "adopt",
+ "pro": "Les partisans estiment que les patients, les visiteurs et les soignants financent déjà l'hôpital public par leurs impôts et ne devraient pas payer une seconde fois pour se garer. Ils jugent que des frais de stationnement élevés peuvent gêner l'accès aux soins et les visites à un proche hospitalisé.",
+ "reviewed_hash": null,
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/3274"
+  },
+  {
+   "label": "Source 2",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/PIONANR5L17B1826.html"
+  },
+  {
+   "label": "Source 3",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/dossiers/DLR5L17N52776"
+  }
+ ],
+ "status": "pending_review",
+ "subkind": "article",
+ "sum": "Cet article ajoute une règle au code de la santé publique : chaque établissement public de santé disposerait d'un parc de stationnement gratuit. Ce parking serait destiné aux patients, à leurs visiteurs et au personnel. L'État compenserait les dépenses de construction, d'aménagement et d'exploitation de ce parc. Aucune délégation de service public ne pourrait être conclue ou renouvelée pour sa gestion. L'Assemblée a rejeté cet article.",
+ "surp": "Le texte ne précise pas combien de places seraient gratuites. Le débat a aussi évoqué d'autres pistes, comme encadrer les tarifs ou limiter la gratuité à certains publics.",
+ "title": "Parkings gratuits dans les hôpitaux publics",
+ "updated": "2026-10-13"
+}

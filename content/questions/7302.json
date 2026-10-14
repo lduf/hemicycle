@@ -1,0 +1,77 @@
+{
+ "blocked_reason": "sens du vote : {\"correspond\": 0.8, \"sens\": \"adopter\", \"attendu\": \"adopter\", \"engine\": \"claude\"}",
+ "cat": "Agriculture",
+ "cat_check": {
+  "classifier": "Agriculture",
+  "confidence": null,
+  "engine": "claude",
+  "writer": "Santé & fin de vie"
+ },
+ "checks": {
+  "date": "2026-10-13",
+  "direction": {
+   "answer": "{\"correspond\": 0.8, \"sens\": \"adopter\", \"attendu\": \"adopter\", \"engine\": \"claude\"}",
+   "ok": false
+  },
+  "neutrality": {
+   "issues": [],
+   "judge": {
+    "bias": "autre",
+    "model": "claude-opus-5-5",
+    "reasons": [
+     "Le résumé reprend le but affiché par les promoteurs (« vise à protéger l'alimentation des contaminations ») comme une description neutre, sans dire qu'il s'agit de l'objectif revendiqué par les auteurs.",
+     "L'argument des partisans contient des chiffres précis et marquants (47 % des adultes, enfants de moins de 3 ans, 2 € par hectare). L'argument des opposants reste qualitatif (« pourrait augmenter les coûts ») et ne donne aucun chiffre en face du surcoût de 2 €, présenté sans source.",
+     "Le chiffre de 2 € par hectare et par an est attribué aux partisans mais n'est pas sourcé. Le lecteur peut le prendre pour un fait établi, ce qui affaiblit d'avance l'argument économique des opposants.",
+     "L'accroche cite des aliments du quotidien (pain, pâtes, pommes de terre), un registre qui touche le lecteur. La phrase suivante sur les effets lents à apparaître rééquilibre en partie.",
+     "Points positifs : le vocabulaire est globalement sobre, les arguments ont une longueur comparable et les objections des opposants sont sérieuses (dépendance aux importations, absence d'alternative, risque d'importer des produits non contrôlés). La rubrique « Pourquoi ça peut surprendre » nuance l'enjeu en citant d'autres sources d'exposition (tabac, exposition professionnelle).",
+     "Omissions mineures : les effets du cadmium sur la santé (reins, os, cancérogénicité) ne sont pas précisés, et la répartition du vote entre groupes n'est pas indiquée. Le léger penchant va vers la mesure sanitaire et environnementale plutôt que vers un camp gauche ou droite, d'où le biais « autre »."
+    ],
+    "score": 1.0
+   },
+   "ok": true
+  },
+  "pro_con": {
+   "con_fond": 0.97,
+   "con_ok": 0.9,
+   "engine": "claude",
+   "equilibre": 1.0,
+   "ok": true,
+   "pro_fond": 0.98,
+   "pro_ok": 0.97
+  }
+ },
+ "con": "Les engrais phosphatés apportent près de la moitié du phosphore dont les cultures ont besoin. La France importe tout son phosphore minéral, et aucune alternative ne peut les remplacer entièrement à court terme. Une baisse trop rapide pourrait augmenter les coûts des filières agricoles et conduire à importer des produits dont on ne connaît pas la teneur en cadmium.",
+ "date": "2026-06-03",
+ "generator": {
+  "date": "2026-10-13",
+  "model": "claude-sonnet-5-5"
+ },
+ "hook": "Les engrais phosphatés vendus en France devraient contenir moins de cadmium, un métal lourd présent dans le pain, les pâtes et les pommes de terre. Les effets sur les aliments ne se verraient qu'à long terme.",
+ "kind": "texte",
+ "label": "la baisse de la teneur maximale en cadmium des engrais phosphatés",
+ "n": 7302,
+ "polarity": "adopt",
+ "pro": "Le cadmium reste dans le corps pendant dix à trente ans et on le retrouve dans des aliments de base. 47 % des adultes dépassent la valeur recommandée, et les enfants de moins de 3 ans sont particulièrement exposés. Des engrais à moins de 20 mg existent, et le surcoût de la décadmiation est estimé à 2 € par hectare et par an.",
+ "reviewed_hash": null,
+ "reviews": [],
+ "sources": [
+  {
+   "label": "Scrutin officiel (Assemblée nationale)",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/7302"
+  },
+  {
+   "label": "Source 2",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/PIONANR5L17B2678.html"
+  },
+  {
+   "label": "Source 3",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/dossiers/DLR5L17N54148"
+  }
+ ],
+ "status": "blocked",
+ "subkind": "ensemble",
+ "sum": "Ce texte vise à protéger l'alimentation des contaminations au cadmium, un métal lourd présent dans certains engrais phosphatés. Il prévoit d'abaisser progressivement la quantité maximale de cadmium autorisée dans ces engrais, en direction de 20 mg par kilogramme d'anhydride phosphorique. Aujourd'hui, la norme française pour les engrais sans marquage CE est de 90 mg, contre 60 mg dans le règlement européen. Le cadmium passe des sols aux plantes, puis à l'organisme, où il s'accumule pendant des années. L'Assemblée a adopté ce texte en première lecture.",
+ "surp": "Les engrais phosphatés ne sont qu'une des sources de cadmium : le tabac et certaines situations professionnelles y exposent aussi. Comme le cadmium s'accumule lentement dans les sols et dans le corps, les effets d'une baisse des teneurs n'apparaîtraient que progressivement dans les aliments.",
+ "title": "Cadmium dans les engrais phosphatés",
+ "updated": "2026-10-13"
+}
