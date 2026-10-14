@@ -18,6 +18,12 @@ on:
       gen_model:
         description: "modèle qui réécrit les fiches pour tester la détection de biais (famille ou identifiant) ; vide = variantes déjà committées"
         default: ""
+      jev_model:
+        description: "modèle de l'API Decisions à mesurer (défaut : typesafe/jev-1.13 ; ex. openai/gpt-6-luna-decisions)"
+        default: "typesafe/jev-1.13"
+      jev_price:
+        description: "prix annoncé, $ / million de jetons d'entrée (Jev 0.042, Luna 0.10)"
+        default: "0.042"
       run_name:
         description: "nom du run (le réutiliser pour reprendre) ; vide = identifiant du workflow"
         default: ""
@@ -43,16 +49,16 @@ jobs:
       - name: Préalable — clé et format de réponse lu par le pipeline (échec fermé)
         run: |
           test -n "$OPENROUTER_API_KEY" || { echo "::error::secret OPENROUTER_API_KEY absent (Settings > Secrets and variables > Actions)"; exit 1; }
-          python -m jev_lab ping --baselines "${{ inputs.baselines }}"
+          python -m jev_lab ping --baselines "${{ inputs.baselines }}" --jev-model "${{ inputs.jev_model }}" --jev-price "${{ inputs.jev_price }}"
       - name: Variantes de neutralité (réécritures par un modèle de langage)
         if: ${{ inputs.gen_model != '' }}
         run: python -m jev_lab gen-variants --gen-model "${{ inputs.gen_model }}" --budget 2
       - name: Jeu d'essai
         run: python -m jev_lab items
       - name: Estimation du coût
-        run: python -m jev_lab plan --suite "${{ inputs.suite }}" --baselines "${{ inputs.baselines }}" --budget "${{ inputs.budget }}"
+        run: python -m jev_lab plan --suite "${{ inputs.suite }}" --baselines "${{ inputs.baselines }}" --budget "${{ inputs.budget }}" --jev-model "${{ inputs.jev_model }}" --jev-price "${{ inputs.jev_price }}"
       - name: Étude
-        run: python -m jev_lab run --suite "${{ inputs.suite }}" --baselines "${{ inputs.baselines }}" --budget "${{ inputs.budget }}" --run "$RUN" --yes
+        run: python -m jev_lab run --suite "${{ inputs.suite }}" --baselines "${{ inputs.baselines }}" --budget "${{ inputs.budget }}" --run "$RUN" --yes --jev-model "${{ inputs.jev_model }}" --jev-price "${{ inputs.jev_price }}"
       - name: Rapport dans le résumé du job
         if: always()
         run: |

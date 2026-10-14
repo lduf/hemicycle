@@ -5,7 +5,7 @@ import json, os, statistics
 TEMPLATE = os.path.join(os.path.dirname(__file__), "artifact_template.html")
 
 
-def payload(run_dir):
+def payload(run_dir, luna_dir=None):
     with open(os.path.join(run_dir, "summary.json"), encoding="utf-8") as f:
         s = json.load(f)
     s.pop("latency_samples", None)
@@ -19,13 +19,18 @@ def payload(run_dir):
                 r = json.loads(line)
                 if r.get("system") not in (None, "jev") and r.get("ok") and r.get("wall_s") is not None and r.get("experiment") == "quality":
                     walls.append(r["wall_s"])
+    if luna_dir:                                      # second système de l'API Decisions (GPT-6 Luna), même jeu d'essai : sa clé « jev » désigne Luna
+        with open(os.path.join(luna_dir, "summary.json"), encoding="utf-8") as f:
+            ls = json.load(f)
+        ls.pop("latency_samples", None)
+        out["luna"] = ls
     if walls:
         out["claude_wall"] = {"p50": statistics.median(walls), "n": len(walls)}
     return out
 
 
-def build(run_dir, out_path=None):
-    data = json.dumps(payload(run_dir), ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
+def build(run_dir, out_path=None, luna_dir=None):
+    data = json.dumps(payload(run_dir, luna_dir), ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
     html = open(TEMPLATE, encoding="utf-8").read().replace("__DATA__", data)
     out_path = out_path or os.path.join(run_dir, "presentation.html")
     with open(out_path, "w", encoding="utf-8") as f:

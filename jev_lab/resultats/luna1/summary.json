@@ -1,0 +1,1886 @@
+{
+ "meta": {
+  "suite": "standard",
+  "jev_model": "openai/gpt-6-luna-decisions",
+  "jev_price_per_M": 0.1,
+  "baselines": {
+   "claude-sonnet-5-5 (claude -p)": "claude-sonnet-5-5"
+  },
+  "budget": 6.0,
+  "mock": false,
+  "seed": 20261013,
+  "sessions": 2,
+  "robust_baselines": false,
+  "credits_start": {
+   "total_credits": 150,
+   "total_usage": 75.557257899,
+   "ts": 1791959707.8348734
+  },
+  "thresholds": {
+   "cat_min": 0.5,
+   "dir_ok": 0.85,
+   "pro_con_ok": 0.8,
+   "substance_ok": 0.6,
+   "balance": [
+    0.5,
+    1.5
+   ],
+   "source_ok": 0.5,
+   "neutralite_max": 2
+  },
+  "n_items": {
+   "categorie": 34,
+   "sens": 374,
+   "neutralite": 304,
+   "pro_contre": 304
+  },
+  "started": "2026-10-14T06:35:07Z",
+  "git": "80f418a",
+  "python": "3.12.15",
+  "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+  "credits_end": {
+   "total_credits": 150,
+   "total_usage": 75.691370299,
+   "ts": 1791959915.2365305
+  },
+  "claude_pass": true,
+  "notes": "Luna : exécution complète du workflow (run luna1, Actions) ; la clé « jev » du journal désigne ici le système Decisions mesuré (openai/gpt-6-luna-decisions). Référence Claude : mêmes appels que pour Jev."
+ },
+ "n_calls": 3442,
+ "categorie": {
+  "jev": {
+   "n": 34,
+   "valid_rate": 1.0,
+   "top1": {
+    "k": 32,
+    "n": 34,
+    "p": 0.9411764705882353,
+    "ci": [
+     0.8090606311053629,
+     0.9837176869361576
+    ]
+   },
+   "top3": {
+    "k": 33,
+    "n": 34,
+    "p": 0.9705882352941176,
+    "ci": [
+     0.8508409778365519,
+     0.9947892280744034
+    ]
+   },
+   "accepted": {
+    "k": 34,
+    "n": 34,
+    "p": 1.0,
+    "ci": [
+     0.8984820937803899,
+     1.0
+    ]
+   },
+   "precision_accepted": {
+    "k": 32,
+    "n": 34,
+    "p": 0.9411764705882353,
+    "ci": [
+     0.8090606311053629,
+     0.9837176869361576
+    ]
+   },
+   "ece": 0.06735294117647062,
+   "errors": [
+    {
+     "item": "cat-4723",
+     "gold": "Immigration",
+     "pred": "Famille & social",
+     "conf": 0.78
+    },
+    {
+     "item": "cat-5412",
+     "gold": "Droits & société",
+     "pred": "Culture & médias",
+     "conf": 1.0
+    }
+   ]
+  },
+  "claude-sonnet-5-5 (claude -p)": {
+   "n": 34,
+   "valid_rate": 1.0,
+   "top1": {
+    "k": 31,
+    "n": 34,
+    "p": 0.9117647058823529,
+    "ci": [
+     0.7703918204763959,
+     0.9695346096956899
+    ]
+   },
+   "top3": {
+    "k": 34,
+    "n": 34,
+    "p": 1.0,
+    "ci": [
+     0.8984820937803899,
+     1.0
+    ]
+   },
+   "accepted": {
+    "k": 34,
+    "n": 34,
+    "p": 1.0,
+    "ci": [
+     0.8984820937803899,
+     1.0
+    ]
+   },
+   "precision_accepted": {
+    "k": 31,
+    "n": 34,
+    "p": 0.9117647058823529,
+    "ci": [
+     0.7703918204763959,
+     0.9695346096956899
+    ]
+   },
+   "ece": null,
+   "errors": [
+    {
+     "item": "cat-840",
+     "gold": "Éducation",
+     "pred": "Institutions",
+     "conf": null
+    },
+    {
+     "item": "cat-4723",
+     "gold": "Immigration",
+     "pred": "Famille & social",
+     "conf": null
+    },
+    {
+     "item": "cat-5412",
+     "gold": "Droits & société",
+     "pred": "Culture & médias",
+     "conf": null
+    }
+   ]
+  }
+ },
+ "decisions": {
+  "sens": {
+   "jev": {
+    "n": 374,
+    "valid_rate": 1.0,
+    "frr": {
+     "k": 25,
+     "n": 187,
+     "p": 0.13368983957219252,
+     "ci": [
+      0.09221954107940376,
+      0.18990762616295848
+     ]
+    },
+    "far": {
+     "k": 59,
+     "n": 187,
+     "p": 0.3155080213903743,
+     "ci": [
+      0.25318337154906945,
+      0.3852602382299304
+     ]
+    },
+    "soft_reject": null,
+    "groups": {
+     "titre_amendement:inverse": {
+      "k": 29,
+      "n": 30,
+      "p": 0.9666666666666667,
+      "ci": [
+       0.8332924860304112,
+       0.9940915620051425
+      ]
+     },
+     "fiche:inverse": {
+      "k": 18,
+      "n": 97,
+      "p": 0.18556701030927836,
+      "ci": [
+       0.12072806645374706,
+       0.27436284840678665
+      ]
+     },
+     "titre_suppression:inverse": {
+      "k": 0,
+      "n": 30,
+      "p": 0.0,
+      "ci": [
+       0.0,
+       0.113517091390478
+      ]
+     },
+     "titre_suppression:exact": {
+      "k": 30,
+      "n": 30,
+      "p": 1.0,
+      "ci": [
+       0.8864829086095221,
+       1.0
+      ]
+     },
+     "fiche:exact": {
+      "k": 72,
+      "n": 97,
+      "p": 0.7422680412371134,
+      "ci": [
+       0.6471721989159662,
+       0.8189052929128029
+      ]
+     },
+     "titre_ensemble:inverse": {
+      "k": 12,
+      "n": 30,
+      "p": 0.4,
+      "ci": [
+       0.24590394326083403,
+       0.5767994750172616
+      ]
+     },
+     "titre_amendement:exact": {
+      "k": 30,
+      "n": 30,
+      "p": 1.0,
+      "ci": [
+       0.8864829086095221,
+       1.0
+      ]
+     },
+     "titre_ensemble:exact": {
+      "k": 30,
+      "n": 30,
+      "p": 1.0,
+      "ci": [
+       0.8864829086095221,
+       1.0
+      ]
+     }
+    },
+    "invalid_among_rejects": 0,
+    "auc": 0.813549143527124,
+    "cv_cut": {
+     "cuts": [
+      0.94,
+      0.95
+     ],
+     "full_cut": 0.94,
+     "tpr": 0.7434225577671014,
+     "fpr": 0.2622969572180279
+    },
+    "causes_frr": {
+     "réponse inexploitable ou appel échoué": 0,
+     "P(correspond) < 0.85": 23,
+     "sens lu autrement que prévu": 2,
+     "_rejetées": 25
+    },
+    "sens_ok": {
+     "k": 185,
+     "n": 187,
+     "p": 0.9893048128342246,
+     "ci": [
+      0.9618482876199855,
+      0.9970621386183188
+     ]
+    },
+    "kinds": {
+     "titre_suppression": {
+      "frr": {
+       "k": 0,
+       "n": 30,
+       "p": 0.0,
+       "ci": [
+        0.0,
+        0.113517091390478
+       ]
+      },
+      "far": {
+       "k": 0,
+       "n": 30,
+       "p": 0.0,
+       "ci": [
+        0.0,
+        0.113517091390478
+       ]
+      }
+     },
+     "fiche": {
+      "frr": {
+       "k": 25,
+       "n": 97,
+       "p": 0.25773195876288657,
+       "ci": [
+        0.18109470708719705,
+        0.35282780108403383
+       ]
+      },
+      "far": {
+       "k": 18,
+       "n": 97,
+       "p": 0.18556701030927836,
+       "ci": [
+        0.12072806645374706,
+        0.27436284840678665
+       ]
+      }
+     },
+     "titre_amendement": {
+      "frr": {
+       "k": 0,
+       "n": 30,
+       "p": 0.0,
+       "ci": [
+        0.0,
+        0.113517091390478
+       ]
+      },
+      "far": {
+       "k": 29,
+       "n": 30,
+       "p": 0.9666666666666667,
+       "ci": [
+        0.8332924860304112,
+        0.9940915620051425
+       ]
+      }
+     },
+     "titre_ensemble": {
+      "frr": {
+       "k": 0,
+       "n": 30,
+       "p": 0.0,
+       "ci": [
+        0.0,
+        0.113517091390478
+       ]
+      },
+      "far": {
+       "k": 12,
+       "n": 30,
+       "p": 0.4,
+       "ci": [
+        0.24590394326083403,
+        0.5767994750172616
+       ]
+      }
+     }
+    }
+   },
+   "claude-sonnet-5-5 (claude -p)": {
+    "n": 374,
+    "valid_rate": 0.6256684491978609,
+    "frr": {
+     "k": 94,
+     "n": 187,
+     "p": 0.5026737967914439,
+     "ci": [
+      0.4316812344867176,
+      0.5735587131976447
+     ]
+    },
+    "far": {
+     "k": 10,
+     "n": 187,
+     "p": 0.053475935828877004,
+     "ci": [
+      0.029302850704618792,
+      0.09562588600687388
+     ]
+    },
+    "soft_reject": null,
+    "groups": {
+     "titre_amendement:inverse": {
+      "k": 10,
+      "n": 30,
+      "p": 0.3333333333333333,
+      "ci": [
+       0.19230295526846194,
+       0.5122027418616973
+      ]
+     },
+     "titre_suppression:inverse": {
+      "k": 0,
+      "n": 30,
+      "p": 0.0,
+      "ci": [
+       0.0,
+       0.113517091390478
+      ]
+     },
+     "fiche:inverse": {
+      "k": 0,
+      "n": 97,
+      "p": 0.0,
+      "ci": [
+       0.0,
+       0.03809538920445529
+      ]
+     },
+     "titre_suppression:exact": {
+      "k": 22,
+      "n": 30,
+      "p": 0.7333333333333333,
+      "ci": [
+       0.5555169795568831,
+       0.8581750444608938
+      ]
+     },
+     "fiche:exact": {
+      "k": 47,
+      "n": 97,
+      "p": 0.4845360824742268,
+      "ci": [
+       0.3875798918772146,
+       0.5826704809847787
+      ]
+     },
+     "titre_ensemble:inverse": {
+      "k": 0,
+      "n": 30,
+      "p": 0.0,
+      "ci": [
+       0.0,
+       0.113517091390478
+      ]
+     },
+     "titre_amendement:exact": {
+      "k": 10,
+      "n": 30,
+      "p": 0.3333333333333333,
+      "ci": [
+       0.19230295526846194,
+       0.5122027418616973
+      ]
+     },
+     "titre_ensemble:exact": {
+      "k": 14,
+      "n": 30,
+      "p": 0.4666666666666667,
+      "ci": [
+       0.30232127224128236,
+       0.6385798671847496
+      ]
+     }
+    },
+    "invalid_among_rejects": 140,
+    "auc": 0.3933054991563957,
+    "cv_cut": {
+     "cuts": [
+      0.5,
+      0.5
+     ],
+     "full_cut": 0.5,
+     "tpr": 0.5344886753603295,
+     "fpr": 0.39041409288492335
+    },
+    "causes_frr": {
+     "réponse inexploitable ou appel échoué": 66,
+     "P(correspond) < 0.85": 27,
+     "sens lu autrement que prévu": 7,
+     "_rejetées": 28
+    },
+    "sens_ok": {
+     "k": 114,
+     "n": 187,
+     "p": 0.6096256684491979,
+     "ci": [
+      0.5381701007298019,
+      0.6766677543290531
+     ]
+    },
+    "kinds": {
+     "titre_suppression": {
+      "frr": {
+       "k": 8,
+       "n": 30,
+       "p": 0.26666666666666666,
+       "ci": [
+        0.14182495553910618,
+        0.4444830204431169
+       ]
+      },
+      "far": {
+       "k": 0,
+       "n": 30,
+       "p": 0.0,
+       "ci": [
+        0.0,
+        0.113517091390478
+       ]
+      }
+     },
+     "fiche": {
+      "frr": {
+       "k": 50,
+       "n": 97,
+       "p": 0.5154639175257731,
+       "ci": [
+        0.41732951901522114,
+        0.6124201081227854
+       ]
+      },
+      "far": {
+       "k": 0,
+       "n": 97,
+       "p": 0.0,
+       "ci": [
+        0.0,
+        0.03809538920445529
+       ]
+      }
+     },
+     "titre_amendement": {
+      "frr": {
+       "k": 20,
+       "n": 30,
+       "p": 0.6666666666666666,
+       "ci": [
+        0.48779725813830266,
+        0.807697044731538
+       ]
+      },
+      "far": {
+       "k": 10,
+       "n": 30,
+       "p": 0.3333333333333333,
+       "ci": [
+        0.19230295526846194,
+        0.5122027418616973
+       ]
+      }
+     },
+     "titre_ensemble": {
+      "frr": {
+       "k": 16,
+       "n": 30,
+       "p": 0.5333333333333333,
+       "ci": [
+        0.3614201328152505,
+        0.6976787277587178
+       ]
+      },
+      "far": {
+       "k": 0,
+       "n": 30,
+       "p": 0.0,
+       "ci": [
+        0.0,
+        0.113517091390478
+       ]
+      }
+     }
+    }
+   }
+  },
+  "neutralite": {
+   "jev": {
+    "n": 304,
+    "valid_rate": 1.0,
+    "frr": {
+     "k": 14,
+     "n": 76,
+     "p": 0.18421052631578946,
+     "ci": [
+      0.11302493284924942,
+      0.2857847102440753
+     ]
+    },
+    "far": {
+     "k": 0,
+     "n": 152,
+     "p": 0.0,
+     "ci": [
+      0.0,
+      0.024650670937670042
+     ]
+    },
+    "soft_reject": {
+     "k": 12,
+     "n": 76,
+     "p": 0.15789473684210525,
+     "ci": [
+      0.09269405994267452,
+      0.25601638674176064
+     ]
+    },
+    "groups": {
+     "contre": {
+      "k": 0,
+      "n": 76,
+      "p": 0.0,
+      "ci": [
+       0.0,
+       0.04811526823109757
+      ]
+     },
+     "pour": {
+      "k": 0,
+      "n": 76,
+      "p": 0.0,
+      "ci": [
+       0.0,
+       0.04811526823109757
+      ]
+     },
+     "subtil": {
+      "k": 64,
+      "n": 76,
+      "p": 0.8421052631578947,
+      "ci": [
+       0.7439836132582393,
+       0.9073059400573255
+      ]
+     },
+     "orig": {
+      "k": 62,
+      "n": 76,
+      "p": 0.8157894736842105,
+      "ci": [
+       0.7142152897559246,
+       0.8869750671507506
+      ]
+     }
+    },
+    "invalid_among_rejects": 0,
+    "auc": 1.0,
+    "cv_cut": {
+     "cuts": [
+      3.38,
+      2.91
+     ],
+     "full_cut": 2.91,
+     "tpr": 0.986842105263158,
+     "fpr": 0.0
+    },
+    "scores": {
+     "contre": 4.617894736842105,
+     "pour": 4.542105263157895,
+     "subtil": 1.49,
+     "orig": 1.4269736842105263
+    },
+    "causes_frr": {
+     "réponse inexploitable ou appel échoué": 0,
+     "note > 2": 14,
+     "_rejetées": 14
+    }
+   },
+   "claude-sonnet-5-5 (claude -p)": {
+    "n": 304,
+    "valid_rate": 0.9802631578947368,
+    "frr": {
+     "k": 1,
+     "n": 76,
+     "p": 0.013157894736842105,
+     "ci": [
+      0.002326420140567463,
+      0.0708384462949749
+     ]
+    },
+    "far": {
+     "k": 1,
+     "n": 152,
+     "p": 0.006578947368421052,
+     "ci": [
+      0.0011622614078393885,
+      0.036321953333282364
+     ]
+    },
+    "soft_reject": {
+     "k": 0,
+     "n": 76,
+     "p": 0.0,
+     "ci": [
+      0.0,
+      0.04811526823109757
+     ]
+    },
+    "groups": {
+     "pour": {
+      "k": 1,
+      "n": 76,
+      "p": 0.013157894736842105,
+      "ci": [
+       0.002326420140567463,
+       0.0708384462949749
+      ]
+     },
+     "contre": {
+      "k": 0,
+      "n": 76,
+      "p": 0.0,
+      "ci": [
+       0.0,
+       0.04811526823109757
+      ]
+     },
+     "subtil": {
+      "k": 76,
+      "n": 76,
+      "p": 1.0,
+      "ci": [
+       0.9518847317689024,
+       0.9999999999999999
+      ]
+     },
+     "orig": {
+      "k": 75,
+      "n": 76,
+      "p": 0.9868421052631579,
+      "ci": [
+       0.929161553705025,
+       0.9976735798594324
+      ]
+     }
+    },
+    "invalid_among_rejects": 6,
+    "auc": 0.9560249307479224,
+    "cv_cut": {
+     "cuts": [
+      2.6,
+      2.3
+     ],
+     "full_cut": 2.3,
+     "tpr": 0.9539473684210527,
+     "fpr": 0.013157894736842105
+    },
+    "scores": {
+     "pour": 3.773611111111111,
+     "contre": 4.02,
+     "subtil": 1.3407894736842105,
+     "orig": 1.348
+    },
+    "causes_frr": {
+     "réponse inexploitable ou appel échoué": 1,
+     "note > 2": 0,
+     "_rejetées": 0
+    }
+   }
+  },
+  "pro_contre": {
+   "jev": {
+    "n": 304,
+    "valid_rate": 0.9671052631578947,
+    "frr": {
+     "k": 35,
+     "n": 76,
+     "p": 0.4605263157894737,
+     "ci": [
+      0.3530754655326989,
+      0.5717757398539667
+     ]
+    },
+    "far": {
+     "k": 22,
+     "n": 228,
+     "p": 0.09649122807017543,
+     "ci": [
+      0.06458612416110615,
+      0.1417685593814505
+     ]
+    },
+    "soft_reject": null,
+    "groups": {
+     "contre_d_une_autre_mesure": {
+      "k": 22,
+      "n": 76,
+      "p": 0.2894736842105263,
+      "ci": [
+       0.19960875564331393,
+       0.39959767308556926
+      ]
+     },
+     "permutes": {
+      "k": 0,
+      "n": 76,
+      "p": 0.0,
+      "ci": [
+       0.0,
+       0.04811526823109757
+      ]
+     },
+     "orig": {
+      "k": 41,
+      "n": 76,
+      "p": 0.5394736842105263,
+      "ci": [
+       0.4282242601460334,
+       0.6469245344673011
+      ]
+     },
+     "contre_tronque": {
+      "k": 0,
+      "n": 76,
+      "p": 0.0,
+      "ci": [
+       0.0,
+       0.04811526823109757
+      ]
+     }
+    },
+    "invalid_among_rejects": 10,
+    "auc": 0.8183864265927978,
+    "cv_cut": {
+     "cuts": [
+      0.93,
+      0.69
+     ],
+     "full_cut": 0.7,
+     "tpr": 0.5482456140350878,
+     "fpr": 0.06578947368421052
+    },
+    "causes_frr": {
+     "réponse inexploitable ou appel échoué": 0,
+     "pro_ok ou con_ok < 0.8": 2,
+     "argument pas « de fond » (< 0.6)": 27,
+     "équilibre hors de (0.5, 1.5)": 8,
+     "_rejetées": 35
+    }
+   },
+   "claude-sonnet-5-5 (claude -p)": {
+    "n": 304,
+    "valid_rate": 0.5855263157894737,
+    "frr": {
+     "k": 36,
+     "n": 76,
+     "p": 0.47368421052631576,
+     "ci": [
+      0.36541913011833066,
+      0.5844816734727798
+     ]
+    },
+    "far": {
+     "k": 17,
+     "n": 228,
+     "p": 0.07456140350877193,
+     "ci": [
+      0.04707028070743701,
+      0.1161515052015629
+     ]
+    },
+    "soft_reject": null,
+    "groups": {
+     "contre_d_une_autre_mesure": {
+      "k": 11,
+      "n": 76,
+      "p": 0.14473684210526316,
+      "ci": [
+       0.08278431339921274,
+       0.24087653508077764
+      ]
+     },
+     "permutes": {
+      "k": 0,
+      "n": 76,
+      "p": 0.0,
+      "ci": [
+       0.0,
+       0.04811526823109757
+      ]
+     },
+     "orig": {
+      "k": 40,
+      "n": 76,
+      "p": 0.5263157894736842,
+      "ci": [
+       0.4155183265272202,
+       0.6345808698816693
+      ]
+     },
+     "contre_tronque": {
+      "k": 6,
+      "n": 76,
+      "p": 0.07894736842105263,
+      "ci": [
+       0.03668350552145426,
+       0.1617293519363121
+      ]
+     }
+    },
+    "invalid_among_rejects": 126,
+    "auc": 0.3456832871652816,
+    "cv_cut": {
+     "cuts": [
+      0.97,
+      0.88
+     ],
+     "full_cut": 0.88,
+     "tpr": 0.7587719298245614,
+     "fpr": 0.7763157894736843
+    },
+    "causes_frr": {
+     "réponse inexploitable ou appel échoué": 33,
+     "pro_ok ou con_ok < 0.8": 1,
+     "argument pas « de fond » (< 0.6)": 3,
+     "équilibre hors de (0.5, 1.5)": 0,
+     "_rejetées": 3
+    }
+   }
+  }
+ },
+ "pairs": {
+  "sens": [
+   {
+    "scenario": "sens",
+    "vs": "claude-sonnet-5-5 (claude -p)",
+    "metric": "far",
+    "n": 183,
+    "jev": 0.30601092896174864,
+    "ref": 0.0546448087431694,
+    "diff": 0.25136612021857924,
+    "lo": 0.1898642688027047,
+    "hi": 0.3167959521607105,
+    "p": 2.842170943040401e-14,
+    "label": "plus risqué",
+    "p_holm": 2.842170943040401e-14
+   },
+   {
+    "scenario": "sens",
+    "vs": "claude-sonnet-5-5 (claude -p)",
+    "metric": "frr",
+    "n": 183,
+    "jev": 0.1366120218579235,
+    "ref": 0.4972677595628415,
+    "diff": -0.360655737704918,
+    "lo": -0.4359595086455006,
+    "hi": -0.27881671916765777,
+    "p": 1.8493658649069896e-15,
+    "label": "moins de faux rejets",
+    "p_holm": 3.698731729813979e-15
+   }
+  ],
+  "neutralite": [
+   {
+    "scenario": "neutralite",
+    "vs": "claude-sonnet-5-5 (claude -p)",
+    "metric": "far",
+    "n": 152,
+    "jev": 0.0,
+    "ref": 0.006578947368421052,
+    "diff": -0.006578947368421052,
+    "lo": -0.036321953333282364,
+    "hi": 0.018659833594074995,
+    "p": 1.0,
+    "label": "pas pire que +3 points",
+    "p_holm": 1.0
+   },
+   {
+    "scenario": "neutralite",
+    "vs": "claude-sonnet-5-5 (claude -p)",
+    "metric": "frr",
+    "n": 76,
+    "jev": 0.18421052631578946,
+    "ref": 0.013157894736842105,
+    "diff": 0.17105263157894735,
+    "lo": 0.07700459848223237,
+    "hi": 0.2737919723880914,
+    "p": 0.0009765625,
+    "label": "plus de faux rejets",
+    "p_holm": 0.001953125
+   }
+  ],
+  "pro_contre": [
+   {
+    "scenario": "pro_contre",
+    "vs": "claude-sonnet-5-5 (claude -p)",
+    "metric": "far",
+    "n": 228,
+    "jev": 0.09649122807017543,
+    "ref": 0.07456140350877193,
+    "diff": 0.021929824561403508,
+    "lo": -0.02215339543630257,
+    "hi": 0.06722099965614774,
+    "p": 0.42435622215270996,
+    "label": "inconclusif",
+    "p_holm": 0.8487124443054199
+   },
+   {
+    "scenario": "pro_contre",
+    "vs": "claude-sonnet-5-5 (claude -p)",
+    "metric": "frr",
+    "n": 76,
+    "jev": 0.4605263157894737,
+    "ref": 0.47368421052631576,
+    "diff": -0.01315789473684209,
+    "lo": -0.15285453138178887,
+    "hi": 0.12734411431438844,
+    "p": 1.0,
+    "label": "inconclusif",
+    "p_holm": 1.0
+   }
+  ]
+ },
+ "safety": [
+  {
+   "scenario": "sens",
+   "system": "jev",
+   "metric": "far",
+   "p": 0.3155080213903743,
+   "k": 59,
+   "n": 187,
+   "ci": [
+    0.25318337154906945,
+    0.3852602382299304
+   ],
+   "limit": 0.02,
+   "label": "dépassé"
+  },
+  {
+   "scenario": "sens",
+   "system": "jev",
+   "metric": "frr",
+   "p": 0.13368983957219252,
+   "k": 25,
+   "n": 187,
+   "ci": [
+    0.09221954107940376,
+    0.18990762616295848
+   ],
+   "limit": 0.25,
+   "label": "respecté"
+  },
+  {
+   "scenario": "sens",
+   "system": "claude-sonnet-5-5 (claude -p)",
+   "metric": "far",
+   "p": 0.053475935828877004,
+   "k": 10,
+   "n": 187,
+   "ci": [
+    0.029302850704618792,
+    0.09562588600687388
+   ],
+   "limit": 0.02,
+   "label": "dépassé"
+  },
+  {
+   "scenario": "sens",
+   "system": "claude-sonnet-5-5 (claude -p)",
+   "metric": "frr",
+   "p": 0.5026737967914439,
+   "k": 94,
+   "n": 187,
+   "ci": [
+    0.4316812344867176,
+    0.5735587131976447
+   ],
+   "limit": 0.25,
+   "label": "dépassé"
+  },
+  {
+   "scenario": "neutralite",
+   "system": "jev",
+   "metric": "far",
+   "p": 0.0,
+   "k": 0,
+   "n": 152,
+   "ci": [
+    0.0,
+    0.024650670937670042
+   ],
+   "limit": 0.1,
+   "label": "respecté"
+  },
+  {
+   "scenario": "neutralite",
+   "system": "jev",
+   "metric": "frr",
+   "p": 0.18421052631578946,
+   "k": 14,
+   "n": 76,
+   "ci": [
+    0.11302493284924942,
+    0.2857847102440753
+   ],
+   "limit": 0.25,
+   "label": "inconclusif"
+  },
+  {
+   "scenario": "neutralite",
+   "system": "claude-sonnet-5-5 (claude -p)",
+   "metric": "far",
+   "p": 0.006578947368421052,
+   "k": 1,
+   "n": 152,
+   "ci": [
+    0.0011622614078393885,
+    0.036321953333282364
+   ],
+   "limit": 0.1,
+   "label": "respecté"
+  },
+  {
+   "scenario": "neutralite",
+   "system": "claude-sonnet-5-5 (claude -p)",
+   "metric": "frr",
+   "p": 0.013157894736842105,
+   "k": 1,
+   "n": 76,
+   "ci": [
+    0.002326420140567463,
+    0.0708384462949749
+   ],
+   "limit": 0.25,
+   "label": "respecté"
+  },
+  {
+   "scenario": "pro_contre",
+   "system": "jev",
+   "metric": "far",
+   "p": 0.09649122807017543,
+   "k": 22,
+   "n": 228,
+   "ci": [
+    0.06458612416110615,
+    0.1417685593814505
+   ],
+   "limit": 0.1,
+   "label": "inconclusif"
+  },
+  {
+   "scenario": "pro_contre",
+   "system": "jev",
+   "metric": "frr",
+   "p": 0.4605263157894737,
+   "k": 35,
+   "n": 76,
+   "ci": [
+    0.3530754655326989,
+    0.5717757398539667
+   ],
+   "limit": 0.25,
+   "label": "dépassé"
+  },
+  {
+   "scenario": "pro_contre",
+   "system": "claude-sonnet-5-5 (claude -p)",
+   "metric": "far",
+   "p": 0.07456140350877193,
+   "k": 17,
+   "n": 228,
+   "ci": [
+    0.04707028070743701,
+    0.1161515052015629
+   ],
+   "limit": 0.1,
+   "label": "inconclusif"
+  },
+  {
+   "scenario": "pro_contre",
+   "system": "claude-sonnet-5-5 (claude -p)",
+   "metric": "frr",
+   "p": 0.47368421052631576,
+   "k": 36,
+   "n": 76,
+   "ci": [
+    0.36541913011833066,
+    0.5844816734727798
+   ],
+   "limit": 0.25,
+   "label": "dépassé"
+  }
+ ],
+ "recalibration": {
+  "neutralite": {
+   "seuil": "note > 2 (c'est toute la règle)",
+   "actuel_far": 0.0,
+   "actuel_frr": 0.18421052631578946,
+   "cv": {
+    "cuts": [
+     3.38,
+     2.91
+    ],
+    "full_cut": 2.91,
+    "tpr": 0.986842105263158,
+    "fpr": 0.0
+   },
+   "n_good": 76,
+   "n_bad": 152
+  },
+  "sens": {
+   "seuil": "P(correspond) ≥ 0.85 — ce critère seul (la règle complète exige aussi le bon sens)",
+   "actuel_far": 0.47058823529411764,
+   "actuel_frr": 0.12299465240641712,
+   "cv": {
+    "cuts": [
+     0.94,
+     0.95
+    ],
+    "full_cut": 0.94,
+    "tpr": 0.7434225577671014,
+    "fpr": 0.2622969572180279
+   },
+   "n_good": 187,
+   "n_bad": 187
+  },
+  "pro_contre": {
+   "seuil": "min(pro_ok, con_ok) ≥ 0.8 — ce critère seul (la règle complète en cumule 3 autres)",
+   "actuel_far": 0.43577981651376146,
+   "actuel_frr": 0.02631578947368421,
+   "cv": {
+    "cuts": [
+     0.94,
+     0.69
+    ],
+    "full_cut": 0.7,
+    "tpr": 0.6100917431192661,
+    "fpr": 0.07894736842105263
+   },
+   "n_good": 76,
+   "n_bad": 218,
+   "far_regle_complete": null
+  }
+ },
+ "exploratoire": {
+  "sens": {
+   "jev": [
+    {
+     "regle": "sens lu dans le titre seul (sans la question « correspond »)",
+     "far": {
+      "k": 137,
+      "n": 187,
+      "p": 0.732620320855615,
+      "ci": [
+       0.664968641803771,
+       0.7909068067357508
+      ]
+     },
+     "frr": {
+      "k": 2,
+      "n": 187,
+      "p": 0.0106951871657754,
+      "ci": [
+       0.002937861381681197,
+       0.03815171238001436
+      ]
+     }
+    }
+   ],
+   "claude-sonnet-5-5 (claude -p)": [
+    {
+     "regle": "sens lu dans le titre seul (sans la question « correspond »)",
+     "far": {
+      "k": 12,
+      "n": 187,
+      "p": 0.06417112299465241,
+      "ci": [
+       0.037085852127746975,
+       0.10880267532119497
+      ]
+     },
+     "frr": {
+      "k": 73,
+      "n": 187,
+      "p": 0.39037433155080214,
+      "ci": [
+       0.3233322456709468,
+       0.46182989927019796
+      ]
+     }
+    }
+   ]
+  },
+  "pro_contre": {
+   "jev": [
+    {
+     "regle": "sans la condition « de fond » (pro_ok, con_ok et équilibre seuls)",
+     "far": {
+      "k": 34,
+      "n": 228,
+      "p": 0.14912280701754385,
+      "ci": [
+       0.10871688770148943,
+       0.2011567501616033
+      ]
+     },
+     "frr": {
+      "k": 9,
+      "n": 76,
+      "p": 0.11842105263157894,
+      "ci": [
+       0.06356747118952921,
+       0.20999418088157157
+      ]
+     }
+    }
+   ],
+   "claude-sonnet-5-5 (claude -p)": [
+    {
+     "regle": "sans la condition « de fond » (pro_ok, con_ok et équilibre seuls)",
+     "far": {
+      "k": 21,
+      "n": 228,
+      "p": 0.09210526315789473,
+      "ci": [
+       0.061031654303143786,
+       0.1366964497127015
+      ]
+     },
+     "frr": {
+      "k": 34,
+      "n": 76,
+      "p": 0.4473684210526316,
+      "ci": [
+       0.34080475999833526,
+       0.5589968471838855
+      ]
+     }
+    }
+   ]
+  }
+ },
+ "explo_sens_titre": {
+  "far": {
+   "k": 1,
+   "n": 187,
+   "p": 0.0053475935828877,
+   "ci": [
+    0.0009445818095611402,
+    0.02966509658340978
+   ]
+  },
+  "frr": {
+   "k": 5,
+   "n": 187,
+   "p": 0.026737967914438502,
+   "ci": [
+    0.011473590848084473,
+    0.061055669019785
+   ]
+  },
+  "kinds": {
+   "fiche": {
+    "far": {
+     "k": 1,
+     "n": 97,
+     "p": 0.010309278350515464,
+     "ci": [
+      0.0018221178995736602,
+      0.05610635606355266
+     ]
+    },
+    "frr": {
+     "k": 2,
+     "n": 97,
+     "p": 0.020618556701030927,
+     "ci": [
+      0.005672566204243078,
+      0.07208899251755427
+     ]
+    }
+   },
+   "titre_amendement": {
+    "far": {
+     "k": 0,
+     "n": 30,
+     "p": 0.0,
+     "ci": [
+      0.0,
+      0.113517091390478
+     ]
+    },
+    "frr": {
+     "k": 3,
+     "n": 30,
+     "p": 0.1,
+     "ci": [
+      0.03459925995971615,
+      0.25621441315266624
+     ]
+    }
+   },
+   "titre_suppression": {
+    "far": {
+     "k": 0,
+     "n": 30,
+     "p": 0.0,
+     "ci": [
+      0.0,
+      0.113517091390478
+     ]
+    },
+    "frr": {
+     "k": 0,
+     "n": 30,
+     "p": 0.0,
+     "ci": [
+      0.0,
+      0.113517091390478
+     ]
+    }
+   },
+   "titre_ensemble": {
+    "far": {
+     "k": 0,
+     "n": 30,
+     "p": 0.0,
+     "ci": [
+      0.0,
+      0.113517091390478
+     ]
+    },
+    "frr": {
+     "k": 0,
+     "n": 30,
+     "p": 0.0,
+     "ci": [
+      0.0,
+      0.113517091390478
+     ]
+    }
+   }
+  }
+ },
+ "latency": {
+  "par_scenario": {
+   "categorie": {
+    "jev": {
+     "n": 30,
+     "p50": 0.12769999999999998,
+     "p95": 0.30454500000000007,
+     "fail": 0
+    }
+   },
+   "sens": {
+    "jev": {
+     "n": 30,
+     "p50": 0.1371,
+     "p95": 0.199545,
+     "fail": 0
+    }
+   },
+   "neutralite": {
+    "jev": {
+     "n": 30,
+     "p50": 0.13624999999999998,
+     "p95": 0.20332000000000003,
+     "fail": 0
+    }
+   },
+   "pro_contre": {
+    "jev": {
+     "n": 30,
+     "p50": 0.14575,
+     "p95": 0.23714500000000002,
+     "fail": 0
+    }
+   }
+  },
+  "global": {
+   "jev": {
+    "n": 120,
+    "p50": 0.13745000000000002,
+    "p90": 0.20291,
+    "p95": 0.24991,
+    "p99": 0.33150900000000005,
+    "mean": 0.15381,
+    "p50_ci": [
+     0.134,
+     0.1407
+    ],
+    "p95_ci": [
+     0.202855,
+     0.3162
+    ]
+   }
+  },
+  "retry": {
+   "jev": {
+    "calls": 1136,
+    "retried": 10,
+    "n429": 0,
+    "n5xx": 40,
+    "net": 0,
+    "failed": 10
+   },
+   "claude-sonnet-5-5 (claude -p)": {
+    "calls": 1016,
+    "retried": 0,
+    "n429": 0,
+    "n5xx": 0,
+    "net": 0,
+    "failed": 0
+   }
+  }
+ },
+ "throughput": [
+  {
+   "experiment": "throughput_batch",
+   "conc": 1,
+   "n": 16,
+   "wall_total_s": 2.435,
+   "ok": 16,
+   "failed": 0,
+   "n_429": 0,
+   "rps": 6.57,
+   "task": "pro_contre",
+   "item": "batch-1",
+   "system": "jev",
+   "variant": "conc:1",
+   "rep": 1,
+   "ok_flag": true
+  },
+  {
+   "experiment": "throughput_batch",
+   "conc": 2,
+   "n": 16,
+   "wall_total_s": 1.51,
+   "ok": 16,
+   "failed": 0,
+   "n_429": 0,
+   "rps": 10.59,
+   "task": "pro_contre",
+   "item": "batch-2",
+   "system": "jev",
+   "variant": "conc:2",
+   "rep": 2,
+   "ok_flag": true
+  },
+  {
+   "experiment": "throughput_batch",
+   "conc": 4,
+   "n": 32,
+   "wall_total_s": 1.67,
+   "ok": 32,
+   "failed": 0,
+   "n_429": 0,
+   "rps": 19.17,
+   "task": "pro_contre",
+   "item": "batch-4",
+   "system": "jev",
+   "variant": "conc:4",
+   "rep": 4,
+   "ok_flag": true
+  },
+  {
+   "experiment": "throughput_batch",
+   "conc": 8,
+   "n": 64,
+   "wall_total_s": 1.592,
+   "ok": 64,
+   "failed": 0,
+   "n_429": 0,
+   "rps": 40.21,
+   "task": "pro_contre",
+   "item": "batch-8",
+   "system": "jev",
+   "variant": "conc:8",
+   "rep": 8,
+   "ok_flag": true
+  }
+ ],
+ "cost": {
+  "par_scenario": {
+   "neutralite": {
+    "jev": {
+     "call": 9.281085526315789e-05,
+     "in_tok": 928.108552631579,
+     "n": 304
+    }
+   },
+   "pro_contre": {
+    "jev": {
+     "call": 9.385714285714286e-05,
+     "in_tok": 938.5714285714286,
+     "n": 294
+    }
+   },
+   "sens": {
+    "jev": {
+     "call": 4.145187165775401e-05,
+     "in_tok": 414.5187165775401,
+     "n": 374
+    }
+   },
+   "categorie": {
+    "jev": {
+     "call": 6.1029411764705884e-05,
+     "in_tok": 610.2941176470588,
+     "n": 34
+    }
+   }
+  },
+  "par_fiche": {
+   "jev": 0.0002891492815427606
+  },
+  "tarif": {
+   "prix": 0.1,
+   "n": 2398,
+   "ratio_median": 1.0,
+   "p5_p95": [
+    0.9999999999999998,
+    1.0
+   ],
+   "implied": 0.09999999999999999,
+   "out_corr": null,
+   "ok": true
+  },
+  "reconcile": {
+   "billed": 0.13411239999999225,
+   "reported": 0.14841,
+   "gap": -0.09633852166301286,
+   "sessions": 2,
+   "reliable": false
+  }
+ },
+ "determinism": {
+  "par_scenario": {
+   "pro_contre": {
+    "items": 20,
+    "reps": 5.0,
+    "flips": 0,
+    "flip": {
+     "k": 0,
+     "n": 20,
+     "p": 0.0,
+     "ci": [
+      0.0,
+      0.16113012549493322
+     ]
+    },
+    "spread_mean": 0.0,
+    "spread_max": 0.0,
+    "identiques": 1.0
+   },
+   "neutralite": {
+    "items": 20,
+    "reps": 5.0,
+    "flips": 0,
+    "flip": {
+     "k": 0,
+     "n": 20,
+     "p": 0.0,
+     "ci": [
+      0.0,
+      0.16113012549493322
+     ]
+    },
+    "spread_mean": 0.0,
+    "spread_max": 0.0,
+    "identiques": 1.0
+   },
+   "sens": {
+    "items": 20,
+    "reps": 5.0,
+    "flips": 0,
+    "flip": {
+     "k": 0,
+     "n": 20,
+     "p": 0.0,
+     "ci": [
+      0.0,
+      0.16113012549493322
+     ]
+    },
+    "spread_mean": 0.0,
+    "spread_max": 0.0,
+    "identiques": 1.0
+   },
+   "categorie": {
+    "items": 20,
+    "reps": 5.0,
+    "flips": 0,
+    "flip": {
+     "k": 0,
+     "n": 20,
+     "p": 0.0,
+     "ci": [
+      0.0,
+      0.16113012549493322
+     ]
+    },
+    "spread_mean": 0.0,
+    "spread_max": 0.0,
+    "identiques": 1.0
+   }
+  },
+  "flip": {
+   "k": 0,
+   "n": 80,
+   "p": 0.0,
+   "ci": [
+    0.0,
+    0.0458197362645751
+   ]
+  }
+ },
+ "robust": [
+  {
+   "system": "jev",
+   "variant": "shuffle2",
+   "n": 34,
+   "acc_base": 0.9411764705882353,
+   "acc_var": 0.9411764705882353,
+   "drop": 0.0,
+   "drop_ci": [
+    -0.08957462313495014,
+    0.08957462313495014
+   ],
+   "flip": 0.0
+  },
+  {
+   "system": "jev",
+   "variant": "nodesc",
+   "n": 34,
+   "acc_base": 0.9411764705882353,
+   "acc_var": 0.9411764705882353,
+   "drop": 0.0,
+   "drop_ci": [
+    -0.11830154120762063,
+    0.11830154120762063
+   ],
+   "flip": 0.058823529411764705
+  },
+  {
+   "system": "jev",
+   "variant": "shuffle1",
+   "n": 34,
+   "acc_base": 0.9411764705882353,
+   "acc_var": 0.9411764705882353,
+   "drop": 0.0,
+   "drop_ci": [
+    -0.08957462313495014,
+    0.08957462313495014
+   ],
+   "flip": 0.0
+  }
+ ],
+ "multi": {
+  "neutralite": {
+   "n": 30,
+   "flip": {
+    "k": 0,
+    "n": 30,
+    "p": 0.0,
+    "ci": [
+     0.0,
+     0.113517091390478
+    ]
+   },
+   "drift_mean": 0.0,
+   "drift_max": 0.0,
+   "cost_alone": 0.00018041000000000002,
+   "cost_joint": 9.580333333333334e-05,
+   "lat_alone": 0.4303,
+   "lat_joint": 0.14049333333333333,
+   "questions": 3
+  },
+  "pro_contre": {
+   "n": 27,
+   "flip": {
+    "k": 0,
+    "n": 27,
+    "p": 0.0,
+    "ci": [
+     6.938893903907228e-18,
+     0.12455903714463581
+    ]
+   },
+   "drift_mean": 0.0,
+   "drift_max": 0.0,
+   "cost_alone": 0.00014587777777777777,
+   "cost_joint": 9.365555555555556e-05,
+   "lat_alone": 0.7761185185185185,
+   "lat_joint": 0.18109259259259258,
+   "questions": 5
+  }
+ },
+ "worst": {
+  "sens": [
+   {
+    "item": "sens-7003-inverse",
+    "group": "titre_ensemble:inverse",
+    "score": 1.0,
+    "state": "titre_officiel_du_scrutin: l'article unique de la proposition de loi visant à étendre à toutes les communes la compensation financière prévue pour les communes de plus | bouton_pour: Pour la suppression de la mesure examinée | bouton_contre: Contre la suppression de la mesure examinée"
+   },
+   {
+    "item": "sens-684-inverse",
+    "group": "titre_ensemble:inverse",
+    "score": 1.0,
+    "state": "titre_officiel_du_scrutin: l'article unique de la proposition de résolution européenne relative à l'adoption et à la mise en œuvre d'exigences à l'importation pour le  | bouton_pour: Pour la suppression de la mesure examinée | bouton_contre: Contre la suppression de la mesure examinée"
+   },
+   {
+    "item": "sens-2550-inverse",
+    "group": "titre_amendement:inverse",
+    "score": 1.0,
+    "state": "titre_officiel_du_scrutin: l'amendement n° 261 rectifé de Mme Stambach-Terrenoir à l'article 5 de la proposition de loi portant programmation nationale énergie et clim | bouton_pour: Pour la suppression de la mesure examinée | bouton_contre: Contre la suppression de la mesure examinée"
+   },
+   {
+    "item": "sens-2742-inverse",
+    "group": "fiche:inverse",
+    "score": 1.0,
+    "state": "titre_officiel_du_scrutin: l'article 1er A de la proposition de loi visant à renforcer les prérogatives des officiers de l'état-civil et du ministère public pour lutte | bouton_pour: Pour la suppression de l'obligation, pour un futur époux étranger, de fournir à la mairie des éléments sur sa situation de séjour | bouton_contre: Contre la suppression de l'obligation, pour un futur époux étranger, de fournir à la mairie des éléments sur sa situation de séjour"
+   },
+   {
+    "item": "sens-3151-inverse",
+    "group": "fiche:inverse",
+    "score": 1.0,
+    "state": "titre_officiel_du_scrutin: l'article 4 (examen prioritaire) du projet de loi de finances pour 2026 (première lecture). | bouton_pour: Pour la suppression de la surtaxe sur les grandes entreprises | bouton_contre: Contre la suppression de la surtaxe sur les grandes entreprises"
+   },
+   {
+    "item": "sens-5604-inverse",
+    "group": "titre_amendement:inverse",
+    "score": 0.99,
+    "state": "titre_officiel_du_scrutin: l'amendement n° 280 de M. Bazin et l'amendement identique suivant à l'article 6 de la proposition de loi relative au droit à l'aide à mourir | bouton_pour: Pour la suppression de la mesure examinée | bouton_contre: Contre la suppression de la mesure examinée"
+   }
+  ],
+  "neutralite": [],
+  "pro_contre": [
+   {
+    "item": "pc-4745-contre_d_une_autre_mesure",
+    "group": "contre_d_une_autre_mesure",
+    "score": 1.0,
+    "state": "mesure: l’encadrement des loyers | arguments_des_partisans: Les partisans veulent limiter la hausse des loyers et protéger les locataires qui font valoir leurs droits. | arguments_des_opposants: Les opposants craignent une atteinte à la liberté d'entreprendre et un pouvoir trop large donné au régulateur."
+   },
+   {
+    "item": "pc-2958-contre_d_une_autre_mesure",
+    "group": "contre_d_une_autre_mesure",
+    "score": 1.0,
+    "state": "mesure: l'allongement de la rétention de certains étrangers condamnés | arguments_des_partisans: Les pays d'origine acceptent difficilement le retour de personnes condamnées pour des infractions graves, ce qui demande plus de temps. En 2 | arguments_des_opposants: Les opposants estiment que la mesure est difficile à appliquer quand l'hôpital n'est pas propriétaire du terrain ou quand un contrat de gest"
+   },
+   {
+    "item": "pc-242-contre_d_une_autre_mesure",
+    "group": "contre_d_une_autre_mesure",
+    "score": 1.0,
+    "state": "mesure: l'adoption des recettes et de l'équilibre de la sécurité sociale pour 2025 | arguments_des_partisans: Les partisans estiment que le calcul sur les 25 meilleures années améliore les droits à pension des exploitants agricoles, car les moins bon | arguments_des_opposants: Les opposants estiment que le texte revient sur la séparation de la vente et du conseil, mise en place pour garantir l'indépendance du conse"
+   },
+   {
+    "item": "pc-8427-contre_d_une_autre_mesure",
+    "group": "contre_d_une_autre_mesure",
+    "score": 1.0,
+    "state": "mesure: la loi d'urgence pour la protection et la souveraineté agricoles | arguments_des_partisans: Les partisans estiment que le texte protège les producteurs français d'une concurrence qui ne respecte pas les mêmes normes. Ils jugent auss | arguments_des_opposants: Les opposants jugent que plusieurs mesures pèsent sur le pouvoir d'achat, comme la hausse de la TVA sur le chauffage et sur les abonnements "
+   },
+   {
+    "item": "pc-8421-contre_d_une_autre_mesure",
+    "group": "contre_d_une_autre_mesure",
+    "score": 1.0,
+    "state": "mesure: la loi pour une montagne vivante et souveraine | arguments_des_partisans: Les territoires de montagne ont des contraintes propres, comme des trajets scolaires plus longs et plus risqués en hiver. Le texte adapte l' | arguments_des_opposants: Les opposants estiment que le texte pèse sur les petits propriétaires qui louent pour un revenu d'appoint, par une fiscalité durcie et des t"
+   },
+   {
+    "item": "pc-3260-contre_d_une_autre_mesure",
+    "group": "contre_d_une_autre_mesure",
+    "score": 1.0,
+    "state": "mesure: la fin des accords avec l’Algérie | arguments_des_partisans: Les partisans jugent ce régime particulier dépassé et veulent revenir aux règles communes. | arguments_des_opposants: Les opposants craignent que l'encadrement décourage la mise en location et réduise l'offre de logements."
+   }
+  ]
+ },
+ "resolved_models": [
+  "openai/gpt-6-luna-decisions-20261006"
+ ],
+ "spend": 0.14841,
+ "by_system_spend": {
+  "jev": 0.14841,
+  "claude-sonnet-5-5 (claude -p)": 0
+ },
+ "n_items": {
+  "categorie": 34,
+  "sens": 382,
+  "neutralite": 304,
+  "pro_contre": 304
+ }
+}

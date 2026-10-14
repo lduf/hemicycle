@@ -122,7 +122,7 @@ def build(R, out_dir):
     if R.get("resolved_models"):
         w(f"| Version de Jev effectivement servie | {', '.join(R['resolved_models'])} |")
     if meta.get("baselines"):
-        w("| Références (Claude via OpenRouter, même contrat que le secours de production) | " + ", ".join(f"`{v}`" for v in meta["baselines"].values()) + " |")
+        w(("| Références (Claude via `claude -p`, abonnement ; même contrat que le secours de production) | " if any("claude -p" in k for k in meta["baselines"]) else "| Références (Claude via OpenRouter, même contrat que le secours de production) | ") + ", ".join(f"`{v}`" for v in meta["baselines"].values()) + " |")
     if meta.get("thresholds"):
         t = meta["thresholds"]
         w(f"| Seuils de production évalués | catégorie ≥ {t.get('cat_min')} ; sens P ≥ {t.get('dir_ok')} ; pour/contre P ≥ {t.get('pro_con_ok')}, fond ≥ {t.get('substance_ok')}, "
@@ -321,7 +321,7 @@ def build(R, out_dir):
         w("| **1 000 fiches** | " + " | ".join(f"**{usd(cost['par_fiche'][s] * 1000)}**" if s in cost["par_fiche"] else "–" for s in systems) + " |")
     if cost.get("tarif"):
         t = cost["tarif"]
-        w(f"\nTarif : coût facturé ÷ (tokens d'entrée × {C.CLAIMS['prix_entree_par_M'][0]} $/M) = **{f(t['ratio_median'])}** sur {t['n']} appels Jev (5ᵉ–95ᵉ percentile {f(t['p5_p95'][0])} – {f(t['p5_p95'][1])}) → "
+        w(f"\nTarif : coût facturé ÷ (tokens d'entrée × {t.get('prix') or C.CLAIMS['prix_entree_par_M'][0]} $/M) = **{f(t['ratio_median'])}** sur {t['n']} appels Jev (5ᵉ–95ᵉ percentile {f(t['p5_p95'][0])} – {f(t['p5_p95'][1])}) → "
           f"{'conforme' if t['ok'] else 'ÉCART au tarif annoncé'}. Corrélation tokens de sortie / coût unitaire (≈ 0 si la sortie est gratuite) : {f(t['out_corr'], 2)}.")
     if cost.get("reconcile"):
         r = cost["reconcile"]
