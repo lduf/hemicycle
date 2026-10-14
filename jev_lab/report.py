@@ -321,7 +321,7 @@ def build(R, out_dir):
         w("| **1 000 fiches** | " + " | ".join(f"**{usd(cost['par_fiche'][s] * 1000)}**" if s in cost["par_fiche"] else "–" for s in systems) + " |")
     if cost.get("tarif"):
         t = cost["tarif"]
-        w(f"\nTarif : coût facturé ÷ (tokens d'entrée × {C.CLAIMS['prix_entree_par_M'][0]} $/M) = **{f(t['ratio_median'])}** sur {t['n']} appels Jev (5ᵉ–95ᵉ percentile {f(t['p5_p95'][0])} – {f(t['p5_p95'][1])}) → "
+        w(f"\nTarif : coût facturé ÷ (tokens d'entrée × {t.get('prix') or C.CLAIMS['prix_entree_par_M'][0]} $/M) = **{f(t['ratio_median'])}** sur {t['n']} appels Jev (5ᵉ–95ᵉ percentile {f(t['p5_p95'][0])} – {f(t['p5_p95'][1])}) → "
           f"{'conforme' if t['ok'] else 'ÉCART au tarif annoncé'}. Corrélation tokens de sortie / coût unitaire (≈ 0 si la sortie est gratuite) : {f(t['out_corr'], 2)}.")
     if cost.get("reconcile"):
         r = cost["reconcile"]

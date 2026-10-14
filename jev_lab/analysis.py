@@ -345,9 +345,9 @@ def cost(rows, meta):
             out["par_fiche"][s] = sum(parts)
     j = [r for r in rows if r["system"] == "jev" and r["ok"] and r["in_tok"] and r["cost"] is not None]
     if j:
-        price = C.CLAIMS["prix_entree_par_M"][0]
+        price = meta.get("jev_price_per_M") or C.CLAIMS["prix_entree_par_M"][0]
         ratio = [r["cost"] / (r["in_tok"] * price / 1e6) for r in j]
-        out["tarif"] = {"n": len(j), "ratio_median": M.percentile(ratio, 50), "p5_p95": (M.percentile(ratio, 5), M.percentile(ratio, 95)),
+        out["tarif"] = {"prix": price, "n": len(j), "ratio_median": M.percentile(ratio, 50), "p5_p95": (M.percentile(ratio, 5), M.percentile(ratio, 95)),
                         "implied": M.percentile([r["cost"] / r["in_tok"] * 1e6 for r in j], 50),
                         "out_corr": M.spearman([r["out_tok"] or 0 for r in j], [r["cost"] / r["in_tok"] for r in j]) if len({r["out_tok"] for r in j}) > 2 else float("nan"),
                         "ok": abs(M.percentile(ratio, 50) - 1) <= P["tolerance_prix"]}

@@ -45,7 +45,7 @@ def build_lab(a, store, mock=False, variants_path=None):
         baselines.append(CL.ChatClient(mid, label=label, mock_gold=mock))
     # le plafond vaut pour le RUN ENTIER : ce qui a déjà été dépensé dans les sessions précédentes est déduit
     spent0 = sum((r.get("usage") or {}).get("cost") or 0.0 for r in store.read())
-    lab = R.Lab(store, B.Budget(a.budget, spent0), CL.JevClient(a.jev_model, mock_gold=mock), baselines, workers=a.workers, mock=mock, prices=prices,
+    lab = R.Lab(store, B.Budget(a.budget, spent0), CL.JevClient(a.jev_model, mock_gold=mock), baselines, workers=a.workers, mock=mock, prices=prices, jev_price=a.jev_price,
                 variants_path=variants_path, claude_only=getattr(a, "claude_only", False))
     return lab, resolved
 
@@ -212,7 +212,7 @@ def cmd_run(a, mock=False, variants_path=None):
     resolved = {**(prev.get("baselines") or {}), **resolved}        # la passe Claude (locale) s'ajoute à celle de Jev (Actions)
     if a.claude_only:
         kw["claude_pass"] = True
-    st.write_meta(suite=a.suite, jev_model=lab.jev.model, baselines=resolved, budget=a.budget, mock=mock, seed=lab.seed, sessions=prev.get("sessions", 0) + 1,
+    st.write_meta(suite=a.suite, jev_model=lab.jev.model, jev_price_per_M=a.jev_price, baselines=resolved, budget=a.budget, mock=mock, seed=lab.seed, sessions=prev.get("sessions", 0) + 1,
                   robust_baselines=a.robust_baselines, **kw, thresholds=dict(classify.THRESHOLDS, neutralite_max=HC.NEUTRALITY_MAX),
                   n_items={sc: len(lab.items(sc)) for sc in R.SUITES[a.suite]["scenarios"]})
     res = lab.run(a.suite, a.robust_baselines)
@@ -266,7 +266,8 @@ def main(argv=None):
         p.add_argument("--baselines", default="", help="références : « cli:claude-sonnet-5-5 » (Claude via `claude -p`, abonnement) ou familles OpenRouter (claude-petit,claude-grand,gpt-petit,gemini-flash) ou identifiants exacts, séparés par des virgules")
         p.add_argument("--budget", type=float, default=5.0, help="plafond de dépense en $ pour le run entier (arrêt net)")
         p.add_argument("--workers", type=int, default=4)
-        p.add_argument("--jev-model", default=C.JEV_MODEL)
+        p.add_argument("--jev-model", default=C.JEV_MODEL, help="modèle de l'API Decisions (ex. typesafe/jev-1.13, openai/gpt-6-luna-decisions)")
+        p.add_argument("--jev-price", type=float, default=C.CLAIMS["prix_entree_par_M"][0], help="prix annoncé, $ / million de jetons d'entrée (sortie gratuite)")
         p.add_argument("--robust-baselines", action="store_true", help="rejouer aussi les références sur les tests de robustesse (coûteux)")
     for name in ("ping", "models", "items", "show-variants", "label-sheet", "gen-variants", "plan", "run", "demo"):
         p = sub.add_parser(name)
