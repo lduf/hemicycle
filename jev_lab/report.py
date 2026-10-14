@@ -238,6 +238,27 @@ def build(R, out_dir):
                         w(f"| {SCN[sc]} | {n_good} | {c['_rejetées']} | {k} : **{v}** |")
         w("")
 
+    # ---- pistes exploratoires
+    ex = R.get("exploratoire") or {}
+    if ex:
+        w("### 2.6 Pistes exploratoires (imaginées après avoir vu les résultats : à confirmer sur de nouvelles données)\n")
+        w("Ces règles n'étaient pas dans le protocole. Elles montrent où le défaut se situe ; elles ne prouvent pas qu'elles fonctionneront sur d'autres fiches.\n")
+        w("| Scénario | Système | Règle | Fausses acceptations | Faux rejets |\n|---|---|---|---|---|")
+        for sc, per in ex.items():
+            for s_, lst in per.items():
+                for e in lst:
+                    w(f"| {SCN[sc]} | {sysname(s_)} | {e['regle']} | {rc(e['far'])} | {rc(e['frr'])} |")
+        w("")
+    et = R.get("explo_sens_titre")
+    if et:
+        w("**Piste : le sens du vote lu dans le titre seul.** Dans le premier résultat, le « sens » donné par Jev suit le libellé du bouton plus que le titre (règle « sens lu » ci-dessus : "
+          "il accepte presque tous les boutons inversés). On lui reposera donc la question de sens **sans** montrer les boutons, et on compare au sens annoncé.\n")
+        w("| Cas | Fausses acceptations (bouton inversé accepté) | Faux rejets (bon bouton refusé) |\n|---|---|---|")
+        w(f"| Tous | {rc(et['far'])} | {rc(et['frr'])} |")
+        for g, v in sorted(et["kinds"].items()):
+            w(f"| {g} | {rc(v['far'])} | {rc(v['frr'])} |")
+        w("")
+
     # ---- seuils
     w("## 3. Les seuils actuels sont-ils bien placés ?\n")
     w("Pour Jev : ce que fait le seuil de production aujourd'hui, et le seuil que suggère l'étude (choisi sur une moitié des cas, évalué sur l'autre : jamais optimisé sur ce qui le mesure).\n")

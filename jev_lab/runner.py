@@ -18,7 +18,7 @@ SUITES = {
     "smoke": dict(scenarios=["categorie", "sens"], cap=20, latency=dict(k=6, reps=1), throughput=None, robust=None, determinism=None, multi=None),
     # standard : tout le jeu d'essai du dépôt (≈ 800 appels par système), toutes les expériences
     "standard": dict(scenarios=H.ORDER, cap=None, latency=dict(k=15, reps=2), throughput=dict(levels=[1, 2, 4, 8], per=8),
-                     robust=dict(n=34), determinism=dict(k=20, reps=5), multi=dict(n=30)),
+                     robust=dict(n=34), determinism=dict(k=20, reps=5), multi=dict(n=30), explo=True),
 }
 
 
@@ -203,6 +203,17 @@ class Lab:
                     jobs.append(self.job("jev", "multi", sc, it, {name: qs[name]}, variant=f"alone:{name}"))
         return jobs
 
+    # ----- piste exploratoire : le sens du vote lu dans le TITRE SEUL (sans le libellé des boutons) -----
+    def jobs_explo_sens(self, n=None):
+        """Imaginée après le premier run : Jev semble suivre le libellé du bouton plus que le titre. On lui pose la seule question de sens,
+        sur le titre, puis on compare au sens annoncé. Même jeu d'essai que le scénario « sens » ; Jev seul (rien à comparer côté Claude)."""
+        qs = {"sens": H.questions("sens")["sens"]}
+        jobs = []
+        for it in (self.items("sens") if n is None else self.sample("sens", n)):
+            titre = it["state"].get("titre_officiel_du_scrutin")
+            jobs.append(self.job("jev", "explo_sens", "sens", dict(it, state={"titre_officiel_du_scrutin": titre}), qs, variant="titre_seul"))
+        return jobs
+
     # ----- orchestration -----
     def all_jobs(self, suite, with_baselines_robust=False):
         s = SUITES[suite]
@@ -213,6 +224,8 @@ class Lab:
             out["latency_warmup"], out["latency"] = self.jobs_latency(s["scenarios"], **s["latency"])
         if s["robust"] and "categorie" in s["scenarios"]:
             out["robust"] = self.jobs_robust(s["robust"]["n"], with_baselines_robust)
+        if "sens" in s["scenarios"] and s.get("explo"):
+            out["explo_sens"] = self.jobs_explo_sens()
         if s["determinism"]:
             out["determinism"] = self.jobs_determinism(**s["determinism"])
         if s["multi"]:
@@ -241,7 +254,7 @@ class Lab:
         s = SUITES[suite]
         all_ = self.all_jobs(suite, with_baselines_robust)
         res = {}
-        for exp in ["latency_warmup", "latency", "quality", "multi", "determinism", "robust"]:
+        for exp in ["latency_warmup", "latency", "quality", "multi", "determinism", "robust", "explo_sens"]:
             if exp not in all_:
                 continue
             w = 1 if exp.startswith("latency") else self.workers
