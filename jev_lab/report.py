@@ -122,7 +122,7 @@ def build(R, out_dir):
     if R.get("resolved_models"):
         w(f"| Version de Jev effectivement servie | {', '.join(R['resolved_models'])} |")
     if meta.get("baselines"):
-        w("| Références (Claude via OpenRouter, même contrat que le secours de production) | " + ", ".join(f"`{v}`" for v in meta["baselines"].values()) + " |")
+        w(("| Références (Claude via `claude -p`, abonnement ; même contrat que le secours de production) | " if any("claude -p" in k for k in meta["baselines"]) else "| Références (Claude via OpenRouter, même contrat que le secours de production) | ") + ", ".join(f"`{v}`" for v in meta["baselines"].values()) + " |")
     if meta.get("thresholds"):
         t = meta["thresholds"]
         w(f"| Seuils de production évalués | catégorie ≥ {t.get('cat_min')} ; sens P ≥ {t.get('dir_ok')} ; pour/contre P ≥ {t.get('pro_con_ok')}, fond ≥ {t.get('substance_ok')}, "

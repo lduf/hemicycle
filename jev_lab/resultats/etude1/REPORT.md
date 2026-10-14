@@ -12,7 +12,7 @@
 | Modèle Jev demandé | typesafe/jev-1.13 |
 | Plafond de budget ($) | 6.0 |
 | Version de Jev effectivement servie | typesafe/jev-1.13-20260917 |
-| Références (Claude via OpenRouter, même contrat que le secours de production) | `claude-sonnet-5-5` |
+| Références (Claude via `claude -p`, abonnement ; même contrat que le secours de production) | `claude-sonnet-5-5` |
 | Seuils de production évalués | catégorie ≥ 0.5 ; sens P ≥ 0.85 ; pour/contre P ≥ 0.8, fond ≥ 0.6, équilibre [0.5, 1.5] ; neutralité : rejet si note > 2 |
 | Jeu d'essai | Catégorie d'une fiche : 34 ; Sens du vote (bouton « Pour … ») : 382 ; Neutralité (note d'orientation) : 304 ; Pertinence des arguments pour / contre : 304 |
 | Sessions (reprises) | 2 — la réconciliation des crédits n'est alors plus interprétable |

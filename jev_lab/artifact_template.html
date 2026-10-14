@@ -7,7 +7,7 @@
 :root {
   --bg: #eef1f4; --surface: #ffffff; --surface-2: #e4e9ee; --ink: #121a24; --ink-2: #4a5663; --ink-3: #75828f; --rule: #cfd7df;
   --accent: #0b5cad; --accent-ink: #ffffff; --good: #137a4c; --good-bg: #dcefe5; --warn: #96600b; --warn-bg: #f6e8c8; --bad: #b3261e; --bad-bg: #f6dcd8;
-  --track: #dfe5ea; --grid: #c3ccd5;
+  --track: #dfe5ea; --grid: #c3ccd5; --luna: #8a4fb0;
   --f-display: 'Bricolage Grotesque', 'IBM Plex Sans', system-ui, sans-serif;
   --f-body: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --f-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
@@ -16,13 +16,13 @@
   :root:not([data-theme="light"]) {
     --bg: #0e141b; --surface: #16202a; --surface-2: #1d2a36; --ink: #e8edf2; --ink-2: #aab5c0; --ink-3: #7f8c99; --rule: #2a3a49;
     --accent: #5aa7f0; --accent-ink: #0b1620; --good: #5cd29b; --good-bg: #153a2b; --warn: #e6b45a; --warn-bg: #3d2f12; --bad: #ff8d84; --bad-bg: #432019;
-    --track: #25333f; --grid: #3a4c5c; color-scheme: dark;
+    --track: #25333f; --grid: #3a4c5c; --luna: #c3a2ee; color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
   --bg: #0e141b; --surface: #16202a; --surface-2: #1d2a36; --ink: #e8edf2; --ink-2: #aab5c0; --ink-3: #7f8c99; --rule: #2a3a49;
   --accent: #5aa7f0; --accent-ink: #0b1620; --good: #5cd29b; --good-bg: #153a2b; --warn: #e6b45a; --warn-bg: #3d2f12; --bad: #ff8d84; --bad-bg: #432019;
-  --track: #25333f; --grid: #3a4c5c; color-scheme: dark;
+  --track: #25333f; --grid: #3a4c5c; --luna: #c3a2ee; color-scheme: dark;
 }
 * { box-sizing: border-box; }
 body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 16px; line-height: 1.55; padding-inline: 16px; }
@@ -69,6 +69,10 @@ header { display: flex; flex-direction: column; gap: 14px; }
 .track { position: relative; height: 16px; background: var(--track); border-radius: 3px; }
 .track .fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 3px 0 0 3px; background: var(--accent); }
 .track .fill.ref { background: var(--ink-3); }
+.track .fill.luna { background: var(--luna); }
+.cmp td.c, .cmp th.c { text-align: right; font-family: var(--f-mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 6px; background: var(--ink-3); }
+.dot.good { background: var(--good); } .dot.warn { background: var(--warn); } .dot.bad { background: var(--bad); }
 .track .ci { position: absolute; top: 50%; height: 2px; background: var(--ink); transform: translateY(-50%); }
 .track .ci::before, .track .ci::after { content: ""; position: absolute; top: -4px; width: 2px; height: 10px; background: var(--ink); }
 .track .ci::before { left: 0; } .track .ci::after { right: 0; }
@@ -109,6 +113,7 @@ const S = D.summary, SIM = !!(S.meta && S.meta.mock);
 const JEV = 'jev';
 const REF = Object.keys(S.decisions.sens || {}).find(k => k !== JEV) || null;
 const refName = REF ? 'Claude Sonnet' : null;
+const LUNA_S = D.luna || null, LUNA = LUNA_S ? LUNA_S.decisions : null, lunaName = 'GPT-6 Luna';
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const fr = (x, nd = 1) => x == null || Number.isNaN(x) ? '–' : (100 * x).toFixed(nd).replace('.', ',') + ' %';
 const f2 = (x, nd = 2) => x == null ? '–' : Number(x).toFixed(nd).replace('.', ',');
@@ -133,17 +138,20 @@ function bar(lbl, sub, r, o = {}) {
   const max = o.max || 1, w = v => Math.max(0, Math.min(100, 100 * v / max));
   const lim = o.limit != null ? `<div class="lim" style="left:${w(o.limit)}%"><span>limite ${fr(o.limit, 0)}</span></div>` : '';
   return `<div class="bar"><div class="lbl"><b>${esc(lbl)}</b>${esc(sub || '')}</div>
-    <div class="track" role="img" aria-label="${esc(lbl)} ${fr(r.p)}, intervalle ${ciTxt(r)}"><div class="fill ${o.ref ? 'ref' : ''}" style="width:${w(r.p)}%"></div>
+    <div class="track" role="img" aria-label="${esc(lbl)} ${fr(r.p)}, intervalle ${ciTxt(r)}"><div class="fill ${o.cls || (o.ref ? 'ref' : '')}" style="width:${w(r.p)}%"></div>
     <div class="ci" style="left:${w(r.ci[0])}%;width:${Math.max(0.4, w(r.ci[1]) - w(r.ci[0]))}%"></div>${lim}</div>
     <div class="num">${fr(r.p)} <span class="muted">${r.k}/${r.n}</span></div></div>`;
 }
+function sysList(sc) {
+  const L = [{ nm: 'Jev', cls: '', d: S.decisions[sc][JEV] }];
+  if (LUNA && LUNA[sc] && LUNA[sc].jev) L.push({ nm: lunaName, cls: 'luna', d: LUNA[sc].jev });
+  if (REF && S.decisions[sc][REF]) L.push({ nm: refName, cls: 'ref', d: S.decisions[sc][REF] });
+  return L;
+}
 function errorBars(sc, ids) {
-  const d = S.decisions[sc], [fl, rl] = LIM[sc]; let h = '';
-  const rows = [[JEV, 'Jev', false]].concat(REF && d[REF] ? [[REF, refName, true]] : []);
-  for (const [k, nm, isRef] of rows) {
-    h += bar(`${nm}`, ids.far, d[k].far, { limit: fl, ref: isRef, max: o_max(sc) });
-  }
-  for (const [k, nm, isRef] of rows) h += bar(`${nm}`, ids.frr, d[k].frr, { limit: rl, ref: isRef, max: o_max(sc) });
+  const [fl, rl] = LIM[sc]; const L = sysList(sc); let h = '';
+  for (const x of L) h += bar(x.nm, ids.far, x.d.far, { limit: fl, cls: x.cls, max: o_max(sc) });
+  for (const x of L) h += bar(x.nm, ids.frr, x.d.frr, { limit: rl, cls: x.cls, max: o_max(sc) });
   return h;
 }
 const o_max = sc => sc === 'sens' ? 1 : (sc === 'pro_contre' ? 0.8 : 0.4);
@@ -158,7 +166,7 @@ function render() {
   out.push(`<header>
     <div class="eyebrow">Étude du pipeline « Votes vs promesses »</div>
     <h1>Jev à l'essai</h1>
-    <p class="lede">Jev est un modèle qui répond par des probabilités plutôt que par du texte. Le pipeline lui confie quatre contrôles sur les fiches du quiz. Voici ce qu'il fait bien, ce qu'il rate, et ce que cela coûte.</p>
+    <p class="lede">Jev est un modèle qui répond par des probabilités plutôt que par du texte. Le pipeline lui confie quatre contrôles sur les fiches du quiz. Voici ce qu'il fait bien, ce qu'il rate et ce que cela coûte${LUNA ? ', face à GPT-6 Luna (la même API chez OpenAI)' : ''}${REF ? ' et à Claude Sonnet' : ''}.</p>
     <div class="meta"><span>modèle <b>${esc(served)}</b></span><span><b>${S.n_calls.toLocaleString('fr-FR')}</b> appels</span><span>dépensé <b>${usd(S.by_system_spend[JEV] || 0)}</b></span><span>${esc((m.started || '').slice(0, 10))}</span><span>commit <b>${esc(m.git || '')}</b></span></div>
     ${SIM ? '<div class="sim">DONNÉES SIMULÉES : aucune de ces valeurs ne décrit Jev.</div>' : ''}
   </header>`);
@@ -177,6 +185,34 @@ function render() {
         <dl><dt>Bonne catégorie</dt><dd>${fr(cat.top1.p)}</dd><dt>Dans le top 3</dt><dd>${fr(cat.top3.p)}</dd></dl></article>
       ${g('sens')}${g('neutralite')}${g('pro_contre')}
     </div></section>`);
+
+  // 1b. comparatif côte à côte
+  if (LUNA || REF) {
+    const cols = [['Jev', J2 => J2.jev], ...(LUNA ? [[lunaName, J2 => J2.luna]] : []), ...(REF ? [[refName, J2 => J2.ref]] : [])];
+    const dec = (sc, k) => k === 'jev' ? S.decisions[sc][JEV] : k === 'luna' ? (LUNA && LUNA[sc] ? LUNA[sc].jev : null) : (S.decisions[sc] ? S.decisions[sc][REF] : null);
+    const dot = (r, lim) => { if (!r) return ''; const l = label(r, lim); return `<span class="dot ${l === 'ok' ? 'good' : l === 'over' ? 'bad' : 'warn'}"></span>`; };
+    const cell = (r, lim) => r ? `${dot(r, lim)}${fr(r.p)}` : '–';
+    const keys = ['jev'].concat(LUNA ? ['luna'] : []).concat(REF ? ['ref'] : []);
+    const head = `<tr><th>Contrôle</th>${keys.map((k, i) => `<th class="c">${cols[i][0]}</th>`).join('')}</tr>`;
+    const catr = k => k === 'jev' ? S.categorie[JEV] : k === 'luna' ? (LUNA_S && LUNA_S.categorie ? LUNA_S.categorie.jev : null) : (S.categorie[REF] || null);
+    const rowsH = [];
+    rowsH.push(`<tr><td>Catégorie : bonne réponse</td>${keys.map(k => { const c = catr(k); return `<td class="c">${c ? `<span class="dot ${c.top1.ci[0] >= 0.8 ? 'good' : c.top1.p >= 0.8 ? 'warn' : 'bad'}"></span>${fr(c.top1.p, 0)}` : '–'}</td>`; }).join('')}</tr>`);
+    for (const sc of ['sens', 'neutralite', 'pro_contre']) {
+      const [fl, rl] = LIM[sc];
+      rowsH.push(`<tr><td>${NAMES[sc][1]} : erreur passée <span class="muted">(limite ${fr(fl, 0)})</span></td>${keys.map(k => `<td class="c">${cell((dec(sc, k) || {}).far, fl)}</td>`).join('')}</tr>`);
+      rowsH.push(`<tr><td>${NAMES[sc][1]} : bonne fiche refusée <span class="muted">(limite ${fr(rl, 0)})</span></td>${keys.map(k => `<td class="c">${cell((dec(sc, k) || {}).frr, rl)}</td>`).join('')}</tr>`);
+    }
+    rowsH.push(`<tr><td>Réponses lisibles <span class="muted">(sens du vote)</span></td>${keys.map(k => `<td class="c">${dec('sens', k) ? fr(dec('sens', k).valid_rate, 0) : '–'}</td>`).join('')}</tr>`);
+    const rt = k => k === 'jev' ? S.latency.retry[JEV] : k === 'luna' ? (LUNA_S && LUNA_S.latency.retry.jev) : (S.latency.retry[REF] || null);
+    rowsH.push(`<tr><td>Appels échoués après réessais <span class="muted">(erreurs du service)</span></td>${keys.map(k => { const r = rt(k); return `<td class="c">${r ? r.failed + ' / ' + r.calls : '–'}</td>`; }).join('')}</tr>`);
+    const lat = k => k === 'jev' ? S.latency.global[JEV] : k === 'luna' ? (LUNA_S && LUNA_S.latency.global.jev) : (D.claude_wall ? { p50: D.claude_wall.p50 } : null);
+    rowsH.push(`<tr><td>Durée médiane d'un appel</td>${keys.map(k => `<td class="c">${lat(k) ? sec(lat(k).p50) : '–'}</td>`).join('')}</tr>`);
+    const pf = k => k === 'jev' ? S.cost.par_fiche[JEV] : k === 'luna' ? (LUNA_S && LUNA_S.cost.par_fiche.jev) : null;
+    rowsH.push(`<tr><td>Prix d'une fiche (4 contrôles)</td>${keys.map(k => `<td class="c">${pf(k) != null ? usd(pf(k)) : (k === 'ref' ? 'abonnement' : '–')}</td>`).join('')}</tr>`);
+    out.push(`<section><h2>Côte à côte</h2><p class="muted">Mêmes entrées, mêmes questions, mêmes seuils pour les trois. Une pastille verte : sous la limite du protocole. Orange : on ne peut pas trancher. Rouge : au-dessus.</p>
+      <div class="panel"><div class="scroll"><table class="cmp"><thead>${head}</thead><tbody>${rowsH.join('')}</tbody></table></div>
+      <p class="small">${refName ? refName + ' tourne par le programme <span class="mono">claude -p</span> (abonnement, non facturé) avec la consigne de secours du pipeline : sa durée inclut le démarrage du programme et ses réponses illisibles comptent comme refus.' : ''}</p></div></section>`);
+  }
 
   // 2. les quatre contrôles en détail
   out.push(`<section><h2>Ce que Jev fait dans le pipeline</h2>
@@ -207,7 +243,7 @@ function render() {
       text = `<p>Avec la règle actuelle, Jev laisse passer ${rr(d.far)} des boutons inversés et refuse ${rr(d.frr)} des bons boutons. La probabilité qu'il donne ne sépare presque pas les deux cas (AUC ${f2(d.auc)} ; 0,5 = hasard, 1 = parfait).</p>${REF && J.sens[REF] ? `<p class="small">${refName}, avec la consigne de secours du pipeline, laisse passer moins de boutons inversés (${fr(J.sens[REF].far.p)}) mais ne répond de façon lisible que dans ${fr(J.sens[REF].valid_rate, 0)} des cas : le secours actuel n'est pas une meilleure barrière, il est surtout plus souvent muet.</p>` : ''}`;
     }
     body = `<div class="bars">${errorBars(sc, { far: 'erreurs passées', frr: 'bonnes fiches refusées' })}</div>
-      <div class="legend"><span><i style="background:var(--accent)"></i>Jev</span>${REF && J[sc][REF] ? `<span><i style="background:var(--ink-3)"></i>${refName} (${fr(J[sc][REF].valid_rate, 0)} de réponses lisibles ; les autres comptent comme refus)</span>` : ''}<span>trait noir : intervalle à 95 %</span><span style="color:var(--bad)">tirets : limite du protocole</span><span>échelle : 0 à ${fr(o_max(sc), 0)}</span></div>`;
+      <div class="legend"><span><i style="background:var(--accent)"></i>Jev</span>${LUNA && LUNA[sc] ? `<span><i style="background:var(--luna)"></i>${lunaName}</span>` : ''}${REF && J[sc][REF] ? `<span><i style="background:var(--ink-3)"></i>${refName} (${fr(J[sc][REF].valid_rate, 0)} de réponses lisibles ; les autres comptent comme refus)</span>` : ''}<span>trait noir : intervalle à 95 %</span><span style="color:var(--bad)">tirets : limite du protocole</span><span>échelle : 0 à ${fr(o_max(sc), 0)}</span></div>`;
     out.push(`<section><h2>${title}</h2><div class="panel">${text}${body}</div>${sc === 'sens' ? senseDetail() : ''}</section>`);
   }
 
@@ -241,6 +277,7 @@ function render() {
     <div><span class="stamp ${catOk[0]}">${catOk[0] === 'good' ? 'Garder Jev' : 'À confirmer'}</span><b>Catégorie</b><p class="small">${fr(cat.top1.p, 0)} de bonnes réponses sur ${cat.n} fiches, ${ciTxt(cat.top1)}. Le jeu est trop petit pour dire mieux : il faut des étiquettes humaines.</p></div>
     <div><span class="stamp ${vP[0]}">Assouplir</span><b>Pour / contre</b><p class="small">Le contrôle est sûr, mais la condition « de fond » refuse trop de fiches. Piste, à confirmer : sans cette condition, on laisse passer ${S.exploratoire.pro_contre ? rr(S.exploratoire.pro_contre[JEV][0].far) : '–'} des défauts et on refuse ${S.exploratoire.pro_contre ? rr(S.exploratoire.pro_contre[JEV][0].frr) : '–'} des bonnes fiches.</p></div>
     <div><span class="stamp ${vS[0]}">Ne pas s'y fier</span><b>Sens du vote</b><p class="small">Pas tel quel : les règles de titre restent la première barrière, et un second contrôle doit passer par un autre moyen. ${et ? `Piste, à confirmer : poser la question sur le titre seul, sans les boutons, donne ${rr(et.far)} d'erreurs passées et ${rr(et.frr)} de bonnes fiches refusées.` : ''}</p></div>
+    ${LUNA ? lunaReco() : ''}
     ${REF && J.sens[REF] ? `<div><span class="stamp warn">À corriger</span><b>Le secours Claude</b><p class="small">Quand Jev est absent, le pipeline demande les mêmes réponses à Claude. Avec cette consigne, ${refName} rend une réponse lisible dans ${fr(J.sens[REF].valid_rate, 0)} des cas sur le sens du vote et ${fr(J.pro_contre[REF].valid_rate, 0)} sur pour/contre : le reste est refusé par prudence. Le format demandé est à renforcer.</p></div>` : ''}
   </div></section>`);
 
@@ -260,6 +297,11 @@ function render() {
   document.getElementById('app').innerHTML = out.join('');
 }
 
+function lunaReco() {
+  const Ln = LUNA, ls = LUNA_S, e = ls.explo_sens_titre, je = S.explo_sens_titre, rt = ls.latency.retry.jev, pcv = Ln.pro_contre.jev.valid_rate;
+  const pj = S.cost.par_fiche[JEV], pl = ls.cost.par_fiche.jev;
+  return `<div><span class="stamp warn">À envisager</span><b>${lunaName}</b><p class="small">Mesuré comme Jev, sur les mêmes entrées. Sur le titre seul (piste, à confirmer), il lit mieux le sens d'un vote${e && je ? ` : ${fr(e.far.p)} d'erreurs passées contre ${fr(je.far.p)} pour Jev` : ''}. Il classe les fiches aussi bien (${fr(ls.categorie.jev.top1.p, 0)} contre ${fr(S.categorie[JEV].top1.p, 0)} : une fiche d'écart sur ${ls.categorie.jev.top1.n}). En revanche il refuse ${fr(Ln.neutralite.jev.frr.p, 0)} des bonnes fiches sur la neutralité, car il note plus haut tous les textes (AUC ${f2(Ln.neutralite.jev.auc)} : le seuil est à recalibrer, pas le modèle). Il coûte ${f2(pl / pj, 1)} fois plus cher, a renvoyé ${rt.failed} appels en échec sur ${rt.calls} (erreurs 5xx du service) et ${fr(1 - pcv, 0)} de réponses illisibles sur pour/contre. L'API est en bêta.</p></div>`;
+}
 function senseDetail() {
   const d = S.decisions.sens[JEV], k = d.kinds || {}, et = S.explo_sens_titre;
   const names = { fiche: 'Votes des fiches', titre_ensemble: "Titres : ensemble d'un texte", titre_amendement: 'Titres : amendements', titre_suppression: 'Titres : suppressions' };
@@ -268,7 +310,7 @@ function senseDetail() {
   return `<div class="panel"><h3>Où ça casse</h3>
     <p>Jev lit pourtant correctement le sens du vote : ${rr(d.sens_ok)} de bonnes lectures. Mais cette lecture suit le libellé du bouton plus que le titre : quand le bouton est inversé, il lit le sens annoncé par le bouton dans ${S.exploratoire && S.exploratoire.sens ? fr(S.exploratoire.sens[JEV][0].far.p, 0) : '–'} des cas (montré un bouton « Pour la suppression », il répond « supprimer »). La question « le bouton dit-il exactement ce que fait le vote ? » donne alors des probabilités proches de 0,9 pour les deux cas, vrais ou faux.</p>
     <div class="scroll"><table><thead><tr><th>Type de vote</th><th class="n">Bouton inversé accepté</th><th class="n">Bon bouton refusé</th>${hasEt ? '<th class="n">Titre seul : inversé accepté</th><th class="n">Titre seul : bon refusé</th>' : ''}</tr></thead><tbody>${rows}</tbody></table></div>
-    ${hasEt ? `<div class="callout"><strong>Piste : ne pas montrer le bouton</strong><p class="small">On pose la seule question « que signifie voter pour ? » sur le titre, puis on compare au sens annoncé : ${rr(et.far)} de boutons inversés acceptés, ${rr(et.frr)} de bons boutons refusés. Reste un point faible : les titres de suppression (${rr(et.kinds.titre_suppression.far)} d'erreurs passées). Idée imaginée après les résultats : à confirmer sur de nouveaux votes avant tout changement.</p></div>` : ''}</div>`;
+    ${hasEt ? `<div class="callout"><strong>Piste : ne pas montrer le bouton</strong><p class="small">On pose la seule question « que signifie voter pour ? » sur le titre, puis on compare au sens annoncé : ${rr(et.far)} de boutons inversés acceptés, ${rr(et.frr)} de bons boutons refusés. Reste un point faible : les titres de suppression (${rr(et.kinds.titre_suppression.far)} d'erreurs passées). Idée imaginée après les résultats : à confirmer sur de nouveaux votes avant tout changement.</p>${LUNA_S && LUNA_S.explo_sens_titre ? `<p class="small">Même épreuve pour ${lunaName} : ${rr(LUNA_S.explo_sens_titre.far)} de boutons inversés acceptés, ${rr(LUNA_S.explo_sens_titre.frr)} de bons boutons refusés.</p>` : ''}</div>` : ''}</div>`;
 }
 render();
 </script>

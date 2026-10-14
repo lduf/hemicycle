@@ -177,7 +177,7 @@ def cmd_gen_variants(a, mock=False, path=None):
 
 def cmd_artifact(a):
     from . import artifact
-    print(artifact.build(a.run, a.out))
+    print(artifact.build(a.run, a.out, a.luna))
     if a.site:
         with open(a.site, "w", encoding="utf-8") as fh:
             json.dump(artifact.site_summary(a.run, a.rapport_url) or {}, fh, ensure_ascii=False, indent=1)
@@ -284,7 +284,7 @@ def main(argv=None):
             p.add_argument("--claude-only", action="store_true", help="ne rejouer que les références (`cli:...`) sur un dossier de run déjà rempli par Jev : aucune clé OpenRouter, aucun appel Jev")
     p = sub.add_parser("report"); p.add_argument("run")
     p = sub.add_parser("artifact"); p.add_argument("run"); p.add_argument("--out")
-    p.add_argument("--site", help="écrit aussi le résumé pour la page Méthode du site (ex. content/jev_summary.json)"); p.add_argument("--rapport-url")
+    p.add_argument("--luna", help="dossier d'un run du modèle Luna (même jeu d'essai), pour la comparaison à trois"); p.add_argument("--site", help="écrit aussi le résumé pour la page Méthode du site (ex. content/jev_summary.json)"); p.add_argument("--rapport-url")
     p = sub.add_parser("inspect"); p.add_argument("run"); p.add_argument("--scenario"); p.add_argument("--system"); p.add_argument("--errors", action="store_true")
     p.add_argument("--failed", action="store_true"); p.add_argument("--limit", type=int, default=30)
     a = ap.parse_args(argv)

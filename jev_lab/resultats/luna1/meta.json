@@ -1,0 +1,47 @@
+{
+ "suite": "standard",
+ "jev_model": "openai/gpt-6-luna-decisions",
+ "jev_price_per_M": 0.1,
+ "baselines": {
+  "claude-sonnet-5-5 (claude -p)": "claude-sonnet-5-5"
+ },
+ "budget": 6.0,
+ "mock": false,
+ "seed": 20261013,
+ "sessions": 2,
+ "robust_baselines": false,
+ "credits_start": {
+  "total_credits": 150,
+  "total_usage": 75.557257899,
+  "ts": 1791959707.8348734
+ },
+ "thresholds": {
+  "cat_min": 0.5,
+  "dir_ok": 0.85,
+  "pro_con_ok": 0.8,
+  "substance_ok": 0.6,
+  "balance": [
+   0.5,
+   1.5
+  ],
+  "source_ok": 0.5,
+  "neutralite_max": 2
+ },
+ "n_items": {
+  "categorie": 34,
+  "sens": 374,
+  "neutralite": 304,
+  "pro_contre": 304
+ },
+ "started": "2026-10-14T06:35:07Z",
+ "git": "80f418a",
+ "python": "3.12.15",
+ "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+ "credits_end": {
+  "total_credits": 150,
+  "total_usage": 75.691370299,
+  "ts": 1791959915.2365305
+ },
+ "claude_pass": true,
+ "notes": "Luna : exécution complète du workflow (run luna1, Actions) ; la clé « jev » du journal désigne ici le système Decisions mesuré (openai/gpt-6-luna-decisions). Référence Claude : mêmes appels que pour Jev."
+}
