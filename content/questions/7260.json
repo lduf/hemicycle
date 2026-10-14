@@ -1,16 +1,77 @@
 {
- "blocked_reason": "sources insuffisantes pour décrire la mesure et ses critiques",
+ "cat": "Travail & retraites",
+ "cat_check": {
+  "classifier": "Travail & retraites",
+  "confidence": null,
+  "engine": "claude",
+  "writer": "Travail & retraites"
+ },
+ "checks": {
+  "date": "2026-10-13",
+  "direction": {
+   "answer": "{\"correspond\": 0.95, \"sens\": \"adopter\", \"attendu\": \"adopter\", \"engine\": \"claude\"}",
+   "ok": true
+  },
+  "neutrality": {
+   "issues": [],
+   "judge": {
+    "bias": "aucun",
+    "model": "claude-opus-5-5",
+    "reasons": [
+     "Le titre, le libellé du bouton et le résumé sont factuels : ils ne contiennent ni adjectif orienté ni qualification du type « réforme injuste » ou « réforme nécessaire ».",
+     "Les deux argumentaires ont une longueur comparable et sont attribués (« les partisans estiment », « les opposants estiment »). Les termes chargés (« intenables », « souffrance », « injuste ») sont rapportés comme des positions, pas pris en charge par le texte.",
+     "Asymétrie légère dans la forme : les partisans s'appuient sur des chiffres (515 000 ruptures, 800 M€, 15 000 retours à l'emploi), ce qui leur donne une apparence de solidité. Les opposants n'ont que des arguments qualitatifs, sans donnée chiffrée sur l'âge, les licenciements déguisés ou l'effet sur les revenus.",
+     "Les chiffres des partisans sont des projections maximales (« jusqu'à »). Le texte ne précise ni la source de ces estimations ni leur caractère discuté, alors que ce serait utile.",
+     "La rubrique « Pourquoi ça peut surprendre » met en avant des contreparties (suivi par France Travail, prolongation possible pour les plus de 55 ans). Cela répond implicitement à l'objection des opposants sur les seniors et donne au camp favorable le dernier mot, d'où un léger effet pro-réforme.",
+     "Omission : les syndicats qui n'ont pas signé l'accord ne sont pas nommés, alors que le compromis négocié est présenté comme un argument des partisans. Préciser les signataires et les non-signataires rééquilibrerait la fiche.",
+     "L'accroche est factuelle et parle directement au lecteur. Elle souligne la perte de droits (15 au lieu de 18 mois) sans la commenter, ce qui reste acceptable."
+    ],
+    "score": 1.0
+   },
+   "ok": true
+  },
+  "pro_con": {
+   "con_fond": 0.87,
+   "con_ok": 0.96,
+   "engine": "claude",
+   "equilibre": 1.0,
+   "ok": true,
+   "pro_fond": 0.85,
+   "pro_ok": 0.97
+  }
+ },
+ "con": "Les opposants estiment que raccourcir l'indemnisation touche des personnes qui retrouvent déjà difficilement un emploi, surtout les plus âgées. Ils rappellent que beaucoup de ruptures conventionnelles demandées par des salariés viennent d'horaires intenables ou d'une souffrance au poste, et que certaines peuvent cacher un licenciement. Ils jugent donc la mesure injuste, et plusieurs organisations syndicales n'ont pas approuvé l'accord.",
  "date": "2026-06-02",
+ "generator": {
+  "date": "2026-10-13",
+  "model": "claude-sonnet-5-5"
+ },
+ "hook": "Si tu quittes un emploi par rupture conventionnelle avant 55 ans, tu pourrais être indemnisé au maximum 15 mois au lieu de 18, avec de premiers effets à partir de 2027.",
+ "kind": "texte",
+ "label": "la transposition de l'accord sur l'assurance chômage",
  "n": 7260,
  "polarity": "adopt",
+ "pro": "Les partisans estiment que le nombre de ruptures conventionnelles a beaucoup augmenté (515 000 en 2024) et qu'elles pèsent lourd sur l'assurance chômage. Ils attendent jusqu'à 800 millions d'euros d'économies par an à partir de 2029 et jusqu'à 15 000 retours à l'emploi en plus chaque année. Ils soulignent aussi que le texte traduit un compromis négocié et qu'il garde la rupture conventionnelle.",
+ "reviewed_hash": null,
  "reviews": [],
  "sources": [
   {
    "label": "Scrutin officiel (Assemblée nationale)",
    "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/7260"
+  },
+  {
+   "label": "Source 2",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/PRJLANR5L17B2619.html"
+  },
+  {
+   "label": "Source 3",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/dossiers/DLR5L17N53981"
   }
  ],
- "status": "blocked",
- "title": "l'ensemble du projet de loi portant transposition de l'avenant n° 3 du 25 février 2026 au protocole d'accord du 10 novembre 2023 relatif à l'assurance chômage (deuxième lecture).",
- "updated": "2026-10-12"
+ "status": "pending_review",
+ "subkind": "ensemble",
+ "sum": "Ce projet de loi tient en un seul article. Il transpose dans la loi un accord conclu en février 2026 entre organisations de salariés et d'employeurs. Sa mesure centrale réduit la durée maximale d'indemnisation après une rupture conventionnelle : quinze mois pour les moins de 55 ans, contre dix-huit mois aujourd'hui, avec des ajustements prévus pour les seniors et l'outre-mer. Les premiers effets sont attendus en 2027. C'est la deuxième lecture à l'Assemblée nationale, et le texte a été adopté.",
+ "surp": "Le texte de loi ne contient pas les durées : elles figurent dans l'accord des partenaires sociaux qu'il transpose. L'accord prévoit aussi un suivi renforcé par France Travail et, pour les plus de 55 ans, un examen de situation au douzième mois pouvant permettre une prolongation des droits.",
+ "title": "Assurance chômage et ruptures conventionnelles",
+ "updated": "2026-10-13"
 }

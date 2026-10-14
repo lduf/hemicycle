@@ -1,16 +1,73 @@
 {
- "blocked_reason": "sources insuffisantes pour décrire la mesure et ses critiques",
+ "cat": "Logement",
+ "cat_check": {
+  "classifier": "Logement",
+  "confidence": null,
+  "engine": "claude",
+  "writer": "Logement"
+ },
+ "checks": {
+  "date": "2026-10-14",
+  "direction": {
+   "answer": "{\"correspond\": 0.93, \"sens\": \"adopter\", \"attendu\": \"adopter\", \"engine\": \"claude\"}",
+   "ok": true
+  },
+  "neutrality": {
+   "issues": [],
+   "judge": {
+    "bias": "gauche",
+    "model": "claude-opus-5-5",
+    "reasons": [
+     "Le titre, le bouton et l'accroche sont neutres. L'accroche s'adresse à la fois au locataire qui cherche un logement et au propriétaire qui loue, ce qui est symétrique.",
+     "Le résumé reste surtout descriptif. Le mot « avantageuse » dans « leur fiscalité avantageuse est réduite » est toutefois un jugement de valeur qui reprend le cadrage des partisans (correction d'un privilège). « Le régime fiscal applicable est modifié (abattement réduit) » serait plus neutre.",
+     "Seuls les partisans s'appuient sur un chiffre (de 300 000 à 1,2 million en huit ans), ce qui donne plus de poids factuel à leur argument. Les opposants n'avancent que des craintes non chiffrées (« estiment », « craignent »), à l'opposé du verbe « rappellent » utilisé pour les partisans, qui présente leur propos comme un fait établi.",
+     "Les arguments des opposants sont développés de façon équilibrée : petits propriétaires, coût de la rénovation, baisse de l'offre et hausse des loyers, tourisme et emploi. Il n'y a pas d'omission majeure de leur côté.",
+     "La rubrique « Pourquoi ça peut surprendre » nuance la portée du texte (effets limités, dépendants des communes) sans prendre parti, ce qui compense en partie.",
+     "Petit écart de nuance : « fiscalité durcie » (opposants) et « équitables » (partisans) sont des mots chargés, mais ils sont attribués à chaque camp. C'est donc acceptable et à peu près symétrique.",
+     "Pour équilibrer, on pourrait ajouter un élément chiffré côté opposants (part des revenus d'appoint, poids du tourisme, etc.) ou indiquer la source du chiffre des partisans, et remplacer « rappellent » par « soulignent » ou « avancent »."
+    ],
+    "score": 1.0
+   },
+   "ok": true
+  },
+  "pro_con": {
+   "con_fond": 0.95,
+   "con_ok": 0.95,
+   "engine": "claude",
+   "equilibre": 1.0,
+   "ok": true,
+   "pro_fond": 0.88,
+   "pro_ok": 0.96
+  }
+ },
+ "con": "Les opposants estiment que le texte pèse sur les petits propriétaires qui louent pour un revenu d'appoint, par une fiscalité durcie et des travaux de rénovation énergétique coûteux. Ils craignent aussi une baisse de l'offre de logements et une hausse des loyers, ainsi qu'un frein à l'économie touristique et aux emplois des territoires concernés.",
  "date": "2024-11-07",
+ "generator": {
+  "date": "2026-10-14",
+  "model": "claude-sonnet-5-5"
+ },
+ "hook": "Si tu cherches un logement à l'année ou si tu loues ton bien à des touristes, les règles de ta commune peuvent changer.",
+ "kind": "texte",
+ "label": "la régulation locale des meublés de tourisme",
  "n": 289,
  "polarity": "adopt",
+ "pro": "Les partisans rappellent que le nombre de meublés de tourisme est passé de 300 000 à 1,2 million en huit ans, au détriment des logements pour les salariés, les étudiants et les familles. Ils jugent que les élus locaux doivent pouvoir réguler sans risque juridique, et que les règles énergétiques et fiscales doivent être équitables entre location touristique et location à l'année.",
+ "reviewed_hash": null,
  "reviews": [],
  "sources": [
   {
    "label": "Scrutin officiel (Assemblée nationale)",
    "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/289"
+  },
+  {
+   "label": "Source 2",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/dossiers/DLR5L16N47722"
   }
  ],
- "status": "blocked",
- "title": "l'ensemble de la proposition de loi visant à renforcer les outils de régulation des meublés de tourisme à l'échelle locale (texte de la commission mixte paritaire).",
- "updated": "2026-10-13"
+ "status": "pending_review",
+ "subkind": "ensemble",
+ "sum": "Ce texte donne aux maires, partout en France, de nouveaux outils pour encadrer les locations de meublés de tourisme. Chaque meublé doit être enregistré en mairie et reçoit un numéro unique. Une commune peut ramener de 120 à 90 le nombre maximal de jours de location par an d'une résidence principale, fixer des quotas de locations saisonnières et, en zone tendue ou si elle compte plus de 20 % de résidences secondaires, créer des zones réservées aux résidences principales. Les meublés de tourisme sont soumis à des règles de performance énergétique, et leur fiscalité avantageuse est réduite. Une assemblée de copropriétaires peut aussi interdire ces locations dans son immeuble, à la majorité des deux tiers.",
+ "surp": "Le texte ne règle pas à lui seul la crise du logement, qui a plusieurs causes. Ses effets dépendront des choix de chaque commune, qui peut utiliser ces outils ou non.",
+ "title": "Régulation des meublés de tourisme par les communes",
+ "updated": "2026-10-14"
 }

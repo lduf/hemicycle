@@ -1,16 +1,70 @@
 {
- "blocked_reason": "sources insuffisantes pour décrire la mesure et ses critiques",
+ "blocked_reason": "arguments pour/contre non pertinents ou déséquilibrés",
+ "cat": "Culture & médias",
+ "cat_check": {
+  "classifier": "Culture & médias",
+  "confidence": null,
+  "engine": "claude",
+  "writer": "Culture & médias"
+ },
+ "checks": {
+  "date": "2026-10-13",
+  "direction": {
+   "answer": "{\"correspond\": 0.85, \"sens\": \"adopter\", \"attendu\": \"adopter\", \"engine\": \"claude\"}",
+   "ok": true
+  },
+  "neutrality": {
+   "issues": [],
+   "judge": {
+    "bias": "aucun",
+    "model": "claude-opus-5-5",
+    "reasons": [
+     "Le titre et le bouton sont descriptifs. Ils reprennent l'objet du texte sans qualificatif.",
+     "Le résumé rappelle bien la portée non normative de la résolution et indique objectivement le résultat du vote.",
+     "Les deux blocs d'arguments ont une longueur et une structure comparables. Les jugements sont attribués à leurs auteurs ('estiment', 'jugent'), et chaque camp avance deux ou trois raisons.",
+     "La présentation des trois figures dans le résumé ne retient que des éléments valorisants ('opposée à l'esclavage', 'école gratuite'). C'est factuel, mais cela crée une légère sympathie pour la position 'pour'. Le rédacteur aurait pu s'en tenir à l'identification des personnes.",
+     "La formule 'le maintien de Mayotte dans la République par une résistance pacifique' est politiquement sensible, car la question de Mayotte est contestée par les Comores. Elle reste toutefois attribuée aux partisans et n'est pas reprise par le narrateur.",
+     "Les arguments des opposants sont procéduraux (cohérence, compétence présidentielle, rareté de l'honneur). Ils sont présentés sans être caricaturés, et la section 'Pourquoi ça peut surprendre' évite d'assimiler un vote contre à un rejet des personnes. Cela équilibre le cadrage.",
+     "Omission : les noms des trois personnes (Olympe de Gouges, l'abbé de l'Épée, Zéna M'Déré) ne sont pas cités, ce qui rend la fiche moins informative sans l'orienter. La répartition des votes par groupe n'est pas donnée non plus. Les deux omissions sont neutres quant à l'orientation."
+    ],
+    "score": 1.0
+   },
+   "ok": true
+  },
+  "pro_con": null
+ },
+ "con": "Les opposants jugent que réunir ces trois personnes dans un seul texte manque de cohérence, car leurs combats relèvent de domaines très différents. Ils rappellent aussi que la décision revient au Président de la République, après un travail avec des historiens, et ils craignent qu'en multipliant les panthéonisations, cet honneur perde son caractère rare et solennel.",
  "date": "2026-10-08",
+ "generator": {
+  "date": "2026-10-13",
+  "model": "claude-sonnet-5-5"
+ },
+ "hook": "Ce texte est symbolique : il ne change rien à ton quotidien, mais il touche aux personnes que la Nation choisit d'honorer.",
+ "kind": "texte",
+ "label": "l'entrée au Panthéon de trois figures historiques",
  "n": 8612,
  "polarity": "adopt",
+ "pro": "Les partisans estiment que chacune de ces trois personnes a fait progresser un principe de la République : l'égalité des droits entre les sexes, l'instruction des personnes sourdes, le maintien de Mayotte dans la République par une résistance pacifique. Ils jugent aussi que leur entrée au Panthéon donnerait un exemple à toute la France et ferait mieux connaître l'histoire des outre-mer.",
+ "reviewed_hash": null,
  "reviews": [],
  "sources": [
   {
    "label": "Scrutin officiel (Assemblée nationale)",
    "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/8612"
+  },
+  {
+   "label": "Source 2",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/PNREANR5L17B3183.html"
+  },
+  {
+   "label": "Source 3",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/dossiers/DLR5L17N54916"
   }
  ],
  "status": "blocked",
- "title": "la proposition de résolution invitant le Gouvernement à engager les démarches en vue de soutenir l'entrée au Panthéon d'Olympe de Gouges, de l'abbé Charles-Michel de l'Epée et de Zéna M'Déré (article 34-1 de la Constitution).",
+ "subkind": "ensemble",
+ "sum": "Cette proposition de résolution est un texte qui exprime un souhait, sans créer de règle. Elle salue la mémoire de trois figures : une autrice d'une déclaration des droits de la femme et de la citoyenne, opposée à l'esclavage, un abbé qui a fondé une école gratuite pour les personnes sourdes, et la cheffe d'un mouvement de femmes de Mayotte. Elle invite le Gouvernement à transmettre au Président de la République le souhait de l'Assemblée nationale de voir engagées les démarches pour leur entrée au Panthéon. Voter pour, c'est adopter ce souhait. L'Assemblée a rejeté le texte.",
+ "surp": "Un vote pour ou contre ne dit rien du jugement porté sur le parcours de ces trois personnes. Il porte sur ce texte précis, qui ne fait qu'inviter le Gouvernement à transmettre un souhait, et non sur la décision finale d'une panthéonisation.",
+ "title": "Entrée au Panthéon de trois figures historiques",
  "updated": "2026-10-13"
 }

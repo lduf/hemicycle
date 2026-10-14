@@ -1,16 +1,80 @@
 {
- "blocked_reason": "sources insuffisantes pour décrire la mesure et ses critiques",
+ "cat": "Institutions",
+ "cat_check": {
+  "classifier": "Institutions",
+  "confidence": null,
+  "engine": "claude",
+  "writer": "Droits & société"
+ },
+ "checks": {
+  "date": "2026-10-13",
+  "direction": {
+   "answer": "{\"correspond\": 0.85, \"sens\": \"adopter\", \"attendu\": \"adopter\", \"engine\": \"claude\"}",
+   "ok": true
+  },
+  "neutrality": {
+   "issues": [],
+   "judge": {
+    "bias": "aucun",
+    "model": "claude-opus-5-5",
+    "reasons": [
+     "Le titre et le bouton décrivent la mesure de façon factuelle. Le verbe « limiter » correspond au contenu du texte, et aucun adjectif n'est orienté (pas de « fraude », « privation », « atteinte au droit de vote »).",
+     "Les deux camps ont un argument de longueur comparable, présenté de la même façon (« Pour les partisans… », « Pour les opposants… ») et appuyé par des éléments vérifiables : avis du Conseil d'État et taux de 2 à 5 % d'un côté, participation passée de 1 % à 20 % et usage supérieur à 90 % de l'autre.",
+     "Léger déséquilibre en faveur des opposants : leurs chiffres frappent davantage (multiplication par 20 de la participation). Le texte attribue aussi implicitement cette hausse au seul vote par correspondance, alors que 2017 et 2024 sont des scrutins de contextes différents (législatives anticipées en 2024). Cela pourrait être nuancé.",
+     "L'argument des partisans reste un peu vague (« pose problème ») et ne développe pas l'enjeu de rattachement artificiel ni le risque de concentration dans une commune choisie par défaut. L'argument des opposants est plus concret (procuration lourde, détention provisoire).",
+     "La rubrique « Pourquoi ça peut surprendre » est utile et neutre : elle corrige une confusion fréquente (vote postal) et recentre le débat sur les modalités. Elle ne donne raison à aucun camp.",
+     "L'accroche reprend surtout le cadrage des partisans (« poids de leurs voix dans certaines communes »). Cela compense en partie le léger avantage rhétorique des opposants. L'équilibre d'ensemble est satisfaisant."
+    ],
+    "score": 1.0
+   },
+   "ok": true
+  },
+  "pro_con": {
+   "con_fond": 0.93,
+   "con_ok": 0.95,
+   "engine": "claude",
+   "equilibre": 0.85,
+   "ok": true,
+   "pro_fond": 0.9,
+   "pro_ok": 0.92
+  }
+ },
+ "con": "Pour les opposants, le vote par correspondance a fait passer la participation des personnes détenues de 1 % aux législatives de 2017 à 20 % à celles de 2024, et plus de 90 % d'entre elles l'utilisent. Ils jugent la procuration lourde à organiser et les permissions de sortie rares, car elles excluent notamment les personnes en détention provisoire. Ils craignent donc une baisse de la participation aux élections locales et législatives.",
  "date": "2025-06-04",
+ "generator": {
+  "date": "2026-10-13",
+  "model": "claude-sonnet-5-5"
+ },
+ "hook": "Cela change la façon dont les personnes détenues peuvent voter aux élections locales et législatives, et donc le poids de leurs voix dans certaines communes.",
+ "kind": "texte",
+ "label": "la limitation du vote par correspondance des personnes détenues aux scrutins nationaux",
  "n": 2244,
  "polarity": "adopt",
+ "pro": "Pour les partisans, voter dans une commune sans aucun lien avec elle pose problème, comme l'avait relevé le Conseil d'État en 2019. Ils notent que, dans plusieurs chefs-lieux, les personnes détenues inscrites représentent plus de 2 % des électeurs, parfois 5 %. Selon eux, cela peut peser sur des élections locales qui se jouent à quelques centaines de voix.",
+ "reviewed_hash": null,
  "reviews": [],
  "sources": [
   {
    "label": "Scrutin officiel (Assemblée nationale)",
    "url": "https://www.assemblee-nationale.fr/dyn/17/scrutins/2244"
+  },
+  {
+   "label": "Source 2",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/PIONANR5L17B1163.html"
+  },
+  {
+   "label": "Source 3",
+   "url": "https://www.assemblee-nationale.fr/dyn/opendata/RAPPANR5L17B1475.html"
+  },
+  {
+   "label": "Source 4",
+   "url": "https://www.assemblee-nationale.fr/dyn/17/dossiers/DLR5L17N51052"
   }
  ],
- "status": "blocked",
- "title": "l'ensemble de la proposition de loi relative au droit de vote par correspondance des personnes détenues (première lecture).",
- "updated": "2026-10-12"
+ "status": "pending_review",
+ "subkind": "ensemble",
+ "sum": "Les personnes détenues gardent leur droit de vote, sauf décision de justice contraire. Depuis 2019, elles peuvent voter dans la prison, et leurs bulletins sont remis à un bureau de vote de la commune chef-lieu du département. Ce texte réserve cette modalité aux scrutins où la République forme une circonscription unique et aux référendums ; pour les autres élections, elles voteraient par procuration ou grâce à une permission de sortir. Il ajoute aussi la commune de résidence d'un descendant à la liste des communes où elles peuvent s'inscrire. Ces règles s'appliqueraient à partir du premier renouvellement général des conseils municipaux suivant la publication de la loi.",
+ "surp": "Le « vote par correspondance » des personnes détenues n'est pas un vote par voie postale : il s'organise dans la prison, avec une urne scellée. Le débat porte donc sur la manière de voter et sur la commune de rattachement, pas sur le droit de vote lui-même.",
+ "title": "Vote des personnes détenues : limiter le vote par correspondance",
+ "updated": "2026-10-13"
 }
