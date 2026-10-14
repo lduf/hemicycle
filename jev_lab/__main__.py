@@ -175,6 +175,15 @@ def cmd_gen_variants(a, mock=False, path=None):
     print(f"{n}/{len(jobs)} variantes écrites dans {path} (générées par {mid}) — à relire avant de s'y fier ; `git add` pour le rendre reproductible")
 
 
+def cmd_artifact(a):
+    from . import artifact
+    print(artifact.build(a.run, a.out))
+    if a.site:
+        with open(a.site, "w", encoding="utf-8") as fh:
+            json.dump(artifact.site_summary(a.run, a.rapport_url) or {}, fh, ensure_ascii=False, indent=1)
+        print(a.site)
+
+
 def cmd_plan(a):
     st = ST.RunStore(os.path.join(C.RUNS, "_plan"))
     lab, _ = build_lab(a, st)
@@ -273,10 +282,12 @@ def main(argv=None):
             p.add_argument("--yes", action="store_true")
             p.add_argument("--claude-only", action="store_true", help="ne rejouer que les références (`cli:...`) sur un dossier de run déjà rempli par Jev : aucune clé OpenRouter, aucun appel Jev")
     p = sub.add_parser("report"); p.add_argument("run")
+    p = sub.add_parser("artifact"); p.add_argument("run"); p.add_argument("--out")
+    p.add_argument("--site", help="écrit aussi le résumé pour la page Méthode du site (ex. content/jev_summary.json)"); p.add_argument("--rapport-url")
     p = sub.add_parser("inspect"); p.add_argument("run"); p.add_argument("--scenario"); p.add_argument("--system"); p.add_argument("--errors", action="store_true")
     p.add_argument("--failed", action="store_true"); p.add_argument("--limit", type=int, default=30)
     a = ap.parse_args(argv)
-    {"ping": cmd_ping, "models": cmd_models, "items": cmd_items, "show-variants": cmd_show_variants, "label-sheet": cmd_label_sheet, "gen-variants": cmd_gen_variants, "plan": cmd_plan, "run": cmd_run, "report": cmd_report,
+    {"ping": cmd_ping, "models": cmd_models, "items": cmd_items, "show-variants": cmd_show_variants, "label-sheet": cmd_label_sheet, "gen-variants": cmd_gen_variants, "plan": cmd_plan, "run": cmd_run, "report": cmd_report, "artifact": cmd_artifact,
      "inspect": cmd_inspect, "demo": cmd_demo}[a.cmd](a)
 
 

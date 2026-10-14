@@ -1,0 +1,273 @@
+<title>Jev à l'essai</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Concept : un bulletin d'essai de laboratoire. Verdicts d'abord, puis la preuve, puis les limites.
+   Palette : encre bleu nuit, papier gris froid, un seul accent (bleu signal) ; vert / ambre / rouge réservés aux verdicts. */
+:root {
+  --bg: #eef1f4; --surface: #ffffff; --surface-2: #e4e9ee; --ink: #121a24; --ink-2: #4a5663; --ink-3: #75828f; --rule: #cfd7df;
+  --accent: #0b5cad; --accent-ink: #ffffff; --good: #137a4c; --good-bg: #dcefe5; --warn: #96600b; --warn-bg: #f6e8c8; --bad: #b3261e; --bad-bg: #f6dcd8;
+  --track: #dfe5ea; --grid: #c3ccd5;
+  --f-display: 'Bricolage Grotesque', 'IBM Plex Sans', system-ui, sans-serif;
+  --f-body: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --f-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e141b; --surface: #16202a; --surface-2: #1d2a36; --ink: #e8edf2; --ink-2: #aab5c0; --ink-3: #7f8c99; --rule: #2a3a49;
+    --accent: #5aa7f0; --accent-ink: #0b1620; --good: #5cd29b; --good-bg: #153a2b; --warn: #e6b45a; --warn-bg: #3d2f12; --bad: #ff8d84; --bad-bg: #432019;
+    --track: #25333f; --grid: #3a4c5c; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e141b; --surface: #16202a; --surface-2: #1d2a36; --ink: #e8edf2; --ink-2: #aab5c0; --ink-3: #7f8c99; --rule: #2a3a49;
+  --accent: #5aa7f0; --accent-ink: #0b1620; --good: #5cd29b; --good-bg: #153a2b; --warn: #e6b45a; --warn-bg: #3d2f12; --bad: #ff8d84; --bad-bg: #432019;
+  --track: #25333f; --grid: #3a4c5c; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 16px; line-height: 1.55; padding-inline: 16px; }
+.wrap { max-width: 880px; margin-inline: auto; padding-block: 28px 72px; display: flex; flex-direction: column; gap: 44px; }
+h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; line-height: 1.1; margin: 0; letter-spacing: -0.01em; }
+h1 { font-size: clamp(2.4rem, 9vw, 4rem); font-weight: 700; }
+h2 { font-size: clamp(1.5rem, 5vw, 2.1rem); font-weight: 700; }
+h3 { font-size: 1.15rem; font-weight: 700; }
+p { margin: 0; max-width: 68ch; }
+.mono { font-family: var(--f-mono); font-variant-numeric: tabular-nums; }
+.eyebrow { font-family: var(--f-mono); font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); }
+.lede { font-size: 1.15rem; color: var(--ink-2); max-width: 60ch; }
+.muted { color: var(--ink-2); }
+.small { font-size: .875rem; color: var(--ink-2); }
+section { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+header { display: flex; flex-direction: column; gap: 14px; }
+.meta { display: flex; flex-wrap: wrap; gap: 6px 18px; font-family: var(--f-mono); font-size: .78rem; color: var(--ink-3); }
+.meta b { color: var(--ink-2); font-weight: 500; }
+.sim { background: var(--warn-bg); color: var(--warn); padding: 10px 14px; border-radius: 6px; font-weight: 600; }
+
+.gates { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; }
+.gate { background: var(--surface); border: 1px solid var(--rule); border-radius: 10px; padding: 16px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.gate .role { font-family: var(--f-mono); font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-3); }
+.gate .name { font-family: var(--f-display); font-weight: 700; font-size: 1.15rem; line-height: 1.15; }
+.stamp { align-self: flex-start; font-family: var(--f-mono); font-size: .74rem; font-weight: 500; padding: 4px 9px; border-radius: 4px; letter-spacing: .03em; }
+.stamp.good { background: var(--good-bg); color: var(--good); }
+.stamp.warn { background: var(--warn-bg); color: var(--warn); }
+.stamp.bad { background: var(--bad-bg); color: var(--bad); }
+.stamp.na { background: var(--surface-2); color: var(--ink-2); }
+.gate dl { margin: 0; display: grid; grid-template-columns: 1fr auto; gap: 4px 10px; font-size: .88rem; }
+.gate dt { color: var(--ink-2); } .gate dd { margin: 0; text-align: right; font-family: var(--f-mono); font-variant-numeric: tabular-nums; }
+.gate .why { font-size: .86rem; color: var(--ink-2); }
+
+.panel { background: var(--surface); border: 1px solid var(--rule); border-radius: 10px; padding: 18px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px; }
+.cols > * { min-width: 0; }
+
+/* barres de taux */
+.bars { display: flex; flex-direction: column; gap: 16px; }
+.bar { display: grid; grid-template-columns: minmax(96px, 150px) 1fr 9.4rem; gap: 6px 12px; align-items: center; }
+.bar .lbl { font-size: .86rem; color: var(--ink-2); line-height: 1.25; }
+.bar .lbl b { display: block; color: var(--ink); font-weight: 600; }
+.bar .num { font-family: var(--f-mono); font-size: .85rem; font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+.track { position: relative; height: 16px; background: var(--track); border-radius: 3px; }
+.track .fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 3px 0 0 3px; background: var(--accent); }
+.track .fill.ref { background: var(--ink-3); }
+.track .ci { position: absolute; top: 50%; height: 2px; background: var(--ink); transform: translateY(-50%); }
+.track .ci::before, .track .ci::after { content: ""; position: absolute; top: -4px; width: 2px; height: 10px; background: var(--ink); }
+.track .ci::before { left: 0; } .track .ci::after { right: 0; }
+.track .lim { position: absolute; top: -5px; bottom: -5px; width: 0; border-left: 2px dashed var(--bad); }
+.track .lim span { position: absolute; top: -17px; left: 4px; font-family: var(--f-mono); font-size: .66rem; color: var(--bad); white-space: nowrap; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: .8rem; color: var(--ink-2); }
+.legend i { display: inline-block; width: 12px; height: 12px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
+
+.callout { border-left: 4px solid var(--accent); background: var(--surface-2); padding: 14px 16px; border-radius: 0 8px 8px 0; display: flex; flex-direction: column; gap: 8px; }
+.callout.warn { border-color: var(--warn); }
+.callout strong { font-family: var(--f-display); font-size: 1.05rem; }
+table { border-collapse: collapse; width: 100%; font-size: .88rem; }
+th, td { text-align: left; padding: 7px 10px 7px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th { font-family: var(--f-mono); font-size: .72rem; font-weight: 500; letter-spacing: .05em; text-transform: uppercase; color: var(--ink-3); }
+td.n, th.n { text-align: right; font-family: var(--f-mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.scroll { overflow-x: auto; }
+.big { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; }
+.big div { display: flex; flex-direction: column; gap: 2px; }
+.big b { font-family: var(--f-display); font-size: 2.1rem; line-height: 1; font-weight: 700; font-variant-numeric: tabular-nums; }
+.big span { font-size: .84rem; color: var(--ink-2); }
+ul.plain { margin: 0; padding-left: 1.1em; display: flex; flex-direction: column; gap: 6px; max-width: 68ch; }
+.reco { display: grid; gap: 10px; }
+.reco > div { display: grid; grid-template-columns: 8.6rem 1fr; gap: 4px 14px; align-items: start; background: var(--surface); border: 1px solid var(--rule); border-radius: 10px; padding: 14px 16px; }
+.reco .stamp { grid-row: span 2; }
+.reco b { font-family: var(--f-display); font-size: 1.05rem; }
+footer { font-size: .84rem; color: var(--ink-3); display: flex; flex-direction: column; gap: 6px; }
+a { color: var(--accent); }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+@media (max-width: 520px) { .reco > div { grid-template-columns: 1fr; } .reco .stamp { grid-row: auto; } .bar { grid-template-columns: 1fr auto; } .bar .track { grid-column: 1 / -1; order: 3; } .track .lim span { top: 18px; } .bar { padding-bottom: 14px; } }
+@media (prefers-reduced-motion: no-preference) { .fill { transition: width .6s ease; } }
+</style>
+
+<div class="wrap" id="app" aria-live="polite"></div>
+<script id="data" type="application/json">__DATA__</script>
+<script>
+const D = JSON.parse(document.getElementById('data').textContent);
+const S = D.summary, SIM = !!(S.meta && S.meta.mock);
+const JEV = 'jev';
+const REF = Object.keys(S.decisions.sens || {}).find(k => k !== JEV) || null;
+const refName = REF ? 'Claude Sonnet' : null;
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const fr = (x, nd = 1) => x == null || Number.isNaN(x) ? '–' : (100 * x).toFixed(nd).replace('.', ',') + ' %';
+const f2 = (x, nd = 2) => x == null ? '–' : Number(x).toFixed(nd).replace('.', ',');
+const rr = r => r ? `${fr(r.p)} <span class="muted">(${r.k}/${r.n})</span>` : '–';
+const ciTxt = r => r ? `[${fr(r.ci[0], 0)} – ${fr(r.ci[1], 0)}]` : '';
+const usd = x => x < 0.01 ? x.toFixed(6).replace('.', ',') + ' $' : x.toFixed(2).replace('.', ',') + ' $';
+const sec = x => x == null ? '–' : (x < 1 ? Math.round(x * 1000) + ' ms' : x.toFixed(1).replace('.', ',') + ' s');
+const LIM = { sens: [0.02, 0.25], neutralite: [0.10, 0.25], pro_contre: [0.10, 0.25] };
+const NAMES = {
+  categorie: ['Classer', "Catégorie d'une fiche"], sens: ['Vérifier', 'Sens du vote'], neutralite: ['Noter', 'Neutralité du texte'], pro_contre: ['Juger', 'Arguments pour / contre'],
+};
+function label(r, lim) { if (!r || !r.n) return 'na'; if (r.ci[1] <= lim) return 'ok'; if (r.ci[0] > lim) return 'over'; return 'inc'; }
+function verdict(sc) {
+  const d = S.decisions[sc][JEV]; const [fl, rl] = LIM[sc];
+  const a = label(d.far, fl), b = label(d.frr, rl);
+  if (a === 'ok' && b === 'ok') return ['good', 'Tient le rôle'];
+  if (a === 'ok' && b === 'over') return ['warn', 'Sûr mais trop sévère'];
+  if (a === 'over') return ['bad', 'Laisse passer des erreurs'];
+  return ['na', 'Inconclusif'];
+}
+function bar(lbl, sub, r, o = {}) {
+  const max = o.max || 1, w = v => Math.max(0, Math.min(100, 100 * v / max));
+  const lim = o.limit != null ? `<div class="lim" style="left:${w(o.limit)}%"><span>limite ${fr(o.limit, 0)}</span></div>` : '';
+  return `<div class="bar"><div class="lbl"><b>${esc(lbl)}</b>${esc(sub || '')}</div>
+    <div class="track" role="img" aria-label="${esc(lbl)} ${fr(r.p)}, intervalle ${ciTxt(r)}"><div class="fill ${o.ref ? 'ref' : ''}" style="width:${w(r.p)}%"></div>
+    <div class="ci" style="left:${w(r.ci[0])}%;width:${Math.max(0.4, w(r.ci[1]) - w(r.ci[0]))}%"></div>${lim}</div>
+    <div class="num">${fr(r.p)} <span class="muted">${r.k}/${r.n}</span></div></div>`;
+}
+function errorBars(sc, ids) {
+  const d = S.decisions[sc], [fl, rl] = LIM[sc]; let h = '';
+  const rows = [[JEV, 'Jev', false]].concat(REF && d[REF] ? [[REF, refName, true]] : []);
+  for (const [k, nm, isRef] of rows) {
+    h += bar(`${nm}`, ids.far, d[k].far, { limit: fl, ref: isRef, max: o_max(sc) });
+  }
+  for (const [k, nm, isRef] of rows) h += bar(`${nm}`, ids.frr, d[k].frr, { limit: rl, ref: isRef, max: o_max(sc) });
+  return h;
+}
+const o_max = sc => sc === 'sens' ? 1 : (sc === 'pro_contre' ? 0.8 : 0.4);
+
+function render() {
+  if (!['sens', 'neutralite', 'pro_contre'].every(k => S.decisions && S.decisions[k] && S.decisions[k][JEV]) || !S.categorie[JEV]) {
+    document.getElementById('app').innerHTML = '<header><h1>Jev à l\'essai</h1><p class="lede">Cette présentation demande le jeu d\'essai complet (suite « standard »). Ce run n\'en contient qu\'une partie : voir REPORT.md.</p></header>'; return;
+  }
+  const m = S.meta || {}; const J = S.decisions; const cat = S.categorie[JEV];
+  const served = (S.resolved_models || []).join(', ') || m.jev_model;
+  const out = [];
+  out.push(`<header>
+    <div class="eyebrow">Étude du pipeline « Votes vs promesses »</div>
+    <h1>Jev à l'essai</h1>
+    <p class="lede">Jev est un modèle qui répond par des probabilités plutôt que par du texte. Le pipeline lui confie quatre contrôles sur les fiches du quiz. Voici ce qu'il fait bien, ce qu'il rate, et ce que cela coûte.</p>
+    <div class="meta"><span>modèle <b>${esc(served)}</b></span><span><b>${S.n_calls.toLocaleString('fr-FR')}</b> appels</span><span>dépensé <b>${usd(S.by_system_spend[JEV] || 0)}</b></span><span>${esc((m.started || '').slice(0, 10))}</span><span>commit <b>${esc(m.git || '')}</b></span></div>
+    ${SIM ? '<div class="sim">DONNÉES SIMULÉES : aucune de ces valeurs ne décrit Jev.</div>' : ''}
+  </header>`);
+
+  // 1. verdicts
+  const g = sc => {
+    const d = J[sc][JEV], v = verdict(sc), n = NAMES[sc];
+    return `<article class="gate"><div class="role">${n[0]}</div><div class="name">${n[1]}</div><span class="stamp ${v[0]}">${v[1]}</span>
+      <dl><dt>Erreur passée</dt><dd>${fr(d.far.p)}</dd><dt>Bonne fiche refusée</dt><dd>${fr(d.frr.p)}</dd></dl></article>`;
+  };
+  const catOk = cat.top1.ci[0] >= 0.8 ? ['good', 'Tient le rôle'] : (cat.top1.p >= 0.8 ? ['warn', 'Bon, à confirmer'] : ['bad', 'Insuffisant']);
+  out.push(`<section><h2>Peut-on lui confier ces contrôles ?</h2>
+    <p class="muted">Une « erreur passée » est un défaut que Jev laisse publier (bouton inversé, texte orienté, arguments faux). Une « bonne fiche refusée » est du temps de relecture perdu. Les limites viennent du protocole, fixé avant les mesures.</p>
+    <div class="gates">
+      <article class="gate"><div class="role">${NAMES.categorie[0]}</div><div class="name">${NAMES.categorie[1]}</div><span class="stamp ${catOk[0]}">${catOk[1]}</span>
+        <dl><dt>Bonne catégorie</dt><dd>${fr(cat.top1.p)}</dd><dt>Dans le top 3</dt><dd>${fr(cat.top3.p)}</dd></dl></article>
+      ${g('sens')}${g('neutralite')}${g('pro_contre')}
+    </div></section>`);
+
+  // 2. les quatre contrôles en détail
+  out.push(`<section><h2>Ce que Jev fait dans le pipeline</h2>
+    <div class="cols">
+      <div class="panel"><h3>Classer</h3><p class="small">Propose la catégorie d'une fiche parmi 15. Testé sur ${cat.n} fiches dont la catégorie a été choisie à la main : ${cat.top1.k} bonnes réponses. ${cat.errors && cat.errors.length ? 'Les erreurs : ' + cat.errors.map(e => `n° ${esc(e.item.replace('cat-', ''))} (${esc(e.gold)} → ${esc(e.pred)})`).join(' ; ') + '.' : ''}</p></div>
+      <div class="panel"><h3>Vérifier le sens</h3><p class="small">Le bouton « Pour … » dit-il bien ce que fait le vote ? Un amendement de suppression inverse le sens. Testé sur ${J.sens[JEV].n} cas : chaque vote avec le bon bouton, puis avec le bouton inversé.</p></div>
+      <div class="panel"><h3>Noter la neutralité</h3><p class="small">Note de 0 à 5 l'orientation d'un texte. Testé sur ${J.neutralite[JEV].n} textes : les fiches actuelles, et trois réécritures de chacune, dont deux nettement orientées.</p></div>
+      <div class="panel"><h3>Juger pour / contre</h3><p class="small">Les arguments sont-ils pertinents, sur le fond et d'égal poids ? Testé sur ${J.pro_contre[JEV].n} cas : la fiche telle quelle, puis trois défauts fabriqués.</p></div>
+    </div></section>`);
+
+  // 3. preuves
+  for (const sc of ['neutralite', 'pro_contre', 'sens']) {
+    const d = J[sc][JEV], n = NAMES[sc][1], v = verdict(sc);
+    let body = '', title = '', text = '';
+    if (sc === 'neutralite') {
+      title = 'Neutralité : le contrôle le plus fiable';
+      const sc_ = d.scores || {};
+      text = `<p>Jev attribue en moyenne ${f2(sc_.orig)} aux fiches actuelles, ${f2(sc_.subtil)} aux versions à peine cadrées, et ${f2(sc_.pour)} et ${f2(sc_.contre)} aux versions clairement orientées POUR et CONTRE. Le pipeline refuse au-dessus de 2 : ${d.far.k} texte orienté sur ${d.far.n} passe, et ${d.frr.k} fiche sur ${d.frr.n} est refusée à tort.</p>
+        <p class="small">Un cadrage très léger (quelques mots) passe presque toujours : ${rr(d.soft_reject)} sont refusés. C'est cohérent avec la règle, qui ne vise que l'orientation nette.</p>`;
+    } else if (sc === 'pro_contre') {
+      title = 'Pour / contre : sûr, mais il refuse la moitié des bonnes fiches';
+      const c = d.causes_frr || {}; const ck = Object.keys(c).filter(k => !k.startsWith('_') && c[k] > 0);
+      const gr = d.groups || {};
+      text = `<p>Jev repère bien les défauts fabriqués : arguments permutés ${rr(gr.permutes)}, « contre » tronqué à 6 mots ${rr(gr.contre_tronque)}, « contre » d'une autre mesure ${rr(gr.contre_d_une_autre_mesure)} laissés passer. Mais il refuse ${rr(d.frr)} des fiches d'origine.</p>
+        <p class="small">Cause principale : ${ck.length ? ck.map(k => `« ${esc(k)} » (${c[k]})`).join(', ') : '–'}. La condition « argument de fond » refuse la plupart des fiches rejetées.</p>`;
+    } else {
+      title = 'Sens du vote : tel que le pipeline le pose, ça ne marche pas';
+      text = `<p>Avec la règle actuelle, Jev laisse passer ${rr(d.far)} des boutons inversés et refuse ${rr(d.frr)} des bons boutons. La probabilité qu'il donne ne sépare presque pas les deux cas (AUC ${f2(d.auc)} ; 0,5 = hasard, 1 = parfait).</p>`;
+    }
+    body = `<div class="bars">${errorBars(sc, { far: 'erreurs passées', frr: 'bonnes fiches refusées' })}</div>
+      <div class="legend"><span><i style="background:var(--accent)"></i>Jev</span>${REF && J[sc][REF] ? `<span><i style="background:var(--ink-3)"></i>${refName}</span>` : ''}<span>trait noir : intervalle à 95 %</span><span style="color:var(--bad)">tirets : limite du protocole</span><span>échelle : 0 à ${fr(o_max(sc), 0)}</span></div>`;
+    out.push(`<section><h2>${title}</h2><div class="panel">${text}${body}</div>${sc === 'sens' ? senseDetail() : ''}</section>`);
+  }
+
+  // 4. vitesse et prix
+  const L = S.latency.global[JEV]; const costF = S.cost.par_fiche[JEV]; const tp = (S.throughput || []).filter(x => x.conc);
+  const best = tp.length ? tp[tp.length - 1] : null;
+  out.push(`<section><h2>Vitesse et prix</h2>
+    <div class="panel"><div class="big">
+      <div><b>${sec(L.p50)}</b><span>durée médiane d'un appel (p95 : ${sec(L.p95)})</span></div>
+      <div><b>${usd(costF)}</b><span>une fiche, soit quatre contrôles</span></div>
+      <div><b>${usd(costF * 1000)}</b><span>pour 1 000 fiches</span></div>
+      ${best ? `<div><b>${f2(best.rps, 0)}/s</b><span>à ${best.conc} appels en parallèle, ${best.n_429} refus de cadence</span></div>` : ''}
+    </div>
+    <p class="small">Prix : ${f2(S.cost.tarif.ratio_median, 3)} fois le tarif annoncé (0,042 $ par million de jetons d'entrée, sortie gratuite) sur ${S.cost.tarif.n} appels. Le total de l'étude : ${usd(S.by_system_spend[JEV] || 0)}.
+    ${D.claude_wall ? `Pour comparer, un appel à ${refName} par <span class="mono">claude -p</span> prend ${sec(D.claude_wall.p50)} en médiane, démarrage du programme inclus (non comparable strictement, abonnement non facturé).` : ''}</p></div></section>`);
+
+  // 5. stabilité
+  const dt = S.determinism, fl = dt.flip; const ro = (S.robust || [])[0]; const mu = S.multi || {};
+  out.push(`<section><h2>Même question, même réponse ?</h2>
+    <div class="panel"><div class="big">
+      <div><b>${dt.flip.k}/${dt.flip.n}</b><span>fiches dont la décision change en répétant 5 fois le même appel (${ciTxt(fl)})</span></div>
+      ${ro ? `<div><b>${f2(ro.drop * 100, 1)} pt</b><span>de perte sur la catégorie si on réécrit la consigne ou change l'ordre des options</span></div>` : ''}
+      ${mu.pro_contre ? `<div><b>${mu.pro_contre.flip.k}/${mu.pro_contre.flip.n}</b><span>décisions différentes si on pose les questions une à une plutôt que d'un coup</span></div>` : ''}
+    </div>
+    <p class="small">Les valeurs exactes bougent un peu d'un appel à l'autre (écart moyen ${f2(dt.par_scenario.neutralite.spread_mean)} de note sur la neutralité), mais la décision, elle, change rarement. Poser les questions ensemble coûte ${mu.pro_contre ? f2(mu.pro_contre.cost_alone / mu.pro_contre.cost_joint, 1) + ' fois' : ''} moins cher que séparément.</p></div></section>`);
+
+  // 6. recommandations
+  const vN = verdict('neutralite'), vP = verdict('pro_contre'), vS = verdict('sens'); const et = S.explo_sens_titre;
+  out.push(`<section><h2>Ce qu'on en fait</h2><div class="reco">
+    <div><span class="stamp ${vN[0]}">${vN[0] === 'good' ? 'Garder Jev' : 'À revoir'}</span><b>Neutralité</b><p class="small">Jev sépare les textes neutres des textes orientés (AUC ${f2(J.neutralite[JEV].auc)}). C'est le contrôle où il est le plus utile, et il coûte quelques centièmes de centime.</p></div>
+    <div><span class="stamp ${catOk[0]}">${catOk[0] === 'good' ? 'Garder Jev' : 'À confirmer'}</span><b>Catégorie</b><p class="small">${fr(cat.top1.p, 0)} de bonnes réponses sur ${cat.n} fiches, ${ciTxt(cat.top1)}. Le jeu est trop petit pour dire mieux : il faut des étiquettes humaines.</p></div>
+    <div><span class="stamp ${vP[0]}">Assouplir</span><b>Pour / contre</b><p class="small">Le contrôle est sûr, mais la condition « de fond » refuse trop de fiches. Piste, à confirmer : sans cette condition, on laisse passer ${S.exploratoire.pro_contre ? rr(S.exploratoire.pro_contre[JEV][0].far) : '–'} des défauts et on refuse ${S.exploratoire.pro_contre ? rr(S.exploratoire.pro_contre[JEV][0].frr) : '–'} des bonnes fiches.</p></div>
+    <div><span class="stamp ${vS[0]}">Ne pas s'y fier</span><b>Sens du vote</b><p class="small">Pas tel quel : les règles de titre restent la première barrière, et un second contrôle doit passer par un autre moyen. ${et ? `Piste, à confirmer : poser la question sur le titre seul, sans les boutons, donne ${rr(et.far)} d'erreurs passées et ${rr(et.frr)} de bonnes fiches refusées.` : ''}</p></div>
+  </div></section>`);
+
+  // 7. méthode et limites
+  out.push(`<section><h2>Comment on a mesuré, et ce que ça ne prouve pas</h2>
+    <div class="panel"><ul class="plain small">
+      <li>On a rejoué les appels réels du pipeline, avec ses questions et ses seuils. Si le pipeline change, l'étude change avec lui.</li>
+      <li>Les seuils de lecture ont été fixés avant les mesures. Les pistes marquées « à confirmer » ont été imaginées après avoir vu les résultats : elles montrent où chercher, elles ne prouvent rien.</li>
+      <li>Les taux sont donnés avec leur intervalle à 95 % : sur peu de cas, un taux de 0 % n'écarte pas quelques pour cent d'erreur.</li>
+      <li>Pour le sens du vote, seuls les cas faciles ont une vérité automatique. Les titres ambigus, où Jev serait le plus utile, ne sont pas couverts.</li>
+      <li>Les fiches d'origine sont supposées neutres, et les textes orientés ont été écrits par un autre modèle, sans relecture une à une.</li>
+      <li>Les contrôles des fiches actuelles ont été faits par Claude, pas par Jev, faute de clé sur la machine qui les a produites. Jev les a notées ensuite, dans cette étude.</li>
+      <li>La référence Claude est celle du secours de production, sans exemples ni réglages. La latence d'un appel par programme n'est pas comparable à un appel réseau.</li>
+      <li>Un seul modèle daté, un seul jour : refaire l'étude à chaque nouvelle version avant de changer un seuil.</li>
+    </ul></div></section>`);
+  out.push(`<footer><span>Rapport complet, journal brut des appels et code : dossier <span class="mono">jev_lab/</span> du dépôt. Chaque chiffre de cette page vient du journal brut (<span class="mono">summary.json</span>), aucun n'est saisi à la main.</span></footer>`);
+  document.getElementById('app').innerHTML = out.join('');
+}
+
+function senseDetail() {
+  const d = S.decisions.sens[JEV], k = d.kinds || {}, et = S.explo_sens_titre;
+  const names = { fiche: 'Votes des fiches', titre_ensemble: "Titres : ensemble d'un texte", titre_amendement: 'Titres : amendements', titre_suppression: 'Titres : suppressions' };
+  const rows = Object.keys(names).filter(x => k[x]).map(x => `<tr><td>${names[x]}</td><td class="n">${rr(k[x].far)}</td><td class="n">${rr(k[x].frr)}</td>${et && et.kinds && et.kinds[x] ? `<td class="n">${rr(et.kinds[x].far)}</td><td class="n">${rr(et.kinds[x].frr)}</td>` : ''}</tr>`).join('');
+  const hasEt = !!et;
+  return `<div class="panel"><h3>Où ça casse</h3>
+    <p>Jev lit pourtant correctement le sens du vote : ${rr(d.sens_ok)} de bonnes lectures. Mais cette lecture suit le libellé du bouton plus que le titre : quand le bouton est inversé, il lit le sens annoncé par le bouton dans ${S.exploratoire && S.exploratoire.sens ? fr(S.exploratoire.sens[JEV][0].far.p, 0) : '–'} des cas (montré un bouton « Pour la suppression », il répond « supprimer »). La question « le bouton dit-il exactement ce que fait le vote ? » donne alors des probabilités proches de 0,9 pour les deux cas, vrais ou faux.</p>
+    <div class="scroll"><table><thead><tr><th>Type de vote</th><th class="n">Bouton inversé accepté</th><th class="n">Bon bouton refusé</th>${hasEt ? '<th class="n">Titre seul : inversé accepté</th><th class="n">Titre seul : bon refusé</th>' : ''}</tr></thead><tbody>${rows}</tbody></table></div>
+    ${hasEt ? `<div class="callout"><strong>Piste : ne pas montrer le bouton</strong><p class="small">On pose la seule question « que signifie voter pour ? » sur le titre, puis on compare au sens annoncé : ${rr(et.far)} de boutons inversés acceptés, ${rr(et.frr)} de bons boutons refusés. Reste un point faible : les titres de suppression (${rr(et.kinds.titre_suppression.far)} d'erreurs passées). Idée imaginée après les résultats : à confirmer sur de nouveaux votes avant tout changement.</p></div>` : ''}</div>`;
+}
+render();
+</script>

@@ -265,6 +265,11 @@ class TestChaineComplete(unittest.TestCase):
             self.assertIn("DONNÉES SIMULÉES", md)
             with open(os.path.join(d, "summary.json"), encoding="utf-8") as fh:
                 json.load(fh)
+            from jev_lab import artifact
+            html = open(artifact.build(d), encoding="utf-8").read()                # la présentation incorpore les données du run, rien n'est saisi à la main
+            self.assertIn('"decisions"', html)
+            self.assertNotIn("__DATA__", html)
+            self.assertIsNone(artifact.site_summary(d))                           # run partiel (smoke) : pas de résumé pour le site
 
     def test_plafond_de_budget_arret_net(self):
         with tempfile.TemporaryDirectory() as d:
