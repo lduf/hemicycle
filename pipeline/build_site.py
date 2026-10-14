@@ -74,7 +74,7 @@ def make_data(questions, scrutins, seats, curated=None):
 def load_jev_summary(path=None):
     """content/jev_summary.json (optionnel, rempli à la main) -> dict nettoyé, ou None (« Étude en cours »).
 
-    Schéma : {titre: str, lede: str, chiffres: [{label: str, valeur: str|nombre, note?: str}], verdict: str, rapport_url: https://…}
+    Schéma : {titre: str, lede: str, chiffres: [{label: str, valeur: str|nombre, note?: str}], verdict: str, rapport_url: https://… ou nom d'une page du site}
     Toutes les clés sont facultatives ; une clé inconnue ou mal typée est ignorée, un fichier invalide donne None."""
     try:
         raw = C.jload(path or jev_summary_path())
@@ -98,7 +98,7 @@ def load_jev_summary(path=None):
     if rows:
         out["chiffres"] = rows
     url = raw.get("rapport_url")
-    if isinstance(url, str) and url.startswith("https://"):
+    if isinstance(url, str) and (url.startswith("https://") or re.fullmatch(r"[a-z0-9\-]+\.html", url)):       # lien https, ou page du site lui-même (ex. etude-jev.html)
         out["rapport_url"] = url
     return out or None
 
@@ -247,6 +247,9 @@ def build(out_dir=None, include_pending=True, include_legacy=True, today=None, u
     html = inject(html, rep)
     os.makedirs(out_dir, exist_ok=True)
     open(os.path.join(out_dir, "index.html"), "w", encoding="utf-8").write(html)
+    pres = os.path.join(C.ROOT, "jev_lab", "resultats", "etude1", "presentation.html")      # présentation de l'étude Jev, servie avec le site
+    if os.path.exists(pres):
+        shutil.copyfile(pres, os.path.join(out_dir, "etude-jev.html"))
     open(os.path.join(out_dir, ".nojekyll"), "w").close()
     # données ouvertes réutilisables + attribution (Licence Ouverte)
     pub = dict(generated=(today or dt.date.today()).isoformat(), licence=C.LICENCE, source="data.assemblee-nationale.fr", selection="curated.json" if curated else "toutes les fiches publiables (repli)",

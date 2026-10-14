@@ -204,10 +204,10 @@ function render() {
         <p class="small">Cause principale : ${ck.length ? ck.map(k => `« ${esc(k)} » (${c[k]})`).join(', ') : '–'}. La condition « argument de fond » refuse la plupart des fiches rejetées.</p>`;
     } else {
       title = 'Sens du vote : tel que le pipeline le pose, ça ne marche pas';
-      text = `<p>Avec la règle actuelle, Jev laisse passer ${rr(d.far)} des boutons inversés et refuse ${rr(d.frr)} des bons boutons. La probabilité qu'il donne ne sépare presque pas les deux cas (AUC ${f2(d.auc)} ; 0,5 = hasard, 1 = parfait).</p>`;
+      text = `<p>Avec la règle actuelle, Jev laisse passer ${rr(d.far)} des boutons inversés et refuse ${rr(d.frr)} des bons boutons. La probabilité qu'il donne ne sépare presque pas les deux cas (AUC ${f2(d.auc)} ; 0,5 = hasard, 1 = parfait).</p>${REF && J.sens[REF] ? `<p class="small">${refName}, avec la consigne de secours du pipeline, laisse passer moins de boutons inversés (${fr(J.sens[REF].far.p)}) mais ne répond de façon lisible que dans ${fr(J.sens[REF].valid_rate, 0)} des cas : le secours actuel n'est pas une meilleure barrière, il est surtout plus souvent muet.</p>` : ''}`;
     }
     body = `<div class="bars">${errorBars(sc, { far: 'erreurs passées', frr: 'bonnes fiches refusées' })}</div>
-      <div class="legend"><span><i style="background:var(--accent)"></i>Jev</span>${REF && J[sc][REF] ? `<span><i style="background:var(--ink-3)"></i>${refName}</span>` : ''}<span>trait noir : intervalle à 95 %</span><span style="color:var(--bad)">tirets : limite du protocole</span><span>échelle : 0 à ${fr(o_max(sc), 0)}</span></div>`;
+      <div class="legend"><span><i style="background:var(--accent)"></i>Jev</span>${REF && J[sc][REF] ? `<span><i style="background:var(--ink-3)"></i>${refName} (${fr(J[sc][REF].valid_rate, 0)} de réponses lisibles ; les autres comptent comme refus)</span>` : ''}<span>trait noir : intervalle à 95 %</span><span style="color:var(--bad)">tirets : limite du protocole</span><span>échelle : 0 à ${fr(o_max(sc), 0)}</span></div>`;
     out.push(`<section><h2>${title}</h2><div class="panel">${text}${body}</div>${sc === 'sens' ? senseDetail() : ''}</section>`);
   }
 
@@ -241,6 +241,7 @@ function render() {
     <div><span class="stamp ${catOk[0]}">${catOk[0] === 'good' ? 'Garder Jev' : 'À confirmer'}</span><b>Catégorie</b><p class="small">${fr(cat.top1.p, 0)} de bonnes réponses sur ${cat.n} fiches, ${ciTxt(cat.top1)}. Le jeu est trop petit pour dire mieux : il faut des étiquettes humaines.</p></div>
     <div><span class="stamp ${vP[0]}">Assouplir</span><b>Pour / contre</b><p class="small">Le contrôle est sûr, mais la condition « de fond » refuse trop de fiches. Piste, à confirmer : sans cette condition, on laisse passer ${S.exploratoire.pro_contre ? rr(S.exploratoire.pro_contre[JEV][0].far) : '–'} des défauts et on refuse ${S.exploratoire.pro_contre ? rr(S.exploratoire.pro_contre[JEV][0].frr) : '–'} des bonnes fiches.</p></div>
     <div><span class="stamp ${vS[0]}">Ne pas s'y fier</span><b>Sens du vote</b><p class="small">Pas tel quel : les règles de titre restent la première barrière, et un second contrôle doit passer par un autre moyen. ${et ? `Piste, à confirmer : poser la question sur le titre seul, sans les boutons, donne ${rr(et.far)} d'erreurs passées et ${rr(et.frr)} de bonnes fiches refusées.` : ''}</p></div>
+    ${REF && J.sens[REF] ? `<div><span class="stamp warn">À corriger</span><b>Le secours Claude</b><p class="small">Quand Jev est absent, le pipeline demande les mêmes réponses à Claude. Avec cette consigne, ${refName} rend une réponse lisible dans ${fr(J.sens[REF].valid_rate, 0)} des cas sur le sens du vote et ${fr(J.pro_contre[REF].valid_rate, 0)} sur pour/contre : le reste est refusé par prudence. Le format demandé est à renforcer.</p></div>` : ''}
   </div></section>`);
 
   // 7. méthode et limites

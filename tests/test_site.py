@@ -162,6 +162,8 @@ class JevSummary(TmpContent):
         self.assertIsNone(B.load_jev_summary(self.write("pas du json")))
         self.assertIsNone(B.load_jev_summary(self.write([1, 2])))
         self.assertIsNone(B.load_jev_summary(self.write({})))
+        self.assertEqual(B.load_jev_summary(self.write({"rapport_url": "etude-jev.html"})), {"rapport_url": "etude-jev.html"})    # page du site : acceptée
+        self.assertIsNone(B.load_jev_summary(self.write({"rapport_url": "../x.html"})))                                           # chemin hors site : refusé
         self.assertIsNone(B.load_jev_summary(self.write({"titre": 3, "chiffres": "x", "rapport_url": "http://non-https"})))
         j = B.load_jev_summary(self.write({"titre": "T", "chiffres": [{"label": "ok", "valeur": 12, "note": "n"}, {"label": "sans valeur"}, {"valeur": 1}, "x", {"label": "bool", "valeur": True}],
                                            "rapport_url": "javascript:alert(1)"}))

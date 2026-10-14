@@ -1,0 +1,274 @@
+<title>Jev à l'essai</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Concept : un bulletin d'essai de laboratoire. Verdicts d'abord, puis la preuve, puis les limites.
+   Palette : encre bleu nuit, papier gris froid, un seul accent (bleu signal) ; vert / ambre / rouge réservés aux verdicts. */
+:root {
+  --bg: #eef1f4; --surface: #ffffff; --surface-2: #e4e9ee; --ink: #121a24; --ink-2: #4a5663; --ink-3: #75828f; --rule: #cfd7df;
+  --accent: #0b5cad; --accent-ink: #ffffff; --good: #137a4c; --good-bg: #dcefe5; --warn: #96600b; --warn-bg: #f6e8c8; --bad: #b3261e; --bad-bg: #f6dcd8;
+  --track: #dfe5ea; --grid: #c3ccd5;
+  --f-display: 'Bricolage Grotesque', 'IBM Plex Sans', system-ui, sans-serif;
+  --f-body: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --f-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e141b; --surface: #16202a; --surface-2: #1d2a36; --ink: #e8edf2; --ink-2: #aab5c0; --ink-3: #7f8c99; --rule: #2a3a49;
+    --accent: #5aa7f0; --accent-ink: #0b1620; --good: #5cd29b; --good-bg: #153a2b; --warn: #e6b45a; --warn-bg: #3d2f12; --bad: #ff8d84; --bad-bg: #432019;
+    --track: #25333f; --grid: #3a4c5c; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e141b; --surface: #16202a; --surface-2: #1d2a36; --ink: #e8edf2; --ink-2: #aab5c0; --ink-3: #7f8c99; --rule: #2a3a49;
+  --accent: #5aa7f0; --accent-ink: #0b1620; --good: #5cd29b; --good-bg: #153a2b; --warn: #e6b45a; --warn-bg: #3d2f12; --bad: #ff8d84; --bad-bg: #432019;
+  --track: #25333f; --grid: #3a4c5c; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 16px; line-height: 1.55; padding-inline: 16px; }
+.wrap { max-width: 880px; margin-inline: auto; padding-block: 28px 72px; display: flex; flex-direction: column; gap: 44px; }
+h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; line-height: 1.1; margin: 0; letter-spacing: -0.01em; }
+h1 { font-size: clamp(2.4rem, 9vw, 4rem); font-weight: 700; }
+h2 { font-size: clamp(1.5rem, 5vw, 2.1rem); font-weight: 700; }
+h3 { font-size: 1.15rem; font-weight: 700; }
+p { margin: 0; max-width: 68ch; }
+.mono { font-family: var(--f-mono); font-variant-numeric: tabular-nums; }
+.eyebrow { font-family: var(--f-mono); font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); }
+.lede { font-size: 1.15rem; color: var(--ink-2); max-width: 60ch; }
+.muted { color: var(--ink-2); }
+.small { font-size: .875rem; color: var(--ink-2); }
+section { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+header { display: flex; flex-direction: column; gap: 14px; }
+.meta { display: flex; flex-wrap: wrap; gap: 6px 18px; font-family: var(--f-mono); font-size: .78rem; color: var(--ink-3); }
+.meta b { color: var(--ink-2); font-weight: 500; }
+.sim { background: var(--warn-bg); color: var(--warn); padding: 10px 14px; border-radius: 6px; font-weight: 600; }
+
+.gates { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; }
+.gate { background: var(--surface); border: 1px solid var(--rule); border-radius: 10px; padding: 16px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.gate .role { font-family: var(--f-mono); font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-3); }
+.gate .name { font-family: var(--f-display); font-weight: 700; font-size: 1.15rem; line-height: 1.15; }
+.stamp { align-self: flex-start; font-family: var(--f-mono); font-size: .74rem; font-weight: 500; padding: 4px 9px; border-radius: 4px; letter-spacing: .03em; }
+.stamp.good { background: var(--good-bg); color: var(--good); }
+.stamp.warn { background: var(--warn-bg); color: var(--warn); }
+.stamp.bad { background: var(--bad-bg); color: var(--bad); }
+.stamp.na { background: var(--surface-2); color: var(--ink-2); }
+.gate dl { margin: 0; display: grid; grid-template-columns: 1fr auto; gap: 4px 10px; font-size: .88rem; }
+.gate dt { color: var(--ink-2); } .gate dd { margin: 0; text-align: right; font-family: var(--f-mono); font-variant-numeric: tabular-nums; }
+.gate .why { font-size: .86rem; color: var(--ink-2); }
+
+.panel { background: var(--surface); border: 1px solid var(--rule); border-radius: 10px; padding: 18px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px; }
+.cols > * { min-width: 0; }
+
+/* barres de taux */
+.bars { display: flex; flex-direction: column; gap: 16px; }
+.bar { display: grid; grid-template-columns: minmax(96px, 150px) 1fr 9.4rem; gap: 6px 12px; align-items: center; }
+.bar .lbl { font-size: .86rem; color: var(--ink-2); line-height: 1.25; }
+.bar .lbl b { display: block; color: var(--ink); font-weight: 600; }
+.bar .num { font-family: var(--f-mono); font-size: .85rem; font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+.track { position: relative; height: 16px; background: var(--track); border-radius: 3px; }
+.track .fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 3px 0 0 3px; background: var(--accent); }
+.track .fill.ref { background: var(--ink-3); }
+.track .ci { position: absolute; top: 50%; height: 2px; background: var(--ink); transform: translateY(-50%); }
+.track .ci::before, .track .ci::after { content: ""; position: absolute; top: -4px; width: 2px; height: 10px; background: var(--ink); }
+.track .ci::before { left: 0; } .track .ci::after { right: 0; }
+.track .lim { position: absolute; top: -5px; bottom: -5px; width: 0; border-left: 2px dashed var(--bad); }
+.track .lim span { position: absolute; top: -17px; left: 4px; font-family: var(--f-mono); font-size: .66rem; color: var(--bad); white-space: nowrap; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: .8rem; color: var(--ink-2); }
+.legend i { display: inline-block; width: 12px; height: 12px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
+
+.callout { border-left: 4px solid var(--accent); background: var(--surface-2); padding: 14px 16px; border-radius: 0 8px 8px 0; display: flex; flex-direction: column; gap: 8px; }
+.callout.warn { border-color: var(--warn); }
+.callout strong { font-family: var(--f-display); font-size: 1.05rem; }
+table { border-collapse: collapse; width: 100%; font-size: .88rem; }
+th, td { text-align: left; padding: 7px 10px 7px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th { font-family: var(--f-mono); font-size: .72rem; font-weight: 500; letter-spacing: .05em; text-transform: uppercase; color: var(--ink-3); }
+td.n, th.n { text-align: right; font-family: var(--f-mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.scroll { overflow-x: auto; }
+.big { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; }
+.big div { display: flex; flex-direction: column; gap: 2px; }
+.big b { font-family: var(--f-display); font-size: 2.1rem; line-height: 1; font-weight: 700; font-variant-numeric: tabular-nums; }
+.big span { font-size: .84rem; color: var(--ink-2); }
+ul.plain { margin: 0; padding-left: 1.1em; display: flex; flex-direction: column; gap: 6px; max-width: 68ch; }
+.reco { display: grid; gap: 10px; }
+.reco > div { display: grid; grid-template-columns: 8.6rem 1fr; gap: 4px 14px; align-items: start; background: var(--surface); border: 1px solid var(--rule); border-radius: 10px; padding: 14px 16px; }
+.reco .stamp { grid-row: span 2; }
+.reco b { font-family: var(--f-display); font-size: 1.05rem; }
+footer { font-size: .84rem; color: var(--ink-3); display: flex; flex-direction: column; gap: 6px; }
+a { color: var(--accent); }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+@media (max-width: 520px) { .reco > div { grid-template-columns: 1fr; } .reco .stamp { grid-row: auto; } .bar { grid-template-columns: 1fr auto; } .bar .track { grid-column: 1 / -1; order: 3; } .track .lim span { top: 18px; } .bar { padding-bottom: 14px; } }
+@media (prefers-reduced-motion: no-preference) { .fill { transition: width .6s ease; } }
+</style>
+
+<div class="wrap" id="app" aria-live="polite"></div>
+<script id="data" type="application/json">{"summary":{"meta":{"suite":"standard","jev_model":"typesafe/jev-1.13","baselines":{"claude-sonnet-5-5 (claude -p)":"claude-sonnet-5-5"},"budget":6.0,"mock":false,"seed":20261013,"sessions":2,"robust_baselines":false,"credits_start":{"total_credits":150,"total_usage":75.483329955,"ts":1791937236.475766},"thresholds":{"cat_min":0.5,"dir_ok":0.85,"pro_con_ok":0.8,"substance_ok":0.6,"balance":[0.5,1.5],"source_ok":0.5,"neutralite_max":2},"n_items":{"categorie":34,"sens":374,"neutralite":304,"pro_contre":304},"started":"2026-10-14T00:20:36Z","git":"68d70e7","python":"3.12.15","platform":"Linux-6.17.0-1022-azure-x86_64-with-glibc2.39","credits_end":{"total_credits":150,"total_usage":75.551121987,"ts":1791937355.462781},"claude_pass":true,"notes":"Jev : exécution complète du workflow (run etude2, Actions) ; référence Claude Sonnet 5.5 : session locale par `claude -p` (abonnement, rien de facturé), mêmes entrées."},"n_calls":3442,"categorie":{"jev":{"n":34,"valid_rate":1.0,"top1":{"k":31,"n":34,"p":0.9117647058823529,"ci":[0.7703918204763959,0.9695346096956899]},"top3":{"k":33,"n":34,"p":0.9705882352941176,"ci":[0.8508409778365519,0.9947892280744034]},"accepted":{"k":34,"n":34,"p":1.0,"ci":[0.8984820937803899,1.0]},"precision_accepted":{"k":31,"n":34,"p":0.9117647058823529,"ci":[0.7703918204763959,0.9695346096956899]},"ece":0.07941176470588239,"errors":[{"item":"cat-1202","gold":"Droits & société","pred":"Justice & sécurité","conf":0.57},{"item":"cat-4723","gold":"Immigration","pred":"Famille & social","conf":0.93},{"item":"cat-5412","gold":"Droits & société","pred":"Culture & médias","conf":1.0}]},"claude-sonnet-5-5 (claude -p)":{"n":34,"valid_rate":1.0,"top1":{"k":31,"n":34,"p":0.9117647058823529,"ci":[0.7703918204763959,0.9695346096956899]},"top3":{"k":34,"n":34,"p":1.0,"ci":[0.8984820937803899,1.0]},"accepted":{"k":34,"n":34,"p":1.0,"ci":[0.8984820937803899,1.0]},"precision_accepted":{"k":31,"n":34,"p":0.9117647058823529,"ci":[0.7703918204763959,0.9695346096956899]},"ece":null,"errors":[{"item":"cat-840","gold":"Éducation","pred":"Institutions","conf":null},{"item":"cat-4723","gold":"Immigration","pred":"Famille & social","conf":null},{"item":"cat-5412","gold":"Droits & société","pred":"Culture & médias","conf":null}]}},"decisions":{"sens":{"jev":{"n":374,"valid_rate":1.0,"frr":{"k":139,"n":187,"p":0.7433155080213903,"ci":[0.6762508852337059,0.8005843540432651]},"far":{"k":51,"n":187,"p":0.2727272727272727,"ci":[0.2139491302777574,0.3406553165514453]},"soft_reject":null,"groups":{"titre_amendement:inverse":{"k":30,"n":30,"p":1.0,"ci":[0.8864829086095221,1.0]},"titre_suppression:inverse":{"k":0,"n":30,"p":0.0,"ci":[0.0,0.113517091390478]},"fiche:inverse":{"k":7,"n":97,"p":0.07216494845360824,"ci":[0.0353937079719825,0.14153327454316997]},"titre_suppression:exact":{"k":30,"n":30,"p":1.0,"ci":[0.8864829086095221,1.0]},"fiche:exact":{"k":17,"n":97,"p":0.17525773195876287,"ci":[0.11239961612750933,0.2628582139743534]},"titre_ensemble:inverse":{"k":14,"n":30,"p":0.4666666666666667,"ci":[0.30232127224128236,0.6385798671847496]},"titre_amendement:exact":{"k":1,"n":30,"p":0.03333333333333333,"ci":[0.0059084379948573795,0.16670751396958874]},"titre_ensemble:exact":{"k":0,"n":30,"p":0.0,"ci":[0.0,0.113517091390478]}},"invalid_among_rejects":0,"auc":0.6114701592839372,"cv_cut":{"cuts":[0.68,0.72],"full_cut":0.68,"tpr":0.39601921757035,"fpr":0.16603752001830246},"causes_frr":{"réponse inexploitable ou appel échoué":0,"P(correspond) < 0.85":137,"sens lu autrement que prévu":4,"_rejetées":139},"sens_ok":{"k":183,"n":187,"p":0.9786096256684492,"ci":[0.9462994905570941,0.991651144943761]},"kinds":{"titre_suppression":{"frr":{"k":0,"n":30,"p":0.0,"ci":[0.0,0.113517091390478]},"far":{"k":0,"n":30,"p":0.0,"ci":[0.0,0.113517091390478]}},"fiche":{"frr":{"k":80,"n":97,"p":0.8247422680412371,"ci":[0.7371417860256466,0.8876003838724906]},"far":{"k":7,"n":97,"p":0.07216494845360824,"ci":[0.0353937079719825,0.14153327454316997]}},"titre_amendement":{"frr":{"k":29,"n":30,"p":0.9666666666666667,"ci":[0.8332924860304112,0.9940915620051425]},"far":{"k":30,"n":30,"p":1.0,"ci":[0.8864829086095221,1.0]}},"titre_ensemble":{"frr":{"k":30,"n":30,"p":1.0,"ci":[0.8864829086095221,1.0]},"far":{"k":14,"n":30,"p":0.4666666666666667,"ci":[0.30232127224128236,0.6385798671847496]}}}},"claude-sonnet-5-5 (claude -p)":{"n":374,"valid_rate":0.6256684491978609,"frr":{"k":94,"n":187,"p":0.5026737967914439,"ci":[0.4316812344867176,0.5735587131976447]},"far":{"k":10,"n":187,"p":0.053475935828877004,"ci":[0.029302850704618792,0.09562588600687388]},"soft_reject":null,"groups":{"titre_amendement:inverse":{"k":10,"n":30,"p":0.3333333333333333,"ci":[0.19230295526846194,0.5122027418616973]},"titre_suppression:inverse":{"k":0,"n":30,"p":0.0,"ci":[0.0,0.113517091390478]},"fiche:inverse":{"k":0,"n":97,"p":0.0,"ci":[0.0,0.03809538920445529]},"titre_suppression:exact":{"k":22,"n":30,"p":0.7333333333333333,"ci":[0.5555169795568831,0.8581750444608938]},"fiche:exact":{"k":47,"n":97,"p":0.4845360824742268,"ci":[0.3875798918772146,0.5826704809847787]},"titre_ensemble:inverse":{"k":0,"n":30,"p":0.0,"ci":[0.0,0.113517091390478]},"titre_amendement:exact":{"k":10,"n":30,"p":0.3333333333333333,"ci":[0.19230295526846194,0.5122027418616973]},"titre_ensemble:exact":{"k":14,"n":30,"p":0.4666666666666667,"ci":[0.30232127224128236,0.6385798671847496]}},"invalid_among_rejects":140,"auc":0.3933054991563957,"cv_cut":{"cuts":[0.5,0.5],"full_cut":0.5,"tpr":0.5344886753603295,"fpr":0.39041409288492335},"causes_frr":{"réponse inexploitable ou appel échoué":66,"P(correspond) < 0.85":27,"sens lu autrement que prévu":7,"_rejetées":28},"sens_ok":{"k":114,"n":187,"p":0.6096256684491979,"ci":[0.5381701007298019,0.6766677543290531]},"kinds":{"titre_suppression":{"frr":{"k":8,"n":30,"p":0.26666666666666666,"ci":[0.14182495553910618,0.4444830204431169]},"far":{"k":0,"n":30,"p":0.0,"ci":[0.0,0.113517091390478]}},"fiche":{"frr":{"k":50,"n":97,"p":0.5154639175257731,"ci":[0.41732951901522114,0.6124201081227854]},"far":{"k":0,"n":97,"p":0.0,"ci":[0.0,0.03809538920445529]}},"titre_amendement":{"frr":{"k":20,"n":30,"p":0.6666666666666666,"ci":[0.48779725813830266,0.807697044731538]},"far":{"k":10,"n":30,"p":0.3333333333333333,"ci":[0.19230295526846194,0.5122027418616973]}},"titre_ensemble":{"frr":{"k":16,"n":30,"p":0.5333333333333333,"ci":[0.3614201328152505,0.6976787277587178]},"far":{"k":0,"n":30,"p":0.0,"ci":[0.0,0.113517091390478]}}}}},"neutralite":{"jev":{"n":304,"valid_rate":1.0,"frr":{"k":3,"n":76,"p":0.039473684210526314,"ci":[0.013514390129808602,0.10974967271462335]},"far":{"k":1,"n":152,"p":0.006578947368421052,"ci":[0.0011622614078393885,0.036321953333282364]},"soft_reject":{"k":2,"n":76,"p":0.02631578947368421,"ci":[0.007246507130607822,0.09096795750937933]},"groups":{"contre":{"k":0,"n":76,"p":0.0,"ci":[0.0,0.04811526823109757]},"pour":{"k":1,"n":76,"p":0.013157894736842105,"ci":[0.002326420140567463,0.0708384462949749]},"subtil":{"k":74,"n":76,"p":0.9736842105263158,"ci":[0.9090320424906206,0.9927534928693922]},"orig":{"k":73,"n":76,"p":0.9605263157894737,"ci":[0.8902503272853766,0.9864856098701913]}},"invalid_among_rejects":0,"auc":0.9991343490304709,"cv_cut":{"cuts":[2.12,2.5],"full_cut":2.12,"tpr":0.9605263157894737,"fpr":0.0},"scores":{"contre":3.9392105263157893,"pour":3.6696052631578944,"subtil":1.0622368421052633,"orig":1.0744736842105262},"causes_frr":{"réponse inexploitable ou appel échoué":0,"note > 2":3,"_rejetées":3}},"claude-sonnet-5-5 (claude -p)":{"n":304,"valid_rate":0.9802631578947368,"frr":{"k":1,"n":76,"p":0.013157894736842105,"ci":[0.002326420140567463,0.0708384462949749]},"far":{"k":1,"n":152,"p":0.006578947368421052,"ci":[0.0011622614078393885,0.036321953333282364]},"soft_reject":{"k":0,"n":76,"p":0.0,"ci":[0.0,0.04811526823109757]},"groups":{"pour":{"k":1,"n":76,"p":0.013157894736842105,"ci":[0.002326420140567463,0.0708384462949749]},"contre":{"k":0,"n":76,"p":0.0,"ci":[0.0,0.04811526823109757]},"subtil":{"k":76,"n":76,"p":1.0,"ci":[0.9518847317689024,0.9999999999999999]},"orig":{"k":75,"n":76,"p":0.9868421052631579,"ci":[0.929161553705025,0.9976735798594324]}},"invalid_among_rejects":6,"auc":0.9560249307479224,"cv_cut":{"cuts":[2.6,2.3],"full_cut":2.3,"tpr":0.9539473684210527,"fpr":0.013157894736842105},"scores":{"pour":3.773611111111111,"contre":4.02,"subtil":1.3407894736842105,"orig":1.348},"causes_frr":{"réponse inexploitable ou appel échoué":1,"note > 2":0,"_rejetées":0}}},"pro_contre":{"jev":{"n":304,"valid_rate":1.0,"frr":{"k":41,"n":76,"p":0.5394736842105263,"ci":[0.4282242601460334,0.6469245344673011]},"far":{"k":10,"n":228,"p":0.043859649122807015,"ci":[0.02399519068415856,0.07884053853786198]},"soft_reject":null,"groups":{"contre_d_une_autre_mesure":{"k":7,"n":76,"p":0.09210526315789473,"ci":[0.04533342778112863,0.17812902788108254]},"permutes":{"k":0,"n":76,"p":0.0,"ci":[0.0,0.04811526823109757]},"orig":{"k":35,"n":76,"p":0.4605263157894737,"ci":[0.3530754655326989,0.5717757398539667]},"contre_tronque":{"k":3,"n":76,"p":0.039473684210526314,"ci":[0.013514390129808602,0.10974967271462335]}},"invalid_among_rejects":0,"auc":0.9025854108956602,"cv_cut":{"cuts":[0.76,0.76],"full_cut":0.76,"tpr":0.7675438596491229,"fpr":0.06578947368421052},"causes_frr":{"réponse inexploitable ou appel échoué":0,"pro_ok ou con_ok < 0.8":12,"argument pas « de fond » (< 0.6)":33,"équilibre hors de (0.5, 1.5)":4,"_rejetées":41}},"claude-sonnet-5-5 (claude -p)":{"n":304,"valid_rate":0.5855263157894737,"frr":{"k":36,"n":76,"p":0.47368421052631576,"ci":[0.36541913011833066,0.5844816734727798]},"far":{"k":17,"n":228,"p":0.07456140350877193,"ci":[0.04707028070743701,0.1161515052015629]},"soft_reject":null,"groups":{"contre_d_une_autre_mesure":{"k":11,"n":76,"p":0.14473684210526316,"ci":[0.08278431339921274,0.24087653508077764]},"permutes":{"k":0,"n":76,"p":0.0,"ci":[0.0,0.04811526823109757]},"orig":{"k":40,"n":76,"p":0.5263157894736842,"ci":[0.4155183265272202,0.6345808698816693]},"contre_tronque":{"k":6,"n":76,"p":0.07894736842105263,"ci":[0.03668350552145426,0.1617293519363121]}},"invalid_among_rejects":126,"auc":0.3456832871652816,"cv_cut":{"cuts":[0.97,0.88],"full_cut":0.88,"tpr":0.7587719298245614,"fpr":0.7763157894736843},"causes_frr":{"réponse inexploitable ou appel échoué":33,"pro_ok ou con_ok < 0.8":1,"argument pas « de fond » (< 0.6)":3,"équilibre hors de (0.5, 1.5)":0,"_rejetées":3}}}},"pairs":{"sens":[{"scenario":"sens","vs":"claude-sonnet-5-5 (claude -p)","metric":"far","n":183,"jev":0.26229508196721313,"ref":0.0546448087431694,"diff":0.20765027322404372,"lo":0.15079128652692447,"hi":0.2700782645161252,"p":7.275957614183426e-12,"label":"plus risqué","p_holm":1.4551915228366852e-11},{"scenario":"sens","vs":"claude-sonnet-5-5 (claude -p)","metric":"frr","n":183,"jev":0.7431693989071039,"ref":0.4972677595628415,"diff":0.24590163934426235,"lo":0.1653144955514137,"hi":0.32143769350048945,"p":1.1753602809018611e-08,"label":"plus de faux rejets","p_holm":1.1753602809018611e-08}],"neutralite":[{"scenario":"neutralite","vs":"claude-sonnet-5-5 (claude -p)","metric":"far","n":152,"jev":0.006578947368421052,"ref":0.006578947368421052,"diff":0.0,"lo":-0.030267487149431678,"hi":0.030267487149431678,"p":1.0,"label":"inconclusif","p_holm":1.0},{"scenario":"neutralite","vs":"claude-sonnet-5-5 (claude -p)","metric":"frr","n":76,"jev":0.039473684210526314,"ref":0.013157894736842105,"diff":0.02631578947368421,"lo":-0.03748884541604583,"hi":0.09767174047621084,"p":0.625,"label":"inconclusif","p_holm":1.0}],"pro_contre":[{"scenario":"pro_contre","vs":"claude-sonnet-5-5 (claude -p)","metric":"far","n":228,"jev":0.043859649122807015,"ref":0.07456140350877193,"diff":-0.03070175438596491,"lo":-0.07176142794460313,"hi":0.007626826732679226,"p":0.1670684814453125,"label":"pas pire que +3 points","p_holm":0.334136962890625},{"scenario":"pro_contre","vs":"claude-sonnet-5-5 (claude -p)","metric":"frr","n":76,"jev":0.5394736842105263,"ref":0.47368421052631576,"diff":0.06578947368421056,"lo":-0.08012563341296594,"hi":0.20754522076793255,"p":0.48685024166479707,"label":"inconclusif","p_holm":0.48685024166479707}]},"safety":[{"scenario":"sens","system":"jev","metric":"far","p":0.2727272727272727,"k":51,"n":187,"ci":[0.2139491302777574,0.3406553165514453],"limit":0.02,"label":"dépassé"},{"scenario":"sens","system":"jev","metric":"frr","p":0.7433155080213903,"k":139,"n":187,"ci":[0.6762508852337059,0.8005843540432651],"limit":0.25,"label":"dépassé"},{"scenario":"sens","system":"claude-sonnet-5-5 (claude -p)","metric":"far","p":0.053475935828877004,"k":10,"n":187,"ci":[0.029302850704618792,0.09562588600687388],"limit":0.02,"label":"dépassé"},{"scenario":"sens","system":"claude-sonnet-5-5 (claude -p)","metric":"frr","p":0.5026737967914439,"k":94,"n":187,"ci":[0.4316812344867176,0.5735587131976447],"limit":0.25,"label":"dépassé"},{"scenario":"neutralite","system":"jev","metric":"far","p":0.006578947368421052,"k":1,"n":152,"ci":[0.0011622614078393885,0.036321953333282364],"limit":0.1,"label":"respecté"},{"scenario":"neutralite","system":"jev","metric":"frr","p":0.039473684210526314,"k":3,"n":76,"ci":[0.013514390129808602,0.10974967271462335],"limit":0.25,"label":"respecté"},{"scenario":"neutralite","system":"claude-sonnet-5-5 (claude -p)","metric":"far","p":0.006578947368421052,"k":1,"n":152,"ci":[0.0011622614078393885,0.036321953333282364],"limit":0.1,"label":"respecté"},{"scenario":"neutralite","system":"claude-sonnet-5-5 (claude -p)","metric":"frr","p":0.013157894736842105,"k":1,"n":76,"ci":[0.002326420140567463,0.0708384462949749],"limit":0.25,"label":"respecté"},{"scenario":"pro_contre","system":"jev","metric":"far","p":0.043859649122807015,"k":10,"n":228,"ci":[0.02399519068415856,0.07884053853786198],"limit":0.1,"label":"respecté"},{"scenario":"pro_contre","system":"jev","metric":"frr","p":0.5394736842105263,"k":41,"n":76,"ci":[0.4282242601460334,0.6469245344673011],"limit":0.25,"label":"dépassé"},{"scenario":"pro_contre","system":"claude-sonnet-5-5 (claude -p)","metric":"far","p":0.07456140350877193,"k":17,"n":228,"ci":[0.04707028070743701,0.1161515052015629],"limit":0.1,"label":"inconclusif"},{"scenario":"pro_contre","system":"claude-sonnet-5-5 (claude -p)","metric":"frr","p":0.47368421052631576,"k":36,"n":76,"ci":[0.36541913011833066,0.5844816734727798],"limit":0.25,"label":"dépassé"}],"recalibration":{"neutralite":{"seuil":"note > 2 (c'est toute la règle)","actuel_far":0.006578947368421052,"actuel_frr":0.039473684210526314,"cv":{"cuts":[2.12,2.5],"full_cut":2.12,"tpr":0.9605263157894737,"fpr":0.0},"n_good":76,"n_bad":152},"sens":{"seuil":"P(correspond) ≥ 0.85 — ce critère seul (la règle complète exige aussi le bon sens)","actuel_far":0.27807486631016043,"actuel_frr":0.732620320855615,"cv":{"cuts":[0.68,0.72],"full_cut":0.68,"tpr":0.39601921757035,"fpr":0.16603752001830246},"n_good":187,"n_bad":187},"pro_contre":{"seuil":"min(pro_ok, con_ok) ≥ 0.8 — ce critère seul (la règle complète en cumule 3 autres)","actuel_far":0.16666666666666666,"actuel_frr":0.15789473684210525,"cv":{"cuts":[0.76,0.76],"full_cut":0.76,"tpr":0.7675438596491229,"fpr":0.06578947368421052},"n_good":76,"n_bad":228,"far_regle_complete":null}},"exploratoire":{"sens":{"jev":[{"regle":"sens lu dans le titre seul (sans la question « correspond »)","far":{"k":179,"n":187,"p":0.9572192513368984,"ci":[0.9178653304531158,0.9781657235728408]},"frr":{"k":4,"n":187,"p":0.0213903743315508,"ci":[0.008348855056238929,0.0537005094429059]}}],"claude-sonnet-5-5 (claude -p)":[{"regle":"sens lu dans le titre seul (sans la question « correspond »)","far":{"k":12,"n":187,"p":0.06417112299465241,"ci":[0.037085852127746975,0.10880267532119497]},"frr":{"k":73,"n":187,"p":0.39037433155080214,"ci":[0.3233322456709468,0.46182989927019796]}}]},"pro_contre":{"jev":[{"regle":"sans la condition « de fond » (pro_ok, con_ok et équilibre seuls)","far":{"k":18,"n":228,"p":0.07894736842105263,"ci":[0.0505186265613379,0.12132973887437337]},"frr":{"k":15,"n":76,"p":0.19736842105263158,"ci":[0.12341879212336243,0.30044044917440715]}}],"claude-sonnet-5-5 (claude -p)":[{"regle":"sans la condition « de fond » (pro_ok, con_ok et équilibre seuls)","far":{"k":21,"n":228,"p":0.09210526315789473,"ci":[0.061031654303143786,0.1366964497127015]},"frr":{"k":34,"n":76,"p":0.4473684210526316,"ci":[0.34080475999833526,0.5589968471838855]}}]}},"explo_sens_titre":{"far":{"k":10,"n":187,"p":0.053475935828877004,"ci":[0.029302850704618792,0.09562588600687388]},"frr":{"k":8,"n":187,"p":0.0427807486631016,"ci":[0.02183427642715921,0.08213466954688417]},"kinds":{"fiche":{"far":{"k":2,"n":97,"p":0.020618556701030927,"ci":[0.005672566204243078,0.07208899251755427]},"frr":{"k":2,"n":97,"p":0.020618556701030927,"ci":[0.005672566204243078,0.07208899251755427]}},"titre_amendement":{"far":{"k":0,"n":30,"p":0.0,"ci":[0.0,0.113517091390478]},"frr":{"k":0,"n":30,"p":0.0,"ci":[0.0,0.113517091390478]}},"titre_suppression":{"far":{"k":8,"n":30,"p":0.26666666666666666,"ci":[0.14182495553910618,0.4444830204431169]},"frr":{"k":6,"n":30,"p":0.2,"ci":[0.09504978102401235,0.37306047381027446]}},"titre_ensemble":{"far":{"k":0,"n":30,"p":0.0,"ci":[0.0,0.113517091390478]},"frr":{"k":0,"n":30,"p":0.0,"ci":[0.0,0.113517091390478]}}}},"latency":{"par_scenario":{"categorie":{"jev":{"n":30,"p50":0.19605,"p95":0.43349000000000004,"fail":0}},"sens":{"jev":{"n":30,"p50":0.1625,"p95":0.209345,"fail":0}},"neutralite":{"jev":{"n":30,"p50":0.15835,"p95":0.271465,"fail":0}},"pro_contre":{"jev":{"n":30,"p50":0.1614,"p95":0.20158500000000001,"fail":0}}},"global":{"jev":{"n":120,"p50":0.1634,"p90":0.21423,"p95":0.24512499999999987,"p99":0.4547770000000002,"mean":0.17960833333333334,"p50_ci":[0.1594,0.174],"p95_ci":[0.21155999999999997,0.3886]}},"retry":{"jev":{"calls":1136,"retried":0,"n429":0,"n5xx":0,"net":0,"failed":0},"claude-sonnet-5-5 (claude -p)":{"calls":1016,"retried":0,"n429":0,"n5xx":0,"net":0,"failed":0}}},"throughput":[{"experiment":"throughput_batch","conc":1,"n":16,"wall_total_s":2.954,"ok":16,"failed":0,"n_429":0,"rps":5.42,"task":"pro_contre","item":"batch-1","system":"jev","variant":"conc:1","rep":1,"ok_flag":true},{"experiment":"throughput_batch","conc":2,"n":16,"wall_total_s":1.391,"ok":16,"failed":0,"n_429":0,"rps":11.5,"task":"pro_contre","item":"batch-2","system":"jev","variant":"conc:2","rep":2,"ok_flag":true},{"experiment":"throughput_batch","conc":4,"n":32,"wall_total_s":1.411,"ok":32,"failed":0,"n_429":0,"rps":22.67,"task":"pro_contre","item":"batch-4","system":"jev","variant":"conc:4","rep":4,"ok_flag":true},{"experiment":"throughput_batch","conc":8,"n":64,"wall_total_s":1.556,"ok":64,"failed":0,"n_429":0,"rps":41.13,"task":"pro_contre","item":"batch-8","system":"jev","variant":"conc:8","rep":8,"ok_flag":true}],"cost":{"par_scenario":{"pro_contre":{"jev":{"call":2.60568552631579e-05,"in_tok":620.4013157894736,"n":304}},"neutralite":{"jev":{"call":4.456738815789474e-05,"in_tok":1061.1282894736842,"n":304}},"sens":{"jev":{"call":2.145144385026738e-05,"in_tok":510.7486631016043,"n":374}},"categorie":{"jev":{"call":4.3038882352941176e-05,"in_tok":1024.735294117647,"n":34}}},"par_fiche":{"jev":0.0001351145696242612},"tarif":{"n":2422,"ratio_median":1.0,"p5_p95":[0.9999999999999998,1.0],"implied":0.041999999999999996,"out_corr":-0.0749603174290216,"ok":true},"reconcile":{"billed":0.06779203199999984,"reported":0.070925232,"gap":-0.044176098006985284,"sessions":2,"reliable":false}},"determinism":{"par_scenario":{"neutralite":{"items":20,"reps":5.0,"flips":0,"flip":{"k":0,"n":20,"p":0.0,"ci":[0.0,0.16113012549493322]},"spread_mean":0.09849999999999999,"spread_max":0.29000000000000004,"identiques":0.0},"pro_contre":{"items":20,"reps":5.0,"flips":0,"flip":{"k":0,"n":20,"p":0.0,"ci":[0.0,0.16113012549493322]},"spread_mean":0.026999999999999996,"spread_max":0.06000000000000005,"identiques":0.0},"sens":{"items":20,"reps":5.0,"flips":1,"flip":{"k":1,"n":20,"p":0.05,"ci":[0.008881219432873136,0.23613589351256675]},"spread_mean":0.032999999999999995,"spread_max":0.08999999999999997,"identiques":0.05},"categorie":{"items":20,"reps":5.0,"flips":0,"flip":{"k":0,"n":20,"p":0.0,"ci":[0.0,0.16113012549493322]},"spread_mean":0.009999999999999998,"spread_max":0.09999999999999998,"identiques":0.85}},"flip":{"k":1,"n":80,"p":0.0125,"ci":[0.002209918618306224,0.06746432423965451]}},"robust":[{"system":"jev","variant":"nodesc","n":34,"acc_base":0.9117647058823529,"acc_var":0.9117647058823529,"drop":0.0,"drop_ci":[-0.08360298159262002,0.08360298159262002],"flip":0.0},{"system":"jev","variant":"shuffle2","n":34,"acc_base":0.9117647058823529,"acc_var":0.9117647058823529,"drop":0.0,"drop_ci":[-0.08360298159262002,0.08360298159262002],"flip":0.0},{"system":"jev","variant":"shuffle1","n":34,"acc_base":0.9117647058823529,"acc_var":0.9117647058823529,"drop":0.0,"drop_ci":[-0.08360298159262002,0.08360298159262002],"flip":0.0}],"multi":{"neutralite":{"n":30,"flip":{"k":0,"n":30,"p":0.0,"ci":[0.0,0.113517091390478]},"drift_mean":0.032666666666666615,"drift_max":0.10999999999999988,"cost_alone":0.0001109724,"cost_joint":4.6034799999999995e-05,"lat_alone":0.4842633333333334,"lat_joint":0.16044333333333333,"questions":3},"pro_contre":{"n":30,"flip":{"k":0,"n":30,"p":0.0,"ci":[0.0,0.113517091390478]},"drift_mean":0.014333333333333332,"drift_max":0.040000000000000036,"cost_alone":9.555e-05,"cost_joint":2.5998e-05,"lat_alone":0.8223199999999999,"lat_joint":0.15144333333333335,"questions":5}},"worst":{"sens":[{"item":"sens-3139-inverse","group":"titre_amendement:inverse","score":0.91,"state":"titre_officiel_du_scrutin: l'amendement n° 1387 de M. Le Coq à l'article 4 (examen prioritaire) du projet de loi de finances pour 2026 (première lecture). | bouton_pour: Pour la suppression de la mesure examinée | bouton_contre: Contre la suppression de la mesure examinée"},{"item":"sens-1730-inverse","group":"titre_amendement:inverse","score":0.91,"state":"titre_officiel_du_scrutin: l'amendement n° 148 de M. Hetzel à l'article 10 de la proposition de loi relative à l'accompagnement et aux soins palliatifs (première lectu | bouton_pour: Pour la suppression de la mesure examinée | bouton_contre: Contre la suppression de la mesure examinée"},{"item":"sens-4761-inverse","group":"titre_amendement:inverse","score":0.91,"state":"titre_officiel_du_scrutin: l'amendement n° 164 de M. Coulomme à l'article premier du projet de loi relatif à l'organisation des jeux Olympiques et Paralympiques de 203 | bouton_pour: Pour la suppression de la mesure examinée | bouton_contre: Contre la suppression de la mesure examinée"},{"item":"sens-3378-inverse","group":"titre_amendement:inverse","score":0.9,"state":"titre_officiel_du_scrutin: l'amendement n° 2745 de Mme Feld après l'article 3 du projet de loi de finances pour 2026 (première lecture). | bouton_pour: Pour la suppression de la mesure examinée | bouton_contre: Contre la suppression de la mesure examinée"},{"item":"sens-555-inverse","group":"fiche:inverse","score":0.9,"state":"titre_officiel_du_scrutin: l'article 16 du projet de loi d'urgence pour Mayotte (première lecture). | bouton_pour: Pour la suppression de l'augmentation de la réduction d'impôt pour les dons en faveur de Mayotte | bouton_contre: Contre la suppression de l'augmentation de la réduction d'impôt pour les dons en faveur de Mayotte"},{"item":"sens-1494-inverse","group":"titre_amendement:inverse","score":0.9,"state":"titre_officiel_du_scrutin: l'amendement n° 713 de M. Croizier à l'article 4 bis (examen prioritaire) du projet de loi de simplification de la vie économique (première  | bouton_pour: Pour la suppression de la mesure examinée | bouton_contre: Contre la suppression de la mesure examinée"}],"neutralite":[{"item":"neu-3056-pour","group":"pour","score":1.89,"state":"title: Simplification du droit de l'urbanisme et du logement | label: la simplification du droit de l'urbanisme et du logement | hook: Enfin des règles plus simples et plus rapides pour construire ou transformer un logement près de chez toi, avec des décisions prises au plus | sum: Ce texte ambitieux réunit de nombreuses mesures concrètes sur l'urbanisme et le logement. Il ramène de quatre à deux les procédures pour fai | pro: Les partisans le soulignent avec force : des procédures lourdes et trop nombreuses freinent la construction et pèsent sur les finances des c | con: Les opposants jugent que le texte ajoute des dérogations plutôt que de simplifier l'ensemble du droit. Ils expriment aussi des craintes pour | surp: Plusieurs intervenants rappellent que l'offre de logements n'est qu'un levier parmi d'autres face à la crise du logement, mais c'est un levi"}],"pro_contre":[{"item":"pc-4745-contre_d_une_autre_mesure","group":"contre_d_une_autre_mesure","score":0.9,"state":"mesure: l’encadrement des loyers | arguments_des_partisans: Les partisans veulent limiter la hausse des loyers et protéger les locataires qui font valoir leurs droits. | arguments_des_opposants: Les opposants craignent une atteinte à la liberté d'entreprendre et un pouvoir trop large donné au régulateur."},{"item":"pc-606-contre_tronque","group":"contre_tronque","score":0.9,"state":"mesure: le repas à 1 € pour tous | arguments_des_partisans: Les partisans mettent en avant la précarité étudiante et l'accès à un repas équilibré. | arguments_des_opposants: Les opposants jugent la mesure coûteuse."},{"item":"pc-4745-contre_tronque","group":"contre_tronque","score":0.88,"state":"mesure: l’encadrement des loyers | arguments_des_partisans: Les partisans veulent limiter la hausse des loyers et protéger les locataires qui font valoir leurs droits. | arguments_des_opposants: Les opposants craignent que l'encadrement décourage."},{"item":"pc-8427-contre_d_une_autre_mesure","group":"contre_d_une_autre_mesure","score":0.88,"state":"mesure: la loi d'urgence pour la protection et la souveraineté agricoles | arguments_des_partisans: Les partisans estiment que le texte protège les producteurs français d'une concurrence qui ne respecte pas les mêmes normes. Ils jugent auss | arguments_des_opposants: Les opposants jugent que plusieurs mesures pèsent sur le pouvoir d'achat, comme la hausse de la TVA sur le chauffage et sur les abonnements "},{"item":"pc-555-contre_d_une_autre_mesure","group":"contre_d_une_autre_mesure","score":0.88,"state":"mesure: l'augmentation de la réduction d'impôt pour les dons en faveur de Mayotte | arguments_des_partisans: Les partisans estiment qu'une réduction d'impôt plus forte encourage les dons pour Mayotte et envoie un signal en faveur de la poursuite de  | arguments_des_opposants: Les opposants jugent la mesure inefficace, confiscatoire, et contraire à la jurisprudence constitutionnelle pour un taux de 2 %. Ils craigne"},{"item":"pc-242-contre_d_une_autre_mesure","group":"contre_d_une_autre_mesure","score":0.87,"state":"mesure: l'adoption des recettes et de l'équilibre de la sécurité sociale pour 2025 | arguments_des_partisans: Les partisans estiment que le calcul sur les 25 meilleures années améliore les droits à pension des exploitants agricoles, car les moins bon | arguments_des_opposants: Les opposants estiment que le texte revient sur la séparation de la vente et du conseil, mise en place pour garantir l'indépendance du conse"}]},"resolved_models":["typesafe/jev-1.13-20260917"],"spend":0.070925232,"by_system_spend":{"jev":0.070925232,"claude-sonnet-5-5 (claude -p)":0},"n_items":{"categorie":34,"sens":382,"neutralite":304,"pro_contre":304}},"claude_wall":{"p50":8.662949999999999,"n":1016}}</script>
+<script>
+const D = JSON.parse(document.getElementById('data').textContent);
+const S = D.summary, SIM = !!(S.meta && S.meta.mock);
+const JEV = 'jev';
+const REF = Object.keys(S.decisions.sens || {}).find(k => k !== JEV) || null;
+const refName = REF ? 'Claude Sonnet' : null;
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const fr = (x, nd = 1) => x == null || Number.isNaN(x) ? '–' : (100 * x).toFixed(nd).replace('.', ',') + ' %';
+const f2 = (x, nd = 2) => x == null ? '–' : Number(x).toFixed(nd).replace('.', ',');
+const rr = r => r ? `${fr(r.p)} <span class="muted">(${r.k}/${r.n})</span>` : '–';
+const ciTxt = r => r ? `[${fr(r.ci[0], 0)} – ${fr(r.ci[1], 0)}]` : '';
+const usd = x => x < 0.01 ? x.toFixed(6).replace('.', ',') + ' $' : x.toFixed(2).replace('.', ',') + ' $';
+const sec = x => x == null ? '–' : (x < 1 ? Math.round(x * 1000) + ' ms' : x.toFixed(1).replace('.', ',') + ' s');
+const LIM = { sens: [0.02, 0.25], neutralite: [0.10, 0.25], pro_contre: [0.10, 0.25] };
+const NAMES = {
+  categorie: ['Classer', "Catégorie d'une fiche"], sens: ['Vérifier', 'Sens du vote'], neutralite: ['Noter', 'Neutralité du texte'], pro_contre: ['Juger', 'Arguments pour / contre'],
+};
+function label(r, lim) { if (!r || !r.n) return 'na'; if (r.ci[1] <= lim) return 'ok'; if (r.ci[0] > lim) return 'over'; return 'inc'; }
+function verdict(sc) {
+  const d = S.decisions[sc][JEV]; const [fl, rl] = LIM[sc];
+  const a = label(d.far, fl), b = label(d.frr, rl);
+  if (a === 'ok' && b === 'ok') return ['good', 'Tient le rôle'];
+  if (a === 'ok' && b === 'over') return ['warn', 'Sûr mais trop sévère'];
+  if (a === 'over') return ['bad', 'Laisse passer des erreurs'];
+  return ['na', 'Inconclusif'];
+}
+function bar(lbl, sub, r, o = {}) {
+  const max = o.max || 1, w = v => Math.max(0, Math.min(100, 100 * v / max));
+  const lim = o.limit != null ? `<div class="lim" style="left:${w(o.limit)}%"><span>limite ${fr(o.limit, 0)}</span></div>` : '';
+  return `<div class="bar"><div class="lbl"><b>${esc(lbl)}</b>${esc(sub || '')}</div>
+    <div class="track" role="img" aria-label="${esc(lbl)} ${fr(r.p)}, intervalle ${ciTxt(r)}"><div class="fill ${o.ref ? 'ref' : ''}" style="width:${w(r.p)}%"></div>
+    <div class="ci" style="left:${w(r.ci[0])}%;width:${Math.max(0.4, w(r.ci[1]) - w(r.ci[0]))}%"></div>${lim}</div>
+    <div class="num">${fr(r.p)} <span class="muted">${r.k}/${r.n}</span></div></div>`;
+}
+function errorBars(sc, ids) {
+  const d = S.decisions[sc], [fl, rl] = LIM[sc]; let h = '';
+  const rows = [[JEV, 'Jev', false]].concat(REF && d[REF] ? [[REF, refName, true]] : []);
+  for (const [k, nm, isRef] of rows) {
+    h += bar(`${nm}`, ids.far, d[k].far, { limit: fl, ref: isRef, max: o_max(sc) });
+  }
+  for (const [k, nm, isRef] of rows) h += bar(`${nm}`, ids.frr, d[k].frr, { limit: rl, ref: isRef, max: o_max(sc) });
+  return h;
+}
+const o_max = sc => sc === 'sens' ? 1 : (sc === 'pro_contre' ? 0.8 : 0.4);
+
+function render() {
+  if (!['sens', 'neutralite', 'pro_contre'].every(k => S.decisions && S.decisions[k] && S.decisions[k][JEV]) || !S.categorie[JEV]) {
+    document.getElementById('app').innerHTML = '<header><h1>Jev à l\'essai</h1><p class="lede">Cette présentation demande le jeu d\'essai complet (suite « standard »). Ce run n\'en contient qu\'une partie : voir REPORT.md.</p></header>'; return;
+  }
+  const m = S.meta || {}; const J = S.decisions; const cat = S.categorie[JEV];
+  const served = (S.resolved_models || []).join(', ') || m.jev_model;
+  const out = [];
+  out.push(`<header>
+    <div class="eyebrow">Étude du pipeline « Votes vs promesses »</div>
+    <h1>Jev à l'essai</h1>
+    <p class="lede">Jev est un modèle qui répond par des probabilités plutôt que par du texte. Le pipeline lui confie quatre contrôles sur les fiches du quiz. Voici ce qu'il fait bien, ce qu'il rate, et ce que cela coûte.</p>
+    <div class="meta"><span>modèle <b>${esc(served)}</b></span><span><b>${S.n_calls.toLocaleString('fr-FR')}</b> appels</span><span>dépensé <b>${usd(S.by_system_spend[JEV] || 0)}</b></span><span>${esc((m.started || '').slice(0, 10))}</span><span>commit <b>${esc(m.git || '')}</b></span></div>
+    ${SIM ? '<div class="sim">DONNÉES SIMULÉES : aucune de ces valeurs ne décrit Jev.</div>' : ''}
+  </header>`);
+
+  // 1. verdicts
+  const g = sc => {
+    const d = J[sc][JEV], v = verdict(sc), n = NAMES[sc];
+    return `<article class="gate"><div class="role">${n[0]}</div><div class="name">${n[1]}</div><span class="stamp ${v[0]}">${v[1]}</span>
+      <dl><dt>Erreur passée</dt><dd>${fr(d.far.p)}</dd><dt>Bonne fiche refusée</dt><dd>${fr(d.frr.p)}</dd></dl></article>`;
+  };
+  const catOk = cat.top1.ci[0] >= 0.8 ? ['good', 'Tient le rôle'] : (cat.top1.p >= 0.8 ? ['warn', 'Bon, à confirmer'] : ['bad', 'Insuffisant']);
+  out.push(`<section><h2>Peut-on lui confier ces contrôles ?</h2>
+    <p class="muted">Une « erreur passée » est un défaut que Jev laisse publier (bouton inversé, texte orienté, arguments faux). Une « bonne fiche refusée » est du temps de relecture perdu. Les limites viennent du protocole, fixé avant les mesures.</p>
+    <div class="gates">
+      <article class="gate"><div class="role">${NAMES.categorie[0]}</div><div class="name">${NAMES.categorie[1]}</div><span class="stamp ${catOk[0]}">${catOk[1]}</span>
+        <dl><dt>Bonne catégorie</dt><dd>${fr(cat.top1.p)}</dd><dt>Dans le top 3</dt><dd>${fr(cat.top3.p)}</dd></dl></article>
+      ${g('sens')}${g('neutralite')}${g('pro_contre')}
+    </div></section>`);
+
+  // 2. les quatre contrôles en détail
+  out.push(`<section><h2>Ce que Jev fait dans le pipeline</h2>
+    <div class="cols">
+      <div class="panel"><h3>Classer</h3><p class="small">Propose la catégorie d'une fiche parmi 15. Testé sur ${cat.n} fiches dont la catégorie a été choisie à la main : ${cat.top1.k} bonnes réponses. ${cat.errors && cat.errors.length ? 'Les erreurs : ' + cat.errors.map(e => `n° ${esc(e.item.replace('cat-', ''))} (${esc(e.gold)} → ${esc(e.pred)})`).join(' ; ') + '.' : ''}</p></div>
+      <div class="panel"><h3>Vérifier le sens</h3><p class="small">Le bouton « Pour … » dit-il bien ce que fait le vote ? Un amendement de suppression inverse le sens. Testé sur ${J.sens[JEV].n} cas : chaque vote avec le bon bouton, puis avec le bouton inversé.</p></div>
+      <div class="panel"><h3>Noter la neutralité</h3><p class="small">Note de 0 à 5 l'orientation d'un texte. Testé sur ${J.neutralite[JEV].n} textes : les fiches actuelles, et trois réécritures de chacune, dont deux nettement orientées.</p></div>
+      <div class="panel"><h3>Juger pour / contre</h3><p class="small">Les arguments sont-ils pertinents, sur le fond et d'égal poids ? Testé sur ${J.pro_contre[JEV].n} cas : la fiche telle quelle, puis trois défauts fabriqués.</p></div>
+    </div></section>`);
+
+  // 3. preuves
+  for (const sc of ['neutralite', 'pro_contre', 'sens']) {
+    const d = J[sc][JEV], n = NAMES[sc][1], v = verdict(sc);
+    let body = '', title = '', text = '';
+    if (sc === 'neutralite') {
+      title = 'Neutralité : le contrôle le plus fiable';
+      const sc_ = d.scores || {};
+      text = `<p>Jev attribue en moyenne ${f2(sc_.orig)} aux fiches actuelles, ${f2(sc_.subtil)} aux versions à peine cadrées, et ${f2(sc_.pour)} et ${f2(sc_.contre)} aux versions clairement orientées POUR et CONTRE. Le pipeline refuse au-dessus de 2 : ${d.far.k} texte orienté sur ${d.far.n} passe, et ${d.frr.k} fiche sur ${d.frr.n} est refusée à tort.</p>
+        <p class="small">Un cadrage très léger (quelques mots) passe presque toujours : ${rr(d.soft_reject)} sont refusés. C'est cohérent avec la règle, qui ne vise que l'orientation nette.</p>`;
+    } else if (sc === 'pro_contre') {
+      title = 'Pour / contre : sûr, mais il refuse la moitié des bonnes fiches';
+      const c = d.causes_frr || {}; const ck = Object.keys(c).filter(k => !k.startsWith('_') && c[k] > 0);
+      const gr = d.groups || {};
+      text = `<p>Jev repère bien les défauts fabriqués : arguments permutés ${rr(gr.permutes)}, « contre » tronqué à 6 mots ${rr(gr.contre_tronque)}, « contre » d'une autre mesure ${rr(gr.contre_d_une_autre_mesure)} laissés passer. Mais il refuse ${rr(d.frr)} des fiches d'origine.</p>
+        <p class="small">Cause principale : ${ck.length ? ck.map(k => `« ${esc(k)} » (${c[k]})`).join(', ') : '–'}. La condition « argument de fond » refuse la plupart des fiches rejetées.</p>`;
+    } else {
+      title = 'Sens du vote : tel que le pipeline le pose, ça ne marche pas';
+      text = `<p>Avec la règle actuelle, Jev laisse passer ${rr(d.far)} des boutons inversés et refuse ${rr(d.frr)} des bons boutons. La probabilité qu'il donne ne sépare presque pas les deux cas (AUC ${f2(d.auc)} ; 0,5 = hasard, 1 = parfait).</p>${REF && J.sens[REF] ? `<p class="small">${refName}, avec la consigne de secours du pipeline, laisse passer moins de boutons inversés (${fr(J.sens[REF].far.p)}) mais ne répond de façon lisible que dans ${fr(J.sens[REF].valid_rate, 0)} des cas : le secours actuel n'est pas une meilleure barrière, il est surtout plus souvent muet.</p>` : ''}`;
+    }
+    body = `<div class="bars">${errorBars(sc, { far: 'erreurs passées', frr: 'bonnes fiches refusées' })}</div>
+      <div class="legend"><span><i style="background:var(--accent)"></i>Jev</span>${REF && J[sc][REF] ? `<span><i style="background:var(--ink-3)"></i>${refName} (${fr(J[sc][REF].valid_rate, 0)} de réponses lisibles ; les autres comptent comme refus)</span>` : ''}<span>trait noir : intervalle à 95 %</span><span style="color:var(--bad)">tirets : limite du protocole</span><span>échelle : 0 à ${fr(o_max(sc), 0)}</span></div>`;
+    out.push(`<section><h2>${title}</h2><div class="panel">${text}${body}</div>${sc === 'sens' ? senseDetail() : ''}</section>`);
+  }
+
+  // 4. vitesse et prix
+  const L = S.latency.global[JEV]; const costF = S.cost.par_fiche[JEV]; const tp = (S.throughput || []).filter(x => x.conc);
+  const best = tp.length ? tp[tp.length - 1] : null;
+  out.push(`<section><h2>Vitesse et prix</h2>
+    <div class="panel"><div class="big">
+      <div><b>${sec(L.p50)}</b><span>durée médiane d'un appel (p95 : ${sec(L.p95)})</span></div>
+      <div><b>${usd(costF)}</b><span>une fiche, soit quatre contrôles</span></div>
+      <div><b>${usd(costF * 1000)}</b><span>pour 1 000 fiches</span></div>
+      ${best ? `<div><b>${f2(best.rps, 0)}/s</b><span>à ${best.conc} appels en parallèle, ${best.n_429} refus de cadence</span></div>` : ''}
+    </div>
+    <p class="small">Prix : ${f2(S.cost.tarif.ratio_median, 3)} fois le tarif annoncé (0,042 $ par million de jetons d'entrée, sortie gratuite) sur ${S.cost.tarif.n} appels. Le total de l'étude : ${usd(S.by_system_spend[JEV] || 0)}.
+    ${D.claude_wall ? `Pour comparer, un appel à ${refName} par <span class="mono">claude -p</span> prend ${sec(D.claude_wall.p50)} en médiane, démarrage du programme inclus (non comparable strictement, abonnement non facturé).` : ''}</p></div></section>`);
+
+  // 5. stabilité
+  const dt = S.determinism, fl = dt.flip; const ro = (S.robust || [])[0]; const mu = S.multi || {};
+  out.push(`<section><h2>Même question, même réponse ?</h2>
+    <div class="panel"><div class="big">
+      <div><b>${dt.flip.k}/${dt.flip.n}</b><span>fiches dont la décision change en répétant 5 fois le même appel (${ciTxt(fl)})</span></div>
+      ${ro ? `<div><b>${f2(ro.drop * 100, 1)} pt</b><span>de perte sur la catégorie si on réécrit la consigne ou change l'ordre des options</span></div>` : ''}
+      ${mu.pro_contre ? `<div><b>${mu.pro_contre.flip.k}/${mu.pro_contre.flip.n}</b><span>décisions différentes si on pose les questions une à une plutôt que d'un coup</span></div>` : ''}
+    </div>
+    <p class="small">Les valeurs exactes bougent un peu d'un appel à l'autre (écart moyen ${f2(dt.par_scenario.neutralite.spread_mean)} de note sur la neutralité), mais la décision, elle, change rarement. Poser les questions ensemble coûte ${mu.pro_contre ? f2(mu.pro_contre.cost_alone / mu.pro_contre.cost_joint, 1) + ' fois' : ''} moins cher que séparément.</p></div></section>`);
+
+  // 6. recommandations
+  const vN = verdict('neutralite'), vP = verdict('pro_contre'), vS = verdict('sens'); const et = S.explo_sens_titre;
+  out.push(`<section><h2>Ce qu'on en fait</h2><div class="reco">
+    <div><span class="stamp ${vN[0]}">${vN[0] === 'good' ? 'Garder Jev' : 'À revoir'}</span><b>Neutralité</b><p class="small">Jev sépare les textes neutres des textes orientés (AUC ${f2(J.neutralite[JEV].auc)}). C'est le contrôle où il est le plus utile, et il coûte quelques centièmes de centime.</p></div>
+    <div><span class="stamp ${catOk[0]}">${catOk[0] === 'good' ? 'Garder Jev' : 'À confirmer'}</span><b>Catégorie</b><p class="small">${fr(cat.top1.p, 0)} de bonnes réponses sur ${cat.n} fiches, ${ciTxt(cat.top1)}. Le jeu est trop petit pour dire mieux : il faut des étiquettes humaines.</p></div>
+    <div><span class="stamp ${vP[0]}">Assouplir</span><b>Pour / contre</b><p class="small">Le contrôle est sûr, mais la condition « de fond » refuse trop de fiches. Piste, à confirmer : sans cette condition, on laisse passer ${S.exploratoire.pro_contre ? rr(S.exploratoire.pro_contre[JEV][0].far) : '–'} des défauts et on refuse ${S.exploratoire.pro_contre ? rr(S.exploratoire.pro_contre[JEV][0].frr) : '–'} des bonnes fiches.</p></div>
+    <div><span class="stamp ${vS[0]}">Ne pas s'y fier</span><b>Sens du vote</b><p class="small">Pas tel quel : les règles de titre restent la première barrière, et un second contrôle doit passer par un autre moyen. ${et ? `Piste, à confirmer : poser la question sur le titre seul, sans les boutons, donne ${rr(et.far)} d'erreurs passées et ${rr(et.frr)} de bonnes fiches refusées.` : ''}</p></div>
+    ${REF && J.sens[REF] ? `<div><span class="stamp warn">À corriger</span><b>Le secours Claude</b><p class="small">Quand Jev est absent, le pipeline demande les mêmes réponses à Claude. Avec cette consigne, ${refName} rend une réponse lisible dans ${fr(J.sens[REF].valid_rate, 0)} des cas sur le sens du vote et ${fr(J.pro_contre[REF].valid_rate, 0)} sur pour/contre : le reste est refusé par prudence. Le format demandé est à renforcer.</p></div>` : ''}
+  </div></section>`);
+
+  // 7. méthode et limites
+  out.push(`<section><h2>Comment on a mesuré, et ce que ça ne prouve pas</h2>
+    <div class="panel"><ul class="plain small">
+      <li>On a rejoué les appels réels du pipeline, avec ses questions et ses seuils. Si le pipeline change, l'étude change avec lui.</li>
+      <li>Les seuils de lecture ont été fixés avant les mesures. Les pistes marquées « à confirmer » ont été imaginées après avoir vu les résultats : elles montrent où chercher, elles ne prouvent rien.</li>
+      <li>Les taux sont donnés avec leur intervalle à 95 % : sur peu de cas, un taux de 0 % n'écarte pas quelques pour cent d'erreur.</li>
+      <li>Pour le sens du vote, seuls les cas faciles ont une vérité automatique. Les titres ambigus, où Jev serait le plus utile, ne sont pas couverts.</li>
+      <li>Les fiches d'origine sont supposées neutres, et les textes orientés ont été écrits par un autre modèle, sans relecture une à une.</li>
+      <li>Les contrôles des fiches actuelles ont été faits par Claude, pas par Jev, faute de clé sur la machine qui les a produites. Jev les a notées ensuite, dans cette étude.</li>
+      <li>La référence Claude est celle du secours de production, sans exemples ni réglages. La latence d'un appel par programme n'est pas comparable à un appel réseau.</li>
+      <li>Un seul modèle daté, un seul jour : refaire l'étude à chaque nouvelle version avant de changer un seuil.</li>
+    </ul></div></section>`);
+  out.push(`<footer><span>Rapport complet, journal brut des appels et code : dossier <span class="mono">jev_lab/</span> du dépôt. Chaque chiffre de cette page vient du journal brut (<span class="mono">summary.json</span>), aucun n'est saisi à la main.</span></footer>`);
+  document.getElementById('app').innerHTML = out.join('');
+}
+
+function senseDetail() {
+  const d = S.decisions.sens[JEV], k = d.kinds || {}, et = S.explo_sens_titre;
+  const names = { fiche: 'Votes des fiches', titre_ensemble: "Titres : ensemble d'un texte", titre_amendement: 'Titres : amendements', titre_suppression: 'Titres : suppressions' };
+  const rows = Object.keys(names).filter(x => k[x]).map(x => `<tr><td>${names[x]}</td><td class="n">${rr(k[x].far)}</td><td class="n">${rr(k[x].frr)}</td>${et && et.kinds && et.kinds[x] ? `<td class="n">${rr(et.kinds[x].far)}</td><td class="n">${rr(et.kinds[x].frr)}</td>` : ''}</tr>`).join('');
+  const hasEt = !!et;
+  return `<div class="panel"><h3>Où ça casse</h3>
+    <p>Jev lit pourtant correctement le sens du vote : ${rr(d.sens_ok)} de bonnes lectures. Mais cette lecture suit le libellé du bouton plus que le titre : quand le bouton est inversé, il lit le sens annoncé par le bouton dans ${S.exploratoire && S.exploratoire.sens ? fr(S.exploratoire.sens[JEV][0].far.p, 0) : '–'} des cas (montré un bouton « Pour la suppression », il répond « supprimer »). La question « le bouton dit-il exactement ce que fait le vote ? » donne alors des probabilités proches de 0,9 pour les deux cas, vrais ou faux.</p>
+    <div class="scroll"><table><thead><tr><th>Type de vote</th><th class="n">Bouton inversé accepté</th><th class="n">Bon bouton refusé</th>${hasEt ? '<th class="n">Titre seul : inversé accepté</th><th class="n">Titre seul : bon refusé</th>' : ''}</tr></thead><tbody>${rows}</tbody></table></div>
+    ${hasEt ? `<div class="callout"><strong>Piste : ne pas montrer le bouton</strong><p class="small">On pose la seule question « que signifie voter pour ? » sur le titre, puis on compare au sens annoncé : ${rr(et.far)} de boutons inversés acceptés, ${rr(et.frr)} de bons boutons refusés. Reste un point faible : les titres de suppression (${rr(et.kinds.titre_suppression.far)} d'erreurs passées). Idée imaginée après les résultats : à confirmer sur de nouveaux votes avant tout changement.</p></div>` : ''}</div>`;
+}
+render();
+</script>
